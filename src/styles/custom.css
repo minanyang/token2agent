@@ -1,0 +1,26 @@
+/*
+ * Reading depth (see src/components/ThemeSelect.astro).
+ * 淺顯 (default): a <section class="deep-section"> shows only its heading and a notice whose button
+ * opens that one section (.is-open).
+ * 深入: everything is shown.
+ */
+:root:not([data-depth='deep']) .deep-section:not(.is-open) > :not(:first-child, .deep-notice) {
+	display: none;
+}
+:root[data-depth='deep'] .deep-notice {
+	display: none;
+}
+.deep-notice {
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+.deep-notice button {
+	margin-inline-start: 0.5rem;
+	padding: 0.1rem 0.6rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--sl-color-text-accent);
+	font: inherit;
+	cursor: pointer;
+}
