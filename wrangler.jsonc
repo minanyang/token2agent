@@ -1,0 +1,11 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "token2agent",
+	"compatibility_date": "2026-11-01",
+	// Static site only: Cloudflare serves the Astro build output, no Worker script.
+	"assets": {
+		"directory": "./dist",
+		"not_found_handling": "404-page"
+	},
+	"routes": [{ "pattern": "token2agent.com", "custom_domain": true }]
+}
