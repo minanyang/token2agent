@@ -6,6 +6,8 @@ import { join } from 'node:path';
 const docs = 'src/content/docs';
 const sourcesFile = join(docs, 'reference/sources.md');
 const urlPattern = /\]\((https?:\/\/[^)\s]+)\)/g;
+// The project's own repo and site are not sources.
+const isOwnUrl = (url) => /^https:\/\/(github\.com\/minanyang\/token2agent|token2agent\.com)(\/|$)/.test(url);
 
 const walk = (dir) =>
 	readdirSync(dir).flatMap((name) => {
@@ -20,7 +22,7 @@ const missing = new Map();
 for (const file of walk(docs)) {
 	if (file === sourcesFile) continue;
 	for (const url of urls(readFileSync(file, 'utf8'))) {
-		if (!listed.has(url)) missing.set(url, [...(missing.get(url) ?? []), file]);
+		if (!listed.has(url) && !isOwnUrl(url)) missing.set(url, [...(missing.get(url) ?? []), file]);
 	}
 }
 

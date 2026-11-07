@@ -4,7 +4,7 @@
 
 ## 分享你的專案
 
-1. Fork 這個 repo。
+1. Fork [minanyang/token2agent](https://github.com/minanyang/token2agent)。
 2. 把 `src/data/showcase/_template.yaml` 複製成 `src/data/showcase/你的專案名.yaml`（小寫英文與連字號），照檔案裡的註解填好。
 3. 開一個 Pull Request，標題寫「分享：專案名」。
 
