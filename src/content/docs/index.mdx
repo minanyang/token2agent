@@ -1,0 +1,83 @@
+---
+title: Token2Agent
+head:
+  - tag: title
+    content: Token2Agent：從 token 到 agent 的 AI/LLM 學習路線
+description: 從零開始學會 AI 應用與 agent 系統：每一站都有自己的講義、自我檢查與實作題目，淺顯與深入兩種讀法。
+template: splash
+hero:
+  title: Token2Agent
+  tagline: 從 token 到 agent 的 AI/LLM 學習路線。從 AI 系統怎麼組成，到 agent 怎麼可靠地上線。20 站講義，不需要背景知識就能開始；想深入時，每一站都有更進一步的內容。
+  actions:
+    - text: 從 S0 全局地圖開始
+      link: /stages/s00-big-picture/
+      icon: right-arrow
+    - text: 選一條路線
+      link: '#選一條路線'
+      variant: secondary
+    - text: 怎麼使用這份路線
+      link: /guide/how-to-use/
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import RoadmapMap from '../../components/RoadmapMap.astro';
+
+## 路線總覽
+
+每張卡片是一站，共 20 站（S0–S19），沿著中間的線左右交錯往下走；卡片裡是該站的核心主題，點下去會跳到該站的對應段落。虛線的 Part II 是選修的模型原理，預設收起（[代號與題型說明](/guide/how-to-use/#代號怎麼讀)）。講義加必做題，應用路線約 175 小時、完整路線約 225 小時；進階題（兩條實作線）另計約 330 小時，見[時數](/guide/how-to-use/#時數)。
+
+<RoadmapMap />
+
+## 選一條路線
+
+<CardGrid>
+	<LinkCard
+		title="應用路線（推薦給多數人）"
+		description="想做出 AI 應用或 agent：S0 全局地圖 → 模型速成 → Part III 到 Part VII（S6–S19）。不需要機器學習背景。"
+		href="/guide/app-first/"
+	/>
+	<LinkCard
+		title="理解路線（不寫程式）"
+		description="只想看懂 AI 系統怎麼運作：讀講義、做每站的「先試一下」與自我檢查，約 45 小時。"
+		href="/guide/how-to-use/#先選路線"
+	/>
+	<LinkCard
+		title="完整路線（含模型原理）"
+		description="也想懂模型內部怎麼運作：從 S0 全局地圖依序走到 S19 真實 agent 系統與畢業專題。Part II 模型原理（S1–S5）比較底層、用到較多數學。"
+		href="/stages/s00-big-picture/"
+	/>
+</CardGrid>
+
+不會寫程式也能開始：只讀講義、做每站的「先試一下」與自我檢查，就能看懂 AI 系統怎麼運作（理解路線）；要動手做題目，需要基本的程式、HTTP 與 JSON 能力（實作路線）。
+
+每一站都有兩種讀法，可以在頁首切換：**淺顯**只顯示主線，第一次讀就看得懂；**深入**會展開實作細節、推導、選修主題和進階題。
+
+## 走完系統線，你會有什麼
+
+系統線是各站的進階題。走完它，你會有一個已部署上線、自己每天在用的 agent，具備 RAG、工具、記憶、評估與安全防護；你也會有可以拿給別人審查的工程證據。每一站幫它長出一種能力（A 後面的數字對應站，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）：
+
+| 階段 | 你的系統長出什麼 |
+|---|---|
+| Part III 應用基礎（A6–A8） | 串流聊天介面（Gradio、Chainlit 或 CLI 也可以）與 trace、穩定的 structured output 與 workflow、從真實 trace 長出的 golden set 與 judge |
+| Part IV 知識與行動（A9–A11） | 附引用的 RAG、帶風險分級的工具與 MCP server、有預算與快取的 context builder |
+| Part V Agent 系統（A12–A15） | 手寫 harness、分層記憶、trajectory eval 與 prompt 最佳化，multi-agent 只在評估勝出時保留 |
+| Part VI 可信、產品、上線（A16–A18） | 安全稽核與修補、完整前端、多使用者部署與 eval 把關的發布流程 |
+| Part VII 綜合實戰（A19） | 畢業專題：延伸成常駐 agent |
+
+完整對照見[系統線 A6–A19](/projects/system-thread/#每一站長出什麼)。
+
+## 兩條實作線
+
+<CardGrid>
+	<LinkCard
+		title="模型線 M1–M5"
+		description="從 autograd 到自己的 tiny GPT，再到在小模型上跑 SFT、DPO、GRPO，最後寫一個迷你推論伺服器。"
+		href="/projects/model-thread/"
+	/>
+	<LinkCard
+		title="系統線 A6–A19"
+		description="選一個你在意的應用，從串流聊天一路長成有 RAG、工具、harness、記憶、評估、安全防護並部署上線的 agent。"
+		href="/projects/system-thread/"
+	/>
+</CardGrid>

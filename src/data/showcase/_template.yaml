@@ -1,0 +1,9 @@
+# Copy this file to src/data/showcase/<your-project>.yaml (lowercase, hyphens) and fill it in.
+# Files starting with "_" are not shown on the site.
+name: 我的筆記 agent # project name, up to 40 characters
+summary: 讀我的 Markdown 筆記回答問題，附引用，每週自動整理待辦。 # one sentence, up to 100 characters
+url: https://github.com/your-name/your-project # repo or live demo
+author: 你的名字 # up to 40 characters
+authorUrl: https://github.com/your-name # optional
+stages: [9, 12, 13] # optional: the stages (0-19) whose topics the project uses, up to 6
+added: 2026-11-07 # the day you open the PR
