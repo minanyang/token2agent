@@ -1,0 +1,21 @@
+---
+// Wraps Starlight's footer to add the license notice under every page.
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default />
+<p class="license">
+	講義內容以 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant" rel="license noopener">CC BY-NC-SA 4.0</a> 授權：可以轉載與改作，但要標示出處、不得用於商業用途，改作也要用相同授權。引用的第三方內容與商標屬於原作者。
+</p>
+
+<style>
+	.license {
+		margin-top: 1.5rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+		text-align: center;
+	}
+	.license a {
+		color: inherit;
+	}
+</style>

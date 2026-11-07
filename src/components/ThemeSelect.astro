@@ -1,0 +1,106 @@
+---
+// Wraps Starlight's theme picker to add the reading-depth toggle next to it.
+// Simple mode collapses `<details class="deep">` blocks and hides `<section class="deep-section">` bodies (styles in src/styles/custom.css);
+// deep mode expands and shows them all.
+import Default from '@astrojs/starlight/components/ThemeSelect.astro';
+---
+
+<div class="controls">
+	<div class="depth-toggle" role="group" aria-label="閱讀模式">
+		<button type="button" data-depth="simple" aria-pressed="true">淺顯</button>
+		<button type="button" data-depth="deep" aria-pressed="false">深入</button>
+	</div>
+	<Default />
+</div>
+
+{/* Inlined so deep sections are shown before first paint when the reader chose 深入. */}
+<script is:inline>
+	try {
+		if (localStorage.getItem('token2agent-depth') === 'deep') document.documentElement.dataset.depth = 'deep';
+	} catch {}
+</script>
+
+<script>
+	type Depth = 'simple' | 'deep';
+	const storageKey = 'token2agent-depth';
+
+	const load = (): Depth => {
+		try {
+			return localStorage.getItem(storageKey) === 'deep' ? 'deep' : 'simple';
+		} catch {
+			return 'simple';
+		}
+	};
+
+	function apply(depth: Depth): void {
+		document.documentElement.dataset.depth = depth;
+		for (const el of document.querySelectorAll<HTMLDetailsElement>('details.deep')) {
+			el.open = depth === 'deep';
+		}
+		for (const button of document.querySelectorAll<HTMLButtonElement>('.depth-toggle button')) {
+			button.setAttribute('aria-pressed', String(button.dataset.depth === depth));
+		}
+	}
+
+	function choose(depth: Depth): void {
+		try {
+			localStorage.setItem(storageKey, depth);
+		} catch {
+			// Storage can be unavailable (private mode); the choice then lasts for this page only.
+		}
+		apply(depth);
+	}
+
+	for (const button of document.querySelectorAll<HTMLButtonElement>('.depth-toggle button')) {
+		button.addEventListener('click', () => choose(button.dataset.depth === 'deep' ? 'deep' : 'simple'));
+	}
+	// Each deep section keeps its heading visible in 淺顯 mode; its notice button opens just that section.
+	for (const section of document.querySelectorAll('.deep-section')) {
+		const notice = document.createElement('p');
+		notice.className = 'deep-notice';
+		notice.textContent = '這部分是選讀或進階內容。';
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.textContent = '展開這一段';
+		button.setAttribute('aria-expanded', 'false');
+		button.addEventListener('click', () => {
+			const open = section.classList.toggle('is-open');
+			button.textContent = open ? '收起這一段' : '展開這一段';
+			button.setAttribute('aria-expanded', String(open));
+		});
+		notice.append(button);
+		section.firstElementChild?.after(notice);
+	}
+
+	apply(load());
+</script>
+
+<style>
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+	.depth-toggle {
+		display: inline-flex;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 999px;
+		padding: 2px;
+	}
+	.depth-toggle button {
+		border: 0;
+		background: transparent;
+		color: var(--sl-color-gray-2);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		padding: 0.15rem 0.7rem;
+		border-radius: 999px;
+		cursor: pointer;
+		white-space: nowrap;
+	}
+	.depth-toggle button[aria-pressed='true'] {
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-white);
+		font-weight: 600;
+	}
+</style>

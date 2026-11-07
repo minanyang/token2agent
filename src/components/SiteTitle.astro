@@ -1,0 +1,28 @@
+---
+// Header title: the brand name always, the descriptive part (after 「：」) only when there is room.
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+const [brand, ...rest] = siteTitle.split('：');
+const subtitle = rest.join('：');
+---
+
+<a href={siteTitleHref} class="site-title" translate="no">
+	{brand}{subtitle && <span class="subtitle">：{subtitle}</span>}
+</a>
+
+<style>
+	.site-title {
+		display: flex;
+		align-items: center;
+		font-size: var(--sl-text-h4);
+		font-weight: 600;
+		color: var(--sl-color-text-accent);
+		text-decoration: none;
+		white-space: nowrap;
+		min-width: 0;
+	}
+	@media (max-width: 50rem) {
+		.subtitle {
+			display: none;
+		}
+	}
+</style>

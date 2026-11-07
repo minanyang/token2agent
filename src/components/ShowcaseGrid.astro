@@ -1,0 +1,94 @@
+---
+// Lists shared projects from src/data/showcase, newest first; each stage tag links back to its lecture.
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('showcase')).sort(
+	(a, b) => b.data.added.getTime() - a.data.added.getTime(),
+);
+const stageTitles = new Map(
+	(await getCollection('docs', (e) => e.id.startsWith('stages/'))).map((e) => [
+		Number(e.id.match(/^stages\/s(\d+)-/)?.[1]),
+		{ title: e.data.title, href: `/${e.id}/` },
+	]),
+);
+---
+
+{
+	projects.length === 0 ? (
+		<p class="empty">還沒有專案。歡迎成為第一個分享的人，做法見下方。</p>
+	) : (
+		<ul class="showcase not-content" role="list">
+			{projects.map(({ data }) => (
+				<li class="card">
+					<a class="name" href={data.url} rel="noopener ugc">
+						{data.name}
+					</a>
+					<p class="summary">{data.summary}</p>
+					<p class="author">
+						{data.authorUrl ? (
+							<a href={data.authorUrl} rel="noopener ugc">
+								{data.author}
+							</a>
+						) : (
+							data.author
+						)}
+					</p>
+					{data.stages && (
+						<p class="stages">
+							用到：
+							{data.stages.map((n) => {
+								const s = stageTitles.get(n);
+								return s ? <a href={s.href}>{s.title}</a> : null;
+							})}
+						</p>
+					)}
+				</li>
+			))}
+		</ul>
+	)
+}
+
+<style>
+	.empty {
+		padding: 1rem;
+		border: 1px dashed var(--sl-color-gray-4);
+		border-radius: 0.5rem;
+		color: var(--sl-color-gray-2);
+	}
+	.showcase {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+		gap: 1rem;
+		padding: 0;
+		margin-block: 1rem;
+	}
+	.card {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 0.9rem 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+	}
+	.name {
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.summary,
+	.author,
+	.stages {
+		margin: 0;
+		font-size: var(--sl-text-sm);
+	}
+	.author {
+		color: var(--sl-color-gray-2);
+	}
+	.stages {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem 0.5rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-xs);
+	}
+</style>

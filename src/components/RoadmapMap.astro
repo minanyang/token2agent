@@ -1,0 +1,362 @@
+---
+// Roadmap overview: one card per stage, alternating left and right of a central spine.
+// Concept chips come from each stage page's "★" h3 headings, so the map stays in sync with the content.
+import { getCollection, render } from 'astro:content';
+
+type Part = { label: string; title: string; stages: number[]; optional?: boolean };
+
+const parts: Part[] = [
+	{ label: 'Part I', title: '全貌', stages: [0] },
+	{ label: 'Part II', title: '模型原理', stages: [1, 2, 3, 4, 5], optional: true },
+	{ label: 'Part III', title: '應用基礎', stages: [6, 7, 8] },
+	{ label: 'Part IV', title: '知識與行動', stages: [9, 10, 11] },
+	{ label: 'Part V', title: 'Agent 系統', stages: [12, 13, 14, 15] },
+	{ label: 'Part VI', title: '可信、產品、上線', stages: [16, 17, 18] },
+	{ label: 'Part VII', title: '綜合實戰', stages: [19] },
+];
+
+const checkpoints = new Set([9, 10, 12, 13]);
+
+// Running-example sections (「一個例子走完全程」 etc.) are not topics, so they get no chip.
+const isRunningExample = (text: string) => /走完全程|^★\s*一個例子：/.test(text);
+
+const entries = await getCollection('docs', (e) => e.id.startsWith('stages/'));
+
+const stages = new Map(
+	await Promise.all(
+		entries.map(async (entry) => {
+			const match = entry.id.match(/^stages\/s(\d+)-/);
+			if (!match) throw new Error(`RoadmapMap: unexpected stage id "${entry.id}"`);
+			const n = Number(match[1]);
+			const { headings } = await render(entry);
+			const h3 = headings.filter((h) => h.depth === 3);
+			const concepts = h3
+				.filter((h) => h.text.startsWith('★') && !isRunningExample(h.text))
+				.map((h) => ({ text: h.text.replace(/^★\s*/, ''), slug: h.slug }));
+			const thread = h3
+				.map((h) => h.text.match(/^進階：(?:模型線|系統線) ([MA]\d+)/)?.[1])
+				.find(Boolean);
+			return [
+				n,
+				{
+					n,
+					href: `/${entry.id}/`,
+					title: entry.data.title.replace(/^S\d+\s*/, ''),
+					concepts,
+					thread,
+				},
+			] as const;
+		}),
+	),
+);
+---
+
+<div class="roadmap not-content">
+	<p class="legend">
+		<span><span class="chip-demo">主題</span> 點了會跳到該站的對應段落</span>
+		<span><span class="tag m">M</span> 模型線（選做的實作題）</span>
+		<span><span class="tag a">A</span> 系統線（選做的實作題）</span>
+		<span><span class="lock" aria-hidden="true">🔒</span> 安全檢查點</span>
+		<a href="/guide/how-to-use/#代號怎麼讀">S／A／M 代號怎麼讀</a>
+	</p>
+	{
+		parts.map((part) => {
+			// Optional parts collapse like other deep content: open in 深入 mode (ThemeSelect opens every details.deep).
+			const Body = part.optional ? 'details' : 'div';
+			return (
+				<section class:list={['part', { optional: part.optional }]}>
+					<h3 class="part-title">
+						<span>{part.label}</span> {part.title}
+						{part.optional && <span class="optional-tag">選修・深入路線</span>}
+					</h3>
+					{part.optional && (
+						<p class="part-note">想懂模型怎麼運作再走；只做應用的人可以先跳過，從 S6 LLM API 與應用基本功繼續。</p>
+					)}
+					<Body class:list={['part-body', { deep: part.optional }]}>
+						{part.optional && (
+							<summary>
+								{part.label} 的 {part.stages.length} 站（S{part.stages[0]}–S{part.stages.at(-1)}），點開或切到深入模式就會顯示
+							</summary>
+						)}
+						<div class="cards">
+							{part.stages.map((n, i) => {
+								const s = stages.get(n);
+								if (!s) throw new Error(`RoadmapMap: no stage page for S${n}`);
+								// Each part starts on the left and alternates, so the path zigzags down without empty slots.
+								const side = i % 2 === 0 ? 'left' : 'right';
+								return (
+									<>
+										<article class:list={['card', side]}>
+											<a class="head" href={s.href}>
+												<span class="num">S{n}</span>
+												<span class="name">{s.title}</span>
+												{s.thread && <span class={`tag ${s.thread[0].toLowerCase()}`}>{s.thread}</span>}
+												{checkpoints.has(n) && (
+													<span class="lock" role="img" aria-label="安全檢查點">
+														🔒
+													</span>
+												)}
+											</a>
+											<ul class="chips" role="list">
+												{s.concepts.map((c) => (
+													<li>
+														<a href={`${s.href}#${c.slug}`}>{c.text}</a>
+													</li>
+												))}
+											</ul>
+										</article>
+										{n === 19 && (
+											<a class="card right shortcut" href="/showcase/">
+												<span class="name">專案分享</span>
+												<span class="sub">大家用 LLM 做出來的應用與 agent，任何人都可以開 PR 分享自己的專案</span>
+											</a>
+										)}
+										{n === 0 && (
+											<a class="card right shortcut" href="/guide/app-first/">
+												<span class="name">應用路線（多數人從這裡走）</span>
+												<span class="sub">S0 全局地圖 → 模型速成 → 直接跳到 S6 LLM API 與應用基本功；Part II 想深入再回來讀</span>
+											</a>
+										)}
+									</>
+								);
+							})}
+						</div>
+					</Body>
+				</section>
+			);
+		})
+	}
+</div>
+
+<style>
+	.roadmap {
+		--rm-accent: var(--sl-color-accent);
+		--rm-line: var(--sl-color-gray-4);
+		--rm-chip-bg: var(--sl-color-gray-6);
+		--rm-gap: 3rem;
+		margin-block: 2rem;
+		font-size: var(--sl-text-sm);
+	}
+	.legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 1rem;
+		align-items: center;
+		color: var(--sl-color-gray-2);
+		margin-bottom: 1.5rem;
+	}
+	.legend > span {
+		white-space: nowrap;
+	}
+	.part {
+		position: relative;
+		padding-block: 0.25rem 0.75rem;
+	}
+	/* Vertical spine between the two card columns. */
+	.part::before {
+		content: '';
+		position: absolute;
+		inset-block: 0;
+		left: 50%;
+		border-left: 3px solid var(--rm-accent);
+		transform: translateX(-50%);
+	}
+	.part.optional::before {
+		border-left-style: dashed;
+	}
+	.part-title,
+	.part-note,
+	.part-body > summary {
+		position: relative;
+		width: fit-content;
+		margin-inline: auto;
+		background: var(--sl-color-bg);
+	}
+	.part-title {
+		margin-block: 0.25rem 0.75rem;
+		padding: 0.2rem 0.9rem;
+		border-radius: 999px;
+		border: 1px solid var(--rm-line);
+		font-size: var(--sl-text-base);
+		color: var(--sl-color-white);
+	}
+	.part-title span {
+		color: var(--sl-color-gray-3);
+		font-weight: 400;
+	}
+	.part-title .optional-tag {
+		margin-inline-start: 0.4rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	.part-note {
+		max-width: 28rem;
+		margin-block: -0.25rem 0.75rem;
+		padding: 0.2rem 0.6rem;
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-xs);
+		text-align: center;
+	}
+	.part-body > summary {
+		margin-bottom: 0.75rem;
+		padding: 0.3rem 0.8rem;
+		border: 1px dashed var(--rm-accent);
+		border-radius: 0.5rem;
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-xs);
+		cursor: pointer;
+	}
+	.cards {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.75rem var(--rm-gap);
+		align-items: start;
+	}
+	.card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 0.6rem 0.75rem;
+		border: 2px solid var(--rm-accent);
+		border-radius: 0.6rem;
+		background: var(--sl-color-bg);
+	}
+	.card.left {
+		grid-column: 1;
+	}
+	/* Right cards start a little lower so the eye reads left, then right, then down. */
+	.card.right {
+		grid-column: 2;
+		margin-top: 1.5rem;
+	}
+	/* Connector from each card to the spine. */
+	.card::after {
+		content: '';
+		position: absolute;
+		top: 1.25rem;
+		width: calc(var(--rm-gap) / 2);
+		border-top: 2px dashed var(--rm-line);
+	}
+	.card.left::after {
+		left: 100%;
+	}
+	.card.right::after {
+		right: 100%;
+	}
+	.part.optional .card {
+		border-style: dashed;
+	}
+	.head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.2rem 0.5rem;
+		color: var(--sl-color-white);
+		text-decoration: none;
+	}
+	.head:hover .name {
+		color: var(--rm-accent);
+		text-decoration: underline;
+	}
+	.num {
+		padding: 0 0.4rem;
+		border-radius: 0.3rem;
+		background: var(--rm-accent);
+		color: var(--sl-color-black);
+		font-size: var(--sl-text-xs);
+		font-weight: 700;
+	}
+	.name {
+		font-weight: 600;
+		line-height: 1.3;
+	}
+	.shortcut {
+		border-style: dashed;
+		color: var(--sl-color-white);
+		text-decoration: none;
+		gap: 0.2rem;
+	}
+	.shortcut .sub {
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+	.shortcut:hover .name {
+		color: var(--rm-accent);
+		text-decoration: underline;
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+		margin: 0;
+		padding: 0;
+	}
+	.chips li {
+		list-style: none;
+		margin: 0;
+	}
+	.chips a,
+	.chip-demo {
+		display: inline-block;
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.35rem;
+		background: var(--rm-chip-bg);
+		border: 1px dashed var(--rm-line);
+		color: var(--sl-color-gray-1);
+		text-decoration: none;
+		font-size: var(--sl-text-xs);
+		line-height: 1.5;
+	}
+	.chips a:hover {
+		border-style: solid;
+		border-color: var(--rm-accent);
+		color: var(--sl-color-white);
+	}
+	.tag {
+		display: inline-block;
+		padding: 0 0.4rem;
+		border-radius: 0.25rem;
+		font-size: var(--sl-text-xs);
+		font-weight: 700;
+	}
+	.tag.m {
+		background: var(--sl-color-orange-low);
+		color: var(--sl-color-orange-high);
+	}
+	.tag.a {
+		background: var(--sl-color-blue-low);
+		color: var(--sl-color-blue-high);
+	}
+
+	/* Narrow screens: one column, spine on the left. */
+	@media (max-width: 50rem) {
+		.roadmap {
+			--rm-gap: 1.5rem;
+		}
+		.part::before {
+			left: 0.6rem;
+		}
+		.part-title,
+		.part-note,
+		.part-body > summary {
+			margin-inline: 0;
+			text-align: left;
+		}
+		.cards {
+			grid-template-columns: 1fr;
+			padding-left: var(--rm-gap);
+		}
+		.card.left,
+		.card.right {
+			grid-column: 1;
+			margin-top: 0;
+		}
+		.card.left::after,
+		.card.right::after {
+			left: auto;
+			right: 100%;
+			width: calc(var(--rm-gap) - 0.6rem);
+		}
+	}
+</style>
