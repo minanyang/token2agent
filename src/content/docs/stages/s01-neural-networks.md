@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 8 小時　**進階題** 約 17 小時
-
 **前置**：[S0 全局地圖](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)　**銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 :::
 
@@ -308,8 +306,6 @@ word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字
   - 重讀：[參數該往哪裡調？](#-參數該往哪裡調)（含「準備動手做：autograd 引擎的結構」）、[訓練不順怎麼診斷？](#-訓練不順怎麼診斷)
   - 延伸：Zero to Hero 第 1 支影片（micrograd）的 backward 段落
 
-**預估**：8 小時
-
 <section class="deep-section">
 
 ### 進階：模型專案 M1：makemore MLP 與訓練診斷
@@ -336,8 +332,6 @@ word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字
 - 卡住時：
   - 重讀：[模型要學什麼、怎麼打分？](#-模型要學什麼怎麼打分)（含 MLP 形狀）、[訓練為什麼一開始就卡住？](#-訓練為什麼一開始就卡住)、[實驗追蹤](#-訓練不順怎麼診斷)
   - 延伸：Zero to Hero 第 3 支（MLP）與第 4 支（activations、gradients、BatchNorm）
-
-**預估**：17 小時
 
 </section>
 

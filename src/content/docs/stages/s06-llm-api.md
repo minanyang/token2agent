@@ -13,8 +13,6 @@ prev:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1 小時　**必做題** 約 12 小時　**進階題** 約 13 小時
-
 **前置**：[S0 全局地圖](/stages/s00-big-picture/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（token、next-token 與 sampling、context window、成本與延遲；深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（完整前端）
 :::
 
@@ -350,12 +348,10 @@ Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K�
 - TypeScript：官方 SDK（`@anthropic-ai/sdk` 或 `openai`），或直接用 `fetch` + `ReadableStream`；`AbortController` 處理取消；mock server 用 `node:http` 或 [MSW](https://mswjs.io/)；測試用 Vitest。
 - Python：官方 SDK 或 [httpx](https://github.com/encode/httpx) + `asyncio`；mock 用 [respx](https://github.com/lundberg/respx)，record / replay 用 [pytest-recording](https://github.com/kiwicom/pytest-recording)（基於 VCR.py）；mock server 用 FastAPI 或標準函式庫的 `http.server`。
 - 成本：20 次小呼叫通常不到 1 美元。不想付費就全程用 Ollama，429 / 500 都由 mock server 模擬。
-- 時間分配參考：步驟 1–3 約 4 小時，mock server 與重試約 4 小時，log、record / replay、離線測試與切換本地模型約 4 小時。時間不夠的話，先完成 429 / 500 / 400 三種 mock 與對應驗收，串流中途錯誤與 chunk 間逾時之後再補。
+- 時間不夠的話，先完成 429 / 500 / 400 三種 mock 與對應驗收，串流中途錯誤與 chunk 間逾時之後再補。
 - 卡住時：
   - 重讀：[出錯時該不該重試？](#-出錯時該不該重試)（公式在展開區塊）、[streaming](#-怎麼讓回答邊產生邊顯示)、[測試](#-輸出會變怎麼測試)
   - 延伸：Anthropic〈Errors〉頁的 HTTP errors 段、AWS 那篇的「Jitter」段
-
-**預估**：12 小時（熟悉重試與串流的人約 9 小時）
 
 <section class="deep-section">
 
@@ -403,8 +399,6 @@ Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K�
 - 卡住時：
   - 重讀：[tracing](#-每次呼叫要記下什麼)、[SDK 差異](#-怎麼換-provider-不重寫)
   - 延伸：OpenTelemetry GenAI conventions 的 client inference span 文件、AI SDK 的 Chatbot 頁
-
-**預估**：13 小時
 
 </section>
 

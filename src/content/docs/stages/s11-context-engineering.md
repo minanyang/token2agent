@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1 小時　**必做題** 約 8 小時　**進階題** 約 10 小時
-
 **前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)；prompt caching 的原理見模型速成的〈[KV cache](/guide/app-first/#kv-cache以及為什麼輸出-token-比較貴)〉（深入：[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)（長時間運作的 context 管理）、[S13 Memory 與個人化](/stages/s13-memory/)
 :::
 
@@ -301,7 +299,7 @@ LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的
   - 重讀：[為什麼放越多反而越差？](#-為什麼放越多反而越差)、[怎麼排序才能吃到快取？](#-怎麼排序才能吃到快取)
   - 延伸：Chroma〈Context Rot〉的實驗設計段；prompt caching 官方文件的 usage 欄位說明
 
-**預估**：8 小時（約一半時間在準備 needle 與干擾段落）
+**提醒**：大約一半的工作量在準備 needle 與干擾段落。
 
 <section class="deep-section">
 
@@ -335,8 +333,6 @@ LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的
 - 卡住時：
   - 重讀：[Context 怎麼分配預算？](#-context-怎麼分配預算)、[超出預算時怎麼砍？](#-超出預算時怎麼砍)、[怎麼排序才能吃到快取？](#-怎麼排序才能吃到快取)
   - 延伸：〈Effective context engineering〉的「The anatomy of effective context」段；prompt caching 文件中前綴順序與失效條件的段落
-
-**預估**：10 小時
 
 </section>
 

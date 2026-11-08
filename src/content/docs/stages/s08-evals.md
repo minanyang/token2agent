@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 2 小時　**必做題** 約 9 小時　**進階題** 約 13 小時
-
 **前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（進階題需要 A6 串流聊天與 trace、A7 structured output 與 workflow 累積的 trace；[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）；logprobs 的背景見 [模型速成](/guide/app-first/#logits-與-softmax)（深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)）　**銜接**：→ [S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（agent eval）
 :::
 
@@ -379,7 +377,7 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
   - 重讀：[系統到底怎麼出錯？](#-系統到底怎麼出錯)、[模型評分者可信嗎？](#-模型評分者可信嗎)（含「fail 太少」）、[差幾分才算真的變好？](#-差幾分才算真的變好)
   - 延伸：[數學補給〈Bootstrap 信賴區間〉](/guide/math-refresher/#bootstrap-信賴區間)；Hamel〈Using LLM-as-a-Judge〉
 
-**預估**：9 小時（主要時間花在兩輪人工閱讀與標註）
+**提醒**：主要的工作量在兩輪人工閱讀與標註。
 
 <section class="deep-section">
 
@@ -413,8 +411,6 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
 - 卡住時：
   - 重讀：[系統到底怎麼出錯？](#-系統到底怎麼出錯)、[題目從哪裡來？](#-題目從哪裡來)、[差幾分才算真的變好？](#-差幾分才算真的變好)
   - 延伸：Hamel〈A Field Guide to Rapidly Improving AI Products〉；Miller 2024 的配對比較段落
-
-**預估**：13 小時
 
 </section>
 

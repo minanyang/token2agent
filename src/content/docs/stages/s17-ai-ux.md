@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2 小時，手算與深入內容約 1.5 小時　**必做題** 約 6–8 小時（不寫前端的版本約 10–14 小時）　**進階題** 約 15 小時
-
 **前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)（必做題只需要 S6 的串流概念，S6 之後就能做）；進階題會用到 [S8 Eval 方法論](/stages/s08-evals/)、[S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)的成果；講義會引用後兩章的幾個例子，未讀可略過　**銜接**：→ [S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
@@ -319,7 +317,7 @@ AI 產品會改變工作的分工方式。有研究嘗試用真實職業任務�
   - 重讀：[一個例子走完全程](#-一個例子走完全程)、[停止、錯誤、空結果怎麼處理？](#-停止錯誤空結果怎麼處理)（含「準備動手做」）
   - 延伸：Vercel AI SDK〈Generative User Interfaces〉、AG-UI 事件類型
 
-**預估**：6–8 小時；不寫前端的版本約 10–14 小時（劇本測試與最小介面都要做）
+**提醒**：選「不寫前端的版本」的話，劇本測試與最小介面都要做。
 
 <section class="deep-section">
 
@@ -349,12 +347,10 @@ AI 產品會改變工作的分工方式。有研究嘗試用真實職業任務�
 
 **提示**
 - TypeScript：Vercel AI SDK 或 CopilotKit（AG-UI 的第一方 client）；引用跳轉可以用 URL fragment 或 Text Fragments。
-- Python：這一題需要一個真正的前端。如果前端不是你的主力，先用 Vite 的 React 模板加 Vercel AI SDK 的 `useChat`（S6 LLM API 與應用基本功延伸閱讀中的 Chatbot 範例幾乎能直接用）；FastAPI 後端只要輸出 AI SDK 的 [stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol)。沒寫過前端的話，另外預留 8–10 小時學基本功。Reviewer UI 只給你自己用，Gradio 或 Streamlit 就夠了。
+- Python：這一題需要一個真正的前端。如果前端不是你的主力，先用 Vite 的 React 模板加 Vercel AI SDK 的 `useChat`（S6 LLM API 與應用基本功延伸閱讀中的 Chatbot 範例幾乎能直接用）；FastAPI 後端只要輸出 AI SDK 的 [stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol)。沒寫過前端的話，要先補一些前端基本功。Reviewer UI 只給你自己用，Gradio 或 Streamlit 就夠了。
 - 卡住時：
   - 重讀：[使用者該信它幾分？](#-使用者該信它幾分)、[怎麼收集使用者回饋？](#-怎麼收集使用者回饋)、[怎麼知道介面好不好用？](#-怎麼知道介面好不好用)
   - 延伸：Eugene Yan 的 Collect user feedback 段；Microsoft Guidelines for Human-AI Interaction 當檢查清單
-
-**預估**：15 小時（含步驟 0 約 1 小時；沒寫過前端的話，另加約 8–10 小時）
 
 </section>
 

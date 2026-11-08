@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2 小時，手算與深入內容約 4 小時　**必做題** 約 8 小時　**進階題** 約 21 小時
-
 **前置**：[S1 神經網路基礎](/stages/s01-neural-networks/)　**銜接**：→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)。本章屬於選修的深入路線；走[應用路線](/guide/app-first/)的人，模型速成已涵蓋 S6 LLM API 與應用基本功需要的 token 與 sampling 概念
 :::
 
@@ -355,8 +353,6 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
   - 重讀：[BPE](#-文字怎麼變成-token)、[decoding](#-怎麼挑出下一個-token)
   - 延伸：「Let's build the GPT Tokenizer」影片前半段、rasbt 第 5 章 decoding strategies 小節
 
-**預估**：8 小時
-
 <section class="deep-section">
 
 ### 進階：模型專案 M2：tiny GPT，升級成 Llama 元件
@@ -390,8 +386,6 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 - 卡住時：
   - 重讀：[現代元件](#-現代模型換了哪些零件)、[resource accounting](#-模型要多少算力與記憶體)
   - 延伸：rasbt 第 4 章與第 5 章 bonus 的 Llama / Qwen 從零實作
-
-**預估**：21 小時
 
 </section>
 

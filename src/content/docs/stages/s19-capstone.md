@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 7 小時　**進階題（畢業專題）** 約 24 小時起
-
 **前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層往深處走
 :::
 
@@ -269,8 +267,6 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
   - 重讀：[怎麼拆解任何 agent？](#-怎麼拆解任何-agent)、[Coding agent 怎麼設計？](#-coding-agent-怎麼設計)
   - 延伸：SWE-agent 論文的 ACI 設計段、Claude Code 官方 best practices
 
-**預估**：7 小時（6–9 小時；建 5 個任務約佔 2 小時）
-
 <section class="deep-section">
 
 ### 進階：系統專案 A19（畢業專題）：把你的系統做成常駐 agent
@@ -318,7 +314,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
   - 重讀：[常駐 agent 多了什麼？](#-常駐-agent-多了什麼)、[怎麼證明它能上線？](#-怎麼證明它能上線)；你自己在 S16 安全與治理、S18 部署與架構寫的文件
   - 延伸：learn-claude-code 的 s11（背景任務）、s12（排程）、s17（goal loop）課；Anthropic〈Infrastructure noise in agentic coding evals〉
 
-**預估**：24 小時起；7 天的連續運作期間只需要每天花少量時間檢查。
+**提醒**：7 天的連續運作期間，每天只需要花少量時間檢查。
 
 </section>
 

@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 11 小時　**進階題** 約 17 小時
-
 **前置**：[S8 Eval 方法論](/stages/s08-evals/)；A9 附引用的 RAG（[代號說明](/guide/how-to-use/#代號怎麼讀)）裡的 embedding 微調會用到微調的概念，見模型速成〈[微調能做什麼、不能做什麼](/guide/app-first/#微調能做什麼不能做什麼)〉（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)），沒讀可先跳過該步。　**銜接**：→ [S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)
 :::
 
@@ -381,7 +379,7 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
   - 重讀：[關鍵字和向量搜尋怎麼搭配？](#-關鍵字和向量搜尋怎麼搭配)、[Embedding 怎麼找相近段落？](#-embedding-怎麼找相近段落)、[怎麼分開量檢索和生成？](#-怎麼分開量檢索和生成)
   - 延伸：Anthropic〈Contextual Retrieval〉的 BM25 與 rerank 段；all-in-rag 的混合檢索章節
 
-**預估**：11 小時（中文斷詞與查詢標註通常比預期花時間）
+**提醒**：中文斷詞與查詢標註通常比預期費工。
 
 <section class="deep-section">
 
@@ -398,7 +396,7 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 6. 評估：檢索看 Recall@10 與 MRR；生成看 faithfulness 與 citation precision（依 S8 Eval 方法論校準 judge）。
 7. 微調 embedding 模型：用合成的（查詢、段落）配對訓練，在**沒參與訓練**的查詢上比較微調前後的 Recall@10。這一步和模型專案的微調技術相通（見[模型速成〈微調能做什麼、不能做什麼〉](/guide/app-first/#微調能做什麼不能做什麼)；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）。
 8. 完成上面的 🔒 間接 injection 檢查，結果寫進專案文件。
-9. ○ Text2SQL 變體（選做，不計入預估；熟 SQL 的讀者可以拿它取代第 7 步）：用你熟的資料庫，或 [Spider](https://yale-lily.github.io/spider) 的一個子集，做 50 題自然語言轉 SQL。用執行結果比對評分（execution accuracy：模型的 SQL 和標準 SQL 跑出相同結果才算對），附 95% 信賴區間；比較「只給 table 名稱」與「加上欄位說明與 3 個範例」兩種 prompt。查詢一律用唯讀帳號執行。約 6–8 小時。
+9. ○ Text2SQL 變體（選做；熟 SQL 的讀者可以拿它取代第 7 步）：用你熟的資料庫，或 [Spider](https://yale-lily.github.io/spider) 的一個子集，做 50 題自然語言轉 SQL。用執行結果比對評分（execution accuracy：模型的 SQL 和標準 SQL 跑出相同結果才算對），附 95% 信賴區間；比較「只給 table 名稱」與「加上欄位說明與 3 個範例」兩種 prompt。查詢一律用唯讀帳號執行。
 
 **驗收**
 - 50 筆查詢集上，Recall@10 與 citation precision 各附 95% 信賴區間。
@@ -418,8 +416,6 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 - 卡住時：
   - 重讀：[文件怎麼變成可搜的文字？](#-文件怎麼變成可搜的文字)、[文件要切成多大？](#-文件要切成多大)、[怎麼分開量檢索和生成？](#-怎麼分開量檢索和生成)、[Embedding 怎麼找相近段落？](#-embedding-怎麼找相近段落)（「embedding 微調」展開段）
   - 延伸：Sentence Transformers 的 Training Overview；ALCE 論文第 3 節
-
-**預估**：17 小時
 
 </section>
 

@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 1 小時　**必做題** 約 10 小時　**進階題** 約 22 小時
-
 **前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)；模型知識見 [模型速成](/guide/app-first/#模型速成)　**銜接**：→ [S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)
 :::
 
@@ -340,8 +338,6 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
   - 重讀：[agent loop](#-一個例子走完全程)（含迴圈骨架與展開的回填格式）、[權限模式](#-哪些動作要先問使用者)、[停止條件](#-什麼時候該停下來)、[最小 agent eval](#-改-harness-後怎麼判斷)
   - 延伸：learn-claude-code s01–s04、12-factor-agents #7–#9
 
-**預估**：10 小時（第一次手寫 loop 的話可能到 12 小時）
-
 <section class="deep-section">
 
 ### 進階：系統專案 A12：手寫 harness
@@ -373,8 +369,6 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 - 卡住時：
   - 重讀：[harness 元件](#-迴圈外面要包哪些程式)、[長時程 context](#-context-裝不下怎麼辦)、[skills](#-skill-怎麼需要時才載入)
   - 延伸：learn-claude-code s08、s15、s16；Anthropic〈Effective harnesses for long-running agents〉
-
-**預估**：22 小時
 
 </section>
 

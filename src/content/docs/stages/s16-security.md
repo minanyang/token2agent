@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 2 小時　**必做題** 約 9 小時　**進階題** 約 19 小時
-
 **前置**：[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；會用到 [S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S13 Memory 與個人化](/stages/s13-memory/) 的 🔒 檢查點（講義開頭複習）　**銜接**：→ [S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
@@ -342,8 +340,6 @@ Watermarking 在生成內容中嵌入可偵測的訊號，provenance 則記錄�
   - 重讀：[一個例子走完全程](#-一個例子走完全程被下毒的剪藏筆記)、[怎麼讓注入失效？](#-怎麼讓注入失效)、[Guardrail 門檻怎麼定？](#-guardrail-門檻怎麼定)
   - 延伸：Beurer-Kellner 2025 的六種模式範例、Willison〈The lethal trifecta〉
 
-**預估**：9 小時（8–10 小時；寫 20 份惡意文件約佔 2 小時，迷你威脅模型約 30 分鐘）
-
 <section class="deep-section">
 
 ### 進階：系統專案 A16：你的系統的安全攻防與治理
@@ -372,8 +368,6 @@ Watermarking 在生成內容中嵌入可偵測的訊號，provenance 則記錄�
 - 卡住時：
   - 重讀：[怎麼找出危險組合？](#-怎麼找出危險組合)、[被劫持時損害多大？](#-被劫持時損害多大)、[資料放哪、受誰管？](#-資料放哪受誰管)
   - 延伸：Anthropic〈How we contain Claude across products〉的 egress 與憑證段落、Meta〈Agents Rule of Two〉的範例情境
-
-**預估**：19 小時
 
 </section>
 

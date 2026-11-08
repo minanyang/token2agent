@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 10 小時　**進階題** 約 17 小時
-
 **前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)　**銜接**：→ [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（個人化介面）
 :::
 
@@ -329,8 +327,6 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
   - 重讀：[寫入](#-該記什麼怎麼記出處)、[更新與遺忘](#-說法變了或要刪除怎麼辦)、[評估記憶](#-怎麼知道它記得對)、[Memory poisoning](#-記憶被惡意寫入怎麼辦)
   - 延伸：Anthropic〈The components of agent memory〉的 "Steering Claude to write memory" 與 "Dreaming…" 段；LongMemEval 論文的題型說明
 
-**預估**：10 小時（含生成與檢查對話約 2 小時）
-
 <section class="deep-section">
 
 ### 進階：系統專案 A13：分層 memory 與每位使用者的個人化
@@ -364,8 +360,6 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
 - 卡住時：
   - 重讀：[四個層級](#-記憶要放在哪一層)、[更新與遺忘](#-說法變了或要刪除怎麼辦)、[個人化](#-怎麼依使用者調整又不外洩)、[Memory poisoning](#-記憶被惡意寫入怎麼辦)
   - 延伸：learn-claude-code s09；Kaggle〈Context Engineering: Sessions & Memory〉
-
-**預估**：17 小時（含第 0 步的 pairwise judge 約 1 小時）
 
 </section>
 

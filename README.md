@@ -66,9 +66,9 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 
 不確定從哪裡開始，先看[怎麼使用這份路線](https://token2agent.com/guide/how-to-use/)，依目標選一條路線：
 
-- **應用路線**（推薦給多數人）：想做出 AI 應用或 agent。從 [S0 全局地圖](https://token2agent.com/stages/s00-big-picture/) 開始，讀完[模型速成](https://token2agent.com/guide/app-first/)後，從 S6 LLM API 與應用基本功一路讀到 S19 真實 agent 系統與畢業專題，約 175 小時。
-- **完整路線**：也想懂模型內部怎麼運作，S0 到 S19 依序走，約 225 小時。
-- **理解路線**：先看懂 AI 系統怎麼運作，暫時不寫程式，約 45 小時。
+- **應用路線**（推薦給多數人）：想做出 AI 應用或 agent。從 [S0 全局地圖](https://token2agent.com/stages/s00-big-picture/) 開始，讀完[模型速成](https://token2agent.com/guide/app-first/)後，從 S6 LLM API 與應用基本功一路讀到 S19 真實 agent 系統與畢業專題。
+- **完整路線**：也想懂模型內部怎麼運作，S0 到 S19 依序走。
+- **理解路線**：先看懂 AI 系統怎麼運作，暫時不寫程式。
 
 ## 參與貢獻
 

@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 10 小時　**進階題** 約 22 小時
-
 **前置**：[S3 Pretraining 與 scaling](/stages/s03-pretraining/)（也會用到 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的 sampling）　**銜接**：→ [S5 推論與 serving](/stages/s05-inference/)；agentic RL 在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)接續
 :::
 
@@ -317,8 +315,6 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
   - 重讀：[推理模型怎麼練出來？](#-推理模型怎麼練出來)（手算過的 advantage 可當測試案例）、[不改模型能變準嗎？](#-不改模型能變準嗎)、[怎麼確認微調有效？](#-怎麼確認微調有效)
   - 延伸：DeepSeekMath 論文的 GRPO 公式段落、self-consistency 原始論文
 
-**預估**：10 小時
-
 <section class="deep-section">
 
 ### 進階：模型專案 M4：Qwen3 小模型的 SFT → LoRA → DPO → GRPO
@@ -345,8 +341,6 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 - 卡住時：
   - 重讀：[SFT](#-怎麼教模型好好回答)、[LoRA](#-lora-怎麼省記憶體)、[偏好學習](#-沒有標準答案怎麼教)、[GRPO](#-推理模型怎麼練出來)、[reward hacking](#-為什麼會鑽獎勵漏洞)
   - 延伸：Hugging Face LLM Course 第 11–12 章 TRL 範例、happy-llm 第 6、8 章
-
-**預估**：22 小時
 
 </section>
 

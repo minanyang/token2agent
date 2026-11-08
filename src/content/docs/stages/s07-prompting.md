@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 2 小時　**必做題** 約 8 小時　**進階題** 約 12 小時
-
 **前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)；模型知識見 [模型速成](/guide/app-first/)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/) 的 chat template、[S5 推論與 serving](/stages/s05-inference/) 的 constrained decoding）　**銜接**：→ [S8 Eval 方法論](/stages/s08-evals/)
 :::
 
@@ -324,9 +322,7 @@ Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的�
   - 重讀：[怎麼讓輸出符合固定格式？](#-怎麼讓輸出符合固定格式)、[改格式為什麼會改結果？](#-改格式為什麼會改結果)
   - 延伸：Sclar 2023 的 Figure 1（格式變體）、Instructor 文件的 validation 段
 
-**預估**：8 小時
-
-**選做：在 chat template 裡看工具呼叫**（約 1 小時，不計入預估）。用 Hugging Face 的 `apply_chat_template`，把一段含一個工具定義、一次工具呼叫的對話轉成原始字串（例如用 Qwen3 的 tokenizer）。驗收：一份輸出，標出工具定義與工具呼叫的位置。Python 用 `transformers` 的 `AutoTokenizer.apply_chat_template(..., tools=[...], tokenize=False)`，只需要 tokenizer，不用下載模型權重；TypeScript 可用 [transformers.js](https://github.com/huggingface/transformers.js) 的 tokenizer `apply_chat_template`（也接受 `tools`）。卡住時重讀[Function calling 只是結構化輸出？](#-function-calling-只是結構化輸出)。
+**選做：在 chat template 裡看工具呼叫**。用 Hugging Face 的 `apply_chat_template`，把一段含一個工具定義、一次工具呼叫的對話轉成原始字串（例如用 Qwen3 的 tokenizer）。驗收：一份輸出，標出工具定義與工具呼叫的位置。Python 用 `transformers` 的 `AutoTokenizer.apply_chat_template(..., tools=[...], tokenize=False)`，只需要 tokenizer，不用下載模型權重；TypeScript 可用 [transformers.js](https://github.com/huggingface/transformers.js) 的 tokenizer `apply_chat_template`（也接受 `tools`）。卡住時重讀[Function calling 只是結構化輸出？](#-function-calling-只是結構化輸出)。
 
 <section class="deep-section">
 
@@ -356,8 +352,6 @@ Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的�
 - 卡住時：
   - 重讀：[一次呼叫不夠時怎麼拆？](#-一次呼叫不夠時怎麼拆)（「追一次 routing」）、[Prompt 該怎麼管理？](#-prompt-該怎麼管理)
   - 延伸：Anthropic〈Building effective AI agents〉的 Routing 段、12-factor-agents Factor 2
-
-**預估**：12 小時
 
 </section>
 

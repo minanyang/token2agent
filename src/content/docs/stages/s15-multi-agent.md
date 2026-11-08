@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 8 小時　**進階題** 約 12 小時
-
 **前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；模型知識見 [模型速成](/guide/app-first/)　**銜接**：→ [S16 安全與治理](/stages/s16-security/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
@@ -277,8 +275,6 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
   - 重讀：[交接](#-交接時要傳什麼)、[orchestrator-worker](#-誰來拆工作彙整結果)、[token 經濟](#-多-agent-要多花多少錢)、[先有 eval，贏了才保留](#-多-agent-值得保留嗎)
   - 延伸：Anthropic〈How we built our multi-agent research system〉的 prompt 原則段
 
-**預估**：8 小時
-
 <section class="deep-section">
 
 ### 進階：系統專案 A15：有證據才保留的 multi-agent
@@ -308,8 +304,6 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 - 卡住時：
   - 重讀：[兩種架構](#-多個-agent-怎麼分工)、[失敗分類](#-多-agent-最常怎麼壞)、[worktree 隔離](#-平行修改怎麼不互相覆蓋)
   - 延伸：Cemri et al. 2025 的失敗例子、learn-claude-code s13
-
-**預估**：12 小時
 
 </section>
 

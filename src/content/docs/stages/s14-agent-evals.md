@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 3 小時　**必做題** 約 12 小時　**進階題** 約 26 小時
-
 **前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）　**銜接**：→ [S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)
 :::
 
@@ -302,7 +300,7 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
   - 重讀：[先看結果，再看軌跡](#-該看結果還是看步驟)、[pass@k 與 pass^k](#-每次結果不同怎麼算分)、[環境式評估](#-怎麼讓每次試跑公平)、[infra noise](#-機器設定也會改變分數)
   - 延伸：Anthropic〈Demystifying evals for AI agents〉；Hamel FAQ 的「How do I evaluate agentic workflows?」
 
-**預估**：12 小時（可以先做 10 題 × 3 次、只比兩個版本，用這個最小版走完一輪流程，再補齊）
+**提醒**：可以先做 10 題 × 3 次、只比兩個版本，用這個最小版走完一輪流程，再補齊。
 
 <section class="deep-section">
 
@@ -336,8 +334,6 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 - 卡住時：
   - 重讀：[模擬使用者](#-怎麼讓每次試跑公平)、[叢集分析](#-trace-多到讀不完怎麼辦)、[prompt 最佳化](#-能自動找出更好的-prompt-嗎)、[router 蒸餾](#-路由能交給便宜的小模型嗎)、[ablation](#-這個-harness-元件值得留嗎)
   - 延伸：DSPy 文件的 optimizer 教學；CS 329Z L9 投影片
-
-**預估**：26 小時（含第 0 步補路由紀錄約 2 小時）
 
 </section>
 

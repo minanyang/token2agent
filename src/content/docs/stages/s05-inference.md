@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 6 小時　**進階題** 約 21 小時
-
 **前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)（選讀）；只想要成本與延遲的直覺，讀過 [模型速成](/guide/app-first/)就能讀主線　**銜接**：→ [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；prompt caching → [S11 Context engineering](/stages/s11-context-engineering/)；constrained decoding → [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)；自架與 API 的比較 → [S18 部署與架構](/stages/s18-deployment/)
 :::
 
@@ -319,8 +317,6 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
   - 重讀：[KV cache](#-kv-cache-存什麼佔多少)（含「準備動手做」的參數量算式）、[GPU 的速度卡在哪？](#-gpu-的速度卡在哪)、[延遲和吞吐量怎麼量？](#-延遲和吞吐量怎麼量)
   - 延伸：zero-to-sglang Part I 的「Introduction to Inference」與「KV Cache」兩章
 
-**預估**：6 小時
-
 <section class="deep-section">
 
 ### 進階：模型專案 M5：KV cache、量化與 mini 推論伺服器
@@ -349,8 +345,6 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 - 卡住時：
   - 重讀：[KV cache](#-kv-cache-存什麼佔多少)、[batching](#-怎麼同時服務很多人)、[加速方法](#-加速會改變輸出嗎)
   - 延伸：zero-to-sglang Part II 的 KV Cache、Continuous Batching、Paged KV Cache 三章
-
-**預估**：21 小時
 
 </section>
 
@@ -431,7 +425,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 
 ### 書與概覽
 
-- [Kaggle: Foundational Large Language Models & Text Generation](https://www.kaggle.com/whitepaper-foundational-llm-and-text-generation)（2025-02）— 推論加速（Accelerating inference）一節約 1 小時，同樣把加速方法分成會近似輸出與不改變輸出兩類，列出更多方法。
+- [Kaggle: Foundational Large Language Models & Text Generation](https://www.kaggle.com/whitepaper-foundational-llm-and-text-generation)（2025-02）— 推論加速（Accelerating inference）一節同樣把加速方法分成會近似輸出與不改變輸出兩類，列出更多方法。
 - Chip Huyen《AI Engineering》（付費書）第 9 章（Inference Optimization）— [配套 repo](https://github.com/chiphuyen/aie-book) 有摘要。從應用工程師的角度看完整的推論最佳化地圖。
 
 ### 課程

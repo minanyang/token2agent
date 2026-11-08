@@ -45,8 +45,6 @@ Authoring rules (keep this comment out of published pages):
 -->
 
 :::note[這一章]
-**⏱ 講義** 約 {x} 小時　**必做題** 約 {y} 小時　**進階題** 約 {z} 小時
-
 **前置**：S{a}、S{b}　**銜接**：→ S{c}
 :::
 
@@ -117,8 +115,6 @@ Authoring rules (keep this comment out of published pages):
 - TypeScript：{工具或套件}
 - Python：{工具或套件}
 - 卡住時：{講義的哪一節；需要時再指向延伸閱讀的哪一段}
-
-**預估**：{y} 小時
 
 <section class="deep-section">
 

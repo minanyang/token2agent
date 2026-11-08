@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 13 小時　**進階題** 約 16 小時
-
 **前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（function calling）、[S9 檢索與 RAG](/stages/s09-rag/)（間接 prompt injection）　**銜接**：→ [S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S16 安全與治理](/stages/s16-security/)
 :::
 
@@ -404,12 +402,9 @@ B。A 只有 ID，模型得再呼叫一次讀取工具，才知道哪一篇是 1
 - Python：官方 SDK 的工具呼叫；參數用 Pydantic 產生 JSON schema；SQLite 用標準函式庫。
 - MCP（第 7 步）：用 [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) 或 [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)，測試用 [MCP Inspector](https://github.com/modelcontextprotocol/inspector)。stdio server 的 stdout 是協定訊息的通道，log 要寫到 stderr，否則 client 會解析失敗。
 - 成本：120 次執行、每次數輪，用便宜的模型通常在 2–3 美元內；本地模型可以做，但小模型的工具呼叫較不穩，結果要分開解讀。v1 的 `list_items` 一次就約 1.6 萬 token，用 Ollama 時先調大 context（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#ollama-的-context-長度)）。
-- 時間分配參考：資料與兩版工具約 3 小時，20 個任務與檢查函式約 3 小時，迴圈、執行與分析約 5 小時，stdio MCP server 約 2 小時。
 - 卡住時：
   - 重讀：[一次工具呼叫怎麼來回？](#-一次工具呼叫怎麼來回)、[怎樣的工具模型好用？](#-怎樣的工具模型好用)、[怎麼證明工具變好了？](#-怎麼證明工具變好了)、[MCP](#-mcp-怎麼把工具接出去)
   - 延伸：〈Writing effective tools for AI agents〉的「Choosing the right tools」與「Returning meaningful context」段
-
-**預估**：13 小時
 
 <section class="deep-section">
 
@@ -444,8 +439,6 @@ B。A 只有 ID，模型得再呼叫一次讀取工具，才知道哪一篇是 1
 - 卡住時：
   - 重讀：[MCP](#-mcp-怎麼把工具接出去)（展開「HTTP 傳輸的 OAuth 流程」）、[🔒 檢查點](#-工具風險分級與-egress-白名單)（轉址案例）
   - 延伸：MCP Authorization 規範的「Authorization Flow Steps」與「Token Handling」段
-
-**預估**：16 小時
 
 </section>
 

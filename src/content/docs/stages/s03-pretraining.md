@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 6 小時　**進階題** 約 17 小時
-
 **前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)（也會用到 [S1 神經網路基礎](/stages/s01-neural-networks/) 的 AdamW 與 perplexity）　**銜接**：→ [S4 Post-training 與 reasoning](/stages/s04-post-training/)
 :::
 
@@ -296,8 +294,6 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
   - 重讀：[訓練資料怎麼準備？](#-訓練資料怎麼準備)（含展開裡的候選機率公式）、[一筆預算走完全程](#-一筆預算走完全程)（必做步驟 7 用到其中的步驟 1）
   - 延伸：diy-llm 第 11 章的去重段落，或 Stanford CS336 資料講次的投影片
 
-**預估**：6 小時
-
 <section class="deep-section">
 
 ### 進階：模型專案 M3：小模型 pretraining 與迷你 scaling 實驗
@@ -324,8 +320,6 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
 - 卡住時：
   - 重讀：[長時間訓練怎麼不爆掉？](#-長時間訓練怎麼不爆掉)（cosine 公式）、[模型和資料該多大？](#-模型和資料該多大)（展開說明小規模為什麼可能不符）
   - 延伸：Chinchilla 論文的 Approach 1（固定模型大小、變化 token 數），最接近這個實驗
-
-**預估**：17 小時
 
 </section>
 

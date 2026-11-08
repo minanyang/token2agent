@@ -10,8 +10,6 @@ sidebar:
 ---
 
 :::note[這一章]
-**⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 1.5 小時　**必做題** 約 7 小時　**進階題** 約 17 小時
-
 **前置**：[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（eval 與 trace）；會用到 [S16 安全與治理](/stages/s16-security/)的威脅模型與 [S17 產品與 AI UX](/stages/s17-ai-ux/) 講的介面狀態與回饋（不必先做進階題 A17 完整前端；[代號說明](/guide/how-to-use/#代號怎麼讀)）；推論相關的模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
@@ -361,8 +359,6 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
   - 重讀：[每個請求該送哪個模型？](#-每個請求該送哪個模型)、[怎麼不讓帳單失控？](#-怎麼不讓帳單失控)
   - 延伸：FrugalGPT 論文的 LLM cascade 一節、RouteLLM 的評估方式
 
-**預估**：7 小時（6–8 小時）
-
 <section class="deep-section">
 
 ### 進階：系統專案 A18：你的系統的多租戶部署
@@ -397,8 +393,6 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 - 卡住時：
   - 重讀：[怎麼不讓使用者互看資料？](#-怎麼不讓使用者互看資料)、[系統撐得住多少人？](#-系統撐得住多少人)、[改 prompt 怎麼安全上線？](#-改-prompt-怎麼安全上線)、[品質變差怎麼發現？](#-品質變差怎麼發現)、[該自架還是用 API？](#-該自架還是用-api)
   - 延伸：Huyen〈Building A Generative AI Platform〉、Kaggle〈Prototype to Production〉、兩份 Anthropic postmortem
-
-**預估**：17 小時
 
 </section>
 

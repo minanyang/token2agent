@@ -3,7 +3,7 @@ title: 應用路線與模型速成
 head:
   - tag: title
     content: LLM 應用開發入門路線與模型速成｜Token2Agent
-description: 想做 LLM 應用的推薦路線：讀完 S0 全局地圖後，用約 2 小時的模型速成補齊 token、sampling、context window 與成本等必要概念，接著直接進入 S6–S19 的應用與 agent 實作。
+description: 想做 LLM 應用的推薦路線：讀完 S0 全局地圖後，用模型速成補齊 token、sampling、context window 與成本等必要概念，接著直接進入 S6–S19 的應用與 agent 實作。
 sidebar:
   order: 3
   label: 應用路線與模型速成
@@ -55,7 +55,7 @@ Part II 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tr
 這一節分兩部分：「現在要懂的四件事」是走進 S6 LLM API 與應用基本功之前要先懂的；「之後用到再查」先知道名字就好，用到時再回來。每一段後面都附上深入內容所在的章（Part II，選讀）。
 
 :::tip[怎麼讀這一節]
-全節約 2 小時：先讀「現在要懂的四件事」約 1 小時，「之後用到再查」可以先略讀。走實作路線、想動手的話，做 [S2 Transformer 與 decoding 的必做題「從零寫 BPE 與 sampling」](/stages/s02-transformer/#必做從零寫-bpe-與-sampling)（約 8 小時，選做）：這題不依賴其他章，做完你對 token 與 sampling 的理解會紮實很多。想看別人怎麼講，[台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php)（繁中）的第 6、7、8 講（訓練的三個階段）與第 10 講（Transformer）是很好的延伸。
+先讀「現在要懂的四件事」，「之後用到再查」可以先略讀。走實作路線、想動手的話，做 [S2 Transformer 與 decoding 的必做題「從零寫 BPE 與 sampling」](/stages/s02-transformer/#必做從零寫-bpe-與-sampling)（選做）：這題不依賴其他章，做完你對 token 與 sampling 的理解會紮實很多。想看別人怎麼講，[台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php)（繁中）的第 6、7、8 講（訓練的三個階段）與第 10 講（Transformer）是很好的延伸。
 :::
 
 ### 現在要懂的四件事

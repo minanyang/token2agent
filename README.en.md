@@ -64,9 +64,9 @@ There are many excellent resources for learning AI/LLM engineering, but they are
 
 Not sure where to begin? Read [how to use this roadmap](https://token2agent.com/guide/how-to-use/) and pick a route:
 
-- **Application route** (recommended for most readers): build AI applications and agents. Start with [S0 The big picture](https://token2agent.com/stages/s00-big-picture/), read the [model crash course](https://token2agent.com/guide/app-first/), then go from S6 LLM APIs and application basics to S19 Real agent systems and capstone. About 175 hours.
-- **Full route**: also learn how models work inside, S0 to S19 in order. About 225 hours.
-- **Understanding route**: understand how AI systems work without programming. About 45 hours.
+- **Application route** (recommended for most readers): build AI applications and agents. Start with [S0 The big picture](https://token2agent.com/stages/s00-big-picture/), read the [model crash course](https://token2agent.com/guide/app-first/), then go from S6 LLM APIs and application basics to S19 Real agent systems and capstone.
+- **Full route**: also learn how models work inside, S0 to S19 in order.
+- **Understanding route**: understand how AI systems work without programming.
 
 ## Contributing
 
