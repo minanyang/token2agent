@@ -9,7 +9,7 @@ sidebar:
   label: S5 推論與 serving
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 6 小時　**進階題** 約 21 小時
 
 **前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)（選讀）；只想要成本與延遲的直覺，讀過 [模型速成](/guide/app-first/)就能讀主線　**銜接**：→ [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；prompt caching → [S11 Context engineering](/stages/s11-context-engineering/)；constrained decoding → [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)；自架與 API 的比較 → [S18 部署與架構](/stages/s18-deployment/)
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-reasoning model（← [S4 Post-training 與 reasoning](/stages/s04-post-training/)）會多花很多 token 思考，這一站回答這些 token 的成本和延遲從哪裡來：模型怎麼跑、為什麼慢、怎麼變快又省。核心只有一個觀念：生成文字時，瓶頸多半不是算力，而是把權重從記憶體搬出來的速度。從這裡出發，API 為什麼輸出比輸入貴、長 prompt 為什麼第一個字出來得慢、serving 系統為什麼要把很多人的請求綁在一起，都會變得有道理。
+reasoning model（← [S4 Post-training 與 reasoning](/stages/s04-post-training/)）會多花很多 token 思考，這一章回答這些 token 的成本和延遲從哪裡來：模型怎麼跑、為什麼慢、怎麼變快又省。核心只有一個觀念：生成文字時，瓶頸多半不是算力，而是把權重從記憶體搬出來的速度。從這裡出發，API 為什麼輸出比輸入貴、長 prompt 為什麼第一個字出來得慢、serving 系統為什麼要把很多人的請求綁在一起，都會變得有道理。
 
 ## 學完能
 
@@ -39,7 +39,7 @@ reasoning model（← [S4 Post-training 與 reasoning](/stages/s04-post-training
 
 ### ★ 一個例子走完全程
 
-整站都用同一個例子。模型和 GPU 都是虛構的，數字挑成好算的整數；真實的模型和硬體數字不同，但計算方式完全一樣。
+整章都用同一個例子。模型和 GPU 都是虛構的，數字挑成好算的整數；真實的模型和硬體數字不同，但計算方式完全一樣。
 
 | | 設定 |
 |---|---|
@@ -414,7 +414,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看原始出處、對照真實系統、或跟著別人一步一步寫推論伺服器的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看原始出處、對照真實系統、或跟著別人一步一步寫推論伺服器的人，都不是必讀。
 
 ### 跟著寫程式
 
@@ -442,7 +442,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 
 ### 中文資源
 
-- [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) — 簡中 / 英文；Datawhale 與 RadixArk（SGLang 團隊創立的公司）合作的課程，部分章節由 SGLang 核心成員撰寫。Part I（概念，不需 GPU）與 Part II（自己寫 mini-sglang）是本站最好的中文搭配；Part III 只有部分章節完成，其餘仍在撰寫中。
+- [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) — 簡中 / 英文；Datawhale 與 RadixArk（SGLang 團隊創立的公司）合作的課程，部分章節由 SGLang 核心成員撰寫。Part I（概念，不需 GPU）與 Part II（自己寫 mini-sglang）是本章最好的中文搭配；Part III 只有部分章節完成，其餘仍在撰寫中。
 - [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) — 簡中；第 6 章（GPU 與 FlashAttention）、第 7 章（GPU 程式設計與 Triton）、第 10 章（KV cache、speculative decoding、量化、continuous batching）。
 
 </section>

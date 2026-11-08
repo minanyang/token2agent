@@ -1,13 +1,13 @@
 ---
 title: 概念索引
-description: 每個概念在哪一站首次教，在哪些站深化。
+description: 每個概念在哪一章首次教，在哪些章深化。
 sidebar:
   order: 3
 ---
 
-這份路線的規則是：**每個概念只在一站「首次教」，其他站只「深化」**。走應用路線的人不讀 Part II，相關概念會先在[模型速成](/guide/app-first/#模型速成)概覽，下表也會註明。各站頁面用「（← S2 Transformer 與 decoding）」標出概念來源，用「（→ S16 安全與治理）」標出之後會深入的地方。
+這份路線的規則是：**每個概念只在一章「首次教」，其他章只「深化」**。走應用路線的人不讀 Part II，相關概念會先在[模型速成](/guide/app-first/#模型速成)概覽，下表也會註明。各章頁面用「（← S2 Transformer 與 decoding）」標出概念來源，用「（→ S16 安全與治理）」標出之後會深入的地方。
 
-找不到某個概念時，先查這裡。數學與統計工具（連鎖律、softmax、對數圖、標準誤、bootstrap、cosine 相似度）不屬於任何一站，忘了時翻[數學補給](/guide/math-refresher/)；下表在相關的列附上對應小節。表中站名前的代號怎麼讀，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)。
+找不到某個概念時，先查這裡。數學與統計工具（連鎖律、softmax、對數圖、標準誤、bootstrap、cosine 相似度）不屬於任何一章，忘了時翻[數學補給](/guide/math-refresher/)；下表在相關的列附上對應小節。表中章名前的代號怎麼讀，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)。
 
 ## 模型
 
@@ -56,7 +56,7 @@ sidebar:
 | Reasoning model 的應用端使用（thinking budget、interleaved thinking） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | 回饋收集（最小版：讚 / 倒讚） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | 本地與小模型 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) | [S18 部署與架構](/stages/s18-deployment/) |
-| [Ollama 的 context 長度](/stages/s06-llm-api/#ollama-的-context-長度)（預設可能只有 4K，超過時丟掉較早的內容） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)（[S5 推論與 serving](/stages/s05-inference/) 先提及並連到這裡） | 之後各站用本地模型的提示都連到這裡 |
+| [Ollama 的 context 長度](/stages/s06-llm-api/#ollama-的-context-長度)（預設可能只有 4K，超過時丟掉較早的內容） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)（[S5 推論與 serving](/stages/s05-inference/) 先提及並連到這裡） | 之後各章用本地模型的提示都連到這裡 |
 | Tracing（OpenTelemetry GenAI） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) | [S8 Eval 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | 測試非確定性程式 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) | [S8 Eval 方法論](/stages/s08-evals/) |
 | Prompt 結構、few-shot、CoT | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) | — |

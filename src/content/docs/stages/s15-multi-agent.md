@@ -9,7 +9,7 @@ sidebar:
   label: S15 Multi-agent
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 8 小時　**進階題** 約 12 小時
 
 **前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；模型知識見 [模型速成](/guide/app-first/)　**銜接**：→ [S16 安全與治理](/stages/s16-security/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-多個 agent 分工聽起來很自然，但它會讓 token 成本倍增、多出交接時遺失資訊的風險，也更難除錯。這一站回答：什麼時候值得把一個 agent 拆成好幾個、怎麼拆、要付出多少代價。它刻意排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後，因為答案只能由 eval 給：**只有在 eval 上勝過單一 agent，才保留 multi-agent**。
+多個 agent 分工聽起來很自然，但它會讓 token 成本倍增、多出交接時遺失資訊的風險，也更難除錯。這一章回答：什麼時候值得把一個 agent 拆成好幾個、怎麼拆、要付出多少代價。它刻意排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後，因為答案只能由 eval 給：**只有在 eval 上勝過單一 agent，才保留 multi-agent**。
 
 ## 學完能
 
@@ -35,7 +35,7 @@ sidebar:
 
 ## 講義
 
-先看全貌。到 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 為止，筆記助理是**一個** agent：一個 loop、一份 context、一組工具。Multi-agent 是把工作分給好幾個 agent，各自有自己的 context，彼此之間靠訊息交接。這一站依序回答五件事：
+先看全貌。到 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 為止，筆記助理是**一個** agent：一個 loop、一份 context、一組工具。Multi-agent 是把工作分給好幾個 agent，各自有自己的 context，彼此之間靠訊息交接。這一章依序回答五件事：
 
 1. **要不要拆**：多數情況單一 agent 就夠，只有少數條件下拆開才有好處。
 2. **怎麼拆**：manager 模式（一個 agent 把其他 agent 當工具）或 handoff 模式（把對話交給另一個 agent）。
@@ -45,9 +45,9 @@ sidebar:
 
 ### ★ 一個例子：筆記助理的研究任務
 
-整站都用同一個任務。小林問筆記助理：「整理我筆記裡和網路上關於家用太陽能板補助的資料，比較台北、台中、高雄三個市的方案，寫成一篇筆記。」
+整章都用同一個任務。小林問筆記助理：「整理我筆記裡和網路上關於家用太陽能板補助的資料，比較台北、台中、高雄三個市的方案，寫成一篇筆記。」
 
-**單一 agent 版**：一個 agent loop（← S12 Agent loop 與 harness），加上 S10 工具與 MCP 的 `notes_search`、`web_clip`（讀一個網頁）、`notes_create`；這一站另加 `web_search` 工具。它依序查台北、再查台中、再查高雄，所有搜尋結果都留在同一份 context 裡，最後寫筆記。
+**單一 agent 版**：一個 agent loop（← S12 Agent loop 與 harness），加上 S10 工具與 MCP 的 `notes_search`、`web_clip`（讀一個網頁）、`notes_create`；這一章另加 `web_search` 工具。它依序查台北、再查台中、再查高雄，所有搜尋結果都留在同一份 context 裡，最後寫筆記。
 
 **Multi-agent 版**：一個 **orchestrator**（負責拆工作、彙整結果的 agent）把任務拆成三份，各交給一個 **sub-agent**（被呼叫去做一小段工作的 agent），每個 sub-agent 只查一個城市，在自己的 context 裡搜尋、閱讀，最後只回傳 1,000 token 以內的摘要。orchestrator 拿到三份摘要後寫成筆記。
 
@@ -373,7 +373,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看原始數字與實際系統細節的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看原始數字與實際系統細節的人，都不是必讀。
 
 ### 原始文章與論文
 

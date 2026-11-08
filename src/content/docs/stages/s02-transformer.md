@@ -9,10 +9,10 @@ sidebar:
   label: S2 Transformer 與 decoding
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 2 小時，手算與深入內容約 4 小時　**必做題** 約 8 小時　**進階題** 約 21 小時
 
-**前置**：[S1 神經網路基礎](/stages/s01-neural-networks/)　**銜接**：→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)。本站屬於選修的深入路線；走[應用路線](/guide/app-first/)的人，模型速成已涵蓋 S6 LLM API 與應用基本功需要的 token 與 sampling 概念
+**前置**：[S1 神經網路基礎](/stages/s01-neural-networks/)　**銜接**：→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)。本章屬於選修的深入路線；走[應用路線](/guide/app-first/)的人，模型速成已涵蓋 S6 LLM API 與應用基本功需要的 token 與 sampling 概念
 :::
 
 :::tip[理解路線重點]
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-這一站打開 LLM 的內部。S1 神經網路基礎的模型只看固定長度的前文，這一站要回答：怎麼讓模型同時參考整段前文、又能在 GPU 上平行訓練？答案是 Transformer。講義依資料流動的順序走一遍：文字先被 tokenizer 切成 token，經過一層層 attention 與 MLP，變成下一個 token 的機率，再由 decoding 規則挑出一個。最後學會估算任何模型的參數量、計算量與記憶體。
+這一章打開 LLM 的內部。S1 神經網路基礎的模型只看固定長度的前文，這一章要回答：怎麼讓模型同時參考整段前文、又能在 GPU 上平行訓練？答案是 Transformer。講義依資料流動的順序走一遍：文字先被 tokenizer 切成 token，經過一層層 attention 與 MLP，變成下一個 token 的機率，再由 decoding 規則挑出一個。最後學會估算任何模型的參數量、計算量與記憶體。
 
 ## 學完能
 
@@ -214,7 +214,7 @@ T 小於 1 讓分布更集中；T 大於 1 讓分布更平均、更多變化；T
 
 - **Beam search**：同時保留 b 條最好的候選句子，每步都往下延伸、再留下最好的 b 條。通常比 greedy 找到整體機率更高的句子，適合翻譯這類有標準答案的任務；但開放式對話容易變得平淡重複，所以聊天模型很少用。
 - **重複懲罰**（repetition / frequency / presence penalty）：對已經出現過的 token 扣分，降低一再重複同一句話的機率。扣太重會讓模型連該重複的專有名詞都避開，所以通常只設得很輕（例如 repetition_penalty 1.1 左右、frequency／presence penalty 0.1–0.5）。
-- **套用順序**：這些設定可以一起用。本站的必做題依「temperature → top-k → top-p」的順序套用；實際框架的順序不一定相同（例如 llama.cpp 預設最後才套 temperature），同樣的數字結果可能不一樣。
+- **套用順序**：這些設定可以一起用。本章的必做題依「temperature → top-k → top-p」的順序套用；實際框架的順序不一定相同（例如 llama.cpp 預設最後才套 temperature），同樣的數字結果可能不一樣。
 
 </details>
 
@@ -255,7 +255,7 @@ MoE 要特別注意：它有兩個參數量。**總參數**是全部專家加起
 
 **參數量。** 標準 GPT 的每個 block 主要是矩陣（d 是向量維度）：attention 的 q、k、v、輸出四個 d × d 矩陣（4d²），MLP 的 d → 4d 和 4d → d 兩個矩陣（8d²），合計約 12d²。再加上 embedding 表的 V·d（V 是詞彙表大小）。以 GPT-2 small 為例（d = 768、12 個 block、V = 50,257）：12 × 768² × 12 ≈ 8,493 萬，加上 50,257 × 768 ≈ 3,860 萬，約 1.235 億；再加上位置 embedding、bias 等小項，就是官方的 124M。
 
-**計算量。** 每個參數處理一個 token 時大約做一次乘法和一次加法，所以前向約 2N FLOPs（N 是參數量；FLOPs 是浮點運算次數，一次乘法或加法算一次）。訓練還要反向傳播，約是前向的兩倍，所以每個 token 約 6N，總計約 6·N·D（D 是訓練 token 數）。例如 10 億參數訓練 200 億 token：6 × 10⁹ × 2 × 10¹⁰ = 1.2 × 10²⁰ FLOPs。下一站的 scaling law 會用到這個公式（→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)）。
+**計算量。** 每個參數處理一個 token 時大約做一次乘法和一次加法，所以前向約 2N FLOPs（N 是參數量；FLOPs 是浮點運算次數，一次乘法或加法算一次）。訓練還要反向傳播，約是前向的兩倍，所以每個 token 約 6N，總計約 6·N·D（D 是訓練 token 數）。例如 10 億參數訓練 200 億 token：6 × 10⁹ × 2 × 10¹⁰ = 1.2 × 10²⁰ FLOPs。下一章的 scaling law 會用到這個公式（→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)）。
 
 **記憶體。** 權重佔的記憶體 = 參數量 × 每個參數的 byte 數。
 
@@ -464,7 +464,7 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看得更深、或想跟著別人一行一行寫程式的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看得更深、或想跟著別人一行一行寫程式的人，都不是必讀。
 
 ### 跟著寫程式
 
@@ -475,7 +475,7 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 ### 原始論文與綜述
 
 - [Vaswani et al. 2017, Attention Is All You Need](https://arxiv.org/abs/1706.03762) — Transformer 的原始論文。讀完講義後再讀，大部分都看得懂。
-- [Welleck et al. 2024, From Decoding to Meta-Generation](https://arxiv.org/abs/2406.16838) — decoding 方法的完整綜述；這一站對應 token-level 的部分，其餘留到 S4 Post-training 與 reasoning、S5 推論與 serving。
+- [Welleck et al. 2024, From Decoding to Meta-Generation](https://arxiv.org/abs/2406.16838) — decoding 方法的完整綜述；這一章對應 token-level 的部分，其餘留到 S4 Post-training 與 reasoning、S5 推論與 serving。
 
 ### 課程與概覽
 

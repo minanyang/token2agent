@@ -9,7 +9,7 @@ sidebar:
   label: S11 Context engineering
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1 小時　**必做題** 約 8 小時　**進階題** 約 10 小時
 
 **前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)；prompt caching 的原理見模型速成的〈[KV cache](/guide/app-first/#kv-cache以及為什麼輸出-token-比較貴)〉（深入：[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)（長時間運作的 context 管理）、[S13 Memory 與個人化](/stages/s13-memory/)
@@ -23,9 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-到這裡，系統提示詞、工具定義、檢索結果、工具輸出、對話歷史全都想往 context 裡塞。Context engineering 決定「這一次呼叫，放什麼進去、各放多少、用什麼順序」。這一站學怎麼分配 token 預算、為什麼放越多反而越差、超出預算時怎麼截斷與摘要，以及怎麼排序才能吃到 prompt caching 的折扣。
+到這裡，系統提示詞、工具定義、檢索結果、工具輸出、對話歷史全都想往 context 裡塞。Context engineering 決定「這一次呼叫，放什麼進去、各放多少、用什麼順序」。這一章學怎麼分配 token 預算、為什麼放越多反而越差、超出預算時怎麼截斷與摘要，以及怎麼排序才能吃到 prompt caching 的折扣。
 
-這一站只處理「單次呼叫」的 context 組裝。Agent 跑很多輪、context 越積越長時的做法（compaction、reset、sub-agent 隔離）在 S12 Agent loop 與 harness。
+這一章只處理「單次呼叫」的 context 組裝。Agent 跑很多輪、context 越積越長時的做法（compaction、reset、sub-agent 隔離）在 S12 Agent loop 與 harness。
 
 ## 學完能
 
@@ -37,7 +37,7 @@ sidebar:
 
 ## 講義
 
-先看全貌。每次呼叫模型之前，程式裡都有一段 **context builder**：收集這次可用的材料，量出每一部分的 token 數，超過預算的部分截斷或摘要，依固定順序排好，再送出。這一站各節依序回答它的幾個決定：
+先看全貌。每次呼叫模型之前，程式裡都有一段 **context builder**：收集這次可用的材料，量出每一部分的 token 數，超過預算的部分截斷或摘要，依固定順序排好，再送出。這一章各節依序回答它的幾個決定：
 
 1. 有哪些部分、各給多少預算。
 2. 為什麼不能全部塞進去（長 context 的退化）。
@@ -45,7 +45,7 @@ sidebar:
 4. 超出預算時怎麼砍。
 5. 怎麼排序，讓 prompt caching 生效。
 
-整站用同一個例子：筆記助理收到一個請求。
+整章用同一個例子：筆記助理收到一個請求。
 
 ### ★ Context 怎麼分配預算？
 
@@ -400,7 +400,7 @@ LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看原始實驗、官方細節或其他整理方式的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看原始實驗、官方細節或其他整理方式的人，都不是必讀。
 
 ### 官方文件與廠商文章
 
@@ -426,7 +426,7 @@ LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的
 ### 中文資源
 
 - [台大 李宏毅 Introduction to GenAI and ML 2025 秋](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php) — 繁中；〈上下文工程〉一講。
-- [iThome 2026〈Day 4 甚麼是 Context Engineering〉](https://ithelp.ithome.com.tw/articles/10404121) — 繁中入門；內容本站沒有讀過。
+- [iThome 2026〈Day 4 甚麼是 Context Engineering〉](https://ithelp.ithome.com.tw/articles/10404121) — 繁中入門；內容未核對。
 - [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) — 簡中；第 9 章 context engineering。
 
 ### 接下來

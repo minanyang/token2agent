@@ -9,13 +9,13 @@ sidebar:
 
 - **維護**：這個領域變化很快，每季檢查一次。連結失效或內容過時，歡迎回報或發 PR
 - **簡中資源**：內容品質好但用簡體字的，可以用 [OpenCC](https://github.com/BYVoid/OpenCC) 的 `s2twp` 設定轉成台灣用語
-- **對應站**：表格的「對應站」欄列出這份資源搭配哪幾站；站名前的代號怎麼讀，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)
+- **對應章節**：表格的「對應章節」欄列出這份資源搭配哪幾章；章名前的代號怎麼讀，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)
 
 ---
 
 ## 大學課程
 
-| 課程 | 定位 | 對應站 |
+| 課程 | 定位 | 對應章節 |
 |---|---|---|
 | [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/)（2026 秋） | 最完整的 agent 系統課，每講都有論文。投影片隨課程陸續公開（查證時到第 13 講），錄影只在 Stanford 內部 | [S0 全局地圖](/stages/s00-big-picture/)、[S9 檢索與 RAG](/stages/s09-rag/) 到 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 | [CMU 11-768 AI Agents](https://www.cmu-agents.com/)（Neubig、Fried，2026 秋） | 作業是 harness → eval → 訓練，跟本路線最接近 | [S10 工具與 MCP](/stages/s10-tools-mcp/) 到 [S16 安全與治理](/stages/s16-security/) |
@@ -44,7 +44,7 @@ sidebar:
 
 ## 書與長篇教材
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | Chip Huyen《AI Engineering》（O'Reilly 2025），[配套 repo](https://github.com/chiphuyen/aie-book) | 應用工程的主幹：eval、RAG、微調、資料、推論、架構、使用者回饋。付費書，repo 只有摘要 | [S5 推論與 serving](/stages/s05-inference/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 到 [S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
 | [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | 從零實作 GPT；bonus 有 KV cache、GQA、MLA、MoE、DPO | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
@@ -71,7 +71,7 @@ sidebar:
 
 ### Anthropic Engineering
 
-| 文章 | 日期 | 對應站 |
+| 文章 | 日期 | 對應章節 |
 |---|---|---|
 | [Building effective AI agents](https://www.anthropic.com/research/building-effective-agents) | 2024-12-19 | [S0 全局地圖](/stages/s00-big-picture/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [Contextual retrieval](https://www.anthropic.com/research/contextual-retrieval)（廠商自己的實驗） | 2024-09-19 | [S9 檢索與 RAG](/stages/s09-rag/) |
@@ -99,7 +99,7 @@ sidebar:
 
 ### OpenAI、Google / Kaggle、Meta
 
-| 來源 | 日期 | 對應站 |
+| 來源 | 日期 | 對應章節 |
 |---|---|---|
 | [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) | 2025（後續更新） | [S0 全局地圖](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [OpenAI: Understanding prompt injections](https://openai.com/index/prompt-injections/) | 2025-11-07 | [S16 安全與治理](/stages/s16-security/) |
@@ -121,7 +121,7 @@ sidebar:
 
 ### 個人作者
 
-| 來源 | 日期 | 對應站 |
+| 來源 | 日期 | 對應章節 |
 |---|---|---|
 | [Hamel Husain: Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/) | 2024-03-29 | [S8 Eval 方法論](/stages/s08-evals/) |
 | [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/) | 2025-03-24 | [S8 Eval 方法論](/stages/s08-evals/) |
@@ -145,7 +145,7 @@ sidebar:
 
 ### 安全標準
 
-| 來源 | 對應站 |
+| 來源 | 對應章節 |
 |---|---|
 | [OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/) | [S16 安全與治理](/stages/s16-security/) |
 | [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) | [S16 安全與治理](/stages/s16-security/) |
@@ -159,7 +159,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### Claude API
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [Claude API: Messages](https://platform.claude.com/docs/en/api/messages) | 訊息結構 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [Claude API: Streaming messages](https://platform.claude.com/docs/en/build-with-claude/streaming) | SSE 事件順序 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
@@ -175,7 +175,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### OpenAI API
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [OpenAI API: Streaming API responses](https://developers.openai.com/api/docs/guides/streaming-responses) | 串流事件 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [OpenAI API: Error codes](https://developers.openai.com/api/docs/guides/error-codes) | 錯誤碼 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
@@ -185,7 +185,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### MCP
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [MCP 規範 2026-07-28：Overview](https://modelcontextprotocol.io/specification/2026-07-28) | host / client / server、功能清單、安全原則 | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
 | [MCP 規範：Architecture](https://modelcontextprotocol.io/specification/2026-07-28/architecture) | 架構 | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
@@ -202,7 +202,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### SDK、框架與協定
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [Vercel AI SDK](https://ai-sdk.dev/docs/introduction) | TS 的 LLM 呼叫抽象層 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [AI SDK: Chatbot](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot) | 聊天介面 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
@@ -229,7 +229,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### 本地模型與推論
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [vLLM](https://github.com/vllm-project/vllm) | 生產級推論引擎原始碼 | [S5 推論與 serving](/stages/s05-inference/) |
 | [Ollama API: Usage](https://docs.ollama.com/api/usage) | `prompt_eval_count`、`eval_duration` 等計時欄位。取代 GitHub 上的 `docs/api.md` | [S5 推論與 serving](/stages/s05-inference/) |
@@ -242,7 +242,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### 訓練工具
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [Weights & Biases](https://docs.coreweave.com/products/wandb) | 實驗追蹤；有免費個人方案。文件已併入 CoreWeave | [S1 神經網路基礎](/stages/s01-neural-networks/)、模型線 |
 | [Hugging Face TRL](https://huggingface.co/docs/trl) | SFT、DPO、GRPO trainer | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、模型線 |
@@ -251,7 +251,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### 模型與資料集
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [Qwen/Qwen3-0.6B-Base](https://huggingface.co/Qwen/Qwen3-0.6B-Base) | post-training 練習的起點 | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | [Ollama: qwen3](https://ollama.com/library/qwen3) | 本地跑 Qwen3 | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
@@ -274,7 +274,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### RAG 與檢索
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [Sentence Transformers](https://www.sbert.net/) | embedding 與 cross-encoder | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [Sentence Transformers: Training Overview](https://www.sbert.net/docs/sentence_transformer/training_overview.html) | embedding 微調的官方教學 | [S9 檢索與 RAG](/stages/s09-rag/) |
@@ -288,7 +288,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### 評估、測試與觀測
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [OpenTelemetry GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai) | LLM 呼叫的 trace 欄位標準；仍在 Development 狀態 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [OpenLLMetry](https://github.com/traceloop/openllmetry) | 基於 OpenTelemetry 的 LLM 觀測 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
@@ -305,7 +305,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### Web 與 API 基礎
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [MDN: Using server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) | SSE 格式本身 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [AWS Builder Center: Timeouts, retries, and backoff with jitter](https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter) | 重試與退避的工程實務 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
@@ -314,9 +314,9 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ## 論文
 
-各站延伸閱讀引用的論文都列在這裡。
+各章延伸閱讀引用的論文都列在這裡。
 
-| 論文 | 對應站 |
+| 論文 | 對應章節 |
 |---|---|
 | Vaswani et al. 2017, [Attention Is All You Need](https://arxiv.org/abs/1706.03762) | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
 | Lewis et al. 2020, [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401) | [S9 檢索與 RAG](/stages/s09-rag/) |
@@ -400,7 +400,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 ### 繁體中文
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | 李宏毅、陳縕儂、高宏宇課程 | 見上方「大學課程」 | — |
 | [MiuLab/Taiwan-LLM](https://github.com/MiuLab/Taiwan-LLM) | 繁中模型 repo；README 提到的 TMLU、TMMLU+、TCEval 可作繁中評測參考（是模型 repo，不是教材） | [S8 Eval 方法論](/stages/s08-evals/) |
@@ -415,7 +415,7 @@ iThome 系列是實作者的 30 天連載，品質不一。上表列的是得獎
 
 ### 簡體中文
 
-| 來源 | 定位 | 對應站 |
+| 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [RUC《大语言模型》](https://llmbook-zh.github.io/) | 大學教科書，免費 PDF；agent 與應用部分較舊 | [S0 全局地圖](/stages/s00-big-picture/)、[S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | CS336 中文版；Part II 模型原理（S1–S5）最好的中文搭配 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Eval 方法論](/stages/s08-evals/) |

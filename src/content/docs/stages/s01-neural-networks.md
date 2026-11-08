@@ -9,7 +9,7 @@ sidebar:
   label: S1 神經網路基礎
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 8 小時　**進階題** 約 17 小時
 
 **前置**：[S0 全局地圖](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)　**銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-S0 全局地圖裡回答問題的模型是怎麼來的？Part II 模型原理（S1–S5）由下往上回答，這一站先回答最底層的問題：模型為什麼能「學」。答案是一個迴圈：定義一個衡量「錯多少」的 loss，算出每個參數該往哪個方向調、調多少（梯度），調一小步，重複幾千萬次。整站用「預測名字的下一個字元」當例子，因為這和 LLM 的訓練目標是同一件事，只是規模小到能在筆電上跑。
+S0 全局地圖裡回答問題的模型是怎麼來的？Part II 模型原理（S1–S5）由下往上回答，這一章先回答最底層的問題：模型為什麼能「學」。答案是一個迴圈：定義一個衡量「錯多少」的 loss，算出每個參數該往哪個方向調、調多少（梯度），調一小步，重複幾千萬次。整章用「預測名字的下一個字元」當例子，因為這和 LLM 的訓練目標是同一件事，只是規模小到能在筆電上跑。
 
 ## 學完能
 
@@ -46,7 +46,7 @@ S0 全局地圖裡回答問題的模型是怎麼來的？Part II 模型原理（
 
 ### ★ 模型要學什麼、怎麼打分？
 
-語言模型做的事是：給定前面的內容，輸出下一個單位的機率分布。LLM 的單位是 token（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)），這一站的單位是字元。
+語言模型做的事是：給定前面的內容，輸出下一個單位的機率分布。LLM 的單位是 token（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)），這一章的單位是字元。
 
 **例子：名字的下一個字元。** 資料是約 3.2 萬個英文名字（[makemore](https://github.com/karpathy/makemore) 的 `names.txt`）。字元集是 26 個小寫字母，加上一個代表「開頭 / 結尾」的符號 `.`，共 27 個。名字 `emma` 會拆成 5 題練習：
 
@@ -83,9 +83,9 @@ S0 全局地圖裡回答問題的模型是怎麼來的？Part II 模型原理（
 | 輸出 1 | 1 | 0 | −1 | 1×1 + 2×0 + 3×(−1) = −2 |
 | 輸出 2 | 0.5 | 0.5 | 0.5 | 1×0.5 + 2×0.5 + 3×0.5 = 3 |
 
-輸出是 [−2, 3]：每個輸出都是輸入的一組加權總和，矩陣的每一列就是一組權重。M1 makemore MLP 的 hidden 層就是 30 個輸入、200 個輸出的同一件事，輸出層是 200 個輸入、27 個 logit（這是進階題，選做；[代號說明](/guide/how-to-use/#代號怎麼讀)）。下一站的 Transformer 裡，大部分計算也都是這種矩陣乘法（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)）。
+輸出是 [−2, 3]：每個輸出都是輸入的一組加權總和，矩陣的每一列就是一組權重。M1 makemore MLP 的 hidden 層就是 30 個輸入、200 個輸出的同一件事，輸出層是 200 個輸入、27 個 logit（這是進階題，選做；[代號說明](/guide/how-to-use/#代號怎麼讀)）。下一章的 Transformer 裡，大部分計算也都是這種矩陣乘法（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)）。
 
-這就是 M1 makemore MLP 要做的語言模型。模型裡所有的數字（embedding、每層的權重）都是參數，一開始是隨機的，靠下面幾節的迴圈慢慢調好。之後每一站的 LLM，本質上都是更大、更好的 next-token predictor。
+這就是 M1 makemore MLP 要做的語言模型。模型裡所有的數字（embedding、每層的權重）都是參數，一開始是隨機的，靠下面幾節的迴圈慢慢調好。之後每一章的 LLM，本質上都是更大、更好的 next-token predictor。
 
 **容易誤會：loss 不會、也不該降到 0。** `m` 後面本來就可能接很多字母，資料本身有不確定性。在 bigram 這種只看一個字元的設定下，最好的模型也只能給出真實的比例，loss 有下限（實測 bigram 約 2.45）。訓練 loss 降到接近 0，通常代表模型在背答案（見 [overfitting](#-模型在背答案怎麼辦)）。
 
@@ -195,7 +195,7 @@ PyTorch 的預設值是 β₁ = 0.9、β₂ = 0.999、ε = 1e-8；`AdamW` 的 `w
 
 為什麼會飽和？M1 makemore MLP 的 hidden 層每個神經元把 30 個輸入加權相加。如果每個輸入和權重的大小都在 1 左右，30 項的正負號隨機，大多互相抵消，所以加起來的典型大小只長到約 √30 ≈ 5.5，而不是 30；即使如此，也大部分落在 tanh 的平坦區。修法是依輸入數量縮小初始權重：乘上約 1/√30 ≈ 0.18，加總的典型大小就回到 1 左右。
 
-**Normalization 層。** 初始化只管第一步，訓練中權重一直在變，每層輸入的尺度也跟著漂移。Normalization 層把每層的輸入重新調整成平均約 0、分散程度約 1，再乘上可學的縮放係數。BatchNorm 是對一個 batch 裡的同一個特徵做；LayerNorm 是對一筆資料自己的所有特徵做，Transformer 用的是後者，下一站會再換成更簡單的 RMSNorm（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)）。M1 makemore MLP 不要求加 normalization，但網路一深就少不了它。
+**Normalization 層。** 初始化只管第一步，訓練中權重一直在變，每層輸入的尺度也跟著漂移。Normalization 層把每層的輸入重新調整成平均約 0、分散程度約 1，再乘上可學的縮放係數。BatchNorm 是對一個 batch 裡的同一個特徵做；LayerNorm 是對一筆資料自己的所有特徵做，Transformer 用的是後者，下一章會再換成更簡單的 RMSNorm（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)）。M1 makemore MLP 不要求加 normalization，但網路一深就少不了它。
 
 **容易誤會：初始 loss 接近 3.30 不代表一切正常。** 輸出層正確，hidden 層仍可能大量飽和。所以兩件事都要量：初始 loss，以及每層 activation 的分布（例如畫直方圖，看是不是大量堆在 ±1）。
 
@@ -255,7 +255,7 @@ PyTorch 的預設值是 β₁ = 0.9、β₂ = 0.999、ε = 1e-8；`AdamW` 的 `w
 
 ### ○ 詞向量的想法從哪來？
 
-word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字學一個向量。它們是 embedding 想法的起點，但和 S2 Transformer 與 decoding 講的模型內部 token embedding、S9 檢索與 RAG 用的 sentence embedding 是不同的東西（見[術語表](/reference/glossary/)）。知道歷史有助理解，不是後面各站的前置。
+word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字學一個向量。它們是 embedding 想法的起點，但和 S2 Transformer 與 decoding 講的模型內部 token embedding、S9 檢索與 RAG 用的 sentence embedding 是不同的東西（見[術語表](/reference/glossary/)）。知道歷史有助理解，不是後面各章的前置。
 
 </section>
 
@@ -410,11 +410,11 @@ word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看得更深、或想跟著別人一行一行寫程式的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看得更深、或想跟著別人一行一行寫程式的人，都不是必讀。
 
 ### 跟著寫程式
 
-- [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) — 前 5 支影片：micrograd、makemore 的 bigram、MLP、activations / gradients / BatchNorm、手寫 backprop。和本站的必做題、M1 makemore MLP 一一對應，適合邊看邊打程式；第 6 支（WaveNet 式的階層架構）把 MLP 改成更深的結構，是走向 S2 Transformer 與 decoding 的過渡。系列 2024 後未更新，但這幾支講的基礎不會過時。
+- [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) — 前 5 支影片：micrograd、makemore 的 bigram、MLP、activations / gradients / BatchNorm、手寫 backprop。和本章的必做題、M1 makemore MLP 一一對應，適合邊看邊打程式；第 6 支（WaveNet 式的階層架構）把 MLP 改成更深的結構，是走向 S2 Transformer 與 decoding 的過渡。系列 2024 後未更新，但這幾支講的基礎不會過時。
 - [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) — Appendix A（PyTorch 入門）與 Appendix D（訓練迴圈的 warmup、cosine decay、gradient clipping）。
 - MiniTorch（Cornell）— 把 autograd 擴充到 tensor 與平行運算，適合寫完必做題還想再深入的人。
 

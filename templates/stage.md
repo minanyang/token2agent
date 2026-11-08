@@ -1,9 +1,9 @@
 ---
-title: S{N} {站名}
-description: {一句話：這站在解決什麼問題}
+title: S{N} {章名}
+description: {一句話：這章在解決什麼問題}
 sidebar:
   order: {N}
-  label: S{N} {站名}
+  label: S{N} {章名}
 ---
 
 <!--
@@ -44,7 +44,7 @@ Authoring rules (keep this comment out of published pages):
   from other sources unless their LICENSE allows it, and then attribute them. Facts and formulas are fine.
 -->
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 約 {x} 小時　**必做題** 約 {y} 小時　**進階題** 約 {z} 小時
 
 **前置**：S{a}、S{b}　**銜接**：→ S{c}
@@ -58,7 +58,7 @@ Authoring rules (keep this comment out of published pages):
 
 ## 在做什麼
 
-{2–4 句：這站要回答的問題、為什麼排在這裡。}
+{2–4 句：這章要回答的問題、為什麼排在這裡。}
 
 ## 學完能
 
@@ -67,7 +67,7 @@ Authoring rules (keep this comment out of published pages):
 
 ## 講義
 
-{一段全貌：這站的內容怎麼串起來，必要時附一張圖。}
+{一段全貌：這章的內容怎麼串起來，必要時附一張圖。}
 
 ### ★ {概念名}
 
@@ -145,7 +145,7 @@ Authoring rules (keep this comment out of published pages):
 
 ## 延伸閱讀
 
-{一句話：講義已涵蓋本站內容，下面都是選讀。}
+{一句話：講義已涵蓋本章內容，下面都是選讀。}
 
 ### {分類，例如：跟著寫程式 / 原始論文與綜述 / 課程與概覽 / 中文資源}
 

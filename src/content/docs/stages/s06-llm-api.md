@@ -12,7 +12,7 @@ prev:
   label: 應用路線與模型速成
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1 小時　**必做題** 約 12 小時　**進階題** 約 13 小時
 
 **前置**：[S0 全局地圖](/stages/s00-big-picture/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（token、next-token 與 sampling、context window、成本與延遲；深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（完整前端）
@@ -26,7 +26,7 @@ prev:
 
 ## 在做什麼
 
-這一站回答：怎麼把模型可靠地接進程式。內容是一次 API 呼叫的結構與成本、串流與取消、錯誤與重試、各家 SDK 的差異、本地模型、推理模型的應用端用法，以及怎麼記錄與測試「每次輸出都不一樣」的程式。這些是應用路線的起點，後面每一站都建立在它們上面：S8 Eval 方法論的錯誤分析要讀 trace，S12 Agent loop 與 harness 的 agent 要靠可靠的重試與取消，S18 部署與架構的成本控管要靠每次呼叫都記下的 token 數。
+這一章回答：怎麼把模型可靠地接進程式。內容是一次 API 呼叫的結構與成本、串流與取消、錯誤與重試、各家 SDK 的差異、本地模型、推理模型的應用端用法，以及怎麼記錄與測試「每次輸出都不一樣」的程式。這些是應用路線的起點，後面每一章都建立在它們上面：S8 Eval 方法論的錯誤分析要讀 trace，S12 Agent loop 與 harness 的 agent 要靠可靠的重試與取消，S18 部署與架構的成本控管要靠每次呼叫都記下的 token 數。
 
 ## 學完能
 
@@ -39,13 +39,13 @@ prev:
 
 ## 講義
 
-整站跟著一個例子走：**筆記助理**。使用者小林（使用者 ID `u_017`）有大約 200 篇 Markdown 筆記，問「我上週對 X 專案記了什麼？」。第一版用最簡單的做法：把最近 20 篇筆記全文塞進系統提示詞，每次請求約 3 萬個輸入 token（S9 檢索與 RAG 會把它降下來）。程式要把筆記和問題組成一次 API 呼叫，把回答一個字一個字串流到畫面上，遇到錯誤時正確重試，並記下這次花了多少 token、多少錢、多久。各節依序處理這條路上的一步：組請求與算帳、串流與停止、重試、換 provider 與本地模型、推理模型、紀錄與測試。
+整章跟著一個例子走：**筆記助理**。使用者小林（使用者 ID `u_017`）有大約 200 篇 Markdown 筆記，問「我上週對 X 專案記了什麼？」。第一版用最簡單的做法：把最近 20 篇筆記全文塞進系統提示詞，每次請求約 3 萬個輸入 token（S9 檢索與 RAG 會把它降下來）。程式要把筆記和問題組成一次 API 呼叫，把回答一個字一個字串流到畫面上，遇到錯誤時正確重試，並記下這次花了多少 token、多少錢、多久。各節依序處理這條路上的一步：組請求與算帳、串流與停止、重試、換 provider 與本地模型、推理模型、紀錄與測試。
 
 ### ★ 一次 API 呼叫長什麼樣？
 
 一次呼叫就是送出「系統提示詞 + 一串有角色的訊息」，拿回一段輸出和一份 token 用量；費用用這份用量算。
 
-動手跑這一站的例子前，需要：
+動手跑這一章的例子前，需要：
 
 - 基本的 Python（或 TypeScript）：會寫函式、讀 dict / 物件。
 - 會安裝套件：例如 `pip install anthropic` 或 `npm install @anthropic-ai/sdk`。
@@ -220,9 +220,9 @@ Ollama 超過預設 context 時可能默默截掉較早的內容而不報錯：�
 <details class="deep">
 <summary>深入一點：預設值與被截掉時的樣子</summary>
 
-Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K）；prompt 超過時，預設會丟掉較早的內容（只在伺服器 log 留警告），API 不一定回錯誤。請設定 `num_ctx` 或 `OLLAMA_CONTEXT_LENGTH`，並用 `ollama ps` 確認。之後各站用 Ollama 跑長 prompt 的練習，都要先做這一步。
+Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K）；prompt 超過時，預設會丟掉較早的內容（只在伺服器 log 留警告），API 不一定回錯誤。請設定 `num_ctx` 或 `OLLAMA_CONTEXT_LENGTH`，並用 `ollama ps` 確認。之後各章用 Ollama 跑長 prompt 的練習，都要先做這一步。
 
-**容易誤會：沒報錯就代表整段 prompt 都送進去了。** 這一站的筆記助理把最近 20 篇筆記塞進系統提示詞，約 3 萬 token，遠超過 4K。不調整的話，前面的內容（常常就是系統提示詞和大部分筆記）會被默默丟掉，模型只看到最後一小段，回答看起來只是「品質差」。
+**容易誤會：沒報錯就代表整段 prompt 都送進去了。** 這一章的筆記助理把最近 20 篇筆記塞進系統提示詞，約 3 萬 token，遠超過 4K。不調整的話，前面的內容（常常就是系統提示詞和大部分筆記）會被默默丟掉，模型只看到最後一小段，回答看起來只是「品質差」。
 
 </details>
 
@@ -361,7 +361,7 @@ Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K�
 
 ### 進階：系統線 A6：開始你的系統
 
-這是系統線的第一步（各步代號見[代號說明](/guide/how-to-use/#代號怎麼讀)）：你要選定一個主題，之後的 13 站（S7–S19）都在同一個系統上加能力。
+這是系統線的第一步（各步代號見[代號說明](/guide/how-to-use/#代號怎麼讀)）：你要選定一個主題，之後的 13 章（S7–S19）都在同一個系統上加能力。
 
 **選主題**：好主題要有**自己的文件**（不是網路上隨手可得的）、有一些**能做事的動作**（建立、修改、寄送）、可以有 **2–3 位使用者**，而且**你自己會真的用**。這樣後面的 RAG、工具、安全、多使用者部署都練得到。四個範例主題見[系統線〈選一個主題〉](/projects/system-thread/#選一個主題)；不確定就選筆記助理。
 
@@ -468,7 +468,7 @@ Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K�
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想查原始規格、看更多細節或換成別的語言與框架的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想查原始規格、看更多細節或換成別的語言與框架的人，都不是必讀。
 
 ### 官方文件
 
@@ -499,7 +499,7 @@ Ollama 預設 context 依 VRAM（顯示記憶體）而定（24 GiB 以下為 4K�
 
 ### 中文資源
 
-- [iThome 2025〈前端工程師的AI應用開發實戰：30天從Prompt到Production〉](https://ithelp.ithome.com.tw/users/20129072/ironman/8834) — 繁中；前端視角的 AI 應用。內容本站沒有逐篇讀過，當輔助讀物。
+- [iThome 2025〈前端工程師的AI應用開發實戰：30天從Prompt到Production〉](https://ithelp.ithome.com.tw/users/20129072/ironman/8834) — 繁中；前端視角的 AI 應用。內容未逐篇核對，當輔助讀物。
 - [datawhalechina/llm-cookbook](https://github.com/datawhalechina/llm-cookbook) — 簡中；吳恩達系列短課的中文版，〈Building Systems with the ChatGPT API〉可當 API 入門暖身。範例偏舊、以 OpenAI 為主。
 - [datawhalechina/base-llm](https://github.com/datawhalechina/base-llm) — 簡中；附錄（Extra-chapter）有一篇以 MiniMax API 為例的 API 呼叫入門（基本對話、串流、多輪、OpenAI 相容）。
 

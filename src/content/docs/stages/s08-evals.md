@@ -9,7 +9,7 @@ sidebar:
   label: S8 Eval 方法論
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 2 小時　**必做題** 約 9 小時　**進階題** 約 13 小時
 
 **前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（進階題需要 A6 串流聊天與 trace、A7 structured output 與 workflow 累積的 trace；[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）；logprobs 的背景見 [模型速成](/guide/app-first/#logits-與-softmax)（深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)）　**銜接**：→ [S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（agent eval）
@@ -23,9 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-改了 prompt、換了模型、加了檢索之後，怎麼知道系統真的變好了？只看幾個例子的感覺，很容易被少數印象深刻的案例誤導。這一站學一套可以重跑的方法：先讀真實的 trace、歸納出失敗類型，再針對每種失敗設計評分方式，驗證模型評分者跟人的判斷一致，最後用誤差範圍判斷差異是不是真的。
+改了 prompt、換了模型、加了檢索之後，怎麼知道系統真的變好了？只看幾個例子的感覺，很容易被少數印象深刻的案例誤導。這一章學一套可以重跑的方法：先讀真實的 trace、歸納出失敗類型，再針對每種失敗設計評分方式，驗證模型評分者跟人的判斷一致，最後用誤差範圍判斷差異是不是真的。
 
-Eval 排在 RAG 和工具之前，因為後面每一站的改動都需要它來判斷值不值得。
+Eval 排在 RAG 和工具之前，因為後面每一章的改動都需要它來判斷值不值得。
 
 ## 學完能
 
@@ -46,7 +46,7 @@ Eval 排在 RAG 和工具之前，因為後面每一站的改動都需要它來�
 4. **算分數，附上誤差範圍**：分數是從有限題目估出來的，要知道它會晃多少。
 5. **改系統，在同一批題目上重跑**，用配對比較判斷是不是真的變好。
 
-整站沿用同一個例子：**筆記助理**。小林問「上次和設計團隊開會的結論是什麼」，助理讀筆記、回答。上一站讓它的輸出穩定可解析（← [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)），這一站要回答：它的答案到底好不好、改了之後有沒有更好。
+整章沿用同一個例子：**筆記助理**。小林問「上次和設計團隊開會的結論是什麼」，助理讀筆記、回答。上一章讓它的輸出穩定可解析（← [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)），這一章要回答：它的答案到底好不好、改了之後有沒有更好。
 
 ### ★ 系統到底怎麼出錯？
 
@@ -485,19 +485,19 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
 
 
 :::tip[走應用路線的讀者]
-不讀 Part II 模型原理也能繼續往下走。想深入的話，現在是選讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 與 [S5 推論與 serving](/stages/s05-inference/) 的好時機，這兩站和應用最相關（見[應用路線](/guide/app-first/#什麼時候值得讀-part-ii)）。
+不讀 Part II 模型原理也能繼續往下走。想深入的話，現在是選讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 與 [S5 推論與 serving](/stages/s05-inference/) 的好時機，這兩章和應用最相關（見[應用路線](/guide/app-first/#什麼時候值得讀-part-ii)）。
 :::
 
 <section class="deep-section">
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看更多實務細節、原始論文或跟著課程練習的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看更多實務細節、原始論文或跟著課程練習的人，都不是必讀。
 
 ### 實務指南
 
 - [Hamel Husain: Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/)（2024-03-29）— 為什麼要做 eval，以及三個層級的評估，有完整的真實案例。
-- [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（2026-09）— 錯誤分析、binary vs Likert、judge 校準的問答集；持續更新，是這一站最值得追蹤的來源。
+- [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（2026-09）— 錯誤分析、binary vs Likert、judge 校準的問答集；持續更新，是這一章最值得追蹤的來源。
 - [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/)（2025-03-24）— 錯誤分析與資料檢視工具的實務，做 A8 錯誤分析與 golden set 時很有用。
 - [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/)（2024-10-29）— 一步步建立並校準 judge，對應必做題。
 - [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)（2026-01-09）— 先讀詞彙與 grader 分類的部分，agent 部分留到 S14 Agent eval、資料與最佳化。

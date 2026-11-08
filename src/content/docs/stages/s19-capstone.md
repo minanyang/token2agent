@@ -9,7 +9,7 @@ sidebar:
   label: S19 真實 agent 系統與畢業專題
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 7 小時　**進階題（畢業專題）** 約 24 小時起
 
 **前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統線](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層往深處走
@@ -23,13 +23,13 @@ sidebar:
 
 ## 在做什麼
 
-前面十八站把 AI 系統拆成一層一層學。這站反過來，看目前最成熟的三類 agent 怎麼把這些層組合起來：coding agent、deep research、常駐個人 agent。目的不是照抄，而是看懂任何 agent 產品背後的取捨：為什麼這裡用固定的 workflow、那裡交給模型決定，為什麼要拆成多個 agent，為什麼要讓人核准。
+前面十八章把 AI 系統拆成一層一層學。這章反過來，看目前最成熟的三類 agent 怎麼把這些層組合起來：coding agent、deep research、常駐個人 agent。目的不是照抄，而是看懂任何 agent 產品背後的取捨：為什麼這裡用固定的 workflow、那裡交給模型決定，為什麼要拆成多個 agent，為什麼要讓人核准。
 
 畢業專題把你的系統延伸成一個常駐的 agent，並交出五份工程證據，證明它能上線（shippable）、能被量測（evaluable）、每個決定都有理由（defensible）。只做必做題的讀者，做完必做題（拆解一個開源 coding agent）就走完整條路線；畢業專題（A19）是進階題，前提是你一路做了系統線 A6–A18。理解路線讀完講義、先試一下與自我檢查即完成。
 
 ## 學完能
 
-- 讀一條 trajectory，指出每一步落在六塊地圖（loop、工具、context、memory、eval、安全）的哪一塊、對應哪一站。（講義與自我檢查）
+- 讀一條 trajectory，指出每一步落在六塊地圖（loop、工具、context、memory、eval、安全）的哪一塊、對應哪一章。（講義與自我檢查）
 - 說明 deep research 系統的 orchestrator-worker 與 citation 設計，以及它們的成本。（講義與自我檢查）
 - 拿到任何一個開源 agent，畫出它的六塊並在程式碼裡找到位置。（必做）
 - 解釋 Agentless 與 SWE-agent 為什麼都能在同一個 benchmark 上有競爭力，以及這對「何時該用 agent」的意義。（必做）
@@ -38,15 +38,15 @@ sidebar:
 
 ## 講義
 
-先看全貌。這站用同一把尺（六塊地圖）拆三個真實系統，並用整站沿用的**筆記助理**例子當橋：筆記助理要修自己的程式，會長得像 coding agent；要替你做研究，會像 deep research；要在你沒打開它時也能工作，就是常駐 agent。最後一節說明畢業專題的五份證據，以及判讀它們的兩個統計觀念。
+先看全貌。這章用同一把尺（六塊地圖）拆三個真實系統，並用各章沿用的**筆記助理**例子當橋：筆記助理要修自己的程式，會長得像 coding agent；要替你做研究，會像 deep research；要在你沒打開它時也能工作，就是常駐 agent。最後一節說明畢業專題的五份證據，以及判讀它們的兩個統計觀念。
 
 ### ★ 怎麼拆解任何 agent？
 
-任何 agent，不管包裝成什麼產品，都能拆成六塊。拆完之後，每一塊都對得回前面某一站，產品之間的差別就變成「每一塊做了什麼選擇」。
+任何 agent，不管包裝成什麼產品，都能拆成六塊。拆完之後，每一塊都對得回前面某一章，產品之間的差別就變成「每一塊做了什麼選擇」。
 
 功能清單之間沒辦法比較；固定成六塊，才能問出有用的問題（表中的代號見[代號說明](/guide/how-to-use/#代號怎麼讀)）：
 
-| 塊 | 要問的問題 | 筆記助理的樣子 | 學過的站 |
+| 塊 | 要問的問題 | 筆記助理的樣子 | 對應章節 |
 |---|---|---|---|
 | Loop | 下一步由程式還是模型決定？什麼時候停？ | 模型決定要不要再搜一次；最多 15 步 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（workflow）、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | 工具 | 模型能做哪些動作？介面怎麼設計？ | `notes_search`、`notes_create`、`web_clip` | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
@@ -63,7 +63,7 @@ sidebar:
 4. 模型判斷資料夠了，用條列式回答並附筆記連結，不再呼叫工具。→ loop 的停止條件
 5. 這次的 trace 被抽樣，之後可能變成 regression suite 的一題。→ eval
 
-容易誤會的是，以為六塊就是程式裡的六個模組。一段程式常同時屬於兩塊（compaction 既管 context，也決定留下什麼），一列標兩站是正常的。另外，「沒有」也是一種選擇：mini-SWE-agent 完全沒有 memory，也沒有專用工具，這本身就是值得寫下的設計取捨。
+容易誤會的是，以為六塊就是程式裡的六個模組。一段程式常同時屬於兩塊（compaction 既管 context，也決定留下什麼），一列標兩章是正常的。另外，「沒有」也是一種選擇：mini-SWE-agent 完全沒有 memory，也沒有專用工具，這本身就是值得寫下的設計取捨。
 
 ### ★ Coding agent 怎麼設計？
 
@@ -139,7 +139,7 @@ Deep research 系統回答需要大量搜尋與整合的問題：一個 lead age
 
 ### ★ 常駐 agent 多了什麼？
 
-常駐 agent 不等使用者打開網頁才工作，而是一直在背景執行，透過使用者已經在用的管道互動。它沒有新的魔法，只是在 loop 前面加上新的「觸發來源」，結果把前面幾站的難題都放大了。
+常駐 agent 不等使用者打開網頁才工作，而是一直在背景執行，透過使用者已經在用的管道互動。它沒有新的魔法，只是在 loop 前面加上新的「觸發來源」，結果把前面幾章的難題都放大了。
 
 以開源的 OpenClaw 為例，這類系統通常有幾個元件：
 
@@ -174,7 +174,7 @@ Deep research 系統回答需要大量搜尋與整合的問題：一個 lead age
 
 Demo 只能證明某一次跑得起來；系統要證明它能上線、能被量測、每個決定都有理由。常駐 agent 長時間沒人盯著，能依靠的只有事先建立的證據。
 
-畢業專題要交五份證據：regression suite（改動不會讓已經能做的事壞掉）、infra 變因報告（分數變化是真的，不是環境雜訊）、trifecta 稽核（新管道與排程沒有開出新的攻擊路徑）、harness ablation 筆記（每個 harness 元件都有存在的理由），以及架構文件（能上線、出事時知道怎麼辦）。前三份與第五份大多是前面各站做過的事加上常駐元件；真正新的是判讀分數的方式，需要兩個觀念。
+畢業專題要交五份證據：regression suite（改動不會讓已經能做的事壞掉）、infra 變因報告（分數變化是真的，不是環境雜訊）、trifecta 稽核（新管道與排程沒有開出新的攻擊路徑）、harness ablation 筆記（每個 harness 元件都有存在的理由），以及架構文件（能上線、出事時知道怎麼辦）。前三份與第五份大多是前面各章做過的事加上常駐元件；真正新的是判讀分數的方式，需要兩個觀念。
 
 <details class="hint">
 <summary>怎麼開始寫：每份證據的最小格式</summary>
@@ -253,12 +253,12 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
    - 每個任務：checkout 到該 commit 的上一版，只把新增的測試檔加回來（此時測試應該失敗），把 commit message 或對應 issue 改寫成任務描述。agent 讓這些測試通過、且原有測試沒有壞掉，就算成功。
    - 如果 history 裡找不到 5 個，用同樣格式自己補：先寫測試、再拿掉實作。
 3. 每個任務跑 3 次，記錄是否成功、步數、token 數、成本、時間。
-4. 讀它的程式碼與一條完整的 trajectory，填一張拆解表：元件（loop、工具與 ACI、prompt、context 管理、停止條件、權限 / sandbox、錯誤處理、eval 方式等）、在程式碼的哪個位置、對應哪一站。
+4. 讀它的程式碼與一條完整的 trajectory，填一張拆解表：元件（loop、工具與 ACI、prompt、context 管理、停止條件、權限 / sandbox、錯誤處理、eval 方式等）、在程式碼的哪個位置、對應哪一章。
 5. 寫出它做的 3 個設計取捨，例如「它不給模型任何專用工具，只給 bash」，以及你認為各自的代價。其中至少一個和 Agentless 的固定三階段 workflow 對照：在你的 5 個任務上，哪一種做法比較合適？
 
 **驗收**
 - 一張 5 任務 × 3 次的結果表，含成功率、pass^3（3 次都成功的任務比例，← S8 Eval 方法論）、每任務的平均成本與時間。
-- 拆解表 ≥ 10 列，每列都有程式碼位置（檔案與行號，或函式名稱）與對應的站別。
+- 拆解表 ≥ 10 列，每列都有程式碼位置（檔案與行號，或函式名稱）與對應的章。
 - 3 個設計取捨，每個附一個你在 trajectory 中看到的具體例子；至少一個附上和 Agentless 的對照。
 
 **提示**
@@ -281,7 +281,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
 **為什麼是這五份交付物**：常駐 agent 的特點是長時間沒有人盯著它。這時你唯一能依靠的，是事先建立的證據。
 
-| 交付物 | 證明什麼 | 用到哪些站 |
+| 交付物 | 證明什麼 | 用到哪些章 |
 |---|---|---|
 | Regression suite | 改動不會讓已經能做的事壞掉（evaluable） | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | Infra 變因報告 | 分數的變化是真的，不是環境雜訊（evaluable） | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
@@ -369,7 +369,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
    </details>
 
-6. 挑筆記助理（或你自己的系統）的一個功能，例如「每天早上寄摘要」，照六塊地圖說出它的 loop、工具、context、memory、eval、安全各是什麼，各對應哪一站。
+6. 挑筆記助理（或你自己的系統）的一個功能，例如「每天早上寄摘要」，照六塊地圖說出它的 loop、工具、context、memory、eval、安全各是什麼，各對應哪一章。
 
    <details class="hint">
    <summary>提示</summary>
@@ -392,7 +392,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看原始設計、或想跟著別人實作的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看原始設計、或想跟著別人實作的人，都不是必讀。
 
 ### 官方文件與工程文章
 

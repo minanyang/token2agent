@@ -9,7 +9,7 @@ sidebar:
   label: S12 Agent loop 與 harness
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 1 小時　**必做題** 約 10 小時　**進階題** 約 22 小時
 
 **前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)；模型知識見 [模型速成](/guide/app-first/#模型速成)　**銜接**：→ [S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-S10 工具與 MCP 讓模型能呼叫工具，但一次呼叫只走一步。這一站回答：怎麼讓模型自己一步接一步做完一件多步驟的事，而且做得安全、停得下來、出錯時不失控？Agent 的核心只是一個迴圈：模型決定下一步，程式執行，再把結果放回 context，直到模型說完成（S0 全局地圖讀過的 mini-SWE-agent 就是這個迴圈）。包在迴圈外面、讓它可靠運作的那層程式叫 harness：權限、停止條件、錯誤處理、狀態、長時程的 context 管理、skills。每個 harness 元件都代表一個「模型自己做不到什麼」的假設，所以這一站也從頭用最小的 agent eval 判斷改動有沒有用。
+S10 工具與 MCP 讓模型能呼叫工具，但一次呼叫只走一步。這一章回答：怎麼讓模型自己一步接一步做完一件多步驟的事，而且做得安全、停得下來、出錯時不失控？Agent 的核心只是一個迴圈：模型決定下一步，程式執行，再把結果放回 context，直到模型說完成（S0 全局地圖讀過的 mini-SWE-agent 就是這個迴圈）。包在迴圈外面、讓它可靠運作的那層程式叫 harness：權限、停止條件、錯誤處理、狀態、長時程的 context 管理、skills。每個 harness 元件都代表一個「模型自己做不到什麼」的假設，所以這一章也從頭用最小的 agent eval 判斷改動有沒有用。
 
 ## 學完能
 
@@ -43,7 +43,7 @@ S10 工具與 MCP 讓模型能呼叫工具，但一次呼叫只走一步。這�
 3. 把工具結果接回 messages。
 4. 檢查停止條件；沒有要停，就回到第 1 步。
 
-整站都用同一個例子：**筆記助理**（使用者小林），工具沿用 S10 工具與 MCP 的名稱與分級：`notes_search`（低風險）、`notes_create`（中）、`email_draft`（中，只建草稿）、`email_send`（高，真的寄出）。
+整章都用同一個例子：**筆記助理**（使用者小林），工具沿用 S10 工具與 MCP 的名稱與分級：`notes_search`（低風險）、`notes_create`（中）、`email_draft`（中，只建草稿）、`email_send`（高，真的寄出）。
 
 ### ★ 一個例子走完全程
 
@@ -162,7 +162,7 @@ API 的回覆會標出模型這次有沒有要求呼叫工具。一次回覆可�
 | `email_draft`（中） | 擋下 | 詢問 | 執行並記錄 |
 | `email_send`（高） | 擋下 | 詢問 | **仍然詢問** |
 
-最後一列是這一站的檢查點：不管在哪個模式，S10 工具與 MCP 標為高風險的動作（把使用者資料送到系統外、不可復原、有成本）都必須先確認。實作上，權限檢查就是 `pre_tool_use` hook：在工具真正執行之前判斷「允許 / 詢問 / 拒絕」。被拒絕時，把原因當成工具結果回給模型（例如「使用者拒絕寄出，請改存成草稿」），讓它換個做法，而不是讓迴圈當掉。
+最後一列是這一章的檢查點：不管在哪個模式，S10 工具與 MCP 標為高風險的動作（把使用者資料送到系統外、不可復原、有成本）都必須先確認。實作上，權限檢查就是 `pre_tool_use` hook：在工具真正執行之前判斷「允許 / 詢問 / 拒絕」。被拒絕時，把原因當成工具結果回給模型（例如「使用者拒絕寄出，請改存成草稿」），讓它換個做法，而不是讓迴圈當掉。
 
 詢問時，確認畫面要顯示實際會發生的事：要寄給誰、主旨與內文、能不能收回；刪除的話是哪些檔案（清單與數量）、能不能復原。只問「確定嗎？」等於沒問（確認介面的設計 → S17 產品與 AI UX）。批次動作再加一條規則：一次影響超過 N 筆（例如 10 筆）時，不管在哪個模式都先詢問。
 
@@ -250,7 +250,7 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 - **Generator–evaluator**（〈Harness design for long-running apps〉，深化 [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 的 evaluator-optimizer）：一個 agent 產出，另一個 agent 實際操作成品（例如用 Playwright，一種自動操作瀏覽器的工具，點過網頁）並依標準打分。把評估者獨立出來，比要求產出者自我批評更容易把標準調嚴。
 - **Sprint contracts**：每一輪開始前，產出者先提出「這輪要做什麼、怎麼驗證」，評估者審過、雙方同意才動工，把模糊的規格變成可測的條件。
 
-**容易誤會：「worker 只改 `passes` 欄位」是靠指示，不是技術限制。** 文章的做法是在 prompt 裡要求，而不是用程式強制；模型仍然**可以**改其他欄位，只是被要求不要改。這和上面 🔒 一節是同一件事：prompt 指示降低機率，程式才能保證。如果你需要保證，就得自己在 harness 加檢查，例如用 hook 比對 JSON 前後的差異，發現其他欄位被改就拒絕寫入（這是本站的建議，不是文章的做法）。
+**容易誤會：「worker 只改 `passes` 欄位」是靠指示，不是技術限制。** 文章的做法是在 prompt 裡要求，而不是用程式強制；模型仍然**可以**改其他欄位，只是被要求不要改。這和上面 🔒 一節是同一件事：prompt 指示降低機率，程式才能保證。如果你需要保證，就得自己在 harness 加檢查，例如用 hook 比對 JSON 前後的差異，發現其他欄位被改就拒絕寫入（這是這份路線的建議，不是文章的做法）。
 
 ### ★ 改 harness 後怎麼判斷？
 
@@ -456,13 +456,13 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看得更深、或想跟著別人一行一行寫程式的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看得更深、或想跟著別人一行一行寫程式的人，都不是必讀。
 
 ### 跟著寫程式
 
-- [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) — 本站推薦的實作教材，每章都短、附可執行的 `code.py`。先讀根目錄新版的 s01–s04（loop、工具、權限、hooks），對照必做題；接著 s05–s08（todo、sub-agent、skills、compaction）、s10（任務系統）、s15（整合 harness）、s16（workflow 與 journal 續跑），對照進階題。章節預設英文，附簡中翻譯（簡中可用[術語表](/reference/glossary/)提到的 OpenCC 轉換）。注意舊版 `docs/` 的章節號和新版不同，不要混用。s11（背景任務）、s12（排程）、s17（goal loop）在 S19 真實 agent 系統與畢業專題的常駐 agent 會用到，現在可以先瀏覽。
+- [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) — 這份路線推薦的實作教材，每章都短、附可執行的 `code.py`。先讀根目錄新版的 s01–s04（loop、工具、權限、hooks），對照必做題；接著 s05–s08（todo、sub-agent、skills、compaction）、s10（任務系統）、s15（整合 harness）、s16（workflow 與 journal 續跑），對照進階題。章節預設英文，附簡中翻譯（簡中可用[術語表](/reference/glossary/)提到的 OpenCC 轉換）。注意舊版 `docs/` 的章節號和新版不同，不要混用。s11（背景任務）、s12（排程）、s17（goal loop）在 S19 真實 agent 系統與畢業專題的常駐 agent 會用到，現在可以先瀏覽。
 - [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) — S0 全局地圖讀過；手寫 loop 時對照它怎麼處理停止條件與錯誤。
-- [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — 第 1 份作業：在開放模型上寫 harness，可以和本站的 A12 手寫 harness 對照。
+- [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — 第 1 份作業：在開放模型上寫 harness，可以和本章的 A12 手寫 harness 對照。
 
 ### 設計原則與工程文章
 
@@ -488,7 +488,7 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 
 - [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) — 簡中；第 4 章（經典範式：ReAct、plan-and-solve、reflection）、第 7 章（自己寫 agent 框架）。
 - [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) — 繁中；harness 8 元件檢查表可以拿來對照自己的實作。偏 Claude Code 生態。
-- [iThome 2026〈AI Agent 上線要想清楚的事：30 天拆解 Harness 的設計取捨〉](https://ithelp.ithome.com.tw/users/20150750/ironman/9868) — 繁中；harness 設計取捨的連載。本站尚未讀過內容，當輔助讀物。
+- [iThome 2026〈AI Agent 上線要想清楚的事：30 天拆解 Harness 的設計取捨〉](https://ithelp.ithome.com.tw/users/20150750/ironman/9868) — 繁中；harness 設計取捨的連載。內容尚未核對，當輔助讀物。
 - [datawhalechina/deepagents-in-action](https://github.com/datawhalechina/deepagents-in-action) — 簡中；第 1 章（從 framework 到 harness）、第 9 章（HITL）、第 11 章（檔案系統權限）。綁 LangChain，適合手寫之後對照框架做法。
 
 </section>

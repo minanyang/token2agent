@@ -9,7 +9,7 @@ sidebar:
   label: S4 Post-training 與 reasoning
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 2 小時　**必做題** 約 10 小時　**進階題** 約 22 小時
 
 **前置**：[S3 Pretraining 與 scaling](/stages/s03-pretraining/)（也會用到 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的 sampling）　**銜接**：→ [S5 推論與 serving](/stages/s05-inference/)；agentic RL 在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)接續
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-Pretraining 出來的 base model 只會「接著寫下去」，不會好好回答問題。這一站回答：怎麼用相對少的資料與算力，把它變成聽指令的助手，再變成會一步步解題的推理模型？主線是三種訓練訊號：理想回答的範例（SFT）、兩個回答的比較（偏好學習）、程式自動對答案（可驗證獎勵的 RL），再加上推論時多花算力換品質。同樣重要的是副作用：reward hacking、sycophancy、遺忘，以及怎麼判斷「模型變好了」是不是真的。
+Pretraining 出來的 base model 只會「接著寫下去」，不會好好回答問題。這一章回答：怎麼用相對少的資料與算力，把它變成聽指令的助手，再變成會一步步解題的推理模型？主線是三種訓練訊號：理想回答的範例（SFT）、兩個回答的比較（偏好學習）、程式自動對答案（可驗證獎勵的 RL），再加上推論時多花算力換品質。同樣重要的是副作用：reward hacking、sycophancy、遺忘，以及怎麼判斷「模型變好了」是不是真的。
 
 ## 學完能
 
@@ -46,7 +46,7 @@ Pretraining 出來的 base model 只會「接著寫下去」，不會好好回�
 
 ### ★ 一個例子走完全程
 
-整站用同一個任務：教一個小模型（例如 Qwen3-0.6B-Base）解小學數學應用題。例題是：
+整章用同一個任務：教一個小模型（例如 Qwen3-0.6B-Base）解小學數學應用題。例題是：
 
 > 一盒鉛筆 12 枝，買了 3 盒，送給同學 7 枝，還剩幾枝？（答案：29）
 
@@ -230,7 +230,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 **Sycophancy**（諂媚）：模型傾向同意使用者、說使用者想聽的話。使用者說「我算出來是 31，對吧？」，模型就附和「對，是 31」。部分原因在偏好資料本身：人在比較回答時，往往給認同自己的回答比較高的分數，偏好學習就把這個傾向放大了。
 
-**容易誤會：reward hacking 代表模型「想作弊」。** 它只是在最佳化你給的分數；分數和目標之間的落差，才是問題所在。這些概念在本站首次出現，[S8 Eval 方法論](/stages/s08-evals/) 的 judge、[S13 Memory 與個人化](/stages/s13-memory/) 的個人化迎合、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 的 agent 最佳化、[S16 安全與治理](/stages/s16-security/) 的安全都會再遇到。
+**容易誤會：reward hacking 代表模型「想作弊」。** 它只是在最佳化你給的分數；分數和目標之間的落差，才是問題所在。這些概念在本章首次出現，[S8 Eval 方法論](/stages/s08-evals/) 的 judge、[S13 Memory 與個人化](/stages/s13-memory/) 的個人化迎合、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 的 agent 最佳化、[S16 安全與治理](/stages/s16-security/) 的安全都會再遇到。
 
 ### ★ 小模型怎麼向大模型學？
 
@@ -419,7 +419,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看原始推導、或想跟著別人一行一行寫程式的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看原始推導、或想跟著別人一行一行寫程式的人，都不是必讀。
 
 ### 跟著寫程式
 

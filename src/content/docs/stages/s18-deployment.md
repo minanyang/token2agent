@@ -9,7 +9,7 @@ sidebar:
   label: S18 部署與架構
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 1.5 小時　**必做題** 約 7 小時　**進階題** 約 17 小時
 
 **前置**：[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（eval 與 trace）；會用到 [S16 安全與治理](/stages/s16-security/)的威脅模型與 [S17 產品與 AI UX](/stages/s17-ai-ux/) 講的介面狀態與回饋（不必先做進階題 A17 完整前端；[代號說明](/guide/how-to-use/#代號怎麼讀)）；推論相關的模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
@@ -23,9 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-只有你自己在用的 demo，和給多人用的服務，差別不在模型，而在模型周圍的工程。這站回答：筆記助理要開放給 100 個人用時，每個請求要經過哪些關卡、每個月要花多少錢、怎麼改 prompt 才不會把線上弄壞、品質悄悄變差時怎麼發現。
+只有你自己在用的 demo，和給多人用的服務，差別不在模型，而在模型周圍的工程。這章回答：筆記助理要開放給 100 個人用時，每個請求要經過哪些關卡、每個月要花多少錢、怎麼改 prompt 才不會把線上弄壞、品質悄悄變差時怎麼發現。
 
-排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後，是因為 eval 把關的發布流程需要那一站建立的 eval 與 trace。本站同時會出現兩個「CI」：統計上的信賴區間（confidence interval）一律寫「信賴區間」，「CI」只指持續整合（CI/CD）。
+排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後，是因為 eval 把關的發布流程需要那一章建立的 eval 與 trace。本章同時會出現兩個「CI」：統計上的信賴區間（confidence interval）一律寫「信賴區間」，「CI」只指持續整合（CI/CD）。
 
 ## 學完能
 
@@ -40,7 +40,7 @@ sidebar:
 
 先看全貌。上線後的系統可以分成三塊。第一塊是**請求路徑**：每個請求進來後，先確認是誰、還有沒有額度、該用哪個模型，再去檢索與呼叫模型，每一步都留下 trace。第二塊是**成本與容量**：選哪個模型、快取、自架還是用 API、同時多少人在用時會撐不住。第三塊是**變更與事故**：改 prompt 也是部署，要經過 eval 把關、逐步放量、能快速回滾，並在線上持續監控品質。
 
-整站用同一個例子：筆記助理開放給多位使用者（小林從 S6 LLM API 與應用基本功就登場，是其中一位租戶），每個人有自己的筆記與記憶。
+整章用同一個例子：筆記助理開放給多位使用者（小林從 S6 LLM API 與應用基本功就登場，是其中一位租戶），每個人有自己的筆記與記憶。
 
 <figure>
 <svg viewBox="0 0 360 310" width="360" style="max-width:100%;height:auto;display:block;margin:0 auto" role="img" aria-label="筆記助理的請求路徑：使用者送出問題，經過驗證身分、配額與限流、路由選模型、檢索與模型呼叫，最後串流回應；每一步都寫入 trace" font-size="13" fill="currentColor">
@@ -471,7 +471,7 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看完整架構、真實事故或原始論文的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看完整架構、真實事故或原始論文的人，都不是必讀。
 
 ### 架構與上線全貌
 
@@ -483,7 +483,7 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 
 ### 真實事故
 
-- [Anthropic: A postmortem of three recent issues](https://www.anthropic.com/research/a-postmortem-of-three-recent-issues)（2025-09-17）— 講義摘要的原文，完整看品質下降怎麼躲過 eval，對照本站的監控與事故處理。
+- [Anthropic: A postmortem of three recent issues](https://www.anthropic.com/research/a-postmortem-of-three-recent-issues)（2025-09-17）— 講義摘要的原文，完整看品質下降怎麼躲過 eval，對照本章的監控與事故處理。
 - [Anthropic: An update on Claude Code quality reports](https://www.anthropic.com/research/april-23-postmortem)（2026-04-23）— 講義摘要的原文，看 prompt 與設定改動如何疊加成品質問題。
 
 ### 原始論文與基礎設施

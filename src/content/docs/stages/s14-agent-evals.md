@@ -9,7 +9,7 @@ sidebar:
   label: S14 Agent eval、資料與最佳化
 ---
 
-:::note[這一站]
+:::note[這一章]
 **⏱ 講義** 首次閱讀約 3 小時，手算與深入內容約 3 小時　**必做題** 約 12 小時　**進階題** 約 26 小時
 
 **前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）　**銜接**：→ [S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-S8 Eval 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用了最小的 agent eval。這一站處理 agent 評估真正難的地方：要看整條軌跡而不只最後答案、同一題每次結果都不同、對話型 agent 需要有人扮演使用者、連機器資源這類環境設定都能讓分數差好幾個百分點。學會做出可信的評估之後，下半站學讓 agent 變好的方法：從 trace 找失敗、接成 data flywheel、自動最佳化 prompt、蒸餾小型 router，以及用 ablation 檢驗 harness 元件。到了 S15 Multi-agent，要不要用 multi-agent，就靠這一站的 eval 決定。
+S8 Eval 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用了最小的 agent eval。這一章處理 agent 評估真正難的地方：要看整條軌跡而不只最後答案、同一題每次結果都不同、對話型 agent 需要有人扮演使用者、連機器資源這類環境設定都能讓分數差好幾個百分點。學會做出可信的評估之後，本章後半學讓 agent 變好的方法：從 trace 找失敗、接成 data flywheel、自動最佳化 prompt、蒸餾小型 router，以及用 ablation 檢驗 harness 元件。到了 S15 Multi-agent，要不要用 multi-agent，就靠這一章的 eval 決定。
 
 ## 學完能
 
@@ -43,7 +43,7 @@ S8 Eval 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用
 - **Trace / transcript**：一次試跑的完整紀錄，包括每次工具呼叫、參數、結果與最後的回覆（← S6 LLM API 與應用基本功的 tracing）。
 - **Grader**：判斷一次試跑成不成功的程式、judge 或人。
 
-整站沿用 S12 Agent loop 與 harness 必做題的筆記資料夾環境：一個有 20 個 Markdown 筆記的資料夾，其中剛好 6 個含 `TODO`，agent 有 `list_files`、`read_file`、`grep`、`write_file`、`delete_file` 五個工具。可以把它看成貫穿全站的**筆記助理**的簡化版：只有檔案工具，每個任務的結果都能用程式檢查，適合拿來練評估。上面那個 TODO 任務會貫穿各節：先看怎麼評一次試跑，再看怎麼評多次試跑、怎麼讓環境公平。後半講上線後的改進（trace 分群、prompt 最佳化、router）時，例子回到完整的筆記助理（使用者小林）。
+整章沿用 S12 Agent loop 與 harness 必做題的筆記資料夾環境：一個有 20 個 Markdown 筆記的資料夾，其中剛好 6 個含 `TODO`，agent 有 `list_files`、`read_file`、`grep`、`write_file`、`delete_file` 五個工具。可以把它看成貫穿各章的**筆記助理**的簡化版：只有檔案工具，每個任務的結果都能用程式檢查，適合拿來練評估。上面那個 TODO 任務會貫穿各節：先看怎麼評一次試跑，再看怎麼評多次試跑、怎麼讓環境公平。後半講上線後的改進（trace 分群、prompt 最佳化、router）時，例子回到完整的筆記助理（使用者小林）。
 
 ### ★ Agent 品質要看哪幾面？
 
@@ -248,7 +248,7 @@ Ablation 是一次拿掉一個 harness 元件，用同一組任務、相同試�
 
 ### ○ 能直接訓練 agent 嗎？
 
-也可以直接訓練 agent：用成功的軌跡做 SFT，或用 RL 讓模型在環境中學會使用工具，例如 [Search-R1](https://arxiv.org/abs/2503.09516)（Jin et al. 2025）用 RL 訓練模型在推理中呼叫搜尋（← S4 Post-training 與 reasoning 的 GRPO / RLVR）。這一站的環境式評估同時也是 RL 的訓練環境：grader 就是 reward，所以上面講的 reward hacking 在訓練時會更嚴重。這需要 GPU 與 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）的基礎，是選修。STaR、ADAS 這類 self-improvement 方法，以及在多條軌跡間搜尋的 tree search，可以從 [Stanford CS329A](https://cs329a.stanford.edu/) 開始看。
+也可以直接訓練 agent：用成功的軌跡做 SFT，或用 RL 讓模型在環境中學會使用工具，例如 [Search-R1](https://arxiv.org/abs/2503.09516)（Jin et al. 2025）用 RL 訓練模型在推理中呼叫搜尋（← S4 Post-training 與 reasoning 的 GRPO / RLVR）。這一章的環境式評估同時也是 RL 的訓練環境：grader 就是 reward，所以上面講的 reward hacking 在訓練時會更嚴重。這需要 GPU 與 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）的基礎，是選修。STaR、ADAS 這類 self-improvement 方法，以及在多條軌跡間搜尋的 tree search，可以從 [Stanford CS329A](https://cs329a.stanford.edu/) 開始看。
 
 </section>
 
@@ -389,21 +389,21 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
    </details>
 
 :::tip[走應用路線的讀者]
-不讀 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 也能完成這一站。想深入的話，現在是選讀它的好時機：這一站的蒸餾、reward hacking 與 agentic RL，在那裡有完整的原理。
+不讀 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 也能完成這一章。想深入的話，現在是選讀它的好時機：這一章的蒸餾、reward hacking 與 agentic RL，在那裡有完整的原理。
 :::
 
 <section class="deep-section">
 
 ## 延伸閱讀
 
-講義已經涵蓋這一站需要的內容。下面的資料適合想看原始實例、論文細節或更多課程的人，都不是必讀。
+講義已經涵蓋這一章需要的內容。下面的資料適合想看原始實例、論文細節或更多課程的人，都不是必讀。
 
 ### 官方文章與實務指南
 
 - [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)（2026-01-09）— task / trial / grader / transcript / outcome 的定義、pass@k vs pass^k、隔離與平衡、「讀 transcript」，附更多實際案例。
 - [Anthropic: Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise)（2026-02-05）— 資源設定如何改變分數的完整實驗，以及報告方式。
 - [Anthropic: Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp)（2026-03-06）— 模型認出 benchmark 並去找答案的實際紀錄。
-- [OpenAI: Why we no longer evaluate SWE-bench Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)（2026-02-23）— benchmark 退場的理由。本站只透過搜尋結果與轉述確認內容，頁面擋自動擷取。
+- [OpenAI: Why we no longer evaluate SWE-bench Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)（2026-02-23）— benchmark 退場的理由。只透過搜尋結果與轉述確認內容，頁面擋自動擷取。
 - [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（2026-09）— 讀 agentic workflows 與 multi-step workflows 兩題，以及抽樣方法表。
 - [Kaggle: Agent Quality](https://www.kaggle.com/whitepaper-agent-quality)（2025-11）— 四支柱、outside-in、軌跡評估、agent-as-a-judge、可觀測性的完整版。偏 Google 生態。
 - [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) — agent 評估與 agent ops。
@@ -425,7 +425,7 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 - [Stanford CS 329Z](https://cs329z.stanford.edu/) — L9（最佳化）、L10（Terminal-Bench）、L11–L12（agent 資料）、L13（評估與 benchmark 設計）、L15（judge 與評估基礎設施）、L16（SWE-bench）；L15、L16 的投影片公開後再讀。
 - [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — 第 2 份作業（agent 軌跡評估）、第 3 份作業（REINFORCE / GRPO 的 agent RL 訓練）。
 - [Stanford CS329A Self-Improving AI Agents](https://cs329a.stanford.edu/) — verifier、test-time compute、self-improvement。
-- [Berkeley Advanced LLM Agents Sp25](https://rdi.berkeley.edu/adv-llm-agents/sp25) — 講座系列，錄影公開；本站只核對過講題與讀物清單。
+- [Berkeley Advanced LLM Agents Sp25](https://rdi.berkeley.edu/adv-llm-agents/sp25) — 講座系列，錄影公開；只核對過講題與讀物清單。
 - GAIA、Terminal-Bench、TheAgentCompany 等其他 agent benchmark：讀之前先套用講義的 benchmark hygiene 三個問題。
 
 ### 中文資源
