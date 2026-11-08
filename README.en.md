@@ -20,8 +20,8 @@ Read it at **[token2agent.com](https://token2agent.com)**.
 
 <a href="https://token2agent.com">
 <picture>
-<source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.gif">
-<img alt="Token2Agent home page: the title is generated token by token while an agent run log steps through the roadmap" src=".github/assets/hero-light.gif">
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-ids-fast-dark.gif">
+<img alt="Token2Agent home page: each token of the title and tagline shows its token id in turn while an agent run log steps through the roadmap" src=".github/assets/hero-ids-fast-light.gif">
 </picture>
 </a>
 
