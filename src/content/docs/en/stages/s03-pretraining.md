@@ -96,9 +96,9 @@ Jaccard similarity = shared shingles ÷ all distinct shingles = 3 ÷ 7 ≈ 0.43.
 
 - **Why the chance of matching minimums is the Jaccard similarity**: order all the shingles in A ∪ B by the same random hash. Which shingle comes out smallest is random. A and B have the same minimum if and only if the minimum of the whole union is a shared shingle, which has probability |A ∩ B| ÷ |A ∪ B|.
 - **Estimation error**: each hash function is one "same or different" trial, so the standard error is about √(J(1−J)/k). At J = 0.43 and k = 128 that's about 0.044. A larger k is more accurate, but the signature gets longer.
-- **Where the hash functions come from**: a common approach is to hash each shingle string to a 32-bit integer x, then compute `(a·x + b) mod p` with k random pairs (a, b) (p a prime larger than 2³²), giving k different hashes.
+- **Where the hash functions come from**: a common approach is to hash each shingle string to a 32-bit integer x, then compute `(a·x + b) mod p` with k random pairs (a, b) (p a prime larger than 2³²), giving k different hashes. a·x can reach 2⁶⁴, beyond the 2⁵³ a JavaScript number can represent exactly, so in TypeScript compute it with BigInt.
 - **LSH candidate probability**: the chance that all r values in a band match is J^r, and the chance that at least one of b bands matches is 1 − (1 − J^r)^b. This curve is S-shaped, with its threshold at about (1/b)^(1/r). For 32 × 4 the threshold is about 0.42: about 87% of pairs with Jaccard 0.5 become candidates, but only about 5% of pairs with Jaccard 0.2. For 16 × 8 it's about 0.71, and only about 6% of pairs at Jaccard 0.5 become candidates. Choose b and r to match your similarity threshold.
-- **At scale**: real pipelines compute signatures, then bucket documents using each band's values as a key, and only compare documents in the same bucket. The whole process can run distributed on Spark or DuckDB.
+- **At scale**: real pipelines compute signatures, then bucket documents using each band's values as a key, and only compare documents in the same bucket. The whole process can run distributed on Spark; if the data fits on one machine, DuckDB works too.
 
 </details>
 
@@ -212,7 +212,7 @@ When a model is too big for one GPU, or training is too slow, you split the work
 
 Large training runs usually combine several of these: tensor parallel within a machine, pipeline and data parallel (plus ZeRO) across machines.
 
-**Common misconception: double the GPUs, double the speed.** Every way of splitting needs to move data between GPUs, and the more GPUs, the larger the share of time spent communicating. ZeRO saves memory but doesn't make computation faster; it actually adds communication. These tradeoffs come back on the inference side too (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
+**Common misconception: double the GPUs, double the speed.** Every way of splitting needs to move data between GPUs, and the more GPUs, the larger the share of time spent communicating. ZeRO saves memory, but the computation per step stays the same; the saved memory can go to a larger batch, which may raise throughput, while Stage 3 adds communication. These tradeoffs come back on the inference side too (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
 
 <details class="deep">
 <summary>Going deeper: communication, the three ZeRO stages, and pipeline idle time</summary>
@@ -288,7 +288,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 - N and D for step 7, with the working.
 
 **Hints**
-- TypeScript: you can implement the hash yourself (e.g. a set of random parameters for `(a·x + b) mod p` on 32-bit integers); no packages needed.
+- TypeScript: you can implement the hash yourself (e.g. a set of random parameters for `(a·x + b) mod p` on 32-bit integers); no packages needed. `a·x` exceeds `Number.MAX_SAFE_INTEGER`, and computing it with number silently gives wrong results, so use BigInt; compare number and BigInt results on one input to confirm.
 - Python: write it yourself first, then compare against the `datasketch` package.
 - If you get stuck:
   - Reread: [How is training data prepared?](#-how-is-training-data-prepared) (including the candidate probability formula in the expandable section), [One budget, end to end](#-one-budget-end-to-end) (step 7 of the core exercise uses its step 1)
@@ -375,7 +375,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
    <details class="hint">
    <summary>Hint</summary>
 
-   **Key point**: plain data parallel stores a full copy of the state on every GPU; ZeRO shards the optimizer state, gradients and weights, trading more communication for memory. Computation doesn't get faster. **Common mistake**: thinking ZeRO also speeds up training. **Reread**: [What if one GPU is not enough?](#-what-if-one-gpu-is-not-enough)
+   **Key point**: plain data parallel stores a full copy of the state on every GPU; ZeRO shards the optimizer state, gradients and weights, removing the duplicate copies. Stages 1 and 2 communicate about as much as plain data parallel; Stage 3 needs about half again as much. Computation per step stays the same, and the saved memory can go to a larger batch, which may raise throughput. **Common mistake**: thinking ZeRO itself reduces computation. **Reread**: [What if one GPU is not enough?](#-what-if-one-gpu-is-not-enough)
 
    </details>
 

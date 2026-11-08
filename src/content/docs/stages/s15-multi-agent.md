@@ -16,7 +16,7 @@ sidebar:
 :::tip[理解路線重點]
 - 預設一個 agent 就夠；像筆記助理分查三個城市這種互不依賴的工作，才值得拆。
 - 分到工作的 agent 只知道交接時寫給它的內容，漏寫的它就不知道。
-- 多個 agent 一定更花錢，只有在評測上確實贏過一個 agent 才保留。
+- 多個 agent 通常更花錢（多半是因為做了更多事），只有在評測上確實贏過一個 agent 才保留。
 :::
 
 ## 在做什麼
@@ -127,7 +127,7 @@ Anthropic 的研究系統是一個具體例子：lead agent 規劃研究方向�
 
 ### ★ 多 agent 要多花多少錢？
 
-多 agent 平行花更多 token，品質可能更好，帳單一定更高。所以每次都要兩個數字一起看：品質提升多少、成本放大多少。
+多 agent 平行花更多 token，品質可能更好，帳單通常更高，多半是因為搜得更多（見下面的例子）。所以每次都要兩個數字一起看：品質提升多少、成本放大多少。
 
 Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 token，multi-agent 系統約 15 倍。兩個數字的基準都是聊天；換算成「多 agent 相對單一 agent」，大約是 15 ÷ 4 ≈ 3.75 倍。同一篇文章報告，Opus 4 當 lead、Sonnet 4 當 sub-agent 的多 agent 系統，在他們內部的研究 eval 上比單一 Opus 4 agent 高 90.2%；但這是在特別適合平行的研究任務上、用他們自己的 eval 量到的結果。
 
@@ -193,7 +193,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 1. **跑之前**寫下可以接受的成本倍數上限（多 agent ÷ 單一 agent），以及預期多 agent 贏在哪裡。事後才定上限，很容易替結果找理由。
 2. 兩個版本跑同一組題目、同一個模型、同樣的工具，每題多跑幾次。
-3. 只有在品質差值的 95% 信賴區間不包含 0、**且**成本倍數在上限內，才保留 multi-agent（信賴區間 ← [S8 Eval 方法論](/stages/s08-evals/)）。
+3. 只有在品質差值（多 agent − 單一 agent）的 95% 信賴區間整個大於 0、**且**成本倍數在上限內，才保留 multi-agent（信賴區間 ← [S8 Eval 方法論](/stages/s08-evals/)）。
 
 用筆記助理舉兩個示意結果，事先寫下的成本上限都是 2 倍：
 
@@ -253,7 +253,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 **目標**：在同一組任務上公平比較單一 agent 與 orchestrator-worker，用品質、token、延遲三個數字決定要不要用多 agent。
 
 **步驟**
-1. 用 [MultiHop-RAG](https://huggingface.co/datasets/yixuantt/MultiHopRAG)（Tang & Yang 2024；2023 年的英文新聞，`corpus.json` 609 篇文章、`MultiHopRAG.json` 2,556 題，ODC-BY 授權）。用固定的亂數種子挑 10 題 `evidence_list` 來自 3 篇以上不同文章的題目；語料是這 10 題的全部證據文章，再隨機補足到 50 篇（想更難可以直接用全部 609 篇）。符合條件的題目中，同一個標準答案很集中（例如很多題的答案都是同一個人），挑題時同一個 `answer` 最多取 1 題。每題的「好答案必須包含的要點」清單 = 標準答案 `answer`，加上每篇證據文章的 `fact` 欄位。開始跑之前，寫下你可以接受的成本倍數上限（多 agent ÷ 單一 agent）。
+1. 用 [MultiHop-RAG](https://huggingface.co/datasets/yixuantt/MultiHopRAG)（Tang & Yang 2024；2023 年的英文新聞，`corpus.json` 609 篇文章、`MultiHopRAG.json` 2,556 題，ODC-BY 授權）。用固定的亂數種子挑 10 題 `evidence_list` 來自 3 篇以上不同文章的題目；語料是這 10 題的全部證據文章，再隨機補足到 50 篇（想更難可以直接用全部 609 篇）。符合條件的題目中，同一個標準答案很集中（例如很多題的答案都是同一個人），挑題時同一個 `answer` 最多取 1 題。每題的「好答案必須包含的要點」清單 = 標準答案 `answer`，加上你從各篇證據的 `fact` 欄位中挑出、回答這題真正需要的事實。`fact` 是從文章抽出的句子，有些只是背景：例如答案是 Amazon 的那題，其中一條是賣家對平台的評論，答對問題用不到它，就不列為要點。評分前先把清單固定下來。開始跑之前，寫下你可以接受的成本倍數上限（多 agent ÷ 單一 agent）。
 2. 單一 agent 版本：用一個 agent loop（← S12 Agent loop 與 harness），給它 `search`、`read_document` 兩個工具。
 3. Orchestrator-worker 版本：orchestrator 把問題拆成 2–4 個子問題，每個 worker 在自己的 context 中用同樣的工具研究，回傳 1,000 token 以內的摘要；orchestrator 彙整成答案。兩個版本用同一個模型、同樣的工具。
 4. 每個版本每題跑 3 次。記錄總 token（包含所有 worker）、實際耗時（wall-clock time）、成本。
@@ -264,7 +264,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 - 一張對照表：兩個版本的平均要點涵蓋率（附 95% 信賴區間）、平均總 token、平均延遲、平均成本。
 - 算出多 agent / 單一 agent 的 token 倍數，和上面從 Anthropic 數字換算的約 3.75 倍比較（不要直接和相對聊天的 15 倍比），說明差異可能的原因。
 - 多 agent 版本讀過的失敗執行（最多 3 條；不足 3 條就是全部失敗執行）都有 MAST 類別標記與一句說明；完全沒有失敗時，寫明 0 次失敗。
-- 一段結論：只有在涵蓋率差值的信賴區間不包含 0、**且**成本倍數在第 1 步寫下的上限內，才寫「保留 multi-agent」。
+- 一段結論：只有在涵蓋率差值（多 agent − 單一 agent）的信賴區間整個大於 0、**且**成本倍數在第 1 步寫下的上限內，才寫「保留 multi-agent」。
 
 **提示**
 - TypeScript：沿用 agent loop（← S12 Agent loop 與 harness）；worker 用 `Promise.all` 平行跑，每個 worker 一個獨立的 messages 陣列。

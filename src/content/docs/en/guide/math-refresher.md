@@ -98,6 +98,7 @@ ci = (results[0.025 * B], results[0.975 * B])
 
 **When it doesn't apply**:
 - With too few questions (say fewer than 20), the interval isn't reliable. Just say "the sample is too small" instead of reporting a number that looks precise.
+- When a pass rate is all correct or all wrong (or close to it), every resample gives the same result and the interval collapses to a point: 50 out of 50 correct gives [100%, 100%]. The true pass rate is still uncertain, so use a Wilson interval instead: for 50 out of 50, the 95% interval is about [92.9%, 100%].
 - When questions aren't independent (for example, one conversation split into several questions), resample whole groups together, not individual questions.
 
 **Used in**: [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (comparing N = 1 vs. N = 8), [S8 Eval Methodology](/en/stages/s08-evals/) (judge pass rates), [S9 Retrieval and RAG](/en/stages/s09-rag/) (Recall@k), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/).

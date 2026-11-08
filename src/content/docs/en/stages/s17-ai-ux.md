@@ -180,7 +180,7 @@ The judge in S8 Eval Methodology is for offline evaluation. Each live answer nee
 
 - **Self-consistency**: run the same question 2–3 times and check whether the answers agree; downgrade if they don't. The cost is 2–3× the calls.
 - **Online judge**: run the judge you calibrated in S8 Eval Methodology on every answer. This adds both latency and cost.
-- **Citation coverage**: the share of sentences supported by sources (← the citation metrics in S9 Retrieval and RAG). Adds almost no cost, and suits RAG-style answers best.
+- **Citation coverage**: the share of sentences supported by sources (← the citation metrics in S9 Retrieval and RAG). Adds almost no cost, and suits RAG-style answers best. But a citation doesn't mean the source actually supports the sentence, so spot-check it with citation precision from S9 Retrieval and RAG.
 
 Once you've picked a signal, compute accuracy per group on the golden set, the same way as the 150 / 50 split above. Confirm that higher levels mean higher accuracy before you display them. This is step 0 of the advanced exercise, A17 Complete Frontend ([how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)).
 
@@ -327,7 +327,7 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 
 **Steps**
 
-0. **Prerequisite: a per-answer uncertainty signal**. The judge from A8 Error Analysis and Golden Set is for offline evaluation; none of the earlier system project steps produced an uncertainty signal for each live answer, and Claude's API doesn't return logprobs. If you don't have one yet, add one: for example self-consistency (run the same question 2–3 times and check whether the answers agree), running the same judge online on every answer, or citation coverage (the share of sentences supported by sources, ← S9 Retrieval and RAG). Confirm on the golden set that the signal's levels track accuracy before you display it.
+0. **Prerequisite: a per-answer uncertainty signal**. The judge from A8 Error Analysis and Golden Set is for offline evaluation; none of the earlier system project steps produced an uncertainty signal for each live answer, and Claude's API doesn't return logprobs. If you don't have one yet, add one: for example self-consistency (run the same question 2–3 times and check whether the answers agree), running the same judge online on every answer, or citation coverage (the share of sentences supported by sources, ← S9 Retrieval and RAG; a citation isn't necessarily correct, so spot-check citation precision first). Confirm on the golden set that the signal's levels track accuracy before you display it.
 1. Connect the core exercise's state machine to your real agent (← S12 The Agent Loop and Harness). Every tool has a matching component, and at least 2 tools use generative UI (structured cards, not JSON strings).
 2. **Citations** (← S9 Retrieval and RAG): every citation in an answer can be clicked to jump to the matching passage in the original source; sentences with no source are marked with a different style.
 3. **Uncertainty** (← S8 Eval Methodology): based on the signal from step 0, show three or fewer levels; when the system chooses not to answer (abstention), give the reason.
@@ -341,7 +341,7 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 - 2 usability test records, each with ≥ 3 tasks, recording completion, time and problems; at least 1 task has a before/after comparison of completion time or success rate.
 - 100% of feedback events generated during testing can be mapped to a trace.
 - Export ≥ 10 labeled cases from the reviewer UI to the eval dataset (← S14 Agent Evals, Data and Optimization), and actually run that eval once.
-- Hitting stop in any state never leaves a "Running" component behind and never lets the backend keep running a tool (test at 5 random moments; 5/5 pass).
+- Hitting stop in any state starts no new tools; tools already running get a cancel request and move to `cancelling`, then to `completed`, `cancelled` or `failed` once the result is verified; no "Running" component is left behind (test at 5 random moments, 5/5 pass, at least once while an email is being sent).
 
 The notes assistant as an example: note search results show as note cards you can open; "Summarize this week's meeting notes and email the summary to the team" first shows the draft and recipients for the user to confirm; when the user rewrites half of the AI draft, that edit distance is one piece of implicit feedback.
 

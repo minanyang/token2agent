@@ -309,7 +309,7 @@ The first: prefill about 0.64 seconds + decode 200 × 16 ms = 3.2 seconds, about
 **Hints**
 - TypeScript: call Ollama's HTTP API with `fetch`; the calculator itself needs no packages.
 - Python: `requests` or the `ollama` package; read `config.json` with `json`.
-- Ollama's [API](https://docs.ollama.com/api/usage) returns `prompt_eval_count`, `prompt_eval_duration`, `eval_count` and `eval_duration` (in nanoseconds). Note that `prompt_eval_duration` only counts prompt tokens that weren't cached, so change the prompt a little each run.
+- Ollama's [API](https://docs.ollama.com/api/usage) returns `prompt_eval_count`, `prompt_eval_duration`, `eval_count` and `eval_duration` (in nanoseconds). Note that `prompt_eval_duration` only counts prompt tokens that weren't cached, and `prompt_eval_cached_count` is how many were read from the cache. When measuring prefill, put the part that changes (for example a random string) at the **start** of the prompt: if you only change the end, the whole beginning still hits the cache. Check that `prompt_eval_cached_count` is 0 each run.
 - When using Ollama, raise the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)): the default may be only 4K, and the 4K and 8K prompts in step 5 will definitely hit it.
 - Look up memory bandwidth in the official specs: for Apple Silicon it's on each model's tech specs page, for NVIDIA in the GPU's datasheet.
 - For quantized models (such as Ollama's default 4-bit), a parameter isn't 2 bytes; convert accordingly when computing the limit.

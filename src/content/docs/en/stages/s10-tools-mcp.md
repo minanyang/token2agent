@@ -202,7 +202,7 @@ They communicate with JSON-RPC (a message format of "method name + parameters �
 
 **Back to the round trip.** With MCP, step 3, "your code runs the tool," becomes: the client first gets the tool list (names, descriptions, schemas) from the server with `tools/list`, and the host puts it into the `tools` sent to the model; when the model returns `tool_use`, the client sends `tools/call` (tool name + arguments) to the server, the server runs it and returns the result, and the host wraps it as a `tool_result` and sends it back to the model. Nothing changes on the model's side; it doesn't know whether MCP is behind a tool.
 
-A server can be a local subprocess (stdio transport, used in the core exercise) or a remote service (Streamable HTTP transport, authorized with OAuth: a standard flow where, once the user consents, an authorization server issues a credential to the client). Over HTTP, the token the client gets (an authorization credential, not a text token) is issued for this one server only, and the server **must not pass it on to downstream services**: passing it on means the downstream service accepts a credential that wasn't issued to it, bypassing its own authorization checks (→ S16 Security and Governance). The spec changed substantially in the 2026-07-28 version; see the expandable section below.
+A server can be a local subprocess (stdio transport, used in the core exercise) or a remote service (Streamable HTTP transport). Authorization is optional in the spec; when a remote server needs it, the spec defines an OAuth flow: a standard flow where, once the user consents, an authorization server issues a credential to the client. With OAuth, the token the client gets (an authorization credential, not a text token) is issued for this one server only, and the server **must not pass it on to downstream services**: passing it on means the downstream service accepts a credential that wasn't issued to it, bypassing its own authorization checks (→ S16 Security and Governance). The spec changed substantially in the 2026-07-28 version; see the expandable section below.
 
 **Common misconception: MCP connects the model directly to external systems.** The model still only outputs `tool_use`; MCP is the wiring between the host and tool servers. Risk levels, human approval and the egress allowlist all happen at the host and server ends; MCP itself doesn't do them for you. When you connect a third-party MCP server, its tool descriptions and returned content also enter your context, so you have to assess separately how far to trust it (→ S16 Security and Governance).
 
@@ -212,7 +212,7 @@ A server can be a local subprocess (stdio transport, used in the core exercise) 
 | Transport | Where the server runs | Good for | Credentials |
 |---|---|---|---|
 | **stdio** | A local subprocess, exchanging messages over standard input and output | Local tools, e.g. reading a local notes folder | Read directly from environment variables |
-| **Streamable HTTP** | Remote, over HTTP | Services shared by many users | The OAuth authorization flow in the spec |
+| **Streamable HTTP** | Remote, over HTTP | Services shared by many users | Optional; when needed, the OAuth flow in the spec |
 
 The old HTTP+SSE transport is deprecated.
 

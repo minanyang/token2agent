@@ -125,7 +125,7 @@ The same data can be reported as 100%, 67% or 33%. When you report, always state
 
 The gap grows with k. Assuming independent trials and a per-trial success rate of 0.8: pass@3 = 1 − 0.2³ = 0.992, pass^3 = 0.8³ = 0.512. The same agent looks nearly perfect by pass@3 and only a bit better than a coin flip by pass^3.
 
-With few trials, these numbers are very uncertain. A success rate from 15 tasks × 5 trials needs a bootstrap confidence interval (← S8 Eval Methodology). When comparing two versions, run both on the same tasks and check whether the interval of the paired difference contains 0, rather than seeing which point estimate is bigger. **Common misconception: a high pass@k means the agent is reliable.** Task C counts as a "success" under pass@5, but in 4 out of 5 trials the user got an agent that deleted the wrong file or guessed blindly.
+With few trials, these numbers are very uncertain. A success rate from 15 tasks × 5 trials needs a bootstrap confidence interval (← S8 Eval Methodology). When comparing two versions, run both on the same tasks and look at the interval of the paired difference: entirely above 0 means the new version is better, entirely below 0 means it's worse, and if it contains 0 you can't tell them apart. Don't just see which point estimate is bigger. **Common misconception: a high pass@k means the agent is reliable.** Task C counts as a "success" under pass@5, but in 4 out of 5 trials the user got an agent that deleted the wrong file or guessed blindly.
 
 <details class="deep">
 <summary>Going deeper: estimating pass@k and pass^k from n trials</summary>
@@ -288,7 +288,7 @@ Coding uses pass@3: tests automatically pick out the correct version, the user o
 **Acceptance criteria**
 - 3 rounds, 225 runs in total (2 versions + 1 environment variable × 15 tasks × 5 trials), each with a trace and a grader result.
 - For each round, report the success rate, a 95% bootstrap confidence interval, pass^5, and the success rates for positive and negative cases separately.
-- Comparison of the two versions: report the confidence interval of the success-rate difference; write "A is better than B" only if the interval doesn't contain 0.
+- Comparison of the two versions: report the confidence interval of the success-rate difference (A − B); write "A is better than B" only if the interval is entirely above 0. Entirely below 0 means A is worse; if it contains 0, write that you can't tell them apart.
 - The difference between the environment-variable round and the original (with an interval), written as one line, "infra variables for this eval."
 - The transition failure matrix's cells sum to the number of failures; each of the 10 transcripts you read has a label, and you report how many the grader misjudged.
 
@@ -315,13 +315,13 @@ Coding uses pass@3: tests automatically pick out the correct version, the user o
 2. **Simulated users**: write 3–5 user personas (goal, way of talking, whether they give wrong information), and run at least 20 multi-turn conversations. Read 10 of them, mark where the simulated user doesn't act like a real person, and fix the personas.
 3. **Trace clustering**: cluster the real records you've accumulated since A6 Streaming Chat and Traces, read a few from each cluster, and add newly found failures to the eval.
 4. **Prompt optimization**: pick a subtask (e.g. intent classification or summarization) and run one round with DSPy's MIPROv2 or GEPA; split the data into training and test sets.
-5. **Router distillation**: using the routing decisions prepared in step 0 (at least 200, including the 20 spot-checked ones), train a small classifier to replace strong-model routing.
+5. **Router distillation**: using the routing decisions prepared in step 0 (at least 200, including the 20 spot-checked ones), train a small classifier to replace strong-model routing. First split the routing records into training and test sets (say 80/20), train and tune only on the training set, and report accuracy on the test set.
 6. **Harness ablation**: remove one component from A12 Hand-written Harness and compare on 20 tasks × 5 trials.
 
 **Acceptance criteria**
 - Every change (prompt optimization, router, ablation) has a before/after comparison with a 95% confidence interval.
 - Prompt optimization results are reported on the **test data**, with 3 example outputs each from before and after optimization.
-- Router: accuracy, per-call latency and cost, side by side with the original strong-model routing; point out the category with the most errors.
+- Router: accuracy on the test set, per-call latency and cost, side by side with the original strong-model routing; point out the category with the most errors.
 - The ablation is run twice on different dates, and both runs point the same way; the report states the model version, resource settings and number of trials.
 - A one-page "eval README": where the tasks come from, grader types and calibration results, known variables, and what isn't covered yet.
 

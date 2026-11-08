@@ -340,7 +340,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 **Acceptance criteria**
 - `decode(encode(s)) === s` holds for all 100 test strings from step 7 (including Chinese, emoji, spaces and newlines).
-- The compression ratio rises monotonically with the number of merges; include the four numbers.
+- Measured on the full tiny Shakespeare text, the compression ratio strictly increases with the number of merges; include the four numbers.
 - With temperature → 0 (e.g. 1e-6) and with top_k = 1, all 10,000 samples are the argmax.
 - With temperature = 1 and no top-k / top-p, each index's observed frequency is within 2 percentage points of its softmax probability.
 - With top_p = 0.9, indices outside the nucleus appear 0 times.

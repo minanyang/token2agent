@@ -343,9 +343,9 @@ The core exercise reuses the synthetic texts from [S7 Prompts, Structured Output
 
    Generate the 60 outputs and save them, and commit them together with the code and prompt that produced them.
 2. Open coding: read each output and write one sentence about what's wrong (write OK if nothing is).
-3. Axial coding: group the notes into 3–6 failure categories and count each.
+3. Axial coding: group the notes into failure categories (usually 3–6; use however many the data actually has, don't pad) and count each.
 
-Acceptance criteria: all 60 outputs have an open coding note; ≥ 3 failure categories, each with a count.
+Acceptance criteria: all 60 outputs have an open coding note; failure categories drawn from the notes, each with a count.
 
 **Stage 2: Write a grader** (step 4)
 

@@ -121,7 +121,7 @@ SFT needs someone to write the ideal answer. RL only needs a way to score the an
 
 **PPO**, the algorithm traditionally used for RLHF, trains a separate **value model** to estimate the baseline. The value model is about as big as the model itself, so PPO is memory-hungry.
 
-**KL penalty**: RL for LLMs almost always penalizes the model for drifting too far from a reference model (usually the post-SFT model). Without this constraint, the model may produce weird text the reference model would almost never write, just to score high. **Common misconception: the KL penalty is an optional tweak.** It's actually the main constraint that keeps the model's original language ability. Too small a coefficient and the reward pulls the model off course; too large and it barely learns anything.
+**KL penalty**: RLHF (especially with PPO) almost always penalizes the model for drifting too far from a reference model (usually the post-SFT model). Without this constraint, the model may produce weird text the reference model would almost never write, just to score high. Some RL with verifiable rewards drops it, such as DAPO later in this chapter. **Common misconception: the KL penalty is an optional tweak.** In RLHF it's actually the main constraint that keeps the model's original language ability. Too small a coefficient and the reward pulls the model off course; too large and it barely learns anything.
 
 <details class="deep">
 <summary>Going deeper: the formulas for policy gradient, PPO and GAE</summary>
@@ -182,7 +182,7 @@ The group mean replaces PPO's value model as the baseline, saving the memory of 
 
 The standard deviation is the population standard deviation. When rewards are only 0 and 1, std = √(fraction correct × fraction wrong), here √(0.625 × 0.375) ≈ 0.484. Check: 5 × 0.775 ≈ 3 × 1.291, so the positives and negatives cancel and the mean is 0. This advantage is applied to every token of the answer: a correct answer is reinforced as a whole, a wrong one is pushed down as a whole.
 
-**A group with equal scores gives no signal.** When all 8 are correct or all wrong, every answer equals the mean, every advantage is 0, and the problem contributes nothing to training. So problems that are too easy or too hard waste compute; problem difficulty has to match the model's current level.
+**A group with equal scores gives no signal.** When all 8 are correct or all wrong, every answer equals the mean, every advantage is 0, and the problem provides no reward signal (with β > 0, only the KL term remains, pulling the model back toward the reference model). So problems that are too easy or too hard waste compute; problem difficulty has to match the model's current level.
 
 **How reasoning models emerged.** DeepSeek-R1-Zero was trained with GRPO directly on a base model, with a reward that looked only at whether the answer was correct and well formatted. During training, answers grew longer and longer, and the model learned on its own to lay out steps, check them, and start over when it found a mistake. Nobody taught it to write this way; writing this way simply made it more likely to be right. A model that "thinks at length before answering" like this is a reasoning model. But this doesn't come automatically with RLVR: you need a strong enough base model, lots of problems at the right difficulty, and a reliable verifier. For small models, distilling from a strong model often works better (see later).
 
@@ -369,7 +369,7 @@ Mean 0.75, std √(0.75 × 0.25) ≈ 0.433. The three correct ones: 0.25 ÷ 0.43
    <details class="hint">
    <summary>Hint</summary>
 
-   **Key point**: every answer equals the group mean, every advantage is 0, so it contributes nothing. **Common mistake**: thinking all-correct gets "reinforced once more." **Reread**: [How are reasoning models trained?](#-how-are-reasoning-models-trained)
+   **Key point**: every answer equals the group mean, every advantage is 0, so there's no signal from the reward; with β > 0, only the KL term still produces an update. **Common mistake**: thinking all-correct gets "reinforced once more." **Reread**: [How are reasoning models trained?](#-how-are-reasoning-models-trained)
 
    </details>
 

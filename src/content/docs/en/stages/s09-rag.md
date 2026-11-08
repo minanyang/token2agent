@@ -362,12 +362,12 @@ The core exercise uses a public document set rather than the notes assistant: an
 2. Build three retrievers: BM25, dense (any embedding model) and hybrid (merged with RRF).
 3. Prepare 50 queries and label all the correct passage IDs for each (usually 1–3): 30 synthesized by an LLM (have it read one section and write a question that section answers), and 20 written by hand the way an ordinary person would ask, without copying the document's wording (for example, with a labor statute: "Do I get paid extra for working on a public holiday?" rather than "wages for work on a holiday shall be paid at double the regular rate").
 4. For each method, compute Recall@5, Recall@10 and MRR (as defined above), with 95% confidence intervals from the bootstrap; report synthetic and handwritten queries separately.
-5. For each method, pick 3 failed queries and explain why they failed.
+5. For each method, pick up to 3 failed queries (if there are fewer, analyze them all) and explain why they failed.
 
 **Acceptance criteria**
 - One table: 3 methods × 3 metrics, each cell with a 95% confidence interval, with synthetic and handwritten queries reported separately.
 - At least 20 of the 50 queries are handwritten, and every query has its correct passage IDs labeled.
-- 3 failure cases with root-cause analysis per method, 9 in total.
+- Up to 3 failure cases with root-cause analysis per method; if a method has fewer, analyze them all and report its total number of failures.
 - One command reruns the entire evaluation from scratch.
 
 **Hints**

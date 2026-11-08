@@ -16,7 +16,7 @@ sidebar:
 :::tip[Concepts route: key points]
 - One agent is the default. Splitting is only worth it for independent work, like the notes assistant researching three cities separately.
 - An agent that's handed a piece of work knows only what the handoff tells it. Whatever you leave out, it doesn't know.
-- Multiple agents always cost more. Keep them only if they really beat one agent on your evals.
+- Multiple agents usually cost more, mostly because they do more work. Keep them only if they really beat one agent on your evals.
 :::
 
 ## What this chapter covers
@@ -127,7 +127,7 @@ Most of the difficulty in this architecture lies in the orchestrator's instructi
 
 ### ★ How much more does multi-agent cost?
 
-Multi-agent spends more tokens in parallel. Quality may be better, and the bill will definitely be higher. So always look at two numbers together: how much quality improves and how much cost grows.
+Multi-agent spends more tokens in parallel. Quality may be better, and the bill is usually higher, mostly because the agents search more (see the example below). So always look at two numbers together: how much quality improves and how much cost grows.
 
 Anthropic's research system reports that agents use about 4 times as many tokens as ordinary chat on average, and multi-agent systems about 15 times. Both numbers use chat as the baseline; converted to "multi-agent relative to single agent," that's about 15 ÷ 4 ≈ 3.75 times. The same article reports that a multi-agent system with Opus 4 as lead and Sonnet 4 as sub-agents scored 90.2% higher than a single Opus 4 agent on their internal research eval; but that's on research tasks especially suited to parallelism, measured with their own eval.
 
@@ -193,7 +193,7 @@ Multi-agent is an assumption that costs money. Whether to keep it depends on two
 
 1. **Before running**, write down the maximum cost multiple you'll accept (multi-agent ÷ single agent), and where you expect multi-agent to win. If you set the cap after the fact, it's easy to rationalize the result.
 2. Run both versions on the same tasks, with the same model and the same tools, several times per task.
-3. Keep multi-agent only if the 95% confidence interval of the quality difference doesn't contain 0 **and** the cost multiple is within the cap (confidence intervals ← [S8 Eval Methodology](/en/stages/s08-evals/)).
+3. Keep multi-agent only if the 95% confidence interval of the quality difference (multi-agent − single agent) is entirely above 0 **and** the cost multiple is within the cap (confidence intervals ← [S8 Eval Methodology](/en/stages/s08-evals/)).
 
 Two illustrative results for the notes assistant, each with a pre-registered cost cap of 2×:
 
@@ -253,7 +253,7 @@ Each sub-agent makes 6 searches plus a summary, 7 calls: 7 × 1,500 + 3,000 × (
 **Goal**: compare a single agent and an orchestrator-worker setup fairly on the same tasks, and decide whether to use multi-agent based on three numbers: quality, tokens and latency.
 
 **Steps**
-1. Use [MultiHop-RAG](https://huggingface.co/datasets/yixuantt/MultiHopRAG) (Tang & Yang 2024; English news from 2023, 609 articles in `corpus.json`, 2,556 questions in `MultiHopRAG.json`, ODC-BY license). With a fixed random seed, pick 10 questions whose `evidence_list` comes from 3 or more different articles; the corpus is all the evidence articles for these 10 questions, topped up at random to 50 articles (for a harder version, use all 609). Among the qualifying questions, the gold answers are heavily concentrated (e.g. many questions share the same person as the answer), so take at most 1 question per distinct `answer`. Each question's checklist of "key points a good answer must include" = the gold `answer` plus the `fact` field of each evidence article. Before running anything, write down the maximum cost multiple you'll accept (multi-agent ÷ single agent).
+1. Use [MultiHop-RAG](https://huggingface.co/datasets/yixuantt/MultiHopRAG) (Tang & Yang 2024; English news from 2023, 609 articles in `corpus.json`, 2,556 questions in `MultiHopRAG.json`, ODC-BY license). With a fixed random seed, pick 10 questions whose `evidence_list` comes from 3 or more different articles; the corpus is all the evidence articles for these 10 questions, topped up at random to 50 articles (for a harder version, use all 609). Among the qualifying questions, the gold answers are heavily concentrated (e.g. many questions share the same person as the answer), so take at most 1 question per distinct `answer`. Each question's checklist of "key points a good answer must include" = the gold `answer` plus the facts you pick from the evidence articles' `fact` fields that are actually needed to answer the question. A `fact` is a sentence extracted from an article, and some are only background: in the question whose answer is Amazon, one of them is a seller's comment about the platform, which you don't need to get the answer right, so it isn't a key point. Fix the checklist before you start grading. Before running anything, write down the maximum cost multiple you'll accept (multi-agent ÷ single agent).
 2. Single-agent version: one agent loop (← S12 The Agent Loop and Harness) with two tools, `search` and `read_document`.
 3. Orchestrator-worker version: the orchestrator splits the question into 2–4 subquestions; each worker researches in its own context with the same tools and returns a summary under 1,000 tokens; the orchestrator merges them into an answer. Both versions use the same model and the same tools.
 4. Run each version 3 times per question. Record total tokens (including every worker), wall-clock time and cost.
@@ -264,7 +264,7 @@ Each sub-agent makes 6 searches plus a summary, 7 calls: 7 × 1,500 + 3,000 × (
 - One comparison table: both versions' average key-point coverage (with 95% confidence intervals), average total tokens, average latency and average cost.
 - Compute the multi-agent / single-agent token multiple and compare it with the roughly 3.75× derived from Anthropic's numbers above (not directly with the 15× relative to chat), explaining possible reasons for the difference.
 - Every multi-agent failed run you read (at most 3; if fewer than 3, all of them) has a MAST category label and a one-sentence explanation; if there were no failures at all, state 0 failures.
-- A conclusion: write "keep multi-agent" only if the confidence interval of the coverage difference doesn't contain 0 **and** the cost multiple is within the cap you wrote down in step 1.
+- A conclusion: write "keep multi-agent" only if the confidence interval of the coverage difference (multi-agent − single agent) is entirely above 0 **and** the cost multiple is within the cap you wrote down in step 1.
 
 **Hints**
 - TypeScript: reuse your agent loop (← S12 The Agent Loop and Harness); run workers in parallel with `Promise.all`, each with its own messages array.
