@@ -1,13 +1,12 @@
 ---
-// Header title: the brand name always, the descriptive part (after 「：」) only when there is room.
+// Header title: the brand name always, the descriptive part (after 「：」 or ": ") only when there is room.
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
-const [brand, ...rest] = siteTitle.split('：');
-const subtitle = rest.join('：');
+const [, brand = siteTitle, separator = '', subtitle = ''] = siteTitle.match(/^(.*?)(：|: )(.*)$/) ?? [];
 ---
 
 <a href={siteTitleHref} class="site-title" translate="no">
 	<img src="/favicon.svg" alt="" width="28" height="28" />
-	<span>{brand}{subtitle && <span class="subtitle">：{subtitle}</span>}</span>
+	<span>{brand}{subtitle && <span class="subtitle">{separator}{subtitle}</span>}</span>
 </a>
 
 <style>

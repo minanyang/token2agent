@@ -5,11 +5,14 @@
 import { getEncoding } from 'js-tiktoken';
 import { LinkButton } from '@astrojs/starlight/components';
 import { stageCount } from '../data/parts';
+import { t } from '../i18n';
 
 // Starlight's skip link targets this id (PAGE_TITLE_ID, not exported).
 const PAGE_TITLE_ID = '_top';
 
-const { data } = Astro.locals.starlightRoute.entry;
+const { entry, lang } = Astro.locals.starlightRoute;
+const { data } = entry;
+const strings = t(lang);
 const { title = data.title, tagline = '', actions = [] } = data.hero || {};
 
 type Token = { text: string; ids: number[] };
@@ -40,16 +43,18 @@ const lineOffsets = taglineLines.map((_, li) => titleTokens.length + taglineLine
 const tokenCount = [titleTokens, ...taglineLines].flat().reduce((n, t) => n + t.ids.length, 0);
 
 // `stage`: the chapter the run has reached at this step (drives the progress strip below the log).
-const runLog = [
-	{ kind: 'plan', text: '20 章、7 個 Part；應用路線從 S0 直接接到 S6' },
-	{ kind: 'tool', text: 'read("S0 全局地圖")', stage: 0 },
-	{ kind: 'observe', text: '看懂 token、模型、應用、agent 怎麼接起來', stage: 0 },
-	{ kind: 'tool', text: 'build("A6 串流聊天介面與 trace")', stage: 6 },
-	{ kind: 'tool', text: 'build("A9 附引用的 RAG")', stage: 9 },
-	{ kind: 'tool', text: 'build("A12 手寫 harness")', stage: 12 },
-	{ kind: 'tool', text: 'build("A18 多使用者部署")', stage: 18 },
-	{ kind: 'done', text: '一個已部署上線、自己每天在用的 agent', stage: 19 },
+// Texts are in src/i18n.ts (runLog), in the same order.
+const runSteps = [
+	{ kind: 'plan' },
+	{ kind: 'tool', stage: 0 },
+	{ kind: 'observe', stage: 0 },
+	{ kind: 'tool', stage: 6 },
+	{ kind: 'tool', stage: 9 },
+	{ kind: 'tool', stage: 12 },
+	{ kind: 'tool', stage: 18 },
+	{ kind: 'done', stage: 19 },
 ];
+const runLog = runSteps.map((step, i) => ({ ...step, text: strings.runLog[i] }));
 
 // Progress strip: one block per chapter. Each block lights up at the first step that reaches it.
 const lastStage = stageCount - 1;
@@ -78,7 +83,7 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 		{taglineRest.length > 0 && <p class="tagline-rest">{taglineRest.join(' ')}</p>}
 		<p class="tok-meta">
 			<span><b>{tokenCount}</b> tokens</span>
-			<span>o200k_base tokenizer · 游標指著看 token id</span>
+			<span>o200k_base tokenizer · {strings.heroTokenHint}</span>
 		</p>
 		{actions.length > 0 && (
 			<div class="actions">
@@ -92,12 +97,12 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 		)}
 	</div>
 
-	<figure class="run" aria-label="把這份路線當成一次 agent 執行">
+	<figure class="run" aria-label={strings.heroRunLabel}>
 		<figcaption>
 			<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
 			<span>token2agent — agent run</span>
 		</figcaption>
-		<p class="prompt"><span class="ps" aria-hidden="true">$</span> agent run --goal "做出能上線的 AI 應用與 agent"</p>
+		<p class="prompt"><span class="ps" aria-hidden="true">$</span> agent run --goal "{strings.heroGoal}"</p>
 		<ol>
 			{runLog.map((l, i) => (
 				<li style={`--i:${i}`}>
@@ -107,7 +112,7 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 			))}
 		</ol>
 		<p class="prompt next" style={`--i:${runLog.length}`} aria-hidden="true"><span class="ps">$</span> <span class="cursor"></span></p>
-		<div class="progress" role="img" aria-label={`進度：S0 到 S${lastStage}`}>
+		<div class="progress" role="img" aria-label={strings.heroProgress(lastStage)}>
 			<p class="progress-label" aria-hidden="true">
 				<span>progress</span>
 				<span class="steps">

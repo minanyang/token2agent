@@ -1,0 +1,182 @@
+---
+// Replaces Starlight's native <select> language picker with a styled menu of plain links (hreflang, no JS
+// navigation). Picking a language also stores it in a cookie, which worker/index.ts reads so a reader who
+// picked 繁體中文 is not sent back to English (and the other way round).
+import { Icon } from '@astrojs/starlight/components';
+
+// Root locale (zh-TW) has no URL prefix; English is under /en/. The 404 page links to each home page.
+const zhPath = /^(\/en)?\/404\/?$/.test(Astro.url.pathname)
+	? '/'
+	: Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+const current = Astro.locals.starlightRoute.lang === 'en' ? 'en' : 'zh-TW';
+
+const languages = [
+	{ lang: 'zh-TW', label: '繁體中文', short: '中文', code: 'zh-TW', href: zhPath },
+	{ lang: 'en', label: 'English', short: 'EN', code: 'en', href: `/en${zhPath}` },
+];
+const active = languages.find((l) => l.lang === current)!;
+---
+
+<t2a-lang-menu class="lang-menu">
+	<button
+		type="button"
+		class="trigger"
+		aria-haspopup="true"
+		aria-expanded="false"
+		aria-label={Astro.locals.t('languageSelect.accessibleLabel')}
+	>
+		<Icon name="translate" class="icon" />
+		<span>{active.short}</span>
+		<Icon name="down-caret" class="caret" />
+	</button>
+	<ul class="menu" role="list" hidden>
+		{
+			languages.map((l) => (
+				<li>
+					<a
+						href={l.href}
+						hreflang={l.lang}
+						lang={l.lang}
+						data-lang={l.lang}
+						aria-current={l.lang === current ? 'true' : undefined}
+					>
+						<span class="label">{l.label}</span>
+						<span class="code">{l.code}</span>
+						{l.lang === current && <Icon name="approve-check" class="check" />}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</t2a-lang-menu>
+
+<script>
+	class LangMenu extends HTMLElement {
+		connectedCallback() {
+			const trigger = this.querySelector<HTMLButtonElement>('.trigger');
+			const menu = this.querySelector<HTMLUListElement>('.menu');
+			if (!trigger || !menu) return;
+
+			const setOpen = (open: boolean) => {
+				menu.hidden = !open;
+				trigger.setAttribute('aria-expanded', String(open));
+			};
+			trigger.addEventListener('click', () => setOpen(menu.hidden));
+			document.addEventListener('click', (e) => {
+				if (!this.contains(e.target as Node)) setOpen(false);
+			});
+			this.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && !menu.hidden) {
+					setOpen(false);
+					trigger.focus();
+				}
+			});
+			for (const link of menu.querySelectorAll<HTMLAnchorElement>('a[data-lang]')) {
+				link.addEventListener('click', () => {
+					document.cookie = `t2a-lang=${link.dataset.lang}; path=/; max-age=31536000; samesite=lax; secure`;
+				});
+			}
+		}
+	}
+	customElements.define('t2a-lang-menu', LangMenu);
+</script>
+
+<style>
+	.lang-menu {
+		position: relative;
+		display: inline-block;
+	}
+	.trigger {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		height: 2rem;
+		padding: 0 0.6rem 0 0.65rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-gray-2);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		cursor: pointer;
+		white-space: nowrap;
+		transition:
+			color 0.15s,
+			border-color 0.15s;
+	}
+	.trigger:hover,
+	.trigger[aria-expanded='true'] {
+		border-color: var(--sl-color-accent);
+		color: var(--sl-color-text-accent);
+	}
+	.trigger :global(.icon) {
+		font-size: 1rem;
+	}
+	.trigger :global(.caret) {
+		font-size: 0.85rem;
+		transition: transform 0.15s;
+	}
+	.trigger[aria-expanded='true'] :global(.caret) {
+		transform: rotate(180deg);
+	}
+	.menu {
+		position: absolute;
+		top: calc(100% + 0.4rem);
+		right: 0;
+		z-index: 10;
+		min-width: 11rem;
+		margin: 0;
+		padding: 0.3rem;
+		list-style: none;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.6rem;
+		background: var(--sl-color-bg-nav);
+		box-shadow: var(--sl-shadow-md);
+	}
+	.menu[hidden] {
+		display: none;
+	}
+	/* In the mobile menu the picker sits at the bottom of the screen, so the menu opens upward. */
+	:global(.mobile-preferences) .menu {
+		top: auto;
+		bottom: calc(100% + 0.4rem);
+	}
+	.menu li {
+		margin: 0;
+	}
+	.menu a {
+		display: grid;
+		grid-template-columns: 1fr auto 1rem;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.4rem 0.6rem;
+		border-radius: 0.4rem;
+		color: var(--sl-color-gray-1);
+		font-size: var(--sl-text-sm);
+		text-decoration: none;
+	}
+	.menu a:hover,
+	.menu a:focus-visible {
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-white);
+	}
+	.menu a[aria-current] {
+		color: var(--sl-color-text-accent);
+		font-weight: 600;
+	}
+	.code {
+		font: var(--sl-text-xs) var(--__sl-font-mono);
+		color: var(--sl-color-gray-3);
+	}
+	.menu :global(.check) {
+		grid-column: 3;
+		font-size: 1rem;
+		color: var(--sl-color-text-accent);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.trigger,
+		.trigger :global(.caret) {
+			transition: none;
+		}
+	}
+</style>
