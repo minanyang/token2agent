@@ -1,0 +1,5 @@
+# Search engines and AI crawlers are welcome; the content is CC BY-NC-SA 4.0.
+User-agent: *
+Allow: /
+
+Sitemap: https://token2agent.com/sitemap-index.xml

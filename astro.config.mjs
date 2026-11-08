@@ -10,13 +10,22 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Token2Agent：AI/LLM 學習路線',
-			description: '從模型原理到 agent 系統、安全、上線與產品的完整學習路線與實作題目。',
+			description: '從 token 到 agent 的 AI/LLM 學習路線。20 站講義，不需要背景知識就能開始；想深入時，每一站都有更進一步的內容。',
+			head: [
+				{ tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } },
+				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://token2agent.com/og.png' } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+				{ tag: 'meta', attrs: { property: 'og:image:alt', content: 'Token2Agent：從 token 到 agent 的 AI/LLM 學習路線' } },
+				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://token2agent.com/og.png' } },
+			],
 			customCss: ['./src/styles/custom.css'],
 			components: {
 				// Adds the 淺顯 / 深入 reading-depth toggle next to the theme picker.
 				ThemeSelect: './src/components/ThemeSelect.astro',
 				Footer: './src/components/Footer.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
+				Head: './src/components/Head.astro',
 			},
 			defaultLocale: 'root',
 			locales: {
