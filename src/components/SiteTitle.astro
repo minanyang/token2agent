@@ -6,7 +6,8 @@ const subtitle = rest.join('：');
 ---
 
 <a href={siteTitleHref} class="site-title" translate="no">
-	{brand}{subtitle && <span class="subtitle">：{subtitle}</span>}
+	<img src="/favicon.svg" alt="" width="28" height="28" />
+	<span>{brand}{subtitle && <span class="subtitle">：{subtitle}</span>}</span>
 </a>
 
 <style>
@@ -19,6 +20,10 @@ const subtitle = rest.join('：');
 		text-decoration: none;
 		white-space: nowrap;
 		min-width: 0;
+		gap: 0.5rem;
+	}
+	img {
+		flex-shrink: 0;
 	}
 	@media (max-width: 50rem) {
 		.subtitle {

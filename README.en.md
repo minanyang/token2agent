@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="public/favicon.svg" alt="" width="88" height="88">
+
 # Token2Agent
 
 The AI/LLM roadmap, from tokens to agents.

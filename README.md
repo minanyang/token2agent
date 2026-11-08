@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="public/favicon.svg" alt="" width="88" height="88">
+
 # Token2Agent
 
 從 token 到 agent 的 AI/LLM 學習路線。
