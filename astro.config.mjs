@@ -14,6 +14,14 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/minanyang/token2agent' }],
 			head: [
 				{ tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } },
+				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true } },
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'stylesheet',
+						href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap',
+					},
+				},
 				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://token2agent.com/og.png' } },
 				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
 				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
@@ -27,6 +35,10 @@ export default defineConfig({
 				Footer: './src/components/Footer.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				Head: './src/components/Head.astro',
+				// Home hero: title and tagline as tokens, next to an agent run log.
+				Hero: './src/components/Hero.astro',
+				// Stage pages: step line and progress strip above the title.
+				PageTitle: './src/components/PageTitle.astro',
 			},
 			defaultLocale: 'root',
 			locales: {

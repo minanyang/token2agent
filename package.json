@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/starlight": "^0.42.10",
     "astro": "^7.3.6",
+    "js-tiktoken": "^1.0.21",
     "sharp": "^0.35.3"
   },
   "devDependencies": {

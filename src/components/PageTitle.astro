@@ -1,0 +1,104 @@
+---
+// Page title. On stage pages (S0–S19) it is preceded by a trace-style step line and a progress strip:
+// one block per stage, filled up to this one, Part II (optional) dashed.
+import { parts, stageCount } from '../data/parts';
+
+// Starlight's skip link targets this id (PAGE_TITLE_ID, not exported).
+const PAGE_TITLE_ID = '_top';
+
+const route = Astro.locals.starlightRoute;
+const match = route.id.match(/^stages\/s(\d+)-/);
+const n = match ? Number(match[1]) : undefined;
+const part = n === undefined ? undefined : parts.find((p) => p.stages.includes(n));
+const optional = new Set(parts.filter((p) => p.optional).flatMap((p) => p.stages));
+const pad = (i: number) => String(i).padStart(2, '0');
+---
+
+{
+	n !== undefined && part && (
+		<div class="step">
+			<p class="step-line">
+				<span>
+					step <b>{pad(n)}</b> / {pad(stageCount - 1)}
+				</span>
+				<span>
+					{part.label} {part.title}
+					{part.optional && '（選修）'}
+				</span>
+			</p>
+			<ol class="strip" aria-label={`第 ${n + 1} 章，共 ${stageCount} 章`}>
+				{Array.from({ length: stageCount }, (_, i) => (
+					<li
+						class:list={{ done: i < n, now: i === n, optional: optional.has(i) }}
+						title={`S${i}`}
+						aria-hidden="true"
+					/>
+				))}
+			</ol>
+		</div>
+	)
+}
+<h1 id={PAGE_TITLE_ID}>{route.entry.data.title}</h1>
+
+<style>
+	h1 {
+		margin-top: 1rem;
+		font-size: var(--sl-text-h1);
+		line-height: var(--sl-line-height-headings);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.step {
+		display: grid;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+	.step + h1 {
+		margin-top: 0.5rem;
+	}
+	.step-line {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		margin: 0;
+		font: var(--sl-text-sm) var(--__sl-font-mono);
+		color: var(--sl-color-gray-3);
+	}
+	.step-line b {
+		color: var(--sl-color-text-accent);
+	}
+	.strip {
+		display: flex;
+		gap: 3px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.strip li {
+		width: 0.7rem;
+		height: 0.7rem;
+		margin: 0;
+		border-radius: 0.15rem;
+		background: var(--sl-color-gray-5);
+	}
+	.strip li.optional {
+		background: transparent;
+		outline: 1px dashed var(--sl-color-gray-4);
+		outline-offset: -1px;
+	}
+	.strip li.done {
+		background: color-mix(in srgb, var(--sl-color-accent) 45%, transparent);
+		outline: none;
+	}
+	/* Part II stays dashed when passed: readers on the application route skip it. */
+	.strip li.optional.done {
+		background: transparent;
+		outline: 1px dashed color-mix(in srgb, var(--sl-color-accent) 60%, transparent);
+		outline-offset: -1px;
+	}
+	.strip li.now {
+		background: var(--sl-color-accent);
+		outline: none;
+		transform: scale(1.25);
+	}
+</style>

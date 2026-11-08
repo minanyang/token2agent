@@ -2,18 +2,7 @@
 // Roadmap overview: one card per stage, alternating left and right of a central spine.
 // Concept chips come from each stage page's "★" h3 headings, so the map stays in sync with the content.
 import { getCollection, render } from 'astro:content';
-
-type Part = { label: string; title: string; stages: number[]; optional?: boolean };
-
-const parts: Part[] = [
-	{ label: 'Part I', title: '全貌', stages: [0] },
-	{ label: 'Part II', title: '模型原理', stages: [1, 2, 3, 4, 5], optional: true },
-	{ label: 'Part III', title: '應用基礎', stages: [6, 7, 8] },
-	{ label: 'Part IV', title: '知識與行動', stages: [9, 10, 11] },
-	{ label: 'Part V', title: 'Agent 系統', stages: [12, 13, 14, 15] },
-	{ label: 'Part VI', title: '可信、產品、上線', stages: [16, 17, 18] },
-	{ label: 'Part VII', title: '綜合實戰', stages: [19] },
-];
+import { parts } from '../data/parts';
 
 const checkpoints = new Set([9, 10, 12, 13]);
 
@@ -131,8 +120,6 @@ const stages = new Map(
 <style>
 	.roadmap {
 		--rm-accent: var(--sl-color-accent);
-		--rm-line: var(--sl-color-gray-4);
-		--rm-chip-bg: var(--sl-color-gray-6);
 		--rm-gap: 3rem;
 		margin-block: 2rem;
 		font-size: var(--sl-text-sm);
@@ -148,21 +135,56 @@ const stages = new Map(
 	.legend > span {
 		white-space: nowrap;
 	}
+	.legend a {
+		color: var(--sl-color-text-accent);
+	}
 	.part {
 		position: relative;
 		padding-block: 0.25rem 0.75rem;
 	}
 	/* Vertical spine between the two card columns. */
-	.part::before {
+	/*
+	 * Spine (::before) and flowing tokens (::after) share one 8px box, so they always round to the same pixels;
+	 * the 2px line is drawn in the middle of that box.
+	 */
+	.part::before,
+	.part::after {
 		content: '';
 		position: absolute;
 		inset-block: 0;
 		left: 50%;
-		border-left: 3px solid var(--rm-accent);
+		width: 8px;
 		transform: translateX(-50%);
+		pointer-events: none;
+	}
+	.part::before {
+		--spine: color-mix(in srgb, var(--rm-accent) 40%, transparent);
+		background: linear-gradient(var(--spine), var(--spine)) center / 2px 100% no-repeat;
 	}
 	.part.optional::before {
-		border-left-style: dashed;
+		background: repeating-linear-gradient(var(--spine) 0 6px, transparent 6px 12px) center / 2px 100% no-repeat;
+	}
+	/* Tokens flowing down the spine: a repeating rounded block, masked so it takes the theme accent. */
+	.part::after {
+		background: var(--rm-accent);
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='96'%3E%3Crect width='8' height='8' rx='2'/%3E%3C/svg%3E")
+			0 0 / 8px 96px repeat-y;
+		animation: token-flow 2.4s linear infinite;
+	}
+	.part.optional::after {
+		opacity: 0.45;
+	}
+	@keyframes token-flow {
+		to {
+			mask-position: 0 96px;
+		}
+	}
+	/* Titles, notes and cards sit above the flowing tokens. */
+	.part-title,
+	.part-note,
+	.part-body > summary,
+	.card {
+		z-index: 1;
 	}
 	.part-title,
 	.part-note,
@@ -176,9 +198,18 @@ const stages = new Map(
 		margin-block: 0.25rem 0.75rem;
 		padding: 0.2rem 0.9rem;
 		border-radius: 999px;
-		border: 1px solid var(--rm-line);
+		border: 1px solid var(--sl-color-gray-5);
 		font-size: var(--sl-text-base);
 		color: var(--sl-color-white);
+	}
+	.part-title::before {
+		content: '';
+		display: inline-block;
+		width: 0.65rem;
+		height: 0.65rem;
+		margin-inline-end: 0.45rem;
+		border-radius: 0.15rem;
+		background: var(--rm-accent);
 	}
 	.part-title span {
 		color: var(--sl-color-gray-3);
@@ -218,9 +249,14 @@ const stages = new Map(
 		flex-direction: column;
 		gap: 0.5rem;
 		padding: 0.6rem 0.75rem;
-		border: 2px solid var(--rm-accent);
+		border: 1px solid var(--sl-color-gray-5);
 		border-radius: 0.6rem;
 		background: var(--sl-color-bg);
+		transition: border-color 0.15s, transform 0.15s;
+	}
+	.card:hover {
+		border-color: var(--rm-accent);
+		transform: translateY(-2px);
 	}
 	.card.left {
 		grid-column: 1;
@@ -236,7 +272,7 @@ const stages = new Map(
 		position: absolute;
 		top: 1.25rem;
 		width: calc(var(--rm-gap) / 2);
-		border-top: 2px dashed var(--rm-line);
+		border-top: 2px dashed var(--sl-color-gray-5);
 	}
 	.card.left::after {
 		left: 100%;
@@ -256,7 +292,7 @@ const stages = new Map(
 		text-decoration: none;
 	}
 	.head:hover .name {
-		color: var(--rm-accent);
+		color: var(--sl-color-text-accent);
 		text-decoration: underline;
 	}
 	.num {
@@ -264,8 +300,7 @@ const stages = new Map(
 		border-radius: 0.3rem;
 		background: var(--rm-accent);
 		color: var(--sl-color-black);
-		font-size: var(--sl-text-xs);
-		font-weight: 700;
+		font: 700 var(--sl-text-xs) var(--__sl-font-mono);
 	}
 	.name {
 		font-weight: 600;
@@ -282,7 +317,7 @@ const stages = new Map(
 		color: var(--sl-color-gray-2);
 	}
 	.shortcut:hover .name {
-		color: var(--rm-accent);
+		color: var(--sl-color-text-accent);
 		text-decoration: underline;
 	}
 	.chips {
@@ -299,19 +334,28 @@ const stages = new Map(
 	.chips a,
 	.chip-demo {
 		display: inline-block;
-		padding: 0.1rem 0.5rem;
-		border-radius: 0.35rem;
-		background: var(--rm-chip-bg);
-		border: 1px dashed var(--rm-line);
+		padding: 0.1rem 0.45rem;
+		border-radius: 0.25rem;
+		background: var(--sl-color-gray-6);
 		color: var(--sl-color-gray-1);
 		text-decoration: none;
 		font-size: var(--sl-text-xs);
 		line-height: 1.5;
 	}
 	.chips a:hover {
-		border-style: solid;
-		border-color: var(--rm-accent);
+		background: var(--sl-color-accent-low);
 		color: var(--sl-color-white);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.part::after {
+			animation: none;
+		}
+		.card {
+			transition: none;
+		}
+		.card:hover {
+			transform: none;
+		}
 	}
 	.tag {
 		display: inline-block;
@@ -334,7 +378,8 @@ const stages = new Map(
 		.roadmap {
 			--rm-gap: 1.5rem;
 		}
-		.part::before {
+		.part::before,
+		.part::after {
 			left: 0.6rem;
 		}
 		.part-title,

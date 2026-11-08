@@ -1,0 +1,323 @@
+---
+// Home hero: the title and tagline rendered as real tokens (left) next to an agent run log (right),
+// i.e. the site's name drawn literally: tokens → agent.
+// Tokens come from o200k_base (GPT-4o's tokenizer, public); Claude's tokenizer is not public.
+import { getEncoding } from 'js-tiktoken';
+import { LinkButton } from '@astrojs/starlight/components';
+
+// Starlight's skip link targets this id (PAGE_TITLE_ID, not exported).
+const PAGE_TITLE_ID = '_top';
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline = '', actions = [] } = data.hero || {};
+
+type Token = { text: string; ids: number[] };
+
+const enc = getEncoding('o200k_base');
+
+// Byte-level BPE can split one CJK character across tokens; merge those so every chip is readable text.
+function tokenize(text: string): Token[] {
+	const out: Token[] = [];
+	let ids: number[] = [];
+	for (const id of enc.encode(text)) {
+		ids.push(id);
+		const piece = enc.decode(ids);
+		if (!piece.includes('�')) {
+			out.push({ text: piece, ids });
+			ids = [];
+		}
+	}
+	return out;
+}
+
+const titleTokens = tokenize(title);
+// Only the first tagline line is tokenized; the rest stays plain text so the hero doesn't get noisy.
+const [taglineFirst = '', ...taglineRest] = tagline.split(/<br\s*\/?>/).map((line) => line.trim());
+const taglineLines = [tokenize(taglineFirst)];
+// Running index so the load animation streams title then tagline in order.
+const lineOffsets = taglineLines.map((_, li) => titleTokens.length + taglineLines.slice(0, li).flat().length);
+const tokenCount = [titleTokens, ...taglineLines].flat().reduce((n, t) => n + t.ids.length, 0);
+
+const runLog = [
+	{ kind: 'plan', text: '20 章、7 個 Part；應用路線從 S0 直接接到 S6' },
+	{ kind: 'tool', text: 'read("S0 全局地圖")' },
+	{ kind: 'observe', text: '看懂 token、模型、應用、agent 怎麼接起來' },
+	{ kind: 'tool', text: 'build("A6 串流聊天介面與 trace")' },
+	{ kind: 'tool', text: 'build("A9 附引用的 RAG")' },
+	{ kind: 'tool', text: 'build("A12 手寫 harness")' },
+	{ kind: 'tool', text: 'build("A18 多使用者部署")' },
+	{ kind: 'done', text: '一個已部署上線、自己每天在用的 agent' },
+];
+---
+
+<div class="hero t2a-hero">
+	<div class="copy">
+		<h1 id={PAGE_TITLE_ID} data-page-title aria-label={title}>
+			{titleTokens.map((t, i) => <span class="tok" style={`--i:${i}`} data-ids={t.ids.join(' + ')} aria-hidden="true">{t.text}</span>)}
+		</h1>
+		<p class="tagline" aria-label={taglineFirst}>
+			{taglineLines.map((line, li) => (
+				<span class="line" aria-hidden="true">
+					{line.map((t, i) => <span class="tok" style={`--i:${lineOffsets[li] + i}`} data-ids={t.ids.join(' + ')}>{t.text}</span>)}
+				</span>
+			))}
+		</p>
+		{taglineRest.length > 0 && <p class="tagline-rest">{taglineRest.join(' ')}</p>}
+		<p class="tok-meta">
+			<span><b>{tokenCount}</b> tokens</span>
+			<span>o200k_base tokenizer · 游標指著看 token id</span>
+		</p>
+		{actions.length > 0 && (
+			<div class="actions">
+				{actions.map(({ attrs: { class: className, ...attrs } = {}, icon, link: href, text, variant }) => (
+					<LinkButton {href} {variant} icon={icon?.name} class:list={[className]} {...attrs}>
+						{text}
+						{icon?.html && <Fragment set:html={icon.html} />}
+					</LinkButton>
+				))}
+			</div>
+		)}
+	</div>
+
+	<figure class="run" aria-label="把這份路線當成一次 agent 執行">
+		<figcaption>
+			<span>agent run</span>
+			<span>goal: 做出能上線的 AI 應用與 agent</span>
+		</figcaption>
+		<ol>
+			{runLog.map((l, i) => (
+				<li style={`--i:${i}`}>
+					<span class:list={['kind', l.kind]}>{l.kind}</span>
+					<span class="text">{l.text}</span>
+				</li>
+			))}
+		</ol>
+		<div class="budget">
+			<span>時數預算：應用路線約 175h，加上 Part II 模型原理約 225h</span>
+			<div class="bar" role="img" aria-label="應用路線約 175 小時，完整路線約 225 小時">
+				<i style="flex: 175">應用路線 175h</i>
+				<i style="flex: 50">+50h</i>
+			</div>
+		</div>
+	</figure>
+</div>
+
+<style>
+	.t2a-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2rem;
+		align-items: center;
+		padding-block: 1.5rem 1rem;
+	}
+	@media (min-width: 64rem) {
+		.t2a-hero {
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			gap: 3rem;
+			padding-block: 3.5rem 2.5rem;
+		}
+	}
+	.copy {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: flex-start;
+	}
+
+	/* Token chips. --tok-* colors are defined in src/styles/custom.css for both themes. */
+	.tok {
+		position: relative;
+		white-space: pre;
+		border-radius: 0.2em;
+		background: var(--c);
+		color: var(--sl-color-white);
+		--c: var(--tok-1);
+	}
+	.tok:nth-child(6n + 2) { --c: var(--tok-2); }
+	.tok:nth-child(6n + 3) { --c: var(--tok-3); }
+	.tok:nth-child(6n + 4) { --c: var(--tok-4); }
+	.tok:nth-child(6n + 5) { --c: var(--tok-5); }
+	.tok:nth-child(6n + 6) { --c: var(--tok-6); }
+	.tok:hover::after {
+		content: 'id ' attr(data-ids);
+		position: absolute;
+		left: 50%;
+		bottom: calc(100% + 0.3rem);
+		transform: translateX(-50%);
+		padding: 0.05rem 0.4rem;
+		border-radius: 0.25rem;
+		background: var(--sl-color-white);
+		color: var(--sl-color-black);
+		font: 500 0.75rem/1.5 var(--__sl-font-mono);
+		letter-spacing: 0;
+		white-space: nowrap;
+		z-index: 2;
+	}
+
+	h1 {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.08em;
+		margin: 0;
+		font: 700 clamp(2.5rem, 1rem + 5vw, 4.25rem) / 1.1 var(--__sl-font-mono);
+		letter-spacing: -0.03em;
+	}
+	h1 .tok {
+		padding: 0.02em 0.14em;
+		border-radius: 0.14em;
+	}
+	.tagline {
+		display: grid;
+		gap: 0.35rem;
+		margin: 0;
+		font-size: clamp(var(--sl-text-base), 0.5rem + 1.2vw, var(--sl-text-xl));
+		line-height: 1.9;
+		color: var(--sl-color-white);
+	}
+	.tagline .tok {
+		padding-inline: 0.05em;
+		box-decoration-break: clone;
+	}
+	.tagline-rest {
+		margin: 0;
+		max-width: 34em;
+		color: var(--sl-color-gray-2);
+	}
+	.tok-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
+		margin: 0;
+		font: var(--sl-text-xs) var(--__sl-font-mono);
+		color: var(--sl-color-gray-3);
+	}
+	.tok-meta b {
+		color: var(--sl-color-white);
+		font-variant-numeric: tabular-nums;
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 1.5rem;
+		align-items: center;
+		margin-top: 0.5rem;
+	}
+
+	/* Run log */
+	.run {
+		margin: 0;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 0.6rem;
+		background: var(--sl-color-bg-nav);
+		font: var(--sl-text-sm) / 1.8 var(--__sl-font-mono);
+		overflow: hidden;
+		min-width: 0;
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0 1rem;
+		padding: 0.5rem 0.9rem;
+		border-bottom: 1px solid var(--sl-color-hairline-light);
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	ol {
+		margin: 0;
+		padding: 0.6rem 0.9rem;
+		list-style: none;
+		overflow-x: auto;
+	}
+	li {
+		display: grid;
+		grid-template-columns: 4.5rem minmax(0, 1fr);
+		gap: 0.75rem;
+		margin: 0;
+		white-space: nowrap;
+	}
+	@media (max-width: 40rem) {
+		li {
+			white-space: normal;
+		}
+	}
+	.kind { color: var(--sl-color-gray-3); }
+	.kind.plan { color: var(--sl-color-blue-high); }
+	.kind.tool { color: var(--sl-color-text-accent); }
+	.kind.observe { color: var(--sl-color-green-high); }
+	.kind.done { color: var(--sl-color-green-high); font-weight: 700; }
+	.text { color: var(--sl-color-gray-1); }
+	.budget {
+		display: grid;
+		gap: 0.35rem;
+		padding: 0.6rem 0.9rem 0.8rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	.bar {
+		display: flex;
+		gap: 2px;
+		height: 1.4rem;
+		border-radius: 0.3rem;
+		overflow: hidden;
+	}
+	.bar i {
+		display: flex;
+		align-items: center;
+		padding-inline: 0.5rem;
+		font-style: normal;
+		white-space: nowrap;
+		overflow: hidden;
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-white);
+	}
+	.bar i + i {
+		background: transparent;
+		outline: 1px dashed var(--sl-color-gray-4);
+		outline-offset: -1px;
+		color: var(--sl-color-gray-3);
+	}
+
+	/* Load sequence: tokens stream in, then the run log steps appear. Content is in the HTML either way. */
+	@media (prefers-reduced-motion: no-preference) {
+		.tok {
+			animation: tok-in 0.25s both;
+			animation-delay: calc(var(--i) * 45ms);
+		}
+		li {
+			animation: tok-in 0.3s both;
+			animation-delay: calc(600ms + var(--i) * 140ms);
+		}
+		/* Replays (see script): same steps, no wait for the title tokens. */
+		.run.replay li {
+			animation-delay: calc(var(--i) * 140ms);
+		}
+	}
+	@keyframes tok-in {
+		from {
+			opacity: 0;
+			transform: translateY(0.15em);
+		}
+	}
+</style>
+
+<script>
+	// Replay the run log every so often, like a new run starting. Paused while the tab is hidden.
+	const REPLAY_MS = 10_000;
+	const run = document.querySelector<HTMLElement>('.t2a-hero .run');
+	if (run && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		setInterval(() => {
+			if (document.hidden) return;
+			// Replays skip the initial wait for the title tokens (see .run.replay in the styles).
+			run.classList.add('replay');
+			// Toggling classes does not restart a finished CSS animation; restart each one explicitly.
+			for (const li of run.querySelectorAll('li')) {
+				for (const animation of li.getAnimations()) {
+					animation.cancel();
+					animation.play();
+				}
+			}
+		}, REPLAY_MS);
+	}
+</script>
