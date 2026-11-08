@@ -18,12 +18,19 @@ Token2Agent is a free learning roadmap for AI/LLM engineering, written in Tradit
 
 Read it at **[token2agent.com](https://token2agent.com)**.
 
+<a href="https://token2agent.com">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.gif">
+<img alt="Token2Agent home page: the title is generated token by token while an agent run log steps through the roadmap" src=".github/assets/hero-light.gif">
+</picture>
+</a>
+
 ## Roadmap
 
 <a href="https://token2agent.com">
 <picture>
-<source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.png">
-<img alt="Token2Agent roadmap: 20 chapters in seven parts, each with its core topics" src=".github/assets/roadmap-light.png">
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.gif">
+<img alt="Token2Agent roadmap: 20 chapters in seven parts, each with its core topics" src=".github/assets/roadmap-light.gif">
 </picture>
 </a>
 
