@@ -19,10 +19,10 @@ Read it at **[token2agent.com](https://token2agent.com)**.
 ## Roadmap
 
 <a href="https://token2agent.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.png">
-    <img alt="Token2Agent roadmap: 20 stages in seven parts, each with its core topics" src=".github/assets/roadmap-light.png">
-  </picture>
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.png">
+<img alt="Token2Agent roadmap: 20 stages in seven parts, each with its core topics" src=".github/assets/roadmap-light.png">
+</picture>
 </a>
 
 The diagram is in Traditional Chinese. Click it for the interactive version on the site, where every stage and topic links to its lecture.

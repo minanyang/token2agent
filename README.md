@@ -19,15 +19,10 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 ## 路線圖
 
 <a href="https://token2agent.com">
-
-  <picture>
-
-    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.png">
-
-    <img alt="Token2Agent 路線圖：20 站分成七個 Part，每站列出核心主題" src=".github/assets/roadmap-light.png">
-
-  </picture>
-
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.png">
+<img alt="Token2Agent 路線圖：20 站分成七個 Part，每站列出核心主題" src=".github/assets/roadmap-light.png">
+</picture>
 </a>
 
 點圖片可以到網站上看互動版：每站和每個主題都能點進對應的講義。
