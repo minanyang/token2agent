@@ -4,6 +4,7 @@
 // Tokens come from o200k_base (GPT-4o's tokenizer, public); Claude's tokenizer is not public.
 import { getEncoding } from 'js-tiktoken';
 import { LinkButton } from '@astrojs/starlight/components';
+import { stageCount } from '../data/parts';
 
 // Starlight's skip link targets this id (PAGE_TITLE_ID, not exported).
 const PAGE_TITLE_ID = '_top';
@@ -38,16 +39,28 @@ const taglineLines = [tokenize(taglineFirst)];
 const lineOffsets = taglineLines.map((_, li) => titleTokens.length + taglineLines.slice(0, li).flat().length);
 const tokenCount = [titleTokens, ...taglineLines].flat().reduce((n, t) => n + t.ids.length, 0);
 
+// `stage`: the chapter the run has reached at this step (drives the progress strip below the log).
 const runLog = [
 	{ kind: 'plan', text: '20 章、7 個 Part；應用路線從 S0 直接接到 S6' },
-	{ kind: 'tool', text: 'read("S0 全局地圖")' },
-	{ kind: 'observe', text: '看懂 token、模型、應用、agent 怎麼接起來' },
-	{ kind: 'tool', text: 'build("A6 串流聊天介面與 trace")' },
-	{ kind: 'tool', text: 'build("A9 附引用的 RAG")' },
-	{ kind: 'tool', text: 'build("A12 手寫 harness")' },
-	{ kind: 'tool', text: 'build("A18 多使用者部署")' },
-	{ kind: 'done', text: '一個已部署上線、自己每天在用的 agent' },
+	{ kind: 'tool', text: 'read("S0 全局地圖")', stage: 0 },
+	{ kind: 'observe', text: '看懂 token、模型、應用、agent 怎麼接起來', stage: 0 },
+	{ kind: 'tool', text: 'build("A6 串流聊天介面與 trace")', stage: 6 },
+	{ kind: 'tool', text: 'build("A9 附引用的 RAG")', stage: 9 },
+	{ kind: 'tool', text: 'build("A12 手寫 harness")', stage: 12 },
+	{ kind: 'tool', text: 'build("A18 多使用者部署")', stage: 18 },
+	{ kind: 'done', text: '一個已部署上線、自己每天在用的 agent', stage: 19 },
 ];
+
+// Progress strip: one block per chapter. Each block lights up at the first step that reaches it.
+const lastStage = stageCount - 1;
+const blocks = Array.from({ length: stageCount }, (_, i) => ({
+	step: runLog.findIndex((l) => l.stage !== undefined && l.stage >= i),
+}));
+// Label shown from the step where the stage changes until the next change.
+const labelSteps = runLog
+	.map((l, i) => ({ stage: l.stage, step: i }))
+	.filter((l, i, all) => l.stage !== undefined && l.stage !== all[i - 1]?.stage);
+const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }));
 ---
 
 <div class="hero t2a-hero">
@@ -81,9 +94,10 @@ const runLog = [
 
 	<figure class="run" aria-label="把這份路線當成一次 agent 執行">
 		<figcaption>
-			<span>agent run</span>
-			<span>goal: 做出能上線的 AI 應用與 agent</span>
+			<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+			<span>token2agent — agent run</span>
 		</figcaption>
+		<p class="prompt"><span class="ps" aria-hidden="true">$</span> agent run --goal "做出能上線的 AI 應用與 agent"</p>
 		<ol>
 			{runLog.map((l, i) => (
 				<li style={`--i:${i}`}>
@@ -92,11 +106,20 @@ const runLog = [
 				</li>
 			))}
 		</ol>
-		<div class="budget">
-			<span>時數預算：應用路線約 175h，加上 Part II 模型原理約 225h</span>
-			<div class="bar" role="img" aria-label="應用路線約 175 小時，完整路線約 225 小時">
-				<i style="flex: 175">應用路線 175h</i>
-				<i style="flex: 50">+50h</i>
+		<p class="prompt next" style={`--i:${runLog.length}`} aria-hidden="true"><span class="ps">$</span> <span class="cursor"></span></p>
+		<div class="progress" role="img" aria-label={`進度：S0 到 S${lastStage}`}>
+			<p class="progress-label" aria-hidden="true">
+				<span>progress</span>
+				<span class="steps">
+					{labels.map((l) => (
+						<b class:list={['step', { final: l.next === undefined }]} style={`--k:${l.step};--next:${l.next ?? 0}`}>
+							S{l.stage} / S{lastStage}
+						</b>
+					))}
+				</span>
+			</p>
+			<div class="strip" aria-hidden="true">
+				{blocks.map((b, i) => <i class="blk" style={`--k:${b.step}`} title={`S${i}`} />)}
 			</div>
 		</div>
 	</figure>
@@ -112,9 +135,11 @@ const runLog = [
 	}
 	@media (min-width: 64rem) {
 		.t2a-hero {
-			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+			/* Top-aligned: the title and the terminal's title bar share one top edge. */
+			align-items: start;
 			gap: 3rem;
-			padding-block: 3.5rem 2.5rem;
+			padding-block: 3.5rem 1.45rem;
 		}
 	}
 	.copy {
@@ -203,29 +228,85 @@ const runLog = [
 		margin-top: 0.5rem;
 	}
 
-	/* Run log */
+	/*
+	 * Run log, drawn as a terminal. It keeps one dark palette in both site themes, like a real terminal
+	 * window on the page; colors are local tokens so nothing here depends on the site theme.
+	 */
 	.run {
+		--term-bg: #15171c;
+		--term-bar: #1d2026;
+		--term-line: #2b2f37;
+		--term-fg: #e4e6ea;
+		--term-muted: #8a909b;
+		--term-amber: #f0a33a;
+		--term-green: #5fd38d;
+		--term-blue: #8ab4ff;
 		margin: 0;
-		border: 1px solid var(--sl-color-hairline-light);
+		border: 1px solid var(--term-line);
 		border-radius: 0.6rem;
-		background: var(--sl-color-bg-nav);
-		font: var(--sl-text-sm) / 1.8 var(--__sl-font-mono);
+		background: var(--term-bg);
+		color: var(--term-fg);
+		font: var(--sl-text-sm) / 1.65 var(--__sl-font-mono);
 		overflow: hidden;
 		min-width: 0;
+		box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.55);
 	}
 	figcaption {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		gap: 0 1rem;
-		padding: 0.5rem 0.9rem;
-		border-bottom: 1px solid var(--sl-color-hairline-light);
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		padding: 0.45rem 0.9rem;
+		border-bottom: 1px solid var(--term-line);
+		background: var(--term-bar);
 		font-size: var(--sl-text-xs);
-		color: var(--sl-color-gray-3);
+		color: var(--term-muted);
+		text-align: center;
+	}
+	/* Mirror the dots' width on the right so the title stays centered. */
+	figcaption::after {
+		content: '';
+		width: 2.6rem;
+	}
+	.dots {
+		display: flex;
+		gap: 0.35rem;
+		width: 2.6rem;
+	}
+	.dots i {
+		width: 0.6rem;
+		height: 0.6rem;
+		border-radius: 50%;
+		background: #ff5f57;
+	}
+	.dots i:nth-child(2) {
+		background: #febc2e;
+	}
+	.dots i:nth-child(3) {
+		background: #28c840;
+	}
+	.prompt {
+		margin: 0;
+		padding: 0.6rem 0.9rem 0;
+		color: var(--term-fg);
+		white-space: nowrap;
+		overflow-x: auto;
+	}
+	.prompt.next {
+		padding: 0 0.9rem 0.6rem;
+	}
+	.ps {
+		color: var(--term-green);
+	}
+	.cursor {
+		display: inline-block;
+		width: 0.55em;
+		height: 1.1em;
+		vertical-align: -0.2em;
+		background: var(--term-fg);
 	}
 	ol {
 		margin: 0;
-		padding: 0.6rem 0.9rem;
+		padding: 0.3rem 0.9rem;
 		list-style: none;
 		overflow-x: auto;
 	}
@@ -237,61 +318,119 @@ const runLog = [
 		white-space: nowrap;
 	}
 	@media (max-width: 40rem) {
-		li {
+		li,
+		.prompt {
 			white-space: normal;
 		}
 	}
-	.kind { color: var(--sl-color-gray-3); }
-	.kind.plan { color: var(--sl-color-blue-high); }
-	.kind.tool { color: var(--sl-color-text-accent); }
-	.kind.observe { color: var(--sl-color-green-high); }
-	.kind.done { color: var(--sl-color-green-high); font-weight: 700; }
-	.text { color: var(--sl-color-gray-1); }
-	.budget {
+	.kind { color: var(--term-muted); }
+	.kind.plan { color: var(--term-blue); }
+	.kind.tool { color: var(--term-amber); }
+	.kind.observe { color: var(--term-green); }
+	.kind.done { color: var(--term-green); font-weight: 700; }
+	.text { color: var(--term-fg); }
+	/* Progress strip. The static styles are the finished run; the load sequence below animates toward it. */
+	.progress {
 		display: grid;
-		gap: 0.35rem;
+		gap: 0.4rem;
 		padding: 0.6rem 0.9rem 0.8rem;
-		border-top: 1px solid var(--sl-color-hairline-light);
+		border-top: 1px solid var(--term-line);
+	}
+	.progress-label {
+		display: flex;
+		justify-content: space-between;
+		margin: 0;
 		font-size: var(--sl-text-xs);
-		color: var(--sl-color-gray-3);
+		color: var(--term-muted);
 	}
-	.bar {
+	.steps {
+		display: grid;
+	}
+	.step {
+		grid-area: 1 / 1;
+		justify-self: end;
+		color: var(--term-fg);
+		font-variant-numeric: tabular-nums;
+		opacity: 0;
+	}
+	.step.final {
+		opacity: 1;
+	}
+	.strip {
 		display: flex;
-		gap: 2px;
-		height: 1.4rem;
-		border-radius: 0.3rem;
-		overflow: hidden;
+		gap: 3px;
 	}
-	.bar i {
-		display: flex;
-		align-items: center;
-		padding-inline: 0.5rem;
-		font-style: normal;
-		white-space: nowrap;
-		overflow: hidden;
-		background: var(--sl-color-accent-low);
-		color: var(--sl-color-white);
-	}
-	.bar i + i {
-		background: transparent;
-		outline: 1px dashed var(--sl-color-gray-4);
-		outline-offset: -1px;
-		color: var(--sl-color-gray-3);
+	.blk {
+		flex: 1;
+		height: 0.65rem;
+		border-radius: 0.15rem;
+		background: var(--term-amber);
 	}
 
-	/* Load sequence: tokens stream in, then the run log steps appear. Content is in the HTML either way. */
+	/*
+	 * Load sequence: tokens stream in, then the run log steps appear and the progress strip follows them.
+	 * Step k starts at --base + k × 140ms; replays (see script) drop the initial wait for the title tokens.
+	 * Content and the finished state are in the HTML either way.
+	 */
+	.run {
+		--base: 600ms;
+	}
+	.run.replay {
+		--base: 0ms;
+	}
 	@media (prefers-reduced-motion: no-preference) {
 		.tok {
 			animation: tok-in 0.25s both;
 			animation-delay: calc(var(--i) * 45ms);
 		}
-		li {
+		li,
+		.prompt.next {
 			animation: tok-in 0.3s both;
-			animation-delay: calc(600ms + var(--i) * 140ms);
+			animation-delay: calc(var(--base) + var(--i) * 140ms);
 		}
-		/* Replays (see script): same steps, no wait for the title tokens. */
-		.run.replay li {
-			animation-delay: calc(var(--i) * 140ms);
+		.cursor {
+			animation: blink 1s steps(1) infinite;
+		}
+		.blk {
+			animation: blk-fill 0.2s both;
+			animation-delay: calc(var(--base) + var(--k) * 140ms);
+		}
+		/* Each label shows from its step until the next label's step; the last one stays. */
+		.step {
+			animation:
+				step-show 1ms both,
+				step-hide 1ms forwards;
+			animation-delay: calc(var(--base) + var(--k) * 140ms), calc(var(--base) + var(--next) * 140ms);
+		}
+		.step.final {
+			animation: step-show 1ms both;
+			animation-delay: calc(var(--base) + var(--k) * 140ms);
+		}
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+	@keyframes blk-fill {
+		from {
+			background: var(--term-line);
+		}
+	}
+	@keyframes step-show {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@keyframes step-hide {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
 		}
 	}
 	@keyframes tok-in {
@@ -311,12 +450,11 @@ const runLog = [
 			if (document.hidden) return;
 			// Replays skip the initial wait for the title tokens (see .run.replay in the styles).
 			run.classList.add('replay');
-			// Toggling classes does not restart a finished CSS animation; restart each one explicitly.
-			for (const li of run.querySelectorAll('li')) {
-				for (const animation of li.getAnimations()) {
-					animation.cancel();
-					animation.play();
-				}
+			// Toggling classes does not restart a finished CSS animation; restart each one explicitly
+			// (log lines, progress blocks and labels).
+			for (const animation of run.getAnimations({ subtree: true })) {
+				animation.cancel();
+				animation.play();
 			}
 		}, REPLAY_MS);
 	}
