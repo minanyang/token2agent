@@ -42,7 +42,7 @@ Start with the big picture. This chapter uses one yardstick (the six-part map) t
 
 Any agent, however it's packaged as a product, breaks down into six parts. Once you've broken it down, every part maps back to an earlier chapter, and the differences between products become "what choice each part made."
 
-Feature lists can't be compared with each other; fixing six parts is what lets you ask useful questions (for the codes in the table, see [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)):
+Feature lists can't be compared with each other; describing every system with the same six parts is what lets you ask useful questions (for the codes in the table, see [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)):
 
 | Part | Questions to ask | In the notes assistant | Covered in |
 |---|---|---|---|

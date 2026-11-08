@@ -128,7 +128,7 @@ After loading the weights, 32 GB is left. Counting only the KV cache, that holds
 
 **Decode reads the KV cache too.** For every token generated, attention looks back at all the earlier text, so besides the weights, the request's whole KV cache is read once. The longer the conversation, the more each step reads, and TPOT slowly grows. But the weights are usually still the bulk of it, so the change is much smaller than for TTFT.
 
-**Common misconception: the KV cache caches "answers."** It only stores intermediate results for one request's own earlier text, and it's freed when the request ends. If two users ask exactly the same question, the model still computes each separately (unless the beginnings match exactly and prefix caching kicks in; see [later](#-how-does-prompt-caching-work)). Another common misconception: weights fitting in GPU memory doesn't mean you can run long contexts; you also need room for the KV cache.
+**Common misconception: the KV cache caches "answers."** It only stores intermediate results for one request's own earlier text, and it's freed when the request ends. If two users ask exactly the same question, the model still computes each separately (unless the beginnings match exactly and prefix caching kicks in; see [later](#-how-does-prompt-caching-work)). Another common misconception: if the weights fit in GPU memory, you can run long contexts. You also need room for the KV cache.
 
 <details class="deep">
 <summary>Before you build: estimating parameter count and KV cache from config.json</summary>

@@ -165,14 +165,14 @@ A general-purpose model may not understand your domain's vocabulary (internal co
 
 Keyword search and embedding search each have blind spots. In practice you use both, then reorder with a more accurate model.
 
-**BM25** is the classic keyword search: it matches terms shared by the query and the passage, giving common terms low weight and rare terms high weight. The intuition is "a term that appears in fewer passages is more discriminating"; "the" is everywhere, so its weight is close to 0 (worked numbers in the expandable section below). BM25 is good at exact terms like names, product model numbers and error codes. Dense retrieval is good at paraphrased queries, for example finding "wages for work on a holiday shall be paid at double the regular rate" from "how much do I get paid if I work on a public holiday?" Conversely, dense retrieval often treats "XR-2207" and "XR-2208" as nearly identical.
+**BM25** is the classic keyword search: it matches terms shared by the query and the passage, giving common terms low weight and rare terms high weight. The intuition is "a term that appears in fewer passages is more discriminating"; "the" is everywhere, so its weight is close to 0 (a worked example is in the expandable section below). BM25 is good at exact terms like names, product model numbers and error codes. Dense retrieval is good at paraphrased queries, for example finding "wages for work on a holiday shall be paid at double the regular rate" from "how much do I get paid if I work on a public holiday?" Conversely, dense retrieval often treats "XR-2207" and "XR-2208" as nearly identical.
 
 BM25 needs text split into words. That's trivial for English but not for languages written without spaces, such as Chinese and Japanese: they need a word segmenter first (or character n-grams, where every n adjacent characters form a unit, e.g. pairs of characters). Otherwise a phrase like 預算上限 ("budget cap") gets treated as one long string that never matches. Keep this in mind if your notes or users are multilingual.
 
 **Hybrid**: take the top few from each side and merge them with **reciprocal rank fusion** (RRF). It only looks at each passage's rank in the two lists: passages ranked high on both sides end up high after merging. Because it only uses ranks, you don't have to reconcile two scores on different scales.
 
 <details class="deep">
-<summary>Going deeper: worked numbers for BM25 weights and RRF</summary>
+<summary>Going deeper: BM25 weights and RRF, worked through with numbers</summary>
 
 **BM25 weights.** Out of 100 chunks, "budget" appears in 8, "design" in 20 and "the" in all 100. With the simplified log(N / number of chunks containing the term), the weights are ln(12.5) ≈ 2.53, ln(5) ≈ 1.61 and ln(1) = 0.
 

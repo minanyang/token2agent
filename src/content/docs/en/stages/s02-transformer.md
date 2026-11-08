@@ -197,7 +197,7 @@ The model only gives scores for the next token; decoding decides which one is ac
 | 1 | 0.665 | 0.245 | 0.090 |
 | 2 | 0.506 | 0.307 | 0.186 |
 
-T below 1 makes the distribution more concentrated; T above 1 makes it flatter, with more variety; T approaching 0 is the same as greedy. **Common misconception: lowering the temperature only makes the output more concentrated and stable; it doesn't make the answer more correct.** If the model already gives the wrong answer the top score, a low temperature just makes it wrong more consistently.
+T below 1 makes the distribution more concentrated; T above 1 makes it flatter, with more variety; T approaching 0 is the same as greedy. **Common misconception: a lower temperature gives a more correct answer.** It only makes the output more concentrated and stable. If the model already gives the wrong answer the top score, a low temperature just makes it wrong more consistently.
 
 **Top-k**: sample only among the k most likely candidates. The problem is that k is fixed. When the model is confident, k = 50 still leaves 49 candidates that shouldn't be picked; when it's unsure, k = 5 is too few. For example, with the probabilities from the top-p example below, [0.5, 0.3, 0.15, 0.05], and k = 2: keep only the first two and renormalize to [0.625, 0.375].
 

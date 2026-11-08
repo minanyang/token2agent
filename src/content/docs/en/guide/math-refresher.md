@@ -115,6 +115,6 @@ ci = (results[0.025 * B], results[0.975 * B])
 - **Attention**: the dot product between a query and each key serves as the similarity score (divided by √dimension so the values don't get too large and make the softmax too sharp), and softmax turns the scores into weights.
 - **Embedding retrieval**: the query and each passage are turned into vectors and ranked by cosine similarity. If the vectors are normalized to length 1 first, cosine equals the dot product, which is why many vector databases just use the dot product.
 
-Note: the absolute value of cosine similarity varies by embedding model. A threshold like "0.8 counts as similar" doesn't carry over between models; look at the distribution on your own data before you pick one.
+Note: raw cosine similarity scores depend on the embedding model. A threshold like "0.8 counts as similar" doesn't carry over between models; look at the distribution on your own data before you pick one.
 
 **Used in**: [S2 Transformers and Decoding](/en/stages/s02-transformer/) (self-attention), [S9 Retrieval and RAG](/en/stages/s09-rag/) (dense retrieval), [S13 Memory and Personalization](/en/stages/s13-memory/) (memory retrieval).

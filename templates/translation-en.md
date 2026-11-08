@@ -107,11 +107,15 @@ Fixed headings and labels:
 | 對照答案 / 提示 (hint summaries) | Check your answer / Hint |
 | 判斷重點 / 常見錯法 / 回讀 | Key point / Common mistake / Reread |
 | 驗收 / 提示 (exercise sections) | Acceptance criteria / Hints |
-| 容易誤會 | Common misconception |
+| 容易誤會 | Common misconception (see below) |
 | **提醒** | **Note** |
 | 卡住時 / 重讀 / 延伸 | If you get stuck: / Reread: / Further: |
 | :::tip[走應用路線的讀者] | :::tip[On the application route] |
 | 下一步去哪裡 | Where to go next |
+
+`Common misconception:` must be followed by the **wrong belief**, which the next sentences correct. zh often writes the correction after 容易誤會 (「token 不等於字」); turn it around in English (`Common misconception: a token is a character, or a word.`).
+
+Fixed collocations: worked example (not "worked numbers"), meet the acceptance criteria (not "pass the numbers"), raw similarity score (not "absolute value" unless |x| is meant).
 
 Topic headings keep their markers: `### ★ …` (core topic), `### ○ …` (optional topic), 🔒. The home roadmap builds its chips from `★` h3 headings and skips running-example sections, so a running example's heading must end in **"end to end"** (e.g. `### ★ One example, end to end`) or start with `★ An example:`. Topic headings are questions in zh; keep them as short questions in English.
 

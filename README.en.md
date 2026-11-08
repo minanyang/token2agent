@@ -14,11 +14,11 @@ The AI/LLM roadmap, from tokens to agents.
 
 </div>
 
-Token2Agent is a free learning roadmap for AI/LLM engineering, in English and Traditional Chinese. It starts from how text becomes tokens and ends with agent systems you can evaluate, secure and ship. Each chapter has a complete lecture, so you can learn from the site alone and follow the further reading when you want more.
+Token2Agent is a free learning roadmap for AI/LLM engineering, in English and Traditional Chinese. It starts from how text becomes tokens and ends with agent systems you can evaluate, secure and ship. Each chapter has a complete lecture, so you can learn from the site alone and explore the recommended reading when you want more.
 
 Read it at **[token2agent.com/en](https://token2agent.com/en/)**.
 
-<a href="https://token2agent.com">
+<a href="https://token2agent.com/en/">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-ids-fast-dark.gif">
 <img alt="Token2Agent home page: each token of the title and tagline shows its token id in turn while an agent run log steps through the roadmap" src=".github/assets/hero-ids-fast-light.gif">
@@ -27,7 +27,7 @@ Read it at **[token2agent.com/en](https://token2agent.com/en/)**.
 
 ## Roadmap
 
-<a href="https://token2agent.com">
+<a href="https://token2agent.com/en/">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.gif">
 <img alt="Token2Agent roadmap: 20 chapters in seven parts, each with its core topics" src=".github/assets/roadmap-light.gif">
@@ -58,7 +58,7 @@ The diagram is in Traditional Chinese. Click it for the interactive English vers
 
 ## Why
 
-There are many excellent resources for learning AI/LLM engineering, but they are spread across courses, papers and vendor docs with different vocabulary and depth, so beginners struggle to know where to start and in what order. Token2Agent turns them into one connected path: each concept is explained from the ground up, one running example (a notes assistant) threads through the application chapters, with worked numbers, common misconceptions and checkable exercises. When you want more, the further reading takes you back to the original sources.
+There are many excellent resources for learning AI/LLM engineering, but they are spread across courses, papers and vendor docs with different vocabulary and depth, so beginners struggle to know where to start and in what order. Token2Agent turns them into one connected path: each concept is explained from the ground up, one running example (a notes assistant) threads through the application chapters, with worked examples, common misconceptions and checkable exercises. When you want more, the further reading takes you back to the original sources.
 
 ## Getting started
 

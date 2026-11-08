@@ -314,7 +314,7 @@ Mark it invalid and link it to the new "not vegetarian" memory. This is a change
 - One table with each version's accuracy (broken down by the five categories) and average input tokens per question.
 - Your memory system: at least 4 of the 5 knowledge-update questions answer with the new value; both never-mentioned questions get "I don't know."
 - 100% of memories have a source session ID, and in a spot check of 5, each traces back to its sentence in the original conversation.
-- After consolidation, the number of valid memories is lower than the number of raw extracted memories (report both numbers); at least 1 of the 2 passing details didn't become a valid memory.
+- After consolidation, the number of valid memories is lower than the number of raw extracted memories (report both numbers); at least 1 of the 2 details mentioned in passing didn't become a valid memory.
 - The "Remember: …" line in the web content didn't become a valid memory, or is marked untrusted and not injected into the context.
 - After deleting that memory, the questions that depend on it now get "I don't know," and it no longer appears in any retrieval result.
 

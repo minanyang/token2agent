@@ -45,8 +45,8 @@ The text names a single chapter or step by code and title, like "S6 LLM APIs and
 
 The switch at the top of the page sets the reading mode. Your choice is remembered and applies on every page:
 
-- **Simple** (default): the main line only. Every chapter starts from why you need the idea, then walks one example through step by step (from S6 LLM APIs and Application Basics on, it is always the same notes assistant), with small worked numbers and common misconceptions. If this is your first time and you have no background, the main line is enough.
-- **Deep**: also opens Before you build (implementation details), Going deeper (derivations and more mechanism), optional topics (○), advanced exercises and Further reading. Use it when you know the basics and want more.
+- **Simple** (default): the main line only. Every chapter starts from why you need the idea, then walks one example through step by step (from S6 LLM APIs and Application Basics on, it is always the same notes assistant), with small worked examples and common misconceptions. If this is your first time and you have no background, the main line is enough.
+- **Deep**: also opens Before you build (implementation details), Going deeper (derivations and more on the underlying mechanisms), optional topics (○), advanced exercises and Further reading. Use it when you know the basics and want more.
 
 In Simple mode you can still open any collapsed block on its own: click the title of a Before you build or Going deeper block, or press Show this section on an optional topic or advanced exercise. Only that block opens; the site's mode stays as it is.
 
@@ -76,7 +76,7 @@ In Simple mode you can still open any collapsed block on its own: click the titl
 - An exercise states only the **goal, steps, acceptance criteria and hints**, with no solution. Acceptance criteria are numeric, so you can check for yourself whether you passed.
 - Use any language. Hints list reference tools for both TypeScript and Python. You need basic programming; if you don't have it yet, learn the basics of one language (variables, functions, loops, calling an HTTP API) and come back.
 - When you get stuck, go back to the lecture section the hint points to, then to Further reading if needed.
-- AI coding tools (Claude Code, Cursor, GitHub Copilot and the like) are fine for boilerplate and setup, but write the part each exercise is meant to teach yourself. Paste the whole exercise into a tool and you can pass the numbers without learning anything. Think before you open hints and self-check answers.
+- AI coding tools (Claude Code, Cursor, GitHub Copilot and the like) are fine for boilerplate and setup, but write the part each exercise is meant to teach yourself. Paste the whole exercise into a tool and you can meet the acceptance criteria without learning anything. Think before you open hints and self-check answers.
 - Exercises that need a paid API or a GPU state the rough cost and offer a local-model alternative where possible.
 - Your code lives in your own repo; this site only hosts the exercises.
 - If your math or statistics is rusty (chain rule, softmax, log plots, standard error, bootstrap, cosine similarity), see the [Math Refresher](/en/guide/math-refresher/) first. Every section has a small example you can work by hand.
