@@ -14,9 +14,12 @@ const subtitle = rest.join('：');
 	.site-title {
 		display: flex;
 		align-items: center;
+		font-family: var(--__sl-font-mono);
 		font-size: var(--sl-text-h4);
 		font-weight: 600;
-		color: var(--sl-color-text-accent);
+		letter-spacing: -0.02em;
+		/* Neutral, so the logo is the only color in the header. */
+		color: var(--sl-color-white);
 		text-decoration: none;
 		white-space: nowrap;
 		min-width: 0;

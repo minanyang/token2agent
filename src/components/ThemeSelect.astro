@@ -1,8 +1,8 @@
 ---
-// Wraps Starlight's theme picker to add the reading-depth toggle next to it.
+// Replaces Starlight's three-way theme picker with a single light/dark toggle, next to the reading-depth toggle.
 // Simple mode collapses `<details class="deep">` blocks and hides `<section class="deep-section">` bodies (styles in src/styles/custom.css);
 // deep mode expands and shows them all.
-import Default from '@astrojs/starlight/components/ThemeSelect.astro';
+import { Icon } from '@astrojs/starlight/components';
 ---
 
 <div class="controls">
@@ -10,7 +10,10 @@ import Default from '@astrojs/starlight/components/ThemeSelect.astro';
 		<button type="button" data-depth="simple" aria-pressed="true">淺顯</button>
 		<button type="button" data-depth="deep" aria-pressed="false">深入</button>
 	</div>
-	<Default />
+	<button type="button" class="theme-toggle" aria-label="切換成深色">
+		<Icon name="moon" class="to-dark" />
+		<Icon name="sun" class="to-light" />
+	</button>
 </div>
 
 {/* Inlined so deep sections are shown before first paint when the reader chose 深入. */}
@@ -73,6 +76,40 @@ import Default from '@astrojs/starlight/components/ThemeSelect.astro';
 	}
 
 	apply(load());
+
+	// Theme: Starlight's ThemeProvider sets data-theme before paint (stored choice, else the system setting).
+	// The toggle stores an explicit choice under Starlight's key; with no stored choice, follow the system.
+	const themeKey = 'starlight-theme';
+	const currentTheme = () => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+	const syncThemeButtons = () => {
+		const label = currentTheme() === 'light' ? '切換成深色' : '切換成淺色';
+		for (const button of document.querySelectorAll<HTMLButtonElement>('.theme-toggle')) {
+			button.setAttribute('aria-label', label);
+			button.title = label;
+		}
+	};
+	for (const button of document.querySelectorAll<HTMLButtonElement>('.theme-toggle')) {
+		button.addEventListener('click', () => {
+			const next = currentTheme() === 'light' ? 'dark' : 'light';
+			document.documentElement.dataset.theme = next;
+			try {
+				localStorage.setItem(themeKey, next);
+			} catch {
+				// Storage unavailable: the choice lasts for this page only.
+			}
+			syncThemeButtons();
+		});
+	}
+	matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+		let stored: string | null = null;
+		try {
+			stored = localStorage.getItem(themeKey);
+		} catch {}
+		if (stored === 'light' || stored === 'dark') return;
+		document.documentElement.dataset.theme = e.matches ? 'light' : 'dark';
+		syncThemeButtons();
+	});
+	syncThemeButtons();
 </script>
 
 <style>
@@ -80,6 +117,43 @@ import Default from '@astrojs/starlight/components/ThemeSelect.astro';
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+	.theme-toggle {
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		padding: 0;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-gray-2);
+		cursor: pointer;
+		transition:
+			color 0.15s,
+			border-color 0.15s;
+	}
+	.theme-toggle:hover {
+		border-color: var(--sl-color-accent);
+		color: var(--sl-color-text-accent);
+	}
+	.theme-toggle :global(svg) {
+		grid-area: 1 / 1;
+		font-size: 1.1rem;
+		transition:
+			transform 0.3s ease,
+			opacity 0.2s;
+	}
+	/* Show the icon of the theme the click switches to. */
+	:global([data-theme='light']) .theme-toggle :global(.to-light),
+	:global([data-theme='dark']) .theme-toggle :global(.to-dark) {
+		opacity: 0;
+		transform: rotate(-90deg) scale(0.5);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.theme-toggle :global(svg) {
+			transition: none;
+		}
 	}
 	.depth-toggle {
 		display: inline-flex;

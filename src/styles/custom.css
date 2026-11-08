@@ -1,4 +1,63 @@
 /*
+ * Theme: neutral graphite with an amber accent (the "tool call" color of the agent-trace look),
+ * plus six token colors used wherever text is shown as tokens (home hero).
+ * Starlight: dark values on :root, light values on [data-theme='light'].
+ */
+:root {
+	--sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	--sl-color-accent-low: hsl(32, 45%, 18%);
+	--sl-color-accent: hsl(34, 88%, 58%);
+	--sl-color-accent-high: hsl(38, 95%, 78%);
+	--sl-color-white: hsl(220, 14%, 94%);
+	--sl-color-gray-1: hsl(220, 12%, 87%);
+	--sl-color-gray-2: hsl(220, 8%, 73%);
+	--sl-color-gray-3: hsl(220, 6%, 55%);
+	--sl-color-gray-4: hsl(220, 7%, 35%);
+	--sl-color-gray-5: hsl(220, 9%, 22%);
+	--sl-color-gray-6: hsl(220, 11%, 13%);
+	--sl-color-black: hsl(220, 12%, 8%);
+
+	--tok-1: #5b3a12;
+	--tok-2: #1d4a35;
+	--tok-3: #23386a;
+	--tok-4: #5a2340;
+	--tok-5: #3d2f6e;
+	--tok-6: #4f4612;
+
+	/* Mint from the logo's mouth, for tip asides. */
+	--t2a-mint: #7ee0c3;
+	--t2a-mint-text: #9be8d1;
+	--t2a-mint-bg: color-mix(in srgb, #7ee0c3 10%, var(--sl-color-black));
+}
+:root[data-theme='light'] {
+	--sl-color-accent-low: hsl(40, 90%, 90%);
+	--sl-color-accent: hsl(30, 95%, 36%);
+	--sl-color-accent-high: hsl(28, 90%, 24%);
+	--sl-color-white: hsl(220, 15%, 9%);
+	--sl-color-gray-1: hsl(220, 10%, 16%);
+	--sl-color-gray-2: hsl(220, 8%, 26%);
+	--sl-color-gray-3: hsl(220, 6%, 42%);
+	--sl-color-gray-4: hsl(220, 6%, 60%);
+	/* Light: a faint warm paper tint (amber family) instead of pure white. */
+	--sl-color-gray-5: hsl(38, 12%, 80%);
+	--sl-color-gray-6: hsl(38, 22%, 91%);
+	--sl-color-gray-7: hsl(40, 28%, 94.5%);
+	--sl-color-black: hsl(42, 33%, 97%);
+
+	--tok-1: #ffd8a6;
+	--tok-2: #c4ead5;
+	--tok-3: #cddfff;
+	--tok-4: #f8cde0;
+	--tok-5: #e3d9ff;
+	--tok-6: #fbeb9c;
+
+	--t2a-mint: #2fa584;
+	--t2a-mint-text: #0f6e5a;
+	--t2a-mint-bg: color-mix(in srgb, #7ee0c3 22%, var(--sl-color-black));
+}
+
+/*
  * Reading depth (see src/components/ThemeSelect.astro).
  * 淺顯 (default): a <section class="deep-section"> shows only its heading and a notice whose button
  * opens that one section (.is-open).
@@ -25,21 +84,6 @@
 	cursor: pointer;
 }
 
-/* Home hero: Starlight's default splash spacing and type are very large; tighten both. */
-.hero h1 {
-	font-size: clamp(var(--sl-text-3xl), calc(0.25rem + 4vw), var(--sl-text-5xl));
-}
-.hero .copy > * {
-	max-width: 42em;
-}
-.hero .tagline {
-	font-size: clamp(var(--sl-text-base), calc(0.0625rem + 1.5vw), var(--sl-text-lg));
-}
-@media (min-width: 50rem) {
-	.hero {
-		padding-block: 3.5rem 2.5rem;
-	}
-}
 /* Home section headings sit one clear step below the hero title. */
 :root[data-has-hero] .sl-markdown-content h2 {
 	font-size: var(--sl-text-2xl);
@@ -84,4 +128,116 @@
 		transition: none;
 		transform: none !important;
 	}
+}
+
+/*
+ * Sidebar as a trace: each group is a rail, each chapter a small token block on it; the current chapter is filled with the accent.
+ * Top-level groups in order: 開始, Part I–VII, 實作線, 社群, 參考 (the 3rd, Part II, is optional).
+ */
+.sidebar-content ul.top-level > li {
+	--mark-c: var(--sl-color-gray-4);
+}
+
+/* Group heading: a small token block in the part's color. */
+.sidebar-content ul.top-level > li > details > summary .group-label::before {
+	content: '';
+	display: inline-block;
+	width: 0.6rem;
+	height: 0.6rem;
+	margin-inline-end: 0.5rem;
+	border-radius: 0.15rem;
+	background: var(--mark-c);
+	vertical-align: 0.05em;
+}
+
+/* Rail: Starlight draws it as each nested li's inline-start border; recolor it per part. */
+.sidebar-content ul.top-level > li > details > ul > li {
+	border-inline-start: 2px solid var(--sl-color-gray-5);
+}
+/* Part II is optional: dashed rail, like the roadmap. */
+.sidebar-content ul.top-level > li:nth-child(3) > details > ul > li {
+	border-inline-start-style: dashed;
+}
+.sidebar-content ul.top-level > li > details > ul a {
+	position: relative;
+}
+/* Token block on the rail for each chapter. */
+.sidebar-content ul.top-level > li > details > ul a[href^='/stages/']::before {
+	content: '';
+	position: absolute;
+	/* Centered on the li's 2px border: li padding (0.5rem) + border, then half the block. */
+	left: calc(-0.5rem - 1px - 0.25rem);
+	top: 50%;
+	box-sizing: border-box;
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 0.12rem;
+	background: var(--sl-color-bg-sidebar);
+	border: 1.5px solid var(--mark-c);
+	transform: translateY(-50%);
+	transition: background-color 0.15s, transform 0.15s;
+}
+.sidebar-content ul.top-level > li > details > ul a[href^='/stages/']:hover::before {
+	background: var(--mark-c);
+}
+/* Current chapter: filled block, quiet highlight instead of a solid accent bar. */
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+	background: var(--sl-color-accent-low);
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+.sidebar-content ul.top-level > li > details > ul a[aria-current='page']::before {
+	border-color: var(--sl-color-accent);
+	background: var(--sl-color-accent);
+	transform: translateY(-50%) scale(1.35);
+	box-shadow: 0 0 0 3px var(--sl-color-bg-sidebar);
+}
+@media (prefers-reduced-motion: reduce) {
+	.sidebar-content ul.top-level > li > details > ul a::before {
+		transition: none;
+	}
+}
+
+/*
+ * Background: a faint dot grid across the site, a little stronger behind the home hero and fading out.
+ * Panes with their own background (header, sidebar) cover it.
+ */
+body {
+	--grid-dot: color-mix(in srgb, var(--sl-color-gray-4) 22%, transparent);
+	background-image: radial-gradient(var(--grid-dot) 1px, transparent 1.2px);
+	background-size: 24px 24px;
+	background-attachment: fixed;
+}
+/* The hero grid bleeds past the content column; clip it so the page never scrolls sideways. */
+:root[data-has-hero] .main-frame {
+	overflow-x: clip;
+}
+:root[data-has-hero] .hero {
+	position: relative;
+	isolation: isolate;
+}
+:root[data-has-hero] .hero::before {
+	content: '';
+	position: absolute;
+	inset: -3rem -8rem;
+	z-index: -1;
+	background-image: radial-gradient(color-mix(in srgb, var(--sl-color-gray-4) 55%, transparent) 1.2px, transparent 1.5px);
+	background-size: 24px 24px;
+	background-attachment: fixed;
+	mask-image: radial-gradient(ellipse 60% 70% at 50% 45%, #000 20%, transparent 75%);
+	pointer-events: none;
+}
+
+/* Asides: neutral panel for notes (「這一章」), logo mint for tips (「理解路線重點」), instead of Starlight's blue and purple. */
+.starlight-aside--note {
+	--sl-color-asides-text-accent: var(--sl-color-white);
+	--sl-color-asides-border: var(--sl-color-gray-4);
+	background-color: var(--sl-color-bg-nav);
+}
+.starlight-aside--tip {
+	--sl-color-asides-text-accent: var(--t2a-mint-text);
+	--sl-color-asides-border: var(--t2a-mint);
+	background-color: var(--t2a-mint-bg);
 }
