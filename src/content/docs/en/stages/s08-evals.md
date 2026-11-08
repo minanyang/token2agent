@@ -407,7 +407,7 @@ With the notes assistant as the example: common failure categories might be "ans
 - TypeScript: the eval runner can be a standalone script outside Vitest, so it doesn't get mixed up with unit tests; save results as JSONL for easy comparison.
 - Python: pytest or a plain script both work; [promptfoo](https://www.promptfoo.dev/docs/intro/) can also act as the runner, but write one yourself first so you know what it's doing for you.
 - Viewing data: Langfuse and Phoenix can both annotate traces; or build a simple viewer page yourself, which Hamel's Field Guide strongly recommends. If you don't want to write a web page, a Jupyter notebook or Streamlit can give you the same "look at one at a time, label fast" flow.
-- Cost: one eval run is usually tens to hundreds of calls; keep a record, because you'll be running it over and over by [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/).
+- Cost: one eval run is usually tens to hundreds of calls; keep a record, because you'll run it over and over in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/).
 - If you get stuck:
   - Reread: [How does the system actually fail?](#-how-does-the-system-actually-fail), [Where do the test cases come from?](#-where-do-the-test-cases-come-from), [How big a gap counts as a real improvement?](#-how-big-a-gap-counts-as-a-real-improvement)
   - Further: Hamel's "A Field Guide to Rapidly Improving AI Products"; the paired comparison section of Miller 2024

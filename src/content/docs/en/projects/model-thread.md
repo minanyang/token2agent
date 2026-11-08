@@ -59,7 +59,7 @@ On Qwen3-0.6B, write your own generation loop, add a KV cache, quantize the weig
 
 ## Bridges to the system project
 
-The model project's techniques come back in three places in the system project ([system project overview](/en/projects/system-thread/)):
+The model project's techniques come back in three places in the system project ([System Project (A6–A19)](/en/projects/system-thread/)):
 
 - **Fine-tuning an embedding model** ([A9 RAG with Citations](/en/stages/s09-rag/)): use the fine-tuning workflow and eval habits from M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 to fine-tune the embedding model used for retrieval on your own data, and compare Recall@k before and after.
 - **Distilling a router from traces** ([A14 Agent Evals and Optimization](/en/stages/s14-agent-evals/)): use the traces your system has accumulated as training data to train a small classifier or router that decides which model or flow a request should go to. The data preparation and the "before/after comparison with confidence intervals" both carry over from M4.

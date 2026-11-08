@@ -263,13 +263,13 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 - TypeScript: mini-SWE-agent is a Python project, but your task repo can be TypeScript (for example a small project with Vitest tests); compare the breakdown table against the harness you wrote yourself (← S12 The Agent Loop and Harness).
 - Python: `pip install` mini-SWE-agent directly and use pytest for the task repo.
 - Cost: 15 runs on a mid-size model is a few dollars; you can also hook up a local model, but the success rate will drop noticeably, so note that in your report. The agent's prompt plus command output easily exceeds Ollama's default context, so if you use Ollama, increase the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)).
-- If you're stuck:
+- If you get stuck:
   - Reread: [How do you take apart any agent?](#-how-do-you-take-apart-any-agent), [How are coding agents designed?](#-how-are-coding-agents-designed)
   - Further: the ACI design section of the SWE-agent paper, Claude Code's official best practices
 
 <section class="deep-section">
 
-### Advanced: System project A19: Capstone
+### Advanced: System project A19 (capstone): Turn your system into an always-on agent
 
 **Goal**: extend your system into an always-on agent, and deliver five pieces of engineering evidence ready for review.
 
@@ -310,11 +310,11 @@ The notes assistant as an example: every morning it organizes the previous day's
 - Python: APScheduler or the system scheduler; Temporal's Python SDK suits long-running tasks; notifications as above.
 - Cost (evals): one round of the regression suite is 50 × 3 = 150 agent runs; the infra variance report runs 5 rounds on the same commit, so 4 rounds beyond that first one (4 × 150 = 600 runs), plus 1–5 rounds after changing a factor (150–750 runs), for 750–1,350 runs; the ablation is 2 × 20 × 5 = 200 runs. In total about 150 + 750–1,350 + 200 = 1,100–1,700 agent runs, not counting the suite on every PR in CI. Use the cost accounting from S8 Eval Methodology to estimate the average cost per run and multiply; run the pipeline with a small or local model first, and only use the production model at the end; if you use Ollama, increase the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)).
 - Cost (always-on): every heartbeat is a full model call. Work out "runs per day × cost per run" before deciding the interval; the first check layer can use rules or a small local model, calling the cloud model only when needed.
-- If you're stuck:
+- If you get stuck:
   - Reread: [What does an always-on agent add?](#-what-does-an-always-on-agent-add), [How do you prove it's ready to ship?](#-how-do-you-prove-its-ready-to-ship); the documents you wrote yourself in S16 Security and Governance and S18 Deployment and Architecture
   - Further: the s11 (background tasks), s12 (scheduling) and s17 (goal loop) lessons in learn-claude-code; Anthropic's "Infrastructure noise in agentic coding evals"
 
-**Reminder**: during the 7 days of continuous operation, you only need to spend a little time each day checking on it.
+**Note**: during the 7 days of continuous operation, you only need to spend a little time each day checking on it.
 
 </section>
 

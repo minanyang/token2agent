@@ -44,7 +44,7 @@ Other pages: How to Use This Roadmap · The Application Route and Model Crash Co
 
 Parts: Part I The Big Picture · Part II How Models Work (optional) · Part III Application Foundations · Part IV Knowledge and Action · Part V Agent Systems · Part VI Trust, Product, Shipping · Part VII Capstone. These also live in `src/data/parts.ts` and the sidebar `translations` in `astro.config.mjs`.
 
-Project steps (use exactly these after the code, as with chapters):
+Project steps (use these after the code in running text and on the project pages; a chapter's own `### Advanced:` heading translates that chapter's zh subtitle instead):
 
 | | System project | | Model project |
 |---|---|---|---|
@@ -94,8 +94,8 @@ Fixed headings and labels:
 | ## 實作 | ## Exercises |
 | ### 先試一下（約 10 分鐘） | ### Try it first (about 10 minutes) |
 | ### 必做：… | ### Core: … |
-| ### 進階：系統專案 A6：… | ### Advanced: System project A6: … |
-| ### 進階：模型專案 M1：… | ### Advanced: Model project M1: … |
+| ### 進階：系統專案 A6：… | ### Advanced: System project A6: … (translate that chapter's own zh subtitle, sentence case) |
+| ### 進階：模型專案 M1：… | ### Advanced: Model project M1: … (same) |
 | ## 自我檢查 | ## Self-check |
 | ## 延伸閱讀 | ## Further reading |
 | :::note[這一章] | :::note[This chapter] |
@@ -108,6 +108,9 @@ Fixed headings and labels:
 | 判斷重點 / 常見錯法 / 回讀 | Key point / Common mistake / Reread |
 | 驗收 / 提示 (exercise sections) | Acceptance criteria / Hints |
 | 容易誤會 | Common misconception |
+| **提醒** | **Note** |
+| 卡住時 / 重讀 / 延伸 | If you get stuck: / Reread: / Further: |
+| :::tip[走應用路線的讀者] | :::tip[On the application route] |
 | 下一步去哪裡 | Where to go next |
 
 Topic headings keep their markers: `### ★ …` (core topic), `### ○ …` (optional topic), 🔒. The home roadmap builds its chips from `★` h3 headings and skips running-example sections, so a running example's heading must end in **"end to end"** (e.g. `### ★ One example, end to end`) or start with `★ An example:`. Topic headings are questions in zh; keep them as short questions in English.

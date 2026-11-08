@@ -208,7 +208,7 @@ T below 1 makes the distribution more concentrated; T above 1 makes it flatter, 
 That's what the `temperature` and `top_p` parameters in an API mean. Some APIs no longer accept them (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#limits-on-sampling-parameters)); in that case, control the output with prompt instructions, or with structured output (asking the model to output in a specified JSON format; → [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/)).
 
 <details class="deep">
-<summary>Going deeper: beam search and the order settings are applied in</summary>
+<summary>Going deeper: beam search and the order of application</summary>
 
 - **Beam search**: keep the b best candidate sentences at once, extend each at every step, and keep the best b again. It usually finds sentences with higher overall probability than greedy, which suits tasks with a right answer such as translation. But open-ended conversation tends to come out bland and repetitive, so chat models rarely use it.
 - **Repetition penalties** (repetition / frequency / presence penalty): penalize tokens that have already appeared, lowering the chance of repeating the same sentence over and over. Too heavy a penalty makes the model avoid even proper names it should repeat, so they're usually set very light (e.g. repetition_penalty around 1.1, frequency / presence penalty 0.1–0.5).
@@ -355,7 +355,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 <section class="deep-section">
 
-### Advanced: Model project M2: Tiny GPT, Upgraded to Llama Components
+### Advanced: Model project M2: tiny GPT, upgraded to Llama components
 
 **Goal**: train a small GPT from scratch, switch it to your own tokenizer, then swap in modern components one at a time, and count its size exactly.
 
@@ -381,7 +381,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 - Outputs from the four sampling settings side by side, each with a one-sentence explanation.
 
 **Hints**
-- Python: PyTorch; Apple MPS or CPU is enough, and a small model trains in ten-odd minutes. You can borrow settings from [karpathy/nanoGPT](https://github.com/karpathy/nanoGPT), but write the model itself.
+- Python: PyTorch; Apple MPS or CPU is enough, and a small model trains in 10 to 20 minutes. You can borrow settings from [karpathy/nanoGPT](https://github.com/karpathy/nanoGPT), but write the model itself.
 - For environment and compute, see [Model Project (M1–M5)](/en/projects/model-thread/).
 - If you get stuck:
   - Reread: [modern components](#-which-parts-do-modern-models-swap), [resource accounting](#-how-much-compute-and-memory-does-a-model-need)

@@ -127,7 +127,7 @@ Common harness components:
 
 The tool has to write its result and this key in the same transaction (or pass the key to a downstream API that supports idempotency keys). Otherwise a crash after the tool runs but before the key is written still causes a duplicate. A counterexample: don't use "session ID + round number" as the key. One round can contain several tool calls, so when one round creates two notes, the second `notes_create` gets mistaken for a duplicate.
 
-**Where tools run.** Tools that execute code or commands should be locked in a sandbox (← [S10 Tools and MCP](/en/stages/s10-tools-mcp/): a container, only the working directory mounted, no network by default). With an agent, the model takes many steps in a row, and one manipulated step can be amplified by the next, so the sandbox has to cover everything the whole agent can touch, not just a single tool. In the core exercise, each run copies a clean copy from the original folder. That's the simplest isolation: however badly the agent mangles things, the original data is untouched.
+**Where tools run.** Tools that execute code or commands should be locked in a sandbox (← [S10 Tools and MCP](/en/stages/s10-tools-mcp/): a container, only the working directory mounted, no network by default). With an agent, the model takes many steps in a row, and one manipulated step can be amplified by the next, so the sandbox has to cover everything the whole agent can touch, not just a single tool. In the core exercise, each run starts from a clean copy of the original folder. That's the simplest isolation: however badly the agent mangles things, the original data is untouched.
 
 **Common misconception: a harness is just a longer prompt.** Every component above is code behavior the model can't see and can't get around. The system prompt can tell the model what the rules are, but the harness has to enforce them.
 
@@ -316,7 +316,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 **Goal**: write a complete agent loop without a framework, add permissions, hooks and stop conditions, and describe how reliable it is with numbers from repeated runs.
 
 **Steps**
-1. Prepare a practice folder: 20 Markdown notes, generated once with an LLM or a script and then frozen as the original version. The content must contain exactly: 6 files containing `TODO`, 3 pairs of near-identical duplicate files, 2 drafts whose file names start with `draft-`, and ordinary notes for the rest (topics up to you). These numbers give your grader definite correct answers. Before each run, copy a clean copy from the original.
+1. Prepare a practice folder: 20 Markdown notes, generated once with an LLM or a script and then frozen as the original version. The content must contain exactly: 6 files containing `TODO`, 3 pairs of near-identical duplicate files, 2 drafts whose file names start with `draft-`, and ordinary notes for the rest (topics up to you). These numbers give your grader definite correct answers. Before each run, make a clean copy of the original.
 2. Implement 5 tools and label their risk levels: `list_files`, `read_file`, `grep` (low), `write_file` (medium), `delete_file` (high). Validate tool inputs, and keep error messages short and pointing to the next step (← S10 Tools and MCP).
 3. Hand-write the loop: send messages → execute tool calls → feed back results → repeat. At least four stop conditions: the model declares it's done, a step limit of 15, the same tool failing 3 times in a row (escalate to a human, end and explain why), and a token limit per run.
 4. Add two hooks: `pre_tool_use` makes the permission decision (plan / ask / auto modes; `delete_file` must ask in every mode), and `post_tool_use` writes each step to a JSONL trace (tool, arguments, result length, token count, duration).
@@ -333,14 +333,14 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 **Hints**
 - TypeScript: use tool use from the Anthropic or OpenAI SDK directly, with Zod to validate tool arguments; don't install an agent framework.
 - Python: the `anthropic` or `openai` SDK, with Pydantic to validate arguments.
-- Local models: with Ollama running a small model that supports tool calls (e.g. the Qwen3 family) you can do it all for free, but the success rate will be noticeably lower, which is an interesting comparison in itself. With Ollama, raise the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)). Running 50 runs on a small cloud model usually costs a few dollars at most; do 1 run first to check the pipeline before scaling up.
+- Local models: with Ollama running a small model that supports tool calls (e.g. the Qwen3 family) you can do it all for free, but the success rate will be noticeably lower, which is an interesting comparison in itself. With Ollama, raise the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)). 50 runs on a small cloud model usually cost a few dollars at most; do 1 run first to check the pipeline before scaling up.
 - If you get stuck:
   - Reread: [the agent loop](#-one-example-end-to-end) (including the loop skeleton and the box on the result format), [permission modes](#-which-actions-need-the-users-approval-first), [stop conditions](#-when-should-the-loop-stop), [the minimal agent eval](#-how-do-you-judge-a-harness-change)
   - Further: learn-claude-code s01–s04, 12-factor-agents #7–#9
 
 <section class="deep-section">
 
-### Advanced: System project A12: Hand-written Harness
+### Advanced: System project A12: Hand-written harness
 
 **Goal**: write a complete harness for your system: the loop, permissions, hooks, checkpoint / resume, human in the loop, compaction and skills, and show with repeated runs that it's reliable.
 

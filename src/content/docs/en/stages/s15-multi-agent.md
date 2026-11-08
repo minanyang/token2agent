@@ -162,7 +162,7 @@ When reporting multi-agent results, always put total tokens (including every sub
 <details class="deep">
 <summary>Going deeper: why a single agent's input tokens snowball</summary>
 
-- If each step adds c tokens to the context and it starts at s, the total input over n calls is n·s + c·n(n − 1)/2, growing with the square of n. Split the n calls across m independent sub-agents, each making only n/m calls, and the squared term drops to roughly 1/m of the original. That's where "doing the same work, splitting it can actually save" comes from.
+- If each step adds c tokens to the context and it starts at s, the total input over n calls is n·s + c·n(n − 1)/2, growing with the square of n. Split the n calls across m independent sub-agents, each making only n/m calls, and the squared term drops to roughly 1/m of the original. That's why splitting the same work can actually cost less.
 - The actual bill is also affected by prompt caching: a resent prefix can be billed at a lower price, which makes the snowballing part considerably cheaper (← [Model Crash Course](/en/guide/app-first/#cost-and-latency-basics); deeper: [S5 Inference and Serving](/en/stages/s05-inference/)). Comparing two versions by token count is the most robust; when converting to money, use the same pricing for both.
 
 </details>
@@ -235,7 +235,7 @@ The cooperation, competition, persuasion and other behaviors that emerge when ma
 
 ## Exercises
 
-Concepts route (no code): after "Try it first", you can skip to the self-check.
+Concepts route (no code): after "Try it first," you can skip to the self-check.
 
 ### Try it first (about 10 minutes)
 
@@ -277,7 +277,7 @@ Each sub-agent makes 6 searches plus a summary, 7 calls: 7 × 1,500 + 3,000 × (
 
 <section class="deep-section">
 
-### Advanced: System project A15: Multi-agent Experiment
+### Advanced: System project A15: Multi-agent, kept only with evidence
 
 **Goal**: try out a research → write → review multi-agent flow in your system, compare it with a single agent on the eval set built in A14 Agent Evals and Optimization ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)), and keep it only if it wins.
 

@@ -87,7 +87,7 @@ A PDF stores "where each character sits on the page," not paragraph structure, s
 
 Keep metadata (descriptive information attached to each piece of text) when parsing: source file name, page number, enclosing heading. Citations later ("page 3") and permission filtering ("search only this user's documents") both depend on it.
 
-In practice, pick the 10 hardest documents first, check the parsed output by hand, then choose your tools. For a small number of documents with complex layouts, handing them straight to a model that can read images and PDFs is sometimes more accurate than a parser (many models can read them directly; optional: [S7 Prompts, Structured Output and Workflows, "Can images and audio go straight into an application?"](/en/stages/s07-prompting/#-can-images-and-audio-go-straight-into-your-app)), but it costs more. **Common misconception: no parser errors means parsing worked.** A table flattened into a string of numbers with misaligned columns won't trip any error; only a person will notice.
+In practice, pick the 10 hardest documents first, check the parsed output by hand, then choose your tools. For a small number of documents with complex layouts, handing them straight to a model that can read images and PDFs is sometimes more accurate than a parser (many models can read them directly; optional: [S7 Prompts, Structured Output and Workflows, "Can images and audio go straight into your app?"](/en/stages/s07-prompting/#-can-images-and-audio-go-straight-into-your-app)), but it costs more. **Common misconception: no parser errors means parsing worked.** A table flattened into a string of numbers with misaligned columns won't trip any error; only a person will notice.
 
 <details class="deep">
 <summary>Before you build: a parsing checklist</summary>
@@ -360,7 +360,7 @@ The core exercise uses a public document set rather than the notes assistant: an
 **Steps**
 1. Document set: use a public, stable set of English documents that splits naturally into sections, such as a statute, a handbook or a product's documentation. Chunk it by section (split especially long sections further) to get 200–500 chunks in total, and keep the document name and section number on each chunk as metadata. State the source and chunk count in your report. If you read Chinese, you can use the reference set from the original edition instead: four Taiwanese labor laws from the [Laws & Regulations Database of the Republic of China (Taiwan)](https://law.moj.gov.tw/) *(in Chinese)* — the Labor Standards Act, its Enforcement Rules, the Gender Equality in Employment Act and the Regulations of Leave-Taking of Workers — one article per chunk (skip repealed articles; split especially long articles by paragraph), about 230 chunks. It also gives you practice with word segmentation for BM25.
 2. Build three retrievers: BM25, dense (any embedding model) and hybrid (merged with RRF).
-3. Prepare 50 queries and label all the correct passage IDs for each (usually 1–3): 30 synthesized by an LLM (have it read one section and write a question that section answers), and 20 written by hand the way an ordinary person would ask, without copying the document's wording (for example, "Do I get paid extra for working on a public holiday?" rather than "wages for work on a holiday shall be paid at double the regular rate").
+3. Prepare 50 queries and label all the correct passage IDs for each (usually 1–3): 30 synthesized by an LLM (have it read one section and write a question that section answers), and 20 written by hand the way an ordinary person would ask, without copying the document's wording (for example, with a labor statute: "Do I get paid extra for working on a public holiday?" rather than "wages for work on a holiday shall be paid at double the regular rate").
 4. For each method, compute Recall@5, Recall@10 and MRR (as defined above), with 95% confidence intervals from the bootstrap; report synthetic and handwritten queries separately.
 5. For each method, pick 3 failed queries and explain why they failed.
 
@@ -379,11 +379,11 @@ The core exercise uses a public document set rather than the notes assistant: an
   - Reread: [How do keyword and vector search work together?](#-how-do-keyword-and-vector-search-work-together), [How does embedding search find similar passages?](#-how-does-embedding-search-find-similar-passages), [How do you measure retrieval and generation separately?](#-how-do-you-measure-retrieval-and-generation-separately)
   - Further: the BM25 and rerank parts of Anthropic's "Contextual Retrieval"
 
-**Heads-up**: labeling queries (and word segmentation, if you use the Chinese set) usually takes more work than you expect.
+**Note**: labeling queries (and word segmentation, if you use the Chinese set) usually takes more work than you expect.
 
 <section class="deep-section">
 
-### Advanced: System project A9: RAG with Citations, Split Evaluation and Embedding Fine-tuning
+### Advanced: System project A9: RAG with citations, split evaluation and embedding fine-tuning
 
 **Goal**: replace the "stuff everything into the context" approach from A6 Streaming Chat and Traces with real RAG that handles PDFs, cites sources, and measures retrieval and generation quality separately.
 

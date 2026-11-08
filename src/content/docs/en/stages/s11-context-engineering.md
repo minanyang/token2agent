@@ -153,7 +153,7 @@ Data can go into the context before the call, or you can give the model only poi
 
 **Pre-loading** puts the data that might be needed into the context before the call; that's what S9 Retrieval and RAG does. **Just-in-time** gives the model only lightweight references (file names, queries, links) plus tools, and lets it fetch things when needed; Claude Code exploring a codebase with `grep` (find keywords in file contents) and `glob` (find files by name pattern) works this way. The former is fast and predictable; the latter saves context and handles needs nobody could predict, but it's slower and needs good tools and guidance.
 
-Run the numbers for the notes assistant. Pre-loading 8 note chunks every time adds 5,600 tokens to every call, even when the user just says "create a to-do for me" and needs no notes at all. Switch everything to just-in-time, and asking about the budget takes an extra round: the model calls `notes_search` first and calls the model again when the results come back, adding a round trip of latency, and the second call resends the whole context. So the common compromise: retrieve up front when the question clearly needs notes, and otherwise only provide the tools. Factor 13 in the 12-factor-agents appendix also points out: if you **know** the model will need some data, fetch it up front instead of spending a round letting the model get it.
+Run the numbers for the notes assistant. Pre-loading 8 note chunks every time adds 5,600 tokens to every call, even when the user just says "create a to-do for me" and needs no notes at all. Switch everything to just-in-time, and asking about the budget takes an extra round: the model calls `notes_search` first, and the model is called again once the results come back, adding a round trip of latency, and the second call resends the whole context. So the common compromise: retrieve up front when the question clearly needs notes, and otherwise only provide the tools. Factor 13 in the 12-factor-agents appendix also points out: if you **know** the model will need some data, fetch it up front instead of spending a round letting the model get it.
 
 **Progressive disclosure** is a just-in-time design: give a summary or index first, and expand the details when the model needs them. For example, the notes assistant first provides a list of 200 note titles (about 30 tokens each, 6,000 in total), and the model reads the full text of the ones it picks; including every full note would be 200 × 1,500 = 300,000 tokens. Tool lists work the same way: give a one-line description first and load the full schema only once a tool is picked (tool search, ← S10 Tools and MCP). The skills in [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) are built on this idea.
 
@@ -299,11 +299,11 @@ Without caching: 30 × 10,000 = 300,000. With caching: 1 write at 10,000 × 1.25
   - Reread: [Why does more context make things worse?](#-why-does-more-context-make-things-worse), [How do you order the context to hit the cache?](#-how-do-you-order-the-context-to-hit-the-cache)
   - Further: the experimental design section of Chroma's "Context Rot"; the usage-field explanation in the official prompt caching docs
 
-**Heads-up**: about half the work is preparing the needles and distractor passages.
+**Note**: about half the work is preparing the needles and distractor passages.
 
 <section class="deep-section">
 
-### Advanced: System project A11: Context Builder
+### Advanced: System project A11: Context builder
 
 **Goal**: consolidate the scattered context-assembly logic in your system into one context builder that has budgets, a fixed order and is cache-friendly, and choose the budget from experimental results.
 

@@ -12,7 +12,7 @@ This page isn't a math course. It's a place to come back to when you've forgotte
 
 ## The chain rule and backprop
 
-**Intuition**: if y depends on u and u depends on x, then when x moves a tiny bit, y changes by "how fast u changes with x" times "how fast y changes with u": dy/dx = dy/du · du/dx.
+**Intuition**: if y depends on u and u depends on x, then when x moves a tiny bit, the rate at which y changes is "the rate of u with respect to x" times "the rate of y with respect to u": dy/dx = dy/du · du/dx.
 
 **Example**: y = (2x + 1)² at x = 1. Let u = 2x + 1 = 3, so y = u² = 9. The local derivatives are dy/du = 2u = 6 and du/dx = 2, so dy/dx = 6 × 2 = 12. Check numerically: at x = 1.001 and 0.999, y is 9.012004 and 8.988004; the difference 0.024 ÷ 0.002 = 12.
 

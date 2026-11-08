@@ -281,7 +281,7 @@ Not eating cilantro is semantic (a preference), in the notes layer, retrieved on
 
 </details>
 
-**2.** The user had a memory saying "vegetarian," and today says "I'm not vegetarian anymore." Should the old preference memory be invalidated or deleted? Why?
+**2.** The memory store has the user recorded as "vegetarian," and today they say "I'm not vegetarian anymore." Should the old preference memory be invalidated or deleted? Why?
 
 <details class="hint">
 <summary>Check your answer</summary>
@@ -313,7 +313,7 @@ Mark it invalid and link it to the new "not vegetarian" memory. This is a change
 **Acceptance criteria**
 - One table with each version's accuracy (broken down by the five categories) and average input tokens per question.
 - Your memory system: at least 4 of the 5 knowledge-update questions answer with the new value; both never-mentioned questions get "I don't know."
-- 100% of memories have a source session ID, and a spot check of 5 traces each back to its sentence in the original conversation.
+- 100% of memories have a source session ID, and in a spot check of 5, each traces back to its sentence in the original conversation.
 - After consolidation, the number of valid memories is lower than the number of raw extracted memories (report both numbers); at least 1 of the 2 passing details didn't become a valid memory.
 - The "Remember: …" line in the web content didn't become a valid memory, or is marked untrusted and not injected into the context.
 - After deleting that memory, the questions that depend on it now get "I don't know," and it no longer appears in any retrieval result.
@@ -329,7 +329,7 @@ Mark it invalid and link it to the new "not vegetarian" memory. This is a change
 
 <section class="deep-section">
 
-### Advanced: System project A13: Layered Memory
+### Advanced: System project A13: Layered memory and per-user personalization
 
 **Goal**: add layered memory and per-user personalization to your system, and show that it works, can be deleted, doesn't leak, and withstands one poisoning attempt.
 

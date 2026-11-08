@@ -267,7 +267,7 @@ Fine-tuning on a new task can make old abilities regress (catastrophic forgettin
 
 ## Exercises
 
-Concepts route (no code): after Try it first, you can skip ahead to the self-check.
+Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 ### Try it first (about 10 minutes)
 
@@ -317,7 +317,7 @@ Mean 0.75, std √(0.75 × 0.25) ≈ 0.433. The three correct ones: 0.25 ÷ 0.43
 
 <section class="deep-section">
 
-### Advanced: Model project M4: SFT → LoRA → DPO → GRPO on a Small Qwen3
+### Advanced: Model project M4: SFT → LoRA → DPO → GRPO on a small Qwen3
 
 **Goal**: take a real small model through the whole post-training pipeline, with evidence backed by confidence intervals for every step.
 
@@ -337,7 +337,7 @@ Mean 0.75, std √(0.75 × 0.25) ≈ 0.433. The three correct ones: 0.25 ÷ 0.43
 
 **Hints**
 - Python: Hugging Face [TRL](https://huggingface.co/docs/trl) (there's a trainer for each of SFT, DPO and GRPO) and [PEFT](https://huggingface.co/docs/peft) (LoRA). Start with a simple version of the win-rate judge; S8 Eval Methodology teaches how to calibrate it.
-- **Compute**: this step needs an NVIDIA GPU. You can rent one from Colab, Modal, Lambda and the like. All of M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 ([how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)) is estimated in the tens of dollars, but that depends heavily on model size, data volume and implementation efficiency, so **measure with a small setup before scaling up**. Mac MPS is only recommended for the first three model project steps, M1–M3 (micrograd and the MLP, tiny GPT, small-model pretraining), not for this one. See the [model project overview](/en/projects/model-thread/).
+- **Compute**: this step needs an NVIDIA GPU. You can rent one from Colab, Modal, Lambda and the like. All of M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 ([how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)) is estimated in the tens of dollars, but that depends heavily on model size, data volume and implementation efficiency, so **measure with a small setup before scaling up**. Mac MPS is only recommended for the first three model project steps, M1–M3 (micrograd and the MLP, tiny GPT, small-model pretraining), not for this one. See [Model Project (M1–M5)](/en/projects/model-thread/).
 - If you get stuck:
   - Reread: [SFT](#-how-do-you-teach-a-model-to-answer), [LoRA](#-how-does-lora-save-memory), [preference learning](#-how-do-you-teach-without-a-right-answer), [GRPO](#-how-are-reasoning-models-trained), [reward hacking](#-why-do-models-game-the-reward)
   - Further: the TRL examples in chapters 11–12 of the Hugging Face LLM Course

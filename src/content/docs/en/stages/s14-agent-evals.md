@@ -295,16 +295,16 @@ Coding uses pass@3: tests automatically pick out the correct version, the user o
 **Hints**
 - TypeScript: store traces as JSONL and analyze with Node scripts; a bootstrap is a dozen lines to write yourself, or use `simple-statistics`.
 - Python: pandas for tables, `numpy` or `scipy.stats.bootstrap` for the bootstrap.
-- Cost: 225 runs on a small cloud model usually costs a few dollars to a bit over ten; Ollama is free, and with Ollama, raise the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)). Check the whole pipeline with 3 tasks × 2 trials first.
+- Cost: 225 runs on a small cloud model usually costs a few dollars to $10–20; Ollama is free, and with Ollama, raise the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)). Check the whole pipeline with 3 tasks × 2 trials first.
 - If you get stuck:
   - Reread: [outcome first, then trajectory](#-grade-the-outcome-or-the-steps), [pass@k and pass^k](#-how-do-you-score-results-that-vary-every-run), [environment-based evals](#-how-do-you-make-every-trial-fair), [infra noise](#-can-machine-settings-change-the-score)
   - Further: Anthropic's "Demystifying evals for AI agents"; "How do I evaluate agentic workflows?" in Hamel's FAQ
 
-**Tip**: you can start with 10 tasks × 3 trials comparing just two versions, go through the whole process once with this minimal version, and then fill in the rest.
+**Note**: you can start with 10 tasks × 3 trials comparing just two versions, go through the whole process once with this minimal version, and then fill in the rest.
 
 <section class="deep-section">
 
-### Advanced: System project A14: Agent Evals and Optimization
+### Advanced: System project A14: Agent evals and optimization
 
 **Goal**: build a complete agent eval for your system, and improve it once with each of three methods, with a confidence interval on every conclusion.
 
@@ -384,7 +384,7 @@ For the notes assistant: simulated users "a busy manager who speaks in half-sent
 
    </details>
 
-:::tip[Application-route readers]
+:::tip[On the application route]
 You can finish this chapter without reading [S4 Post-training and Reasoning](/en/stages/s04-post-training/). If you want to go deeper, now is a good time to read it: the distillation, reward hacking and agentic RL in this chapter are explained from first principles there.
 :::
 

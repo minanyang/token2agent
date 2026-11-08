@@ -355,13 +355,13 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 - TypeScript: Vercel AI SDK or each vendor's SDK directly; compute cost from the usage in the response (← S6 LLM APIs and Application Basics).
 - Python: LiteLLM unifies calls and cost calculation across providers; for the confidence interval of the paired difference, bootstrap: each time, resample the same number of questions from the set, drawing A's and C's results for the same question together (← S8 Eval Methodology).
 - Cost: 200 questions × a few calls each is a few dollars on cloud models; all-local models are free, but the latency numbers mean something different.
-- If you're stuck:
+- If you get stuck:
   - Reread: [Which model should each request go to?](#-which-model-should-each-request-go-to), [How do you keep the bill under control?](#-how-do-you-keep-the-bill-under-control)
   - Further: the LLM cascade section of the FrugalGPT paper, RouteLLM's evaluation method
 
 <section class="deep-section">
 
-### Advanced: System project A18: Multi-user Deployment
+### Advanced: System project A18: Multi-tenant deployment of your system
 
 **Goal**: have your system serve 2–3 users at once, and deliver a capacity report, a canary and rollback rehearsal, and a cost dashboard.
 
@@ -390,7 +390,7 @@ If your system inherently has only one user (for example a fully personal agent)
 - TypeScript: Hono / Next.js + Postgres (row-level security) or SQLite (one file per tenant); load test with k6 or autocannon.
 - Python: FastAPI + Postgres; load test with Locust; LiteLLM proxy as the gateway; for durable execution, try Temporal's Python SDK, or keep the checkpointing from S12 The Agent Loop and Harness.
 - Cost: load tests burn tokens. First test infrastructure limits with a local model or mocked model responses, then confirm with the real model at a small scale at the end.
-- If you're stuck:
+- If you get stuck:
   - Reread: [How do you keep users from seeing each other's data?](#-how-do-you-keep-users-from-seeing-each-others-data), [How many users can the system handle?](#-how-many-users-can-the-system-handle), [How do you ship a prompt change safely?](#-how-do-you-ship-a-prompt-change-safely), [How do you notice quality getting worse?](#-how-do-you-notice-quality-getting-worse), [Self-host or use an API?](#-self-host-or-use-an-api)
   - Further: Huyen's "Building A Generative AI Platform," Kaggle's "Prototype to Production," the two Anthropic postmortems
 

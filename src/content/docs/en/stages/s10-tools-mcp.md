@@ -341,7 +341,7 @@ Test the redirect case specifically: the first request hits an allowlisted domai
 
 ### ○ What other ways can a model connect?
 
-Computer use lets the model operate a computer or browser through screenshots, mouse and keyboard. It needs a model that can see images (multimodal input ← [S7 Prompts, Structured Output and Workflows, "Can images and audio go straight into an application?"](/en/stages/s07-prompting/#-can-images-and-audio-go-straight-into-your-app) ○; for the architecture, see the ○ optional reading in [S2 Transformers and Decoding](/en/stages/s02-transformer/)), and it greatly widens the attack surface: any text on screen can be an injected instruction, and every button the model can click is an action it can take. Security for computer use and browser agents is discussed in S16 Security and Governance.
+Computer use lets the model operate a computer or browser through screenshots, mouse and keyboard. It needs a model that can see images (multimodal input ← [S7 Prompts, Structured Output and Workflows, "Can images and audio go straight into your app?"](/en/stages/s07-prompting/#-can-images-and-audio-go-straight-into-your-app) ○; for the architecture, see the ○ optional reading in [S2 Transformers and Decoding](/en/stages/s02-transformer/)), and it greatly widens the attack surface: any text on screen can be an injected instruction, and every button the model can click is an action it can take. Security for computer use and browser agents is discussed in S16 Security and Governance.
 
 A2A and ACP are protocols for agents talking to each other, complementing MCP (agent to tool); most systems don't need them. Come back to them in S15 Multi-agent Systems.
 
@@ -385,7 +385,7 @@ This exercise uses a public book dataset instead of the notes assistant: the dat
 2. Write the first version of the tools (v1) as a straight CRUD (create, read, update, delete) API wrapper: `list_items` (returns everything), `get_item(id)`, `update_item(id, fields)`.
 3. Write the second version (v2), designed around tasks: a `search` with filters, an optional `response_format`, readable error messages, namespace prefixes.
 4. Write a minimal tool-call loop: send → if the model asks for a tool, run it and send back the result → at most 8 rounds. (The full loop waits until S12 The Agent Loop and Harness.)
-5. Design 20 tasks, each with a check function (using SQL to decide success): 8 lookups (e.g. "How many books by Suzanne Collins are in the list?", checking the number in the answer), 8 updates (e.g. "Mark every book with `original_publication_year` after 2010 (not including 2010) and an average rating of 4.2 or higher as want_to_read," checking that the database state exactly matches the expected one), and 4 multi-step tasks (look up, then update, e.g. "Add the `fav` tag to the 2 highest-rated J.K. Rowling books (`authors` contains Rowling)"). When writing tasks, confirm with SQL that each has a unique correct state, paying special attention to ties and to author fields listing several authors. Finish all 20 tasks and check functions before you start tuning the tools.
+5. Design 20 tasks, each with a check function (using SQL to decide success): 8 lookups (e.g. "How many books by Suzanne Collins are in the list?", checking the number in the answer), 8 updates (e.g. "Mark every book with `original_publication_year` after 2010 (not including 2010) and an average rating of 4.2 or higher as `want_to_read`," checking that the database state exactly matches the expected one), and 4 multi-step tasks (look up, then update, e.g. "Add the `fav` tag to the 2 highest-rated J.K. Rowling books (`authors` contains Rowling)"). When writing tasks, confirm with SQL that each has a unique correct state, paying special attention to ties and to author fields listing several authors. Finish all 20 tasks and check functions before you start tuning the tools.
 6. Run both versions on all 20 tasks × 3 runs, restoring the database to its initial state before each run.
 7. Wrap at least 2 v2 tools as a stdio MCP server (using an official SDK), then connect to it with MCP Inspector (web UI or `--cli` mode) and call each tool once. Alternatively, have the loop from step 4 call these tools through an MCP client and run 1 task. stdio doesn't need OAuth.
 8. Give every tool a risk level.
@@ -408,7 +408,7 @@ This exercise uses a public book dataset instead of the notes assistant: the dat
 
 <section class="deep-section">
 
-### Advanced: System project A10: Toolset, an Authenticated MCP Server and an Egress Allowlist
+### Advanced: System project A10: Toolset, an authenticated MCP server and an egress allowlist
 
 **Goal**: let your system take actions, package the tools as an authenticated MCP server, and complete both 🔒 checks.
 

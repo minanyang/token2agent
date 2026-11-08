@@ -296,7 +296,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 <section class="deep-section">
 
-### Advanced: Model project M3: Small-model Pretraining and a Mini Scaling Experiment
+### Advanced: Model project M3: small-model pretraining and a mini scaling experiment
 
 **Goal**: produce a loss-versus-compute scaling plot yourself, and see how data deduplication affects the result.
 

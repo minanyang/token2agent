@@ -379,7 +379,7 @@ This is the first step of the system project (for the step codes, see [how to re
 - You can switch to a local model by changing only the config; run the same 5 questions once on cloud and once locally, both sets of traces are visible, and record the average latency and total cost for each.
 - Pick any 5 pieces of feedback; each one leads you to its trace.
 - Send 3 requests each from two different user IDs; all 6 traces carry the correct user ID.
-- After pressing stop, no new text appears within 1 second, and the trace is marked "canceled".
+- After pressing stop, new text stops appearing within 1 second, and the trace is marked "canceled".
 - Collect ≥ 30 real conversations before moving on to S8 Eval Methodology.
 
 With the notes assistant as the example: put the full text of the 20 most recent notes into the system prompt and ask "What did I conclude about Project X last month?" The trace shows about 30,000 input tokens per call; that's the number S9 Retrieval and RAG sets out to bring down.

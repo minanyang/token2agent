@@ -143,7 +143,7 @@ The user's own actions (for example deleting a memory) can use an **optimistic u
 
 - **Event-driven**: the state machine only takes events (text chunk, tool start, tool result, approval requested, finish, error, user cancel) and outputs the current state. The UI only reads state and makes no decisions of its own. That way you can drive it through every scenario with tests, without writing a frontend.
 - **Index tool calls by ID**: store each tool call as `{ id, name, args, status }`, and have events update the matching entry by ID.
-- **Termination invariants**: on entering `interrupted` or `error`, every `running` tool becomes `cancelling`; tools not yet approved when stopped become `cancelled` directly (they never ran, so no lookup is needed); `cancelling` only turns into `completed`, `cancelled` or `failed` after the actual result is found. If it can't be found (for example the backend is also disconnected), stay in `cancelling` and change the card to "Result unknown, please check yourself." Don't guess. Tests assert two things: after termination no tool is `running`; after the fake backend answers the lookup, no tool is left in `cancelling`.
+- **Termination invariants**: on entering `interrupted` or `error`, every `running` tool becomes `cancelling`; tools not yet approved when stopped become `cancelled` directly (they never ran, so no lookup is needed); `cancelling` only turns into `completed`, `cancelled` or `failed` after the actual result is found. If it can't be found (for example the backend is also disconnected), stay in `cancelling` and change the card to "Result unknown. Please check for yourself." Don't guess. Tests assert two things: after termination no tool is `running`; after the fake backend answers the lookup, no tool is left in `cancelling`.
 - **The cancellation path**: frontend `AbortController.abort()` → backend detects the client disconnect (or receives a cancel request) → stops the generator, cancels the model stream, asks the tool to abort → logs it (for example "cancelled at event N", to make latency easy to measure). Once the fake backend receives a cancel, it stops sending events. The tool's actual result is looked up with a separate request, by tool call ID or by the operation ID from S12 The Agent Loop and Harness (as an idempotency key). The backend must confirm the tool has stopped before a lookup result counts; not finding the key while the tool is still running doesn't mean it didn't run. With Python streaming frameworks, confirm the generator really stops when the client disconnects.
 - **Approval is a tool result**: on rejection, the agent gets the result "user declined" and the run continues, rather than throwing an exception that ends the whole run.
 
@@ -178,7 +178,7 @@ First verify that the levels actually track accuracy. For example, in a 200-ques
 
 The judge in S8 Eval Methodology is for offline evaluation. Each live answer needs its own signal, and Claude's API doesn't return logprobs. Common approaches:
 
-- **Self-consistency**: run the same question 2–3 more times and check whether the answers agree; downgrade if they don't. The cost is 2–3× the calls.
+- **Self-consistency**: run the same question 2–3 times and check whether the answers agree; downgrade if they don't. The cost is 2–3× the calls.
 - **Online judge**: run the judge you calibrated in S8 Eval Methodology on every answer. This adds both latency and cost.
 - **Citation coverage**: the share of sentences supported by sources (← the citation metrics in S9 Retrieval and RAG). Adds almost no cost, and suits RAG-style answers best.
 
@@ -200,7 +200,7 @@ Do the math once: a run has 12 tool calls, 8 read-only, 3 reversible (creating o
 
 ### ★ How do you collect user feedback?
 
-Feedback turns every use into data for improving the system, provided each item can be traced back to a trace. **Explicit feedback** is given deliberately by the user (thumbs up / down, a reason for the error): the signal is clear, but there's little of it, and it skews toward unhappy users. **Implicit feedback** is inferred from behavior (copying, editing a draft, regenerating): there's lots of it, but it needs interpreting.
+Feedback turns every use into data for improving the system, provided each item can be linked back to its trace. **Explicit feedback** is given deliberately by the user (thumbs up / down, a reason for the error): the signal is clear, but there's little of it, and it skews toward unhappy users. **Implicit feedback** is inferred from behavior (copying, editing a draft, regenerating): there's lots of it, but it needs interpreting.
 
 An example: in one week there are 1,000 answers. Only 30 get a thumbs up or down (3%), yet 240 are copied and 90 are regenerated. A 200-word draft where 120 words get changed has an edit ratio of 60%, which you can treat as one "poor draft quality" signal.
 
@@ -289,45 +289,45 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 **Steps**
 1. Write a fake agent backend that follows prewritten scripts and sends events over SSE, including text chunks, tool call start, tool call result, approval requested, run finished and error. You can define the event format yourself or follow AG-UI's event types. The fake backend also provides an endpoint that looks up a tool's actual result by tool call ID / idempotency key. If you recorded record / replay fixtures in S6 LLM APIs and Application Basics, you can reuse them.
 2. Prepare 5 scripts: (a) a normal answer with 2 tool calls in the middle; (b) a tool fails and the agent switches to another approach; (c) the user hits stop while the email tool is running, with two outcomes: already sent when stopped, and not sent; (d) a high-risk tool requests approval and the user rejects it; (e) the connection drops mid-stream.
-3. The frontend manages a run with an explicit state machine. Each tool has its own card component showing "Running / Cancelling / Done / Failed / Canceled" according to its state; "Cancelling" only changes to another state once the tool's actual result is found; a tool still awaiting approval when stopped goes straight to "Canceled."
+3. The frontend manages a run with an explicit state machine. Each tool has its own card component showing "Running / Canceling / Done / Failed / Canceled" according to its state; "Canceling" only changes to another state once the tool's actual result is found; a tool still awaiting approval when stopped goes straight to "Canceled."
 4. The stop button has to cancel all the way to the backend: once the fake backend receives a cancel, it must stop sending events and log "cancelled at event N."
 5. Each assistant message has thumbs up / down and an optional reason field; the feedback event sent must carry the trace ID and message ID and be written to a local `feedback.jsonl`.
 
 **No-frontend version**: steps 1, 2, 4 and 5 stay the same; step 3 becomes three things:
-- Write the state machine as a class with no UI dependency: events in, state out, with each tool call holding its own state (Running / Cancelling / Done / Failed / Canceled).
+- Write the state machine as a class with no UI dependency: events in, state out, with each tool call holding its own state (Running / Canceling / Done / Failed / Canceled).
 - **Script tests**: write a client with pytest (or Vitest) that connects directly to the fake backend's SSE and drives the state machine through all 5 scripts, asserting each script's final state, each tool call's state, and that no tool is left "Running." In script (c), the test sends the cancel after a specified event; in script (d), the test sends "reject."
 - **Minimal interface**: connect the same state machine to Gradio or Chainlit, and run at least scripts (a), (c), (d) and (e) by hand. Gradio's `gr.ChatInterface` swaps the send button for a stop button while streaming; tool calls can be shown with the `metadata` of `gr.ChatMessage` (`title` and `status`: `pending` / `done`); use two buttons for approve and reject. Note that Gradio's stop only stops your generator. Make sure the generator closes the stream to the backend when it ends, or the fake backend never receives the cancel.
 
 **Acceptance criteria**
 - All 5 scripts render correctly (5/5), each with a screenshot of the final state (one each for (c) sent and not sent).
-- Script (c): ≤ 500 ms from hitting stop to the cancel record appearing in the backend log (measure with browser devtools or backend timestamps); after stopping, no card still shows "Running"; after the fake backend returns the final result, no tool is left "Cancelling," and the result on the card matches the fake backend (both sent and not sent must be right).
+- Script (c): ≤ 500 ms from hitting stop to the cancel record appearing in the backend log (measure with browser devtools or backend timestamps); after stopping, no card still shows "Running"; after the fake backend returns the final result, no tool is left "Canceling," and the result on the card matches the fake backend (both sent and not sent must be right).
 - Script (d): the approval screen shows the tool name and full arguments; after rejection the agent receives a "user declined" result rather than the whole run failing.
 - Script (e): the screen shows an interruption message and offers retry; the partial content already received isn't lost.
 - 100% of the feedback in `feedback.jsonl` has a trace ID and message ID.
 - No-frontend version:
   - "Renders correctly" becomes all 5 script tests passing (5/5).
   - Screenshots become a state-transition log for each script, plus interface screenshots for the scripts you ran by hand.
-  - For (c), the 500 ms is the backend log timestamp minus the timestamp when the test sent the cancel; the test must also assert that after the fake backend returns the final result no tool is left "Cancelling," and that tool states match the fake backend's results.
+  - For (c), the 500 ms is the backend log timestamp minus the timestamp when the test sent the cancel; the test must also assert that after the fake backend returns the final result no tool is left "Canceling," and that tool states match the fake backend's results.
   - The approval content for (d) and the interruption message for (e) must appear in the minimal interface; for (e), a test asserts that the partial content already received isn't lost.
 
 **Hints**
-- TypeScript: React + Vercel AI SDK's `useChat` (a tool part's state roughly maps to the card's state; you have to derive "Cancelling" and "Canceled" yourself from the abort and the actual result you look up), or write it yourself with `fetch` + `ReadableStream` + `AbortController`; the state machine can be XState or a reducer.
+- TypeScript: React + Vercel AI SDK's `useChat` (a tool part's state roughly maps to the card's state; you have to derive "Canceling" and "Canceled" yourself from the abort and the actual result you look up), or write it yourself with `fetch` + `ReadableStream` + `AbortController`; the state machine can be XState or a reducer.
 - Python: use FastAPI's `StreamingResponse` or sse-starlette for the backend, and make sure the generator stops when the client disconnects; for the interface and tests, see the "No-frontend version" above.
-- If you're stuck:
+- If you get stuck:
   - Reread: [One example, end to end](#-one-example-end-to-end), [How do you handle stop, errors and empty results?](#-how-do-you-handle-stop-errors-and-empty-results) (including "Before you build")
   - Further: Vercel AI SDK's "Generative User Interfaces," AG-UI event types
 
-**Reminder**: if you choose the "No-frontend version," do both the script tests and the minimal interface.
+**Note**: if you choose the "No-frontend version," do both the script tests and the minimal interface.
 
 <section class="deep-section">
 
-### Advanced: System project A17: Complete Frontend
+### Advanced: System project A17: A complete frontend and usability test for your system
 
-**Goal**: turn your system into an interface two real users can complete tasks with, and make the feedback it generates flow into your eval dataset (← S14 Agent Evals, Data and Optimization). Then run a usability test on it.
+**Goal**: turn your system into an interface two real users can complete tasks with, and make the feedback it generates flow into your eval dataset (← S14 Agent Evals, Data and Optimization).
 
 **Steps**
 
-0. **Prerequisite: a per-answer uncertainty signal**. The judge from A8 Error Analysis and Golden Set is for offline evaluation; none of the earlier system project steps produced an uncertainty signal for each live answer, and Claude's API doesn't return logprobs. If you don't have one yet, add one: for example self-consistency (run the same question 2–3 more times and check whether the answers agree), running the same judge online on every answer, or citation coverage (the share of sentences supported by sources, ← S9 Retrieval and RAG). Confirm on the golden set that the signal's levels track accuracy before you display it.
+0. **Prerequisite: a per-answer uncertainty signal**. The judge from A8 Error Analysis and Golden Set is for offline evaluation; none of the earlier system project steps produced an uncertainty signal for each live answer, and Claude's API doesn't return logprobs. If you don't have one yet, add one: for example self-consistency (run the same question 2–3 times and check whether the answers agree), running the same judge online on every answer, or citation coverage (the share of sentences supported by sources, ← S9 Retrieval and RAG). Confirm on the golden set that the signal's levels track accuracy before you display it.
 1. Connect the core exercise's state machine to your real agent (← S12 The Agent Loop and Harness). Every tool has a matching component, and at least 2 tools use generative UI (structured cards, not JSON strings).
 2. **Citations** (← S9 Retrieval and RAG): every citation in an answer can be clicked to jump to the matching passage in the original source; sentences with no source are marked with a different style.
 3. **Uncertainty** (← S8 Eval Methodology): based on the signal from step 0, show three or fewer levels; when the system chooses not to answer (abstention), give the reason.
@@ -348,7 +348,7 @@ The notes assistant as an example: note search results show as note cards you ca
 **Hints**
 - TypeScript: Vercel AI SDK or CopilotKit (AG-UI's first-party client); for jumping to citations, use URL fragments or Text Fragments.
 - Python: this exercise needs a real frontend. If frontend isn't your strength, start with Vite's React template plus Vercel AI SDK's `useChat` (the Chatbot example in S6 LLM APIs and Application Basics' further reading works almost as is); the FastAPI backend just needs to emit the AI SDK's [stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol). If you've never written a frontend, you'll need to pick up some frontend basics first. The reviewer UI is just for you, so Gradio or Streamlit is enough.
-- If you're stuck:
+- If you get stuck:
   - Reread: [How much should users trust it?](#-how-much-should-users-trust-it), [How do you collect user feedback?](#-how-do-you-collect-user-feedback), [How do you know the interface is usable?](#-how-do-you-know-the-interface-is-usable)
   - Further: the "Collect user feedback" section of Eugene Yan's post; Microsoft's Guidelines for Human-AI Interaction as a checklist
 

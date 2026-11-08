@@ -27,7 +27,7 @@ Where does the model that answered questions in S0 The Big Picture come from? Pa
 
 - Say what each of the four steps of the training loop does, and estimate loss and perplexity from "the probability given to the correct answer." (lecture and self-check)
 - Explain backprop as "multiplying rates," and look at a loss curve and name the likely problem (learning rate too high, bad initialization, overfitting). (lecture and self-check)
-- Write a scalar autograd from scratch, verify it with numerical gradients, and plot by hand what the loss curve looks like when the learning rate is too high. (core)
+- Write a scalar autograd from scratch, verify it with numerical gradients, and plot for yourself what the loss curve looks like when the learning rate is too high. (core)
 - Train a small character-level language model, say what its loss and perplexity mean, and spot saturation from activation histograms. (advanced)
 - Compare several hyperparameter settings with an experiment tracker. (advanced)
 
@@ -224,7 +224,7 @@ When a model keeps getting better on the training data but worse on data it hasn
 <details class="deep">
 <summary>Going deeper: dropout and the rules for the test set</summary>
 
-- **Dropout details**: during training, set each activation to 0 with probability p and divide the survivors by (1 − p) so the expected value is unchanged; at inference, drop nothing and don't rescale. Large LLM pretraining usually has so much data and goes over it only once or twice that many models skip dropout entirely.
+- **Dropout details**: during training, set each activation to 0 with probability p and divide the survivors by (1 − p) so the expected value is unchanged; at inference, drop nothing and don't rescale. Large LLM pretraining usually has plenty of data and passes over it only once or twice, so many models skip dropout entirely.
 - **Use the test set only once**: if you keep checking test scores to pick settings, the test set becomes another val set and the reported score is overly optimistic.
 
 </details>
@@ -308,7 +308,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 <section class="deep-section">
 
-### Advanced: Model project M1: micrograd and the makemore MLP
+### Advanced: Model project M1: makemore MLP and training diagnostics
 
 **Goal**: train a character-level language model on the names dataset, going from bigram all the way to an MLP, and learn to diagnose training with numbers.
 

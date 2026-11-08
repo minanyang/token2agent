@@ -256,7 +256,7 @@ Evaluator-optimizer appears here for the first time; LLM-as-judge in [S8 Eval Me
 <details class="deep">
 <summary>Going deeper: how much confidence voting buys you</summary>
 
-Suppose a single classification is 80% accurate and the three runs are independent. Majority-of-three accuracy = all three right + exactly two right = 0.8³ + 3 × 0.8² × 0.2 = 0.512 + 0.384 = 0.896, about 90%. But the errors of the same model with the same prompt are often not independent: if it gets a note wrong, running it more times tends to produce the same wrong answer, so the real gain is usually smaller than the calculation. To make errors more independent, have the three runs use different prompt variants or different models, at the cost of tripling the cost.
+Suppose a single classification is 80% accurate and the three runs are independent. Majority-of-three accuracy = all three right + exactly two right = 0.8³ + 3 × 0.8² × 0.2 = 0.512 + 0.384 = 0.896, about 90%. But the errors of the same model with the same prompt are often not independent: if it gets a note wrong, running it more times tends to produce the same wrong answer, so the real gain is usually smaller than the calculation. To make errors more independent, have the three runs use different prompt variants or different models, at three times the cost.
 
 </details>
 
@@ -288,7 +288,7 @@ Trace one repair yourself: the model outputs `tags` as `["design", "UI"]`, but "
 <details class="hint">
 <summary>Check your answer</summary>
 
-The schema's `tags` is an `enum`, so validation stops at "UI". Send back the previous output plus the specific error, for example "UI is not in the tag list; choose only from the 5 tags. Output only the corrected JSON." Valid after repair doesn't mean correct: this note probably should also have `budget`, and only an eval will tell you that (→ S8 Eval Methodology).
+The schema's `tags` is an `enum`, so validation stops at "UI". Send back the previous output plus the specific error, for example "UI is not in the tag list; choose only from the 5 tags. Output only the corrected JSON." Valid after repair doesn't mean correct: this note may also need `budget`, and only an eval will tell you that (→ S8 Eval Methodology).
 
 </details>
 

@@ -309,7 +309,7 @@ If you don't know Python, skip this. It doesn't affect any later chapter.
 
    </details>
 
-2. What does a request go through in the prefill and decode phases? (Details in [Model Crash Course, "KV cache"](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more); deeper: S5 Inference and Serving. The gist is enough for now.)
+2. What happens to a request in the prefill phase, and what happens in the decode phase? (Details in [Model Crash Course, "KV cache"](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more); deeper: S5 Inference and Serving. The gist is enough for now.)
 
    <details class="hint">
    <summary>Hint</summary>

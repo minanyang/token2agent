@@ -238,7 +238,7 @@ This chapter isn't legal advice; it only lists the questions to ask.
 <summary>Going deeper: EU AI Act and Taiwan timelines</summary>
 
 - **EU AI Act**: the 2026 Digital Omnibus amendment (Regulation (EU) 2026/1744) pushed back the application date for high-risk AI system obligations: originally 2026-08-02, now 2027-12-02 for Annex III systems and 2028-08-02 for Annex I systems. For other obligations, go by the full text in the Official Journal on EUR-Lex.
-- **Taiwan's AI Basic Act**: passed its third reading in the Legislative Yuan on 2025-12-23 and was promulgated and took effect on 2026-01-14. Follow-up work happens on two levels: the Ministry of Digital Affairs leads an AI risk-classification framework, and each sector regulator then sets management rules and industry guidelines for AI risks in its own domain (the Executive Yuan asked for these to be finished by January 2028). See the [Executive Yuan press release (2026-05-21)](https://www.ey.gov.tw/Page/9277F759E41CCD91/999df6da-6539-4941-913f-5125d684c58d) *(in Chinese)*.
+- **Taiwan's AI Basic Act**: passed its third reading in the Legislative Yuan on 2025-12-23 and was promulgated and took effect on 2026-01-14. Follow-up work happens on two levels: the Ministry of Digital Affairs leads an AI risk-classification framework, and each sector regulator then sets management rules and industry guidelines for AI risks in its own domain (the Executive Yuan asked for these to be finished before January 2028). See the [Executive Yuan press release (2026-05-21)](https://www.ey.gov.tw/Page/9277F759E41CCD91/999df6da-6539-4941-913f-5125d684c58d) *(in Chinese)*.
 
 </details>
 
@@ -246,7 +246,7 @@ This chapter isn't legal advice; it only lists the questions to ask.
 
 So far we've assumed the model is well-behaved and merely tricked. Vendors publish behavior specifications (**model specs**), such as the OpenAI Model Spec and Claude's Constitution. Reading them tells you which refusals or compliance are by design (see [Model Crash Course](/en/guide/app-first/#training-stages-pretrain--sft--preference--rl--reasoning); deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)), and how the model weighs things when your system prompt conflicts with the spec.
 
-If even the model itself isn't fully trustworthy, rely on several layers of monitoring: permissions, guardrails, the reasoning trace, traces.
+If even the model itself isn't fully trustworthy, rely on several layers of monitoring: permissions, guardrails, the reasoning, and traces.
 
 **Common misconception: if you can see the reasoning, you can relax.** Reasoning text doesn't necessarily reflect the actual decision faithfully. Don't rely on that signal alone.
 
@@ -336,13 +336,13 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 - Judging exfiltration and content manipulation only needs string matching (recipient, the credentials string, the attacker's address). Don't use a model to judge.
 - Cost: running 40 × 3 + 5 × 3 tasks on a small model, one round per defense setup, comes to a few dollars at most. You can also use a local model in Ollama, which is free, though attack success rates are usually higher.
 - If you use Ollama, increase the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)).
-- If you're stuck:
+- If you get stuck:
   - Reread: [An example: the poisoned web clip](#-an-example-the-poisoned-web-clip), [How do you make injection harmless?](#-how-do-you-make-injection-harmless), [How do you set the guardrail threshold?](#-how-do-you-set-the-guardrail-threshold)
   - Further: the example implementations of the six patterns in Beurer-Kellner 2025, Willison's "The lethal trifecta"
 
 <section class="deep-section">
 
-### Advanced: System project A16: Security Attack, Defense and Governance
+### Advanced: System project A16: Security attack, defense and governance for your system
 
 **Goal**: produce a security and governance report on your system that you could hand to someone else for review, and fix at least one real injection vulnerability.
 
@@ -365,7 +365,7 @@ The notes assistant as an example: `web_clip` brings in untrusted content, the n
 **Hints**
 - TypeScript: a rule-based check can go straight into your harness's pre-tool hook (← S12 The Agent Loop and Harness), for example a function called before a tool runs that returns allow / deny / ask.
 - Python: also in the pre-tool hook; for the classifier version, use one extra model call and give it only the user messages and tool calls (following auto mode's design of not letting the classifier see tool output).
-- If you're stuck:
+- If you get stuck:
   - Reread: [How do you find the dangerous combination?](#-how-do-you-find-the-dangerous-combination), [How much damage can a hijacked agent do?](#-how-much-damage-can-a-hijacked-agent-do), [Where does the data live, and who regulates it?](#-where-does-the-data-live-and-who-regulates-it)
   - Further: the egress and credentials sections of Anthropic's "How we contain Claude across products," the example scenarios in Meta's "Agents Rule of Two"
 
@@ -473,6 +473,10 @@ The lecture already covers what this chapter needs. The material below is for re
 - [Stanford CS 329Z](https://cs329z.stanford.edu/), the Agent Safety & Guardrails session (read once the slides are public); the security session of [CMU 11-768](https://www.cmu-agents.com/).
 - [Princeton COS 598A AI Safety](https://princeton-polaris-lab.github.io/ai-safety-course) — classic jailbreak papers and safety cases (structured arguments for "why this system is safe enough").
 - [Harvard CS 2881R AI Safety](https://boazbk.github.io/mltheoryseminar/) — sessions on model specs and reward hacking.
+
+### Code along
+
+- [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) — the s03 permissions lesson; compare it with your implementation from S12 The Agent Loop and Harness.
 
 ### Going further
 

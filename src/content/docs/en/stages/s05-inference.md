@@ -112,7 +112,7 @@ Decode uses only about 1/100 of the compute limit; the rest of the time it's wai
 
 The KV cache stores intermediate results already computed for earlier text, so each decode step only processes the new token. The price is memory: for a long conversation, the KV cache can be bigger than the model weights.
 
-**Why you need it.** Without a cache, writing token 501 means recomputing all 2,500 previous tokens; writing token 502 means recomputing 2,501. The work snowballs with length. But thanks to the causal mask (← [S2 Transformers and Decoding](/en/stages/s02-transformer/)), the keys and values of earlier tokens aren't changed by later tokens, so they can be computed once and reused.
+**Why you need it.** Without a cache, writing output token 501 means recomputing all 2,500 previous tokens; writing output token 502 means recomputing 2,501. The work snowballs with length. But thanks to the causal mask (← [S2 Transformers and Decoding](/en/stages/s02-transformer/)), the keys and values of earlier tokens aren't changed by later tokens, so they can be computed once and reused.
 
 **What it stores.** Attention is split into several heads. For every layer and every head, each token stores a key vector and a value vector, each of head-dimension length. Many modern models use GQA, where several query heads share one set of keys and values, so the number of sets stored is the **number of KV heads**, called `num_key_value_heads` in `config.json`. Putting it together:
 
@@ -268,7 +268,7 @@ Since prefill and decode behave completely differently (one compute-bound, one m
 
 ## Exercises
 
-Concepts route (no code): after Try it first, you can skip ahead to the self-check.
+Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 ### Try it first (about 10 minutes)
 
@@ -319,7 +319,7 @@ The first: prefill about 0.64 seconds + decode 200 × 16 ms = 3.2 seconds, about
 
 <section class="deep-section">
 
-### Advanced: Model project M5: KV Cache, Quantization and a Mini Inference Server
+### Advanced: Model project M5: KV cache, quantization and a mini inference server
 
 **Goal**: implement the key inference components yourself on Qwen3-0.6B, and show each component's effect with measured numbers.
 
@@ -340,7 +340,7 @@ The first: prefill about 0.64 seconds + decode 200 × 16 ms = 3.2 seconds, about
 
 **Hints**
 - Python: PyTorch, `transformers` (only for loading weights and the tokenizer), FastAPI or any HTTP framework.
-- **Compute**: you can verify correctness on a CPU, but latency and throughput numbers only mean something when measured on an NVIDIA GPU; Mac MPS isn't suited to this step. Renting a GPU usually costs less than M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 ([how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)), but still measure first. See the [model project overview](/en/projects/model-thread/).
+- **Compute**: you can verify correctness on a CPU, but latency and throughput numbers only mean something when measured on an NVIDIA GPU; Mac MPS isn't suited to this step. Renting a GPU for this step usually costs less than for M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 ([how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)), but still measure first. See [Model Project (M1–M5)](/en/projects/model-thread/).
 - The measurements from this step are used in S18 Deployment and Architecture to compare costs against APIs.
 - If you get stuck:
   - Reread: [KV cache](#-what-does-the-kv-cache-store-and-how-big-is-it), [batching](#-how-do-you-serve-many-users-at-once), [speedups](#-does-speeding-up-change-the-output)
