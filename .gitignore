@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # wrangler local state
 .wrangler/
+
+# Playwright MCP screenshots and snapshots
+.playwright-mcp/
