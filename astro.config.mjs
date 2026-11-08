@@ -10,7 +10,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Token2Agent：AI/LLM 學習路線',
-			description: '從 token 到 agent 的 AI/LLM 學習路線。不需要背景知識就能開始；想深入時，每一章都有更進一步的內容。',
+			description: '學會做出能上線的 AI 應用與 agent：從 LLM API、RAG、MCP 工具到評估與安全，每個概念都用實際例子講清楚。免費，不需要背景知識。',
 			head: [
 				{ tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } },
 				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://token2agent.com/og.png' } },
