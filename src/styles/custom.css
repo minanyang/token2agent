@@ -24,3 +24,16 @@
 	font: inherit;
 	cursor: pointer;
 }
+
+/* Home hero: Starlight's default splash spacing and type are very large; tighten both. */
+.hero h1 {
+	font-size: clamp(var(--sl-text-3xl), calc(0.25rem + 4vw), var(--sl-text-5xl));
+}
+.hero .tagline {
+	font-size: clamp(var(--sl-text-base), calc(0.0625rem + 1.5vw), var(--sl-text-lg));
+}
+@media (min-width: 50rem) {
+	.hero {
+		padding-block: 2.5rem 2rem;
+	}
+}
