@@ -193,7 +193,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 - **Advantage**：Â_i = (r_i − mean(r)) ÷ std(r)。只看最後答案（outcome supervision）時，同一個回答的每個 token 都用同一個 Â_i。
 - **目標函數**：對 G 個回答、每個回答 o_i 的每個 token t，用和 PPO 相同的 clipping：min(ρ_{i,t}·Â_i, clip(ρ_{i,t}, 1 − ε, 1 + ε)·Â_i)，ρ 是新舊 policy 對該 token 的機率比。先在每個回答內對 token 平均（除以 |o_i|），再對 G 個回答平均。
-- **KL 放在 loss 裡**：PPO 版 RLHF 常把 KL 加進獎勵；GRPO 改成在 loss 裡直接減 β·D_KL(π_θ ‖ π_ref)，並用一個不需要額外抽樣、恆為非負的估計式：π_ref / π_θ − log(π_ref / π_θ) − 1（逐 token 計算）。
+- **KL 放在 loss 裡**：PPO 版 RLHF 常把 KL 加進獎勵；GRPO 改成把 β·D_KL(π_θ ‖ π_ref) 直接放進目標：寫成要最大化的 objective 時是減掉它，寫成要最小化的 loss 時就是加上它。KL 用一個不需要額外抽樣、恆為非負的估計式：π_ref / π_θ − log(π_ref / π_θ) − 1（逐 token 計算）。
 - **Dr. GRPO**：除以標準差會放大幾乎全對或全錯的題目，所以拿掉這一步。
 - **DAPO**：把 clipping 的上下界分開、上界放寬（clip-higher，避免模型很快失去多樣性）；dynamic sampling（濾掉整組同分的題目）；token 層級的 loss 平均（長回答不會因為除以長度而被稀釋）；對過長的回答做懲罰；並拿掉 KL 項。
 - **GSPO**：把機率比從單一 token 改成整段序列（除以長度），clipping 也在序列層級做，論文報告這讓訓練更穩定，對 MoE 模型尤其有幫助。
