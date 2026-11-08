@@ -28,6 +28,8 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://token2agent.com/og.png' } },
 			],
 			customCss: ['./src/styles/custom.css'],
+			// x-default → English, hreflang="zh" → zh-TW (see the file).
+			routeMiddleware: './src/routeData.ts',
 			components: {
 				// Adds the 淺顯 / 深入 reading-depth toggle next to the theme picker.
 				ThemeSelect: './src/components/ThemeSelect.astro',

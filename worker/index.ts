@@ -1,6 +1,8 @@
 // Sends readers whose browser prefers a language other than Chinese to the English pages, once per visit.
 // Everything else is the static Astro build, served unchanged from the ASSETS binding.
 //
+// - Known crawlers are never redirected: search engines and AI tools rely on hreflang, so every URL must serve
+//   its own page to them.
 // - An explicit choice in the language picker (cookie `t2a-lang`, set in src/components/LanguageSelect.astro) wins.
 // - Without the cookie, the top `Accept-Language` entry decides; `zh*`, `*` or no header (most crawlers) stay on zh-TW,
 //   so search engines keep indexing the root locale.
@@ -9,6 +11,10 @@
 type Env = { ASSETS: { fetch(request: Request): Promise<Response> } };
 
 const COOKIE = 't2a-lang';
+
+// Search engine and AI crawlers/fetchers, matched on the User-Agent. `bot\b` covers Googlebot, bingbot, GPTBot,
+// OAI-SearchBot, ClaudeBot, PerplexityBot, Applebot and most others; the rest are user-triggered AI fetchers.
+const CRAWLER = /bot\b|crawler|spider|slurp|Google-InspectionTool|ChatGPT-User|Claude-User|Perplexity-User|meta-externalagent/i;
 
 function topLanguage(header: string | null): string | undefined {
 	if (!header) return undefined;
@@ -24,6 +30,7 @@ function topLanguage(header: string | null): string | undefined {
 }
 
 function wantsEnglish(request: Request): boolean {
+	if (CRAWLER.test(request.headers.get('User-Agent') ?? '')) return false;
 	const cookie = request.headers.get('Cookie')?.match(new RegExp(`(?:^|;\\s*)${COOKIE}=([^;]+)`))?.[1];
 	if (cookie) return cookie === 'en';
 	const top = topLanguage(request.headers.get('Accept-Language'));
