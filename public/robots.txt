@@ -1,5 +1,7 @@
-# Search engines and AI crawlers are welcome; the content is CC BY-NC-SA 4.0.
+# Search engines and AI answer tools are welcome; the content is CC BY-NC-SA 4.0.
+# Content signals: https://contentsignals.org (ai-train is intentionally left unset).
 User-agent: *
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 Sitemap: https://token2agent.com/sitemap-index.xml
