@@ -1,0 +1,41 @@
+---
+title: Showcase
+head:
+  - tag: title
+    content: LLM App and AI Agent Project Showcase | Token2Agent
+description: Browse LLM apps and AI agent projects people have built, and see how to share yours and what gets listed. Anyone can open a PR to share their work, whether or not they followed this roadmap.
+---
+
+import ShowcaseGrid from '../../../components/ShowcaseGrid.astro';
+
+LLM apps and agents, shared by the people who built them. You don't need to have followed this roadmap; any AI app or agent you built yourself is welcome. Each project lists which chapters' topics it uses, so if you want to know how it works, click through and read that chapter.
+
+<ShowcaseGrid />
+
+## How to share
+
+1. Fork this site's [GitHub repo](https://github.com/minanyang/token2agent).
+2. Copy `src/data/showcase/_template.yaml` to `src/data/showcase/your-project-name.yaml` (lowercase letters and hyphens) and fill it in following the comments.
+3. Open a pull request titled "Showcase: project name".
+
+One file per project, with only these fields:
+
+| Field | Contents |
+|---|---|
+| `name` | Project name, 40 characters max |
+| `summary` | One sentence on what it does, 100 characters max |
+| `url` | The repo, or a URL where it can be tried |
+| `author` | Your name or handle, 40 characters max |
+| `authorUrl` | Optional: your personal page |
+| `stages` | Optional: which chapters' topics it uses, as chapter numbers (0–19), up to 6 |
+| `added` | The date you open the PR |
+
+## What gets listed
+
+- You built it, or you're the main author.
+- It's about LLM apps or agents, and opening the link shows what it does: the repo has a README, or there's a page where it can be tried.
+- Not accepted: pure ads or affiliate links, pages that ask for login credentials or payment details before showing the project, and projects with illegal or infringing content.
+- Projects with dead links or that are clearly no longer maintained may be removed; once fixed, you can open a new PR.
+- By submitting a PR you agree that this site may display the name, summary, links and author name you provided; your project keeps its own license.
+
+Eval numbers aren't required. If your project has eval results, traces or cost logs, putting them in the README makes it easier for others to learn from it (see [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) for how).

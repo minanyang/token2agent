@@ -56,7 +56,7 @@ templates/stage.md   每章頁面的範本與完整撰寫規則
 
 ## 翻譯
 
-繁體中文是根語系。英文、簡體中文、日文預計以 `/en/`、`/zh-cn/`、`/ja/` 加進 `astro.config.mjs`，譯文放在 `src/content/docs/en/` 這類資料夾。想參與翻譯，請先開 Issue 討論，避免重工。
+繁體中文是根語系。英文版在 `src/content/docs/en/`（網址 `/en/`），翻譯規則見 [`templates/translation-en.md`](templates/translation-en.md)；修改中文講義時，請一併更新對應的英文頁，或在 PR 說明裡註明英文版待更新。簡體中文、日文預計以 `/zh-cn/`、`/ja/` 加入，想參與翻譯請先開 Issue 討論，避免重工。
 
 ## 授權
 

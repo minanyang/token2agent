@@ -13,7 +13,7 @@ next:
 ---
 
 :::note[This chapter]
-**Prerequisites**: none　**Next**: most readers → [Model Crash Course](/en/guide/app-first/#模型速成)<!-- TODO anchor --> → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); to understand model internals → [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (Part II How Models Work, the optional deep route)
+**Prerequisites**: none　**Next**: most readers → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); to understand model internals → [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (Part II How Models Work, the optional deep route)
 
 This chapter has no advanced exercises. The optional advanced exercises start in S1 Neural Network Basics and S6 LLM APIs and Application Basics; see "Where to go next".
 :::
@@ -41,7 +41,7 @@ There's more behind an AI product than a model. This chapter draws the whole map
 Three terms first. You'll see them throughout the course:
 
 - **Large language model** (LLM): a trained program. Give it some text and it predicts the text most likely to come next, writing a little at a time. Every chat assistant you've used runs on an LLM.
-- **Token**: the unit a model reads and writes text in. In English a token is often a short word or part of a longer one; in Chinese it's roughly one or two characters. Pricing, speed and length limits are all counted in tokens (→ [Model Crash Course](/en/guide/app-first/#token-與斷詞)<!-- TODO anchor -->; deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/)).
+- **Token**: the unit a model reads and writes text in. In English a token is often a short word or part of a longer one; in Chinese it's roughly one or two characters. Pricing, speed and length limits are all counted in tokens (→ [Model Crash Course](/en/guide/app-first/#tokens-and-tokenization); deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/)).
 - **Context**: the full input sent to the model on each call. The model doesn't remember previous calls; it only sees what's in this call's context. There's a limit on how many tokens the context can hold, called the context window.
 
 The whole chapter uses one example: a **notes assistant**. It stores the user's Markdown notes and can answer questions about them, search them and create new ones. The lectures in Part III through Part VII (S6–S19) use it too, growing it from the prototype here into a complete system.
@@ -87,7 +87,7 @@ The table shows one round. Each step has a chapter dedicated to it:
 
 A few terms from the table: the **system prompt** is the fixed instruction the developer writes for the model ("You are a notes assistant. Answer only from the user's notes."); **streaming** means showing the output as it's generated, so the user doesn't wait for the whole answer; a **trace** is the record of every step in a request, which you go back to when something goes wrong.
 
-**Steps 3 and 4 are where the model actually computes, and they behave differently.** Prefill processes input that's already known, so all tokens can be computed in parallel; even an input of several thousand tokens goes fast. Decode produces output that doesn't exist yet: token 5 can't be computed until token 4 exists, so tokens come out one by one, and the longer the output, the longer you wait. For each token, the model produces a probability for every candidate token, and the sampling settings (such as temperature) decide how to pick one (→ [Model Crash Course](/en/guide/app-first/#sampling-與-temperature)<!-- TODO anchor -->; deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S5 Inference and Serving](/en/stages/s05-inference/)).
+**Steps 3 and 4 are where the model actually computes, and they behave differently.** Prefill processes input that's already known, so all tokens can be computed in parallel; even an input of several thousand tokens goes fast. Decode produces output that doesn't exist yet: token 5 can't be computed until token 4 exists, so tokens come out one by one, and the longer the output, the longer you wait. For each token, the model produces a probability for every candidate token, and the sampling settings (such as temperature) decide how to pick one (→ [Model Crash Course](/en/guide/app-first/#sampling-and-temperature); deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S5 Inference and Serving](/en/stages/s05-inference/)).
 
 **Steps 5 and 6 let the model "do things."** The developer lists the tools' names, purposes and parameters in the context ahead of time. When the model wants a tool, it doesn't output a sentence for a human; it outputs text in a fixed format that amounts to `notes_search(query="meeting", range="last week")`. Your code recognizes that format, actually runs it, and puts the result back into the context so the model sees it on the next round.
 
@@ -228,7 +228,7 @@ After this chapter, pick a route based on your goal:
 
 | Your goal | Route | Notes |
 |---|---|---|
-| Put LLMs into a product and build AI applications or agents (most readers) | S0 The Big Picture → [Model Crash Course](/en/guide/app-first/#模型速成)<!-- TODO anchor --> → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) → … → [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) | The Model Crash Course covers the minimum model knowledge for building applications in ten short topics. The 14 application chapters (S6–S19) don't require Part II How Models Work (S1–S5); when they use a model concept, they link back to the Model Crash Course first and then mark "Deeper: Sn chapter title" |
+| Put LLMs into a product and build AI applications or agents (most readers) | S0 The Big Picture → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) → … → [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) | The Model Crash Course covers the minimum model knowledge for building applications in ten short topics. The 14 application chapters (S6–S19) don't require Part II How Models Work (S1–S5); when they use a model concept, they link back to the Model Crash Course first and then mark "Deeper: Sn chapter title" |
 | Understand how models work inside, or do research, train models, or build inference infrastructure | S0 The Big Picture → [Part II How Models Work (S1–S5)](/en/stages/s01-neural-networks/) → the 14 application chapters (S6–S19) | Part II How Models Work (S1–S5) builds up from the bottom: neural networks, Transformers, pretraining, post-training, inference. It's lower level and uses more math; it's the optional deep route |
 | Understand what AI systems do without writing code for now | Concepts route: same order as the first route | In each chapter, read the lecture, do "Try it first" and the self-check, and skip the exercises that need code; see [How to Use This Roadmap](/en/guide/how-to-use/#choose-a-route) |
 
@@ -309,7 +309,7 @@ If you don't know Python, skip this. It doesn't affect any later chapter.
 
    </details>
 
-2. What does a request go through in the prefill and decode phases? (Details in [Model Crash Course, "KV cache"](/en/guide/app-first/#kv-cache以及為什麼輸出-token-比較貴)<!-- TODO anchor -->; deeper: S5 Inference and Serving. The gist is enough for now.)
+2. What does a request go through in the prefill and decode phases? (Details in [Model Crash Course, "KV cache"](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more); deeper: S5 Inference and Serving. The gist is enough for now.)
 
    <details class="hint">
    <summary>Hint</summary>
