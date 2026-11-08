@@ -271,7 +271,7 @@ MoE 要特別注意：它有兩個參數量。**總參數**是全部專家加起
 <details class="deep">
 <summary>準備動手做：精確計算參數，以及訓練要多少記憶體</summary>
 
-- **現代模型的參數**：很多模型（包括 GPT-2）讓輸出層和 token embedding 共用同一個矩陣，叫 weight tying。SwiGLU 的 MLP 是三個 d × `intermediate_size` 的矩陣；GQA 的 k、v 矩陣比 d × d 小；沒有 weight tying 的話，輸出層要再算一次 V·d。逐項列出每個矩陣的形狀，就能算準到個位數（模型線 M2 tiny GPT 的驗收要求；[代號說明](/guide/how-to-use/#代號怎麼讀)）。
+- **現代模型的參數**：很多模型（包括 GPT-2）讓輸出層和 token embedding 共用同一個矩陣，叫 weight tying。SwiGLU 的 MLP 是三個 d × `intermediate_size` 的矩陣；GQA 的 k、v 矩陣比 d × d 小；沒有 weight tying 的話，輸出層要再算一次 V·d。逐項列出每個矩陣的形狀，就能算準到個位數（模型專案 M2 tiny GPT 的驗收要求；[代號說明](/guide/how-to-use/#代號怎麼讀)）。
 - **計算量的例外**：2N 忽略了 attention 分數本身的計算，context 很長時要另外加。
 - **bf16 vs fp16**：兩者都是 16 bit。bf16 能表示的範圍和 fp32 一樣大、精度較低；fp16 精度較高、範圍小，訓練時數值容易超出範圍（太大溢位、太小變成 0）。所以現代訓練多半用 bf16。
 - **訓練的記憶體**：用 Adam 做混合精度訓練時，每個參數要存 bf16 權重（2 byte）、bf16 梯度（2）、fp32 權重主副本（4）、Adam 的一階與二階動差（moment，各 4），約 16 byte。70 億參數就要約 112 GB，還沒算 activation（前向時每層的中間結果，反向要用）。
@@ -359,7 +359,7 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 
 <section class="deep-section">
 
-### 進階：模型線 M2：tiny GPT，升級成 Llama 元件
+### 進階：模型專案 M2：tiny GPT，升級成 Llama 元件
 
 **目標**：從零訓練一個小 GPT，換上自己的 tokenizer，再逐一換成現代元件，並準確算出它的大小。
 
@@ -386,7 +386,7 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 
 **提示**
 - Python：PyTorch；Apple MPS 或 CPU 即可，小模型一次訓練約十幾分鐘。可以參考 [karpathy/nanoGPT](https://github.com/karpathy/nanoGPT) 的設定，但自己寫模型本體。
-- 環境與算力說明見[模型線總覽](/projects/model-thread/)。
+- 環境與算力說明見[模型專案總覽](/projects/model-thread/)。
 - 卡住時：
   - 重讀：[現代元件](#-現代模型換了哪些零件)、[resource accounting](#-模型要多少算力與記憶體)
   - 延伸：rasbt 第 4 章與第 5 章 bonus 的 Llama / Qwen 從零實作

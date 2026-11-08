@@ -344,7 +344,7 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 
 <section class="deep-section">
 
-### 進階：系統線 A12：手寫 harness
+### 進階：系統專案 A12：手寫 harness
 
 **目標**：為你的系統寫出完整的 harness：loop、權限、hooks、checkpoint / resume、人工介入、compaction、skills，並用多次試跑證明它可靠。
 

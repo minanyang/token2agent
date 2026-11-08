@@ -305,7 +305,7 @@ LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的
 
 <section class="deep-section">
 
-### 進階：系統線 A11：context builder
+### 進階：系統專案 A11：context builder
 
 **目標**：把你系統裡零散的 context 組裝邏輯，收斂成一個有預算、有排序、對快取友善的 context builder，並用實驗結果決定預算。
 

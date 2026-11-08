@@ -281,7 +281,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 <section class="deep-section">
 
-### 進階：系統線 A15：有證據才保留的 multi-agent
+### 進階：系統專案 A15：有證據才保留的 multi-agent
 
 **目標**：為你的系統試做一個 research → write → review 的多 agent 流程，在 A14 agent eval 與最佳化（[代號說明](/guide/how-to-use/#代號怎麼讀)）建立的評估集上和單一 agent 比較，只有贏了才保留。
 

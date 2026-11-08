@@ -300,7 +300,7 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
 
 <section class="deep-section">
 
-### 進階：模型線 M3：小模型 pretraining 與迷你 scaling 實驗
+### 進階：模型專案 M3：小模型 pretraining 與迷你 scaling 實驗
 
 **目標**：親手跑出一張 loss 對 compute 的 scaling 圖，並看到資料去重對結果的影響。
 
@@ -320,7 +320,7 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
 **提示**
 - Python：PyTorch；Apple MPS 或 CPU 可以跑百萬到千萬參數等級的模型。
 - 想走完整的現代流程，可以改用 [karpathy/nanochat](https://github.com/karpathy/nanochat)：它有 CPU / MPS 的縮小版腳本（作者說明結果不會好），完整版設計在 8×H100 節點上跑，README 估計約 2 小時、約 48 美元，spot instance 可能更便宜；實際費用依雲端價格而定，請先自己試算。
-- 算力選擇見[模型線總覽](/projects/model-thread/)。
+- 算力選擇見[模型專案總覽](/projects/model-thread/)。
 - 卡住時：
   - 重讀：[長時間訓練怎麼不爆掉？](#-長時間訓練怎麼不爆掉)（cosine 公式）、[模型和資料該多大？](#-模型和資料該多大)（展開說明小規模為什麼可能不符）
   - 延伸：Chinchilla 論文的 Approach 1（固定模型大小、變化 token 數），最接近這個實驗

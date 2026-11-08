@@ -413,7 +413,7 @@ B。A 只有 ID，模型得再呼叫一次讀取工具，才知道哪一篇是 1
 
 <section class="deep-section">
 
-### 進階：系統線 A10：工具組、帶認證的 MCP server 與 egress 白名單
+### 進階：系統專案 A10：工具組、帶認證的 MCP server 與 egress 白名單
 
 **目標**：讓你的系統能做事，把工具包成帶認證的 MCP server，並完成 🔒 的兩項檢查。
 

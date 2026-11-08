@@ -59,8 +59,8 @@ sidebar:
 | [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) | 繁中 agent 學習地圖；harness 8 元件檢查表、eval 很好。偏 Claude Code 生態，模型原理很淺 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | [karpathy/makemore](https://github.com/karpathy/makemore) | 字元級語言模型；S1 神經網路基礎的練習取 `names.txt` 資料。2024 後未更新 | [S1 神經網路基礎](/stages/s01-neural-networks/) |
 | [karpathy/nanoGPT](https://github.com/karpathy/nanoGPT) | 最精簡的 GPT 訓練 repo；S2 Transformer 與 decoding 借設定、自己寫模型本體 | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
-| [karpathy/nanochat](https://github.com/karpathy/nanochat) | 端對端小型 ChatGPT 訓練；完整版需 8×H100，有 CPU / MPS 縮小版 | [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、模型線 |
-| [GeeeekExplorer/nano-vllm](https://github.com/GeeeekExplorer/nano-vllm) | 約 1,200 行的 vLLM 精簡實作，對照自己的推論伺服器 | [S5 推論與 serving](/stages/s05-inference/)、模型線 |
+| [karpathy/nanochat](https://github.com/karpathy/nanochat) | 端對端小型 ChatGPT 訓練；完整版需 8×H100，有 CPU / MPS 縮小版 | [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、模型專案 |
+| [GeeeekExplorer/nano-vllm](https://github.com/GeeeekExplorer/nano-vllm) | 約 1,200 行的 vLLM 精簡實作，對照自己的推論伺服器 | [S5 推論與 serving](/stages/s05-inference/)、模型專案 |
 | [SWE-agent/mini-swe-agent：`agents/default.py`](https://github.com/SWE-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py) | agent 主迴圈原始碼；S0 全局地圖逐方法對照 | [S0 全局地圖](/stages/s00-big-picture/) |
 | [Microsoft ai-agents-for-beginners L03: AI Agentic Design Principles](https://github.com/microsoft/ai-agents-for-beginners/tree/main/03-agentic-design-patterns) | 透明度、控制權、一致性三原則；範例綁 Azure，原則通用 | [S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Microsoft: Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/)（2019） | 18 條人機互動原則，可當 UI 稽核清單 | [S17 產品與 AI UX](/stages/s17-ai-ux/) |
@@ -244,9 +244,9 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 
 | 來源 | 定位 | 對應章節 |
 |---|---|---|
-| [Weights & Biases](https://docs.coreweave.com/products/wandb) | 實驗追蹤；有免費個人方案。文件已併入 CoreWeave | [S1 神經網路基礎](/stages/s01-neural-networks/)、模型線 |
-| [Hugging Face TRL](https://huggingface.co/docs/trl) | SFT、DPO、GRPO trainer | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、模型線 |
-| [Hugging Face PEFT](https://huggingface.co/docs/peft) | LoRA 等參數高效微調 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、模型線 |
+| [Weights & Biases](https://docs.coreweave.com/products/wandb) | 實驗追蹤；有免費個人方案。文件已併入 CoreWeave | [S1 神經網路基礎](/stages/s01-neural-networks/)、模型專案 |
+| [Hugging Face TRL](https://huggingface.co/docs/trl) | SFT、DPO、GRPO trainer | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、模型專案 |
+| [Hugging Face PEFT](https://huggingface.co/docs/peft) | LoRA 等參數高效微調 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、模型專案 |
 | [Hugging Face: Chat templates](https://huggingface.co/docs/transformers/main/en/chat_templating) | 讀工具使用的段落 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 
 ### 模型與資料集

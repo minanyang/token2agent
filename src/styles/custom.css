@@ -132,7 +132,7 @@
 
 /*
  * Sidebar as a trace: each group is a rail, each chapter a small token block on it; the current chapter is filled with the accent.
- * Top-level groups in order: 開始, Part I–VII, 實作線, 社群, 參考 (the 3rd, Part II, is optional).
+ * Top-level groups in order: 開始, Part I–VII, 實作專案, 社群, 參考 (the 3rd, Part II, is optional).
  */
 .sidebar-content ul.top-level > li {
 	--mark-c: var(--sl-color-gray-4);

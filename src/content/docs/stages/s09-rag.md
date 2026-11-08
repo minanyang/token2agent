@@ -385,7 +385,7 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 
 <section class="deep-section">
 
-### 進階：系統線 A9：附引用的 RAG、分段評估與 embedding 微調
+### 進階：系統專案 A9：附引用的 RAG、分段評估與 embedding 微調
 
 **目標**：把 A6 串流聊天與 trace 的「全文塞進 context」換成真正的 RAG，能處理 PDF、附引用，並分開量測檢索與生成品質。
 
@@ -393,10 +393,10 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 1. 文件解析：讓系統能處理 PDF（至少一份含表格），保留檔名、頁碼、標題作為 metadata。
 2. 切塊與索引：hybrid 檢索加 rerank；試一次 contextual retrieval，用 eval 決定要不要保留。
 3. 生成與引用：模型在每個主張後標上段落 ID，前端顯示成可點的來源。不做網頁的話（CLI、Gradio、Chainlit），在回答後列出「[1] 檔名 第 3 頁」這樣的來源清單，或用 Markdown 連結代替；可點、可展開的版本在 S17 產品與 AI UX。
-4. 檢索時先依使用者過濾，只搜尋該使用者有權看的文件。使用者身分沿用從 A6 串流聊天與 trace 起、每個請求都帶的使用者 ID（系統線之後會有 2–3 位使用者）。
+4. 檢索時先依使用者過濾，只搜尋該使用者有權看的文件。使用者身分沿用從 A6 串流聊天與 trace 起、每個請求都帶的使用者 ID（系統專案之後會有 2–3 位使用者）。
 5. 建立 50 筆查詢集：從 golden set（← A8 錯誤分析與 golden set）與真實 trace 取，不夠再用合成查詢補，並標註正確段落。
 6. 評估：檢索看 Recall@10 與 MRR；生成看 faithfulness 與 citation precision（依 S8 Eval 方法論校準 judge）。
-7. 微調 embedding 模型：用合成的（查詢、段落）配對訓練，在**沒參與訓練**的查詢上比較微調前後的 Recall@10。這一步和模型線的微調技術相通（見[模型速成〈微調能做什麼、不能做什麼〉](/guide/app-first/#微調能做什麼不能做什麼)；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）。
+7. 微調 embedding 模型：用合成的（查詢、段落）配對訓練，在**沒參與訓練**的查詢上比較微調前後的 Recall@10。這一步和模型專案的微調技術相通（見[模型速成〈微調能做什麼、不能做什麼〉](/guide/app-first/#微調能做什麼不能做什麼)；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）。
 8. 完成上面的 🔒 間接 injection 檢查，結果寫進專案文件。
 9. ○ Text2SQL 變體（選做，不計入預估；熟 SQL 的讀者可以拿它取代第 7 步）：用你熟的資料庫，或 [Spider](https://yale-lily.github.io/spider) 的一個子集，做 50 題自然語言轉 SQL。用執行結果比對評分（execution accuracy：模型的 SQL 和標準 SQL 跑出相同結果才算對），附 95% 信賴區間；比較「只給 table 名稱」與「加上欄位說明與 3 個範例」兩種 prompt。查詢一律用唯讀帳號執行。約 6–8 小時。
 

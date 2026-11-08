@@ -12,7 +12,7 @@ sidebar:
 :::note[這一章]
 **⏱ 講義** 首次閱讀約 2.5 小時，手算與深入內容約 1.5 小時　**必做題** 約 7 小時　**進階題（畢業專題）** 約 24 小時起
 
-**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統線](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層往深處走
+**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層往深處走
 :::
 
 :::tip[理解路線重點]
@@ -25,7 +25,7 @@ sidebar:
 
 前面十八章把 AI 系統拆成一層一層學。這章反過來，看目前最成熟的三類 agent 怎麼把這些層組合起來：coding agent、deep research、常駐個人 agent。目的不是照抄，而是看懂任何 agent 產品背後的取捨：為什麼這裡用固定的 workflow、那裡交給模型決定，為什麼要拆成多個 agent，為什麼要讓人核准。
 
-畢業專題把你的系統延伸成一個常駐的 agent，並交出五份工程證據，證明它能上線（shippable）、能被量測（evaluable）、每個決定都有理由（defensible）。只做必做題的讀者，做完必做題（拆解一個開源 coding agent）就走完整條路線；畢業專題（A19）是進階題，前提是你一路做了系統線 A6–A18。理解路線讀完講義、先試一下與自我檢查即完成。
+畢業專題把你的系統延伸成一個常駐的 agent，並交出五份工程證據，證明它能上線（shippable）、能被量測（evaluable）、每個決定都有理由（defensible）。只做必做題的讀者，做完必做題（拆解一個開源 coding agent）就走完整條路線；畢業專題（A19）是進階題，前提是你一路做了系統專案 A6–A18。理解路線讀完講義、先試一下與自我檢查即完成。
 
 ## 學完能
 
@@ -273,7 +273,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
 <section class="deep-section">
 
-### 進階：系統線 A19（畢業專題）：把你的系統做成常駐 agent
+### 進階：系統專案 A19（畢業專題）：把你的系統做成常駐 agent
 
 **目標**：把你的系統延伸成常駐 agent，並交出五份可供審查的工程證據。
 
@@ -425,7 +425,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 ### 走完之後
 
 - Science agents、theorem proving、embodied agents：各領域的專門 benchmark 與環境。
-- Agentic RL（← S14 Agent eval、資料與最佳化的選修）：用你在畢業專題累積的 trace 與 regression suite 當訓練環境，回到[模型線](/projects/model-thread/)把小模型訓練成你系統的專用 agent。
+- Agentic RL（← S14 Agent eval、資料與最佳化的選修）：用你在畢業專題累積的 trace 與 regression suite 當訓練環境，回到[模型專案](/projects/model-thread/)把小模型訓練成你系統的專用 agent。
 - 回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層你覺得最薄弱的往深處走。
 
 </section>

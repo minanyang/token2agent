@@ -25,7 +25,7 @@ import RoadmapMap from '../../components/RoadmapMap.astro';
 
 ## 路線總覽
 
-每張卡片是一章，共 20 章（S0–S19），沿著中間的線左右交錯往下走；卡片裡是該章的核心主題，點下去會跳到該章的對應段落。虛線的 Part II 是選修的模型原理，預設收起（[代號與題型說明](/guide/how-to-use/#代號怎麼讀)）。講義加必做題，應用路線約 175 小時、完整路線約 225 小時；進階題（兩條實作線）另計約 330 小時，見[時數](/guide/how-to-use/#時數)。
+每張卡片是一章，共 20 章（S0–S19），沿著中間的線左右交錯往下走；卡片裡是該章的核心主題，點下去會跳到該章的對應段落。虛線的 Part II 是選修的模型原理，預設收起（[代號與題型說明](/guide/how-to-use/#代號怎麼讀)）。講義加必做題，應用路線約 175 小時、完整路線約 225 小時；進階題（兩個實作專案）另計約 330 小時，見[時數](/guide/how-to-use/#時數)。
 
 <RoadmapMap />
 
@@ -53,9 +53,9 @@ import RoadmapMap from '../../components/RoadmapMap.astro';
 
 每一章都有兩種讀法，可以在頁首切換：**淺顯**只顯示主線，第一次讀就看得懂；**深入**會展開實作細節、推導、選修主題和進階題。
 
-## 走完系統線，你會有什麼
+## 走完系統專案，你會有什麼
 
-系統線是各章的進階題。走完它，你會有一個已部署上線、自己每天在用的 agent，具備 RAG、工具、記憶、評估與安全防護；你也會有可以拿給別人審查的工程證據。每一章幫它長出一種能力（A 後面的數字對應章號，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）：
+系統專案是各章的進階題。走完它，你會有一個已部署上線、自己每天在用的 agent，具備 RAG、工具、記憶、評估與安全防護；你也會有可以拿給別人審查的工程證據。每一章幫它長出一種能力（A 後面的數字對應章號，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）：
 
 | 階段 | 你的系統長出什麼 |
 |---|---|
@@ -65,18 +65,18 @@ import RoadmapMap from '../../components/RoadmapMap.astro';
 | Part VI 可信、產品、上線（A16–A18） | 安全稽核與修補、完整前端、多使用者部署與 eval 把關的發布流程 |
 | Part VII 綜合實戰（A19） | 畢業專題：延伸成常駐 agent |
 
-完整對照見[系統線 A6–A19](/projects/system-thread/#每一章長出什麼)。
+完整對照見[系統專案 A6–A19](/projects/system-thread/#每一章長出什麼)。
 
-## 兩條實作線
+## 兩個實作專案
 
 <CardGrid>
 	<LinkCard
-		title="模型線 M1–M5"
+		title="模型專案 M1–M5"
 		description="從 autograd 到自己的 tiny GPT，再到在小模型上跑 SFT、DPO、GRPO，最後寫一個迷你推論伺服器。"
 		href="/projects/model-thread/"
 	/>
 	<LinkCard
-		title="系統線 A6–A19"
+		title="系統專案 A6–A19"
 		description="選一個你在意的應用，從串流聊天一路長成有 RAG、工具、harness、記憶、評估、安全防護並部署上線的 agent。"
 		href="/projects/system-thread/"
 	/>

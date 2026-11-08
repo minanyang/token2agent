@@ -323,7 +323,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 
 <section class="deep-section">
 
-### 進階：模型線 M5：KV cache、量化與 mini 推論伺服器
+### 進階：模型專案 M5：KV cache、量化與 mini 推論伺服器
 
 **目標**：在 Qwen3-0.6B 上自己實作推論的關鍵元件，並用實測數字說明每個元件的效果。
 
@@ -344,7 +344,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 
 **提示**
 - Python：PyTorch、`transformers`（只用來載入權重與 tokenizer）、FastAPI 或任何 HTTP 框架。
-- **算力**：正確性可以在 CPU 上驗證，但延遲與吞吐量的數字要在 NVIDIA GPU 上量才有意義，Mac 的 MPS 不適合這一步。租用 GPU 的費用通常比 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）低，但仍請先實測。詳見[模型線總覽](/projects/model-thread/)。
+- **算力**：正確性可以在 CPU 上驗證，但延遲與吞吐量的數字要在 NVIDIA GPU 上量才有意義，Mac 的 MPS 不適合這一步。租用 GPU 的費用通常比 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）低，但仍請先實測。詳見[模型專案總覽](/projects/model-thread/)。
 - 這一步的實測結果會在 S18 部署與架構用來和 API 比較成本。
 - 卡住時：
   - 重讀：[KV cache](#-kv-cache-存什麼佔多少)、[batching](#-怎麼同時服務很多人)、[加速方法](#-加速會改變輸出嗎)

@@ -330,7 +330,7 @@ Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的�
 
 <section class="deep-section">
 
-### 進階：系統線 A7：structured enrichment 與 routing workflow
+### 進階：系統專案 A7：structured enrichment 與 routing workflow
 
 **目標**：讓你的系統為每份文件自動產生結構化的 metadata，並用一個 routing workflow 處理不同類型的使用者請求。
 

@@ -211,7 +211,7 @@ vLLM 適合要服務多位使用者的情況，它把多個請求合併在同一
 <details class="deep">
 <summary>準備動手做：用 M5 迷你推論伺服器的數字做比較</summary>
 
-如果你做過[模型線](/projects/model-thread/) M5 迷你推論伺服器（[S5 推論與 serving](/stages/s05-inference/) 的進階題），就拿 M5 量到的 TTFT、TPOT、吞吐量和量化前後的品質，與 API 的數字放在同一張表。
+如果你做過[模型專案](/projects/model-thread/) M5 迷你推論伺服器（[S5 推論與 serving](/stages/s05-inference/) 的進階題），就拿 M5 量到的 TTFT、TPOT、吞吐量和量化前後的品質，與 API 的數字放在同一張表。
 
 - 自架的每千次請求成本 = GPU 每小時價格 ÷ 每小時在 SLO 內能處理的請求數 × 1,000。分母要用負載測試量到的 goodput，不要用單一請求的速度推算。
 - 打平點 = GPU 月成本 ÷ API 每個請求的成本。再對照你的實際流量曲線：尖峰需要幾張 GPU、離峰時是否能縮減。
@@ -365,7 +365,7 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 
 <section class="deep-section">
 
-### 進階：系統線 A18：你的系統的多租戶部署
+### 進階：系統專案 A18：你的系統的多租戶部署
 
 **目標**：讓你的系統同時服務 2–3 位使用者，並交出容量報告、一次 canary 與回滾演練、成本儀表板。
 

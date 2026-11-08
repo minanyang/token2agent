@@ -321,7 +321,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 <section class="deep-section">
 
-### 進階：模型線 M4：Qwen3 小模型的 SFT → LoRA → DPO → GRPO
+### 進階：模型專案 M4：Qwen3 小模型的 SFT → LoRA → DPO → GRPO
 
 **目標**：在真實的小模型上走完整條 post-training 流程，並為每一步提供有信賴區間的證據。
 
@@ -341,7 +341,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 **提示**
 - Python：Hugging Face [TRL](https://huggingface.co/docs/trl)（SFT、DPO、GRPO 都有對應的 trainer）、[PEFT](https://huggingface.co/docs/peft)（LoRA）。win rate 的 judge 可以先用簡單版本，S8 Eval 方法論會教怎麼校準它。
-- **算力**：這一步需要 NVIDIA GPU。可以用 Colab、Modal、Lambda 等租用服務，整個 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）預估是數十美元等級，但很依賴模型大小、資料量與實作效率，**請先用小設定實測再放大**。Mac 的 MPS 只建議用在模型線的前三步 M1–M3（micrograd 與 MLP、tiny GPT、小模型 pretraining），不建議用在這一步。詳見[模型線總覽](/projects/model-thread/)。
+- **算力**：這一步需要 NVIDIA GPU。可以用 Colab、Modal、Lambda 等租用服務，整個 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）預估是數十美元等級，但很依賴模型大小、資料量與實作效率，**請先用小設定實測再放大**。Mac 的 MPS 只建議用在模型專案的前三步 M1–M3（micrograd 與 MLP、tiny GPT、小模型 pretraining），不建議用在這一步。詳見[模型專案總覽](/projects/model-thread/)。
 - 卡住時：
   - 重讀：[SFT](#-怎麼教模型好好回答)、[LoRA](#-lora-怎麼省記憶體)、[偏好學習](#-沒有標準答案怎麼教)、[GRPO](#-推理模型怎麼練出來)、[reward hacking](#-為什麼會鑽獎勵漏洞)
   - 延伸：Hugging Face LLM Course 第 11–12 章 TRL 範例、happy-llm 第 6、8 章

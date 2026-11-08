@@ -383,12 +383,12 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
 
 <section class="deep-section">
 
-### 進階：系統線 A8：錯誤分析、golden set 與 eval runner
+### 進階：系統專案 A8：錯誤分析、golden set 與 eval runner
 
 **目標**：用你系統的真實 trace 建立第一套可重跑的 eval。
 
 **步驟**
-1. 從系統線前兩步（A6 串流聊天與 trace、A7 structured output 與 workflow）的系統匯出至少 100 條真實 trace（不夠的話繼續用到夠，或請你的使用者幫忙用）。
+1. 從系統專案前兩步（A6 串流聊天與 trace、A7 structured output 與 workflow）的系統匯出至少 100 條真實 trace（不夠的話繼續用到夠，或請你的使用者幫忙用）。
 2. 做 open / axial coding 直到飽和，產出一張失敗分類表：類別、定義、計數、範例 trace ID。
 3. 從 trace 建立 golden set ≥ 50 題：包含失敗和成功的案例，每題記錄來源 trace ID 與預期行為。
 4. 對至少 2 種失敗寫程式 assertion；對至少 1 種主觀失敗建立 LLM judge，用 ≥ 20 筆未參與調整的人工標註校準。

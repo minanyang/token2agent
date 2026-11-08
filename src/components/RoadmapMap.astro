@@ -23,7 +23,7 @@ const stages = new Map(
 				.filter((h) => h.text.startsWith('★') && !isRunningExample(h.text))
 				.map((h) => ({ text: h.text.replace(/^★\s*/, ''), slug: h.slug }));
 			const thread = h3
-				.map((h) => h.text.match(/^進階：(?:模型線|系統線) ([MA]\d+)/)?.[1])
+				.map((h) => h.text.match(/^進階：(?:模型專案|系統專案) ([MA]\d+)/)?.[1])
 				.find(Boolean);
 			return [
 				n,
@@ -43,8 +43,8 @@ const stages = new Map(
 <div class="roadmap not-content">
 	<p class="legend">
 		<span><span class="chip-demo">主題</span> 點了會跳到該章的對應段落</span>
-		<span><span class="tag m">M</span> 模型線（選做的實作題）</span>
-		<span><span class="tag a">A</span> 系統線（選做的實作題）</span>
+		<span><span class="tag m">M</span> 模型專案（選做的實作題）</span>
+		<span><span class="tag a">A</span> 系統專案（選做的實作題）</span>
 		<span><span class="lock" aria-hidden="true">🔒</span> 安全檢查點</span>
 		<a href="/guide/how-to-use/#代號怎麼讀">S／A／M 代號怎麼讀</a>
 	</p>

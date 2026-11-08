@@ -88,7 +88,7 @@ export default defineConfig({
 				},
 				{ label: 'Part VII 綜合實戰', items: [stage(19, 'capstone')] },
 				{
-					label: '實作線',
+					label: '實作專案',
 					items: [{ slug: 'projects/model-thread' }, { slug: 'projects/system-thread' }],
 				},
 				{ label: '社群', items: [{ slug: 'showcase' }] },

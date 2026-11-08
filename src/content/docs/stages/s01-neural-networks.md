@@ -312,7 +312,7 @@ word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字
 
 <section class="deep-section">
 
-### 進階：模型線 M1：makemore MLP 與訓練診斷
+### 進階：模型專案 M1：makemore MLP 與訓練診斷
 
 **目標**：在 names 資料集上訓練字元級語言模型，從 bigram 一路做到 MLP，並學會用數字診斷訓練。
 
@@ -332,7 +332,7 @@ word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字
 
 **提示**
 - Python：PyTorch（CPU 或 Apple MPS 都夠用，一次訓練幾分鐘）；W&B 有免費個人方案，不想註冊可用 TensorBoard 或自己寫 CSV。
-- 模型線全程用 Python，環境設定見[模型線總覽](/projects/model-thread/)。
+- 模型專案全程用 Python，環境設定見[模型專案總覽](/projects/model-thread/)。
 - 卡住時：
   - 重讀：[模型要學什麼、怎麼打分？](#-模型要學什麼怎麼打分)（含 MLP 形狀）、[訓練為什麼一開始就卡住？](#-訓練為什麼一開始就卡住)、[實驗追蹤](#-訓練不順怎麼診斷)
   - 延伸：Zero to Hero 第 3 支（MLP）與第 4 支（activations、gradients、BatchNorm）

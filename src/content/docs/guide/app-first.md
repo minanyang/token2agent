@@ -28,11 +28,11 @@ Part II 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tr
 - 想把 LLM 接進產品、做出能用的系統的工程師，也就是業界說的 AI 工程師（用現成模型做產品，不從頭訓練模型）。
 - 沒有機器學習背景，想先知道「這些東西怎麼用、為什麼這樣設計」的人。
 - 不寫程式、只想看懂的人（理解路線）：讀完下面「現在要懂的四件事」就直接進 S6 LLM API 與應用基本功，各章只讀主線、做「先試一下」與自我檢查。
-- 時間有限，希望早點交出看得到的成果（實作路線）。第一個成果是 S6 LLM API 與應用基本功的系統線進階題 A6 串流聊天與 trace：一個能串流的聊天介面，介面可以用 Gradio、Chainlit 或 CLI，不必寫前端。
+- 時間有限，希望早點交出看得到的成果（實作路線）。第一個成果是 S6 LLM API 與應用基本功的系統專案進階題 A6 串流聊天與 trace：一個能串流的聊天介面，介面可以用 Gradio、Chainlit 或 CLI，不必寫前端。
 
 想研究或訓練模型、做推論基礎設施的人，請把 Part II 也走完（從 S0 全局地圖依序走到 S19 真實 agent 系統與畢業專題）。
 
-每一章的**必做題**是主線；**進階題**是選做的長期專案，分成兩條：系統線（A6–A19，每章一步做出你自己的 AI 應用）和模型線（M1–M5，在 Part II 訓練小模型）。進階題在淺顯模式下收合。
+每一章的**必做題**是主線；**進階題**是選做的長期專案，分成兩個：系統專案（A6–A19，每章一步做出你自己的 AI 應用）和模型專案（M1–M5，在 Part II 訓練小模型）。進階題在淺顯模式下收合。
 
 ## 什麼時候值得讀 Part II
 
@@ -43,10 +43,10 @@ Part II 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tr
 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S18 部署與架構](/stages/s18-deployment/) | 輸入與輸出 token 的計價差異、延遲的組成 | [S5 推論與 serving](/stages/s05-inference/) |
 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) | constrained decoding 怎麼保證格式 | [S5 推論與 serving](/stages/s05-inference/) |
 | [S8 Eval 方法論](/stages/s08-evals/) | logprobs 與信心、sampling 造成的隨機性 | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
-| [S9 檢索與 RAG](/stages/s09-rag/) | 微調 embedding 模型（A9 附引用的 RAG） | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[模型線](/projects/model-thread/) |
+| [S9 檢索與 RAG](/stages/s09-rag/) | 微調 embedding 模型（A9 附引用的 RAG） | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[模型專案](/projects/model-thread/) |
 | [S11 Context engineering](/stages/s11-context-engineering/) | prompt caching 為什麼省錢 | [S5 推論與 serving](/stages/s05-inference/) |
 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) | reward hacking、蒸餾 router（A14 agent eval 與最佳化） | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
-| [S18 部署與架構](/stages/s18-deployment/) | 自架與 API 的成本比較（A18 多使用者部署用 M5 迷你推論伺服器的實測數字） | [S5 推論與 serving](/stages/s05-inference/)、[模型線](/projects/model-thread/) |
+| [S18 部署與架構](/stages/s18-deployment/) | 自架與 API 的成本比較（A18 多使用者部署用 M5 迷你推論伺服器的實測數字） | [S5 推論與 serving](/stages/s05-inference/)、[模型專案](/projects/model-thread/) |
 
 如果想補，建議從這幾個不需要先讀 S1 神經網路基礎的小節開始：走完 S8 Eval 方法論之後，讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的斷詞與 decoding 兩節、S5 推論與 serving 開頭的例子與 prefill／decode 一節（和應用最相關）；走完 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)之後，讀 S4 Post-training 與 reasoning 的講義主線；想完整理解時，再從 S1 依序讀。數學工具（softmax、標準誤、bootstrap 等）見[數學補給](/guide/math-refresher/)。
 

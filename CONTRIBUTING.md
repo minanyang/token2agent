@@ -34,7 +34,7 @@ src/content/docs/
   index.mdx          首頁與路線總覽圖
   guide/             使用說明、應用路線與模型速成、數學補給
   stages/s00–s19     每章一頁
-  projects/          模型線（M1–M5）、系統線（A6–A19）
+  projects/          模型專案（M1–M5）、系統專案（A6–A19）
   reference/         來源清單、術語表、概念索引
   showcase.mdx       專案分享頁
 src/data/showcase/   專案分享的資料，每個專案一個 YAML 檔
@@ -46,7 +46,7 @@ templates/stage.md   每章頁面的範本與完整撰寫規則
 
 - **語言**：繁體中文（台灣用語）搭配英文技術詞，用語依[術語表](src/content/docs/reference/glossary.md)。
 - **自己寫，不照抄**：講義用自己的話與自己的例子講解。事實、數字和公式可以引用，但文字、圖表與範例不要照抄或逐句翻譯；引用時要短，並註明出處。
-- **代號都帶名稱**：提到章或步驟時寫成「S6 LLM API 與應用基本功」「A10 工具組與 MCP server」；範圍要帶 Part 或實作線的名稱，例如「Part II 模型原理（S1–S5）」「系統線 A6–A18」。
+- **代號都帶名稱**：提到章或步驟時寫成「S6 LLM API 與應用基本功」「A10 工具組與 MCP server」；範圍要帶 Part 或實作專案的名稱，例如「Part II 模型原理（S1–S5）」「系統專案 A6–A18」。
 - **外部連結**：都要列在[來源清單](src/content/docs/reference/sources.md)，新增來源時寫上日期。`pnpm check:sources` 會列出沒登錄的網址。
 - **每個概念只首次教一次**：其他章用「（← S2 Transformer 與 decoding）」標出來源章；有變動時更新[概念索引](src/content/docs/reference/concepts.md)。
 - **兩種讀法**：第一次讀的人需要的內容放主線；推導、實作細節與選修主題放進 `<details class="deep">` 或 `<section class="deep-section">`。
