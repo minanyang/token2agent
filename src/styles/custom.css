@@ -85,7 +85,8 @@
 }
 
 /* Home section headings sit one clear step below the hero title. */
-:root[data-has-hero] .sl-markdown-content h2 {
+/* The wrapper gets the same size so Starlight places the heading's anchor-link icon for the smaller heading. */
+:root[data-has-hero] .sl-markdown-content :is(h2, .sl-heading-wrapper.level-h2) {
 	font-size: var(--sl-text-2xl);
 }
 
@@ -240,4 +241,11 @@ body {
 	--sl-color-asides-text-accent: var(--t2a-mint-text);
 	--sl-color-asides-border: var(--t2a-mint);
 	background-color: var(--t2a-mint-bg);
+}
+
+/* Home: a card grid with exactly three cards (選一條路線) gets one row of three on wide screens instead of 2 + 1. */
+@media (min-width: 64rem) {
+	:root[data-has-hero] .card-grid:has(> :nth-child(3):last-child) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
 }
