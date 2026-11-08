@@ -29,11 +29,59 @@
 .hero h1 {
 	font-size: clamp(var(--sl-text-3xl), calc(0.25rem + 4vw), var(--sl-text-5xl));
 }
+.hero .copy > * {
+	max-width: 42em;
+}
 .hero .tagline {
 	font-size: clamp(var(--sl-text-base), calc(0.0625rem + 1.5vw), var(--sl-text-lg));
 }
 @media (min-width: 50rem) {
 	.hero {
-		padding-block: 2.5rem 2rem;
+		padding-block: 3.5rem 2.5rem;
+	}
+}
+/* Home section headings sit one clear step below the hero title. */
+:root[data-has-hero] .sl-markdown-content h2 {
+	font-size: var(--sl-text-2xl);
+}
+
+/* Home hero buttons: visible hover feedback, and the minimal action reads as a link. */
+.hero .sl-link-button {
+	transition:
+		transform 0.15s ease,
+		box-shadow 0.15s ease,
+		background-color 0.15s ease,
+		border-color 0.15s ease,
+		color 0.15s ease;
+}
+.hero .sl-link-button svg {
+	transition: transform 0.15s ease;
+}
+.hero .sl-link-button.primary:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px -6px var(--sl-color-text-accent);
+}
+.hero .sl-link-button.primary:hover svg {
+	transform: translateX(3px);
+}
+.hero .sl-link-button.secondary:hover {
+	border-color: var(--sl-color-text-accent);
+	background: var(--sl-color-accent-low);
+	color: var(--sl-color-text-accent);
+}
+.hero .sl-link-button.minimal {
+	color: var(--sl-color-text-accent);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+.hero .sl-link-button.minimal:hover {
+	text-decoration-thickness: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+	.hero .sl-link-button,
+	.hero .sl-link-button svg {
+		transition: none;
+		transform: none !important;
 	}
 }
