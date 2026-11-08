@@ -1,6 +1,9 @@
 ---
 title: S2 Transformer 與 decoding
-description: LLM 的內部結構：tokenizer、attention、GPT 的組成、文字怎麼一個 token 一個 token 生成，以及怎麼估算模型的資源需求。
+head:
+  - tag: title
+    content: Transformer 原理：attention 與 decoding（S2）｜Token2Agent
+description: Transformer 原理入門：tokenizer、attention 與 GPT 的結構，文字怎麼一個 token 一個 token 生成，temperature、top-p 怎麼影響輸出，以及怎麼估算參數量與記憶體。
 sidebar:
   order: 2
   label: S2 Transformer 與 decoding

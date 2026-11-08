@@ -1,6 +1,9 @@
 ---
 title: S4 Post-training 與 reasoning
-description: 讓 base model 變成好用的助手與推理模型：SFT、LoRA、RL、偏好對齊、可驗證獎勵，以及這些方法的副作用。
+head:
+  - tag: title
+    content: LLM 後訓練：SFT、LoRA 與推理模型（S4）｜Token2Agent
+description: 讓 base model 變成好用的助手與推理模型：SFT、LoRA、DPO、GRPO 等後訓練方法各在做什麼、可驗證獎勵怎麼運作，以及 reward hacking、sycophancy 等副作用。
 sidebar:
   order: 4
   label: S4 Post-training 與 reasoning

@@ -1,6 +1,9 @@
 ---
 title: S9 檢索與 RAG
-description: 讓模型用上它不知道的資料，並分開量測「找得對不對」與「答得對不對」。
+head:
+  - tag: title
+    content: RAG 是什麼？檢索與 RAG 教學（S9）｜Token2Agent
+description: RAG（檢索增強生成）是什麼、怎麼做：文件切塊與 embedding、BM25 與 hybrid 檢索、rerank，並用 Recall@k 與 faithfulness 分開量測「找得對不對」與「答得對不對」。
 sidebar:
   order: 9
   label: S9 檢索與 RAG

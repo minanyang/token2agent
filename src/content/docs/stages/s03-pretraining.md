@@ -1,6 +1,9 @@
 ---
 title: S3 Pretraining 與 scaling
-description: base model 的能力從哪來：訓練資料怎麼準備、pretraining 怎麼跑、scaling laws 怎麼決定模型與資料的大小，以及大型模型怎麼拆到多張 GPU 上訓練。
+head:
+  - tag: title
+    content: LLM 預訓練與 scaling laws 入門（S3）｜Token2Agent
+description: base model 的能力從哪來：pretraining 的資料準備與訓練流程、scaling laws 怎麼決定模型與資料的大小，以及資料平行、模型平行怎麼把訓練拆到多張 GPU 上。
 sidebar:
   order: 3
   label: S3 Pretraining 與 scaling

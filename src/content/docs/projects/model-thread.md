@@ -1,6 +1,9 @@
 ---
 title: 模型線（M1–M5）
-description: 從手寫 autograd 到自己的推論伺服器：五個 Python 實作，貫穿 Part II 模型原理（S1–S5）。
+head:
+  - tag: title
+    content: 從零實作 LLM：五個 Python 專案（M1–M5）｜Token2Agent
+description: 從零用 Python 實作 LLM 的五個專案：手寫 autograd、從零寫 GPT、小模型 pretraining、SFT 到 GRPO 的後訓練，最後寫出自己的推論伺服器，貫穿 S1–S5 模型原理。
 sidebar:
   order: 1
 ---

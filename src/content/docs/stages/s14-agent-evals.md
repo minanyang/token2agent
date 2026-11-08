@@ -1,6 +1,9 @@
 ---
 title: S14 Agent eval、資料與最佳化
-description: Agent 的評估要看整條軌跡、同一題每次結果不同、連環境設定都會改變分數；學會做出可信的 agent eval，再用 trace、prompt 最佳化與蒸餾有系統地改進它。
+head:
+  - tag: title
+    content: AI agent 評估：軌跡、benchmark 與最佳化（S14）｜Token2Agent
+description: AI agent 評估怎麼做：看懂 benchmark 分數為什麼會失準，同時評估結果與整條軌跡，做出可重跑的 agent eval，再用 trace、ablation 與 prompt 最佳化有系統地改進。
 sidebar:
   order: 14
   label: S14 Agent eval、資料與最佳化

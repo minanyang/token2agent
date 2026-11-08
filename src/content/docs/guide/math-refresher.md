@@ -1,6 +1,9 @@
 ---
 title: 數學補給
-description: 路線上會用到的六個數學與統計工具：連鎖律、softmax、對數圖、標準誤、bootstrap、cosine 相似度，各附一個能手算的小例子。
+head:
+  - tag: title
+    content: AI 數學入門：softmax、標準誤與 cosine｜Token2Agent
+description: 學 AI 與 LLM 會用到的六個數學與統計工具：連鎖律、softmax、對數圖、標準誤、bootstrap 信賴區間、cosine 相似度，各附一個能手算的小例子。
 sidebar:
   order: 4
 ---

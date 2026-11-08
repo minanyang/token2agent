@@ -1,6 +1,9 @@
 ---
 title: S5 推論與 serving
-description: 模型怎麼跑得快又省：prefill 與 decode、KV cache、GPU 的頻寬瓶頸、batching 與 serving 系統、加速方法、延遲指標。
+head:
+  - tag: title
+    content: LLM 推論加速：KV cache 與 serving（S5）｜Token2Agent
+description: LLM 推論為什麼慢、怎麼加速：prefill 與 decode、KV cache、GPU 頻寬瓶頸、batching 與 serving 系統，估算記憶體與速度上限，並量測 TTFT、TPOT 等延遲指標。
 sidebar:
   order: 5
   label: S5 推論與 serving

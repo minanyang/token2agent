@@ -1,6 +1,9 @@
 ---
 title: S11 Context engineering
-description: 檢索結果、工具輸出、指令、歷史都齊了，決定「這一次放什麼進 context」：預算、排序、截斷與摘要，以及 prompt caching。
+head:
+  - tag: title
+    content: Context engineering 教學：預算與快取（S11）｜Token2Agent
+description: Context engineering 教學：決定一次呼叫該放什麼進 context，怎麼排序、截斷與摘要、訂出 token 預算，認出 context 失效的類型，並用 prompt caching 省下成本與延遲。
 sidebar:
   order: 11
   label: S11 Context engineering

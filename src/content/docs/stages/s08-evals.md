@@ -1,6 +1,9 @@
 ---
 title: S8 Eval 方法論
-description: 用錯誤分析、校準過的評分者和誤差範圍，「知道」系統是不是真的變好了。
+head:
+  - tag: title
+    content: LLM 評估怎麼做？Eval 與 LLM judge（S8）｜Token2Agent
+description: LLM 評估怎麼做才可信：從真實 trace 做錯誤分析、寫二元評分標準、用人工標註校準 LLM judge，並為每個指標附上信賴區間，判斷系統是不是真的變好了。
 sidebar:
   order: 8
   label: S8 Eval 方法論

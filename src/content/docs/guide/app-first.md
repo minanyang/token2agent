@@ -1,6 +1,9 @@
 ---
 title: 應用路線與模型速成
-description: 多數人的推薦路線：S0 全局地圖 → 模型速成 → Part III 到 Part VII（S6–S19）。Part II 模型原理是選修的深入路線，想知道「為什麼」時再讀。
+head:
+  - tag: title
+    content: LLM 應用開發入門路線與模型速成｜Token2Agent
+description: 想做 LLM 應用的推薦路線：讀完 S0 全局地圖後，用約 2 小時的模型速成補齊 token、sampling、context window 與成本等必要概念，接著直接進入 S6–S19 的應用與 agent 實作。
 sidebar:
   order: 3
   label: 應用路線與模型速成

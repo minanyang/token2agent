@@ -1,6 +1,9 @@
 ---
 title: S0 全局地圖
-description: 一個 AI 系統由哪些元件組成、使用者的一句話怎麼變成答案、什麼時候該做 agent，以及接下來該走哪條路線。
+head:
+  - tag: title
+    content: AI 系統怎麼運作？AI/LLM 全局地圖（S0）｜Token2Agent
+description: 看懂一個 AI 系統由哪些元件組成：使用者的一句話怎麼經過模型與程式變成答案、最小的 agent 迴圈怎麼運作，以及什麼時候該用單次呼叫、workflow 或 agent。
 sidebar:
   order: 0
   label: S0 全局地圖

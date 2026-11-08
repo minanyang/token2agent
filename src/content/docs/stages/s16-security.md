@@ -1,6 +1,9 @@
 ---
 title: S16 安全與治理
-description: agent 能讀不可信內容、能碰私人資料、又能對外發送時，就能被劫持。這站學怎麼讓它在這種情況下仍然可以防守。
+head:
+  - tag: title
+    content: AI agent 安全：prompt injection 防禦（S16）｜Token2Agent
+description: AI agent 安全入門：用 lethal trifecta 判斷 agent 什麼時候會被劫持，重現間接 prompt injection，用結構性防禦而不是偵測來擋，並寫出個資與資料治理的規劃。
 sidebar:
   order: 16
   label: S16 安全與治理

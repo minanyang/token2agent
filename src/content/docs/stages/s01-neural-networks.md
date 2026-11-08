@@ -1,6 +1,9 @@
 ---
 title: S1 神經網路基礎
-description: 模型為什麼能「學」：loss、梯度、backprop、optimizer，以及訓練出問題時怎麼診斷。
+head:
+  - tag: title
+    content: 神經網路入門：loss、梯度與 backprop（S1）｜Token2Agent
+description: 神經網路怎麼「學」：從 loss、梯度、backprop 到 optimizer，從零寫一個 autograd，並學會看 loss 曲線診斷學習率太大、初始化不好、overfitting 等訓練問題。
 sidebar:
   order: 1
   label: S1 神經網路基礎

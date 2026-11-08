@@ -1,6 +1,9 @@
 ---
 title: 系統線（A6–A19）
-description: 選一個你在意的應用，從 S6 LLM API 與應用基本功到 S19 真實 agent 系統與畢業專題，每一站幫它長出一種能力。
+head:
+  - tag: title
+    content: AI agent 實作專案：從 API 到上線（A6–A19）｜Token2Agent
+description: 選一個你在意的應用，從 S6 串接 LLM API 一路做到 S19 常駐 agent：每一站幫它長出一種能力，最後完成一個可上線、可評估的 AI agent 專案。
 sidebar:
   order: 2
 ---

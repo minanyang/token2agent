@@ -1,6 +1,9 @@
 ---
 title: S10 工具與 MCP
-description: 讓模型能做事：看懂一次工具呼叫的來回、設計模型好用的工具、分級風險、用 MCP 接上外部系統，並把執行環境關起來。
+head:
+  - tag: title
+    content: MCP 是什麼？工具呼叫與 MCP 教學（S10）｜Token2Agent
+description: 讓模型能呼叫工具做事：看懂一次工具呼叫的來回、設計模型好用的工具、為工具分級風險，用 MCP 寫出自己的 server 接上外部系統，並限制工具執行環境能連到哪裡。
 sidebar:
   order: 10
   label: S10 工具與 MCP

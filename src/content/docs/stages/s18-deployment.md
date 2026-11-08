@@ -1,6 +1,9 @@
 ---
 title: S18 部署與架構
-description: 從 demo 走到給多人用。這站學多租戶、配額與成本控管、選模型與路由、快取、容量規劃、安全的發布與回滾，以及出事時怎麼處理。
+head:
+  - tag: title
+    content: LLM 應用部署：成本、路由與容量規劃（S18）｜Token2Agent
+description: LLM 應用部署教學：多租戶與資料隔離、配額與成本控管、選模型與 routing、快取、容量規劃、P99 延遲，以及 canary 發布與回滾，從 demo 走到給多人用。
 sidebar:
   order: 18
   label: S18 部署與架構

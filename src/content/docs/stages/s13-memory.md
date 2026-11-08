@@ -1,6 +1,9 @@
 ---
 title: S13 Memory 與個人化
-description: Agent 跨 session 該記住什麼、怎麼記、怎麼更新與忘記、怎麼知道記得對不對，以及怎麼防止記憶被別人寫進去或外洩給別人。
+head:
+  - tag: title
+    content: AI agent 記憶怎麼設計？Memory 教學（S13）｜Token2Agent
+description: AI agent 的記憶怎麼設計：跨 session 該記住什麼、怎麼擷取、整併與遺忘，怎麼量測記得對不對，以及怎麼防止記憶被汙染、或在不同使用者之間外洩。
 sidebar:
   order: 13
   label: S13 Memory 與個人化

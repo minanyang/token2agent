@@ -1,6 +1,9 @@
 ---
 title: S6 LLM API 與應用基本功
-description: 把模型接進程式的基本功：訊息結構與計價、串流、錯誤處理、SDK、本地模型、tracing 與測試。
+head:
+  - tag: title
+    content: LLM API 教學：串流、重試與成本（S6）｜Token2Agent
+description: LLM API 串接教學：messages 結構與計價、串流與取消、429／5xx 怎麼重試、同一份程式切換雲端與本地模型，以及記錄成本、tracing 與不打真實 API 的測試。
 sidebar:
   order: 6
   label: S6 LLM API 與應用基本功

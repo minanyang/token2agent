@@ -1,6 +1,9 @@
 ---
 title: 術語表
-description: 常用詞的一句話定義與例子，以及這份路線繁體中文術語的寫法與容易混淆的詞。
+head:
+  - tag: title
+    content: AI/LLM 術語表：常用詞與中文譯名｜Token2Agent
+description: AI/LLM 常用術語的一句話定義與例子，以及繁體中文的寫法約定：推論與推理怎麼分、哪些詞保留英文、哪些詞容易混淆，讀簡中資源時怎麼對照。
 sidebar:
   order: 2
 ---

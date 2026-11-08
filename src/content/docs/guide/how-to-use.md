@@ -1,6 +1,9 @@
 ---
 title: 怎麼使用這份路線
-description: 選路線、兩種讀法、每一站的結構、時數估計與範例計畫。
+head:
+  - tag: title
+    content: AI/LLM 學習路線怎麼讀？使用說明｜Token2Agent
+description: 這份 AI/LLM 學習路線怎麼用：選應用路線還是模型路線、淺顯與深入兩種讀法、每一站的結構、實作題怎麼做，以及各站時數估計與範例學習計畫。
 sidebar:
   order: 1
 ---

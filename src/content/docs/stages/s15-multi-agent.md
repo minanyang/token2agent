@@ -1,6 +1,9 @@
 ---
 title: S15 Multi-agent
-description: 有了可信的 agent eval 之後，才回答「需不需要多個 agent」：什麼時候值得拆、架構怎麼選、交接時帶什麼、成本放大多少、最常怎麼壞，以及只在贏過單一 agent 時才保留。
+head:
+  - tag: title
+    content: Multi-agent 何時值得用？多 agent 架構（S15）｜Token2Agent
+description: 什麼時候值得用 multi-agent：單一與多 agent 的取捨、manager 與 handoff 架構怎麼選、交接時該帶哪些 context、token 成本會放大多少，以及多 agent 最常見的失敗。
 sidebar:
   order: 15
   label: S15 Multi-agent

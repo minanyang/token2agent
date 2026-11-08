@@ -1,6 +1,9 @@
 ---
 title: S17 產品與 AI UX
-description: 做得出來不代表該做，做了也不代表使用者敢用。這站學怎麼設計使用者願意信任、也能糾正的 AI 介面。
+head:
+  - tag: title
+    content: AI UX 設計：讓人敢用的 AI 介面（S17）｜Token2Agent
+description: AI 產品與 UX 設計：判斷需求該不該用 AI，設計串流、工具狀態、停止、確認與引用的介面，讓使用者願意信任、也能糾正 AI，並把回饋接回 eval。
 sidebar:
   order: 17
   label: S17 產品與 AI UX

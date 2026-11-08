@@ -1,6 +1,9 @@
 ---
 title: S12 Agent loop 與 harness
-description: 先手寫「模型決定、程式執行、結果回填」的迴圈，再一層層加上權限、停止條件、錯誤處理、狀態、長時程 context 管理與 skills，並用多次試跑的數字判斷每個改動有沒有用。
+head:
+  - tag: title
+    content: AI agent 怎麼做？手寫 agent loop（S12）｜Token2Agent
+description: AI agent 怎麼做：不用框架，手寫「模型決定、程式執行、結果回填」的 agent loop，再加上權限、停止條件、錯誤處理與長任務的 context 管理，並用多次試跑判斷改動有沒有用。
 sidebar:
   order: 12
   label: S12 Agent loop 與 harness

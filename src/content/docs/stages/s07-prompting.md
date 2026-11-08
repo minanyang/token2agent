@@ -1,6 +1,9 @@
 ---
 title: S7 Prompt、structured output 與 workflows
-description: 讓模型穩定產出程式能用的結果，並用固定的 workflow 組出可靠的功能。
+head:
+  - tag: title
+    content: Prompt engineering 教學與 structured output（S7）｜Token2Agent
+description: Prompt engineering 實作：寫好系統提示詞與 few-shot 範例，用 JSON schema 拿到穩定的 structured output，看懂 function calling，再用固定的 workflow 組出可靠的功能。
 sidebar:
   order: 7
   label: S7 Prompt、structured output 與 workflows

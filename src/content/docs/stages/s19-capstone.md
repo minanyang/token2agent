@@ -1,6 +1,9 @@
 ---
 title: S19 真實 agent 系統與畢業專題
-description: 拆解 coding agent、deep research、常駐個人 agent 三類成熟系統，再把你的系統做成可上線、可評估、可辯護的常駐 agent。
+head:
+  - tag: title
+    content: 拆解 coding agent 與 deep research（S19）｜Token2Agent
+description: 拆解 coding agent、deep research、常駐個人 agent 三類真實系統的設計，再把自己的專案做成可上線、可評估、可辯護的常駐 agent，完成畢業專題。
 sidebar:
   order: 19
   label: S19 真實 agent 系統與畢業專題
