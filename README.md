@@ -79,8 +79,8 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 
 ## 授權
 
-- **內容**（`src/content/docs/` 底下的所有檔案）以 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant) 授權，見 [LICENSE-content](LICENSE-content)。對內容的修改與貢獻也以相同授權釋出。
-- **程式碼**（`src/content/docs/` 與 `src/data/showcase/` 以外的網站原始碼）以 [MIT License](LICENSE) 授權。
+- **內容**（`src/content/docs/` 底下的所有檔案）以 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant) 授權，見 [LICENSE](LICENSE)。對內容的修改與貢獻也以相同授權釋出。
+- **程式碼**（`src/content/docs/` 與 `src/data/showcase/` 以外的網站原始碼）以 [MIT License](LICENSE-code) 授權。
 - **專案分享的資料**（`src/data/showcase/`）由投稿者提供，並同意本網站展示；各專案維持自己的授權。
 - 網站引用或提及的第三方內容屬於原作者。
 

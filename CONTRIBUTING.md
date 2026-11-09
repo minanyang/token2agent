@@ -77,4 +77,4 @@ templates/stage.md   每章頁面的範本與完整撰寫規則
 
 ## 授權
 
-對內容（`src/content/docs/`）的貢獻以 [CC BY-NC-SA 4.0](LICENSE-content) 釋出，對程式碼的貢獻以 [MIT License](LICENSE) 釋出。
+對內容（`src/content/docs/`）的貢獻以 [CC BY-NC-SA 4.0](LICENSE) 釋出，對程式碼的貢獻以 [MIT License](LICENSE-code) 釋出。

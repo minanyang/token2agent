@@ -10,10 +10,10 @@ export const getStaticPaths = (async () => {
 	return docs.filter((entry) => !homes.has(entry.id)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }) satisfies GetStaticPaths;
 
-export const GET: APIRoute<{ entry: CollectionEntry<'docs'> }> = ({ props: { entry } }) => {
+export const GET: APIRoute<{ entry: CollectionEntry<'docs'> }> = ({ props: { entry }, site }) => {
 	// MDX-only lines that mean nothing as Markdown: imports and self-closing components such as <ShowcaseGrid />.
 	const body = (entry.body ?? '').replace(/^(import .+|<[A-Z]\w* \/>)\n/gm, '');
 	const { title, description } = entry.data;
-	const markdown = [`# ${title}`, '', ...(description ? [`> ${description}`, ''] : []), body.trim(), ''].join('\n');
+	const markdown = [`# ${title}`, '', ...(description ? [`> ${description}`, ''] : []), body.trim(), '', '---', '', `CC BY-NC-SA 4.0 · Min-An Yang · ${new URL(`/${entry.id}/`, site)}`, ''].join('\n');
 	return new Response(markdown, { headers: { 'Content-Type': 'text/markdown; charset=utf-8' } });
 };

@@ -6,8 +6,8 @@
 
 The AI/LLM roadmap, from tokens to agents.
 
-[![Content: CC BY-NC-SA 4.0](https://img.shields.io/badge/content-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE-content)
-[![Code: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
+[![Content: CC BY-NC-SA 4.0](https://img.shields.io/badge/content-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
+[![Code: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE-code)
 [![Website](https://img.shields.io/badge/website-token2agent.com-orange.svg)](https://token2agent.com)
 
 [繁體中文](README.md) · **English**
@@ -77,8 +77,8 @@ Setup, authoring rules and the submission steps are in [CONTRIBUTING.md](CONTRIB
 
 ## License
 
-- **Content** (everything under `src/content/docs/`) is released under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/); see [LICENSE-content](LICENSE-content). Contributions to the content are released under the same license.
-- **Code** (the site's source outside `src/content/docs/` and `src/data/showcase/`) is released under the [MIT License](LICENSE).
+- **Content** (everything under `src/content/docs/`) is released under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/); see [LICENSE](LICENSE). Contributions to the content are released under the same license.
+- **Code** (the site's source outside `src/content/docs/` and `src/data/showcase/`) is released under the [MIT License](LICENSE-code).
 - **Showcase entries** (`src/data/showcase/`) are submitted by their authors, who grant this site the right to display them; each project keeps its own license.
 - Third-party material quoted or referenced on the site belongs to its respective owners.
 
