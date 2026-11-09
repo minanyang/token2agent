@@ -1,35 +1,35 @@
 ---
 // Roadmap overview: one card per stage, alternating left and right of a central spine.
 // Concept chips come from each stage page's "★" h3 headings, so the map stays in sync with the content.
-import { getCollection, render } from 'astro:content';
+// English pages follow the same heading conventions (see templates/translation-en.md).
+import { render } from 'astro:content';
 import { parts } from '../data/parts';
+import { getStageEntries, localizePath, t, toLang } from '../i18n';
+
+const lang = toLang(Astro.locals.starlightRoute.lang);
+const strings = t(lang);
 
 const checkpoints = new Set([9, 10, 12, 13]);
 
 // Running-example sections (「一個例子走完全程」 etc.) are not topics, so they get no chip.
-const isRunningExample = (text: string) => /走完全程|^★\s*一個例子：/.test(text);
-
-const entries = await getCollection('docs', (e) => e.id.startsWith('stages/'));
+const isRunningExample = (text: string) => /走完全程|^★\s*一個例子：|end to end$|^★\s*An example:/i.test(text);
 
 const stages = new Map(
 	await Promise.all(
-		entries.map(async (entry) => {
-			const match = entry.id.match(/^stages\/s(\d+)-/);
-			if (!match) throw new Error(`RoadmapMap: unexpected stage id "${entry.id}"`);
-			const n = Number(match[1]);
+		(await getStageEntries(lang)).map(async ({ n, entry, href }) => {
 			const { headings } = await render(entry);
 			const h3 = headings.filter((h) => h.depth === 3);
 			const concepts = h3
 				.filter((h) => h.text.startsWith('★') && !isRunningExample(h.text))
 				.map((h) => ({ text: h.text.replace(/^★\s*/, ''), slug: h.slug }));
 			const thread = h3
-				.map((h) => h.text.match(/^進階：(?:模型專案|系統專案) ([MA]\d+)/)?.[1])
+				.map((h) => h.text.match(/^(?:進階：(?:模型專案|系統專案)|Advanced: (?:Model|System) project) ([MA]\d+)/)?.[1])
 				.find(Boolean);
 			return [
 				n,
 				{
 					n,
-					href: `/${entry.id}/`,
+					href,
 					title: entry.data.title.replace(/^S\d+\s*/, ''),
 					concepts,
 					thread,
@@ -42,11 +42,11 @@ const stages = new Map(
 
 <div class="roadmap not-content">
 	<p class="legend">
-		<span><span class="chip-demo">主題</span> 點了會跳到該章的對應段落</span>
-		<span><span class="tag m">M</span> 模型專案（選做的實作題）</span>
-		<span><span class="tag a">A</span> 系統專案（選做的實作題）</span>
-		<span><span class="lock" aria-hidden="true">🔒</span> 安全檢查點</span>
-		<a href="/guide/how-to-use/#代號怎麼讀">S／A／M 代號怎麼讀</a>
+		<span><span class="chip-demo">{strings.legendTopic}</span> {strings.legendTopicNote}</span>
+		<span><span class="tag m">M</span> {strings.legendModel}</span>
+		<span><span class="tag a">A</span> {strings.legendSystem}</span>
+		<span><span class="lock" aria-hidden="true">🔒</span> {strings.checkpoint}</span>
+		<a href={strings.codesHref}>{strings.codesLink}</a>
 	</p>
 	{
 		parts.map((part) => {
@@ -55,16 +55,16 @@ const stages = new Map(
 			return (
 				<section class:list={['part', { optional: part.optional }]}>
 					<h3 class="part-title">
-						<span>{part.label}</span> {part.title}
-						{part.optional && <span class="optional-tag">選修・深入路線</span>}
+						<span>{part.label}</span> {part.title[lang]}
+						{part.optional && <span class="optional-tag">{strings.optionalTag}</span>}
 					</h3>
 					{part.optional && (
-						<p class="part-note">想懂模型怎麼運作再走；只做應用的人可以先跳過，從 S6 LLM API 與應用基本功繼續。</p>
+						<p class="part-note">{strings.optionalNote}</p>
 					)}
 					<Body class:list={['part-body', { deep: part.optional }]}>
 						{part.optional && (
 							<summary>
-								{part.label} 的 {part.stages.length} 章（S{part.stages[0]}–S{part.stages.at(-1)}），點開或切到深入模式就會顯示
+								{strings.optionalSummary(part.label, part.stages.length, part.stages[0], part.stages.at(-1) ?? part.stages[0])}
 							</summary>
 						)}
 						<div class="cards">
@@ -81,7 +81,7 @@ const stages = new Map(
 												<span class="name">{s.title}</span>
 												{s.thread && <span class={`tag ${s.thread[0].toLowerCase()}`}>{s.thread}</span>}
 												{checkpoints.has(n) && (
-													<span class="lock" role="img" aria-label="安全檢查點">
+													<span class="lock" role="img" aria-label={strings.checkpoint}>
 														🔒
 													</span>
 												)}
@@ -95,15 +95,15 @@ const stages = new Map(
 											</ul>
 										</article>
 										{n === 19 && (
-											<a class="card right shortcut" href="/showcase/">
-												<span class="name">專案分享</span>
-												<span class="sub">大家用 LLM 做出來的應用與 agent，任何人都可以開 PR 分享自己的專案</span>
+											<a class="card right shortcut" href={localizePath(lang, '/showcase/')}>
+												<span class="name">{strings.showcaseName}</span>
+												<span class="sub">{strings.showcaseSub}</span>
 											</a>
 										)}
 										{n === 0 && (
-											<a class="card right shortcut" href="/guide/app-first/">
-												<span class="name">應用路線（多數人從這裡走）</span>
-												<span class="sub">S0 全局地圖 → 模型速成 → 直接跳到 S6 LLM API 與應用基本功；Part II 想深入再回來讀</span>
+											<a class="card right shortcut" href={localizePath(lang, '/guide/app-first/')}>
+												<span class="name">{strings.appRouteName}</span>
+												<span class="sub">{strings.appRouteSub}</span>
 											</a>
 										)}
 									</>

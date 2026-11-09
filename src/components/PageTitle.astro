@@ -2,12 +2,15 @@
 // Page title. On stage pages (S0–S19) it is preceded by a trace-style step line and a progress strip:
 // one block per stage, filled up to this one, Part II (optional) dashed.
 import { parts, stageCount } from '../data/parts';
+import { t, toLang } from '../i18n';
 
 // Starlight's skip link targets this id (PAGE_TITLE_ID, not exported).
 const PAGE_TITLE_ID = '_top';
 
 const route = Astro.locals.starlightRoute;
-const match = route.id.match(/^stages\/s(\d+)-/);
+const lang = toLang(route.lang);
+const strings = t(lang);
+const match = route.id.match(/^(?:en\/)?stages\/s(\d+)-/);
 const n = match ? Number(match[1]) : undefined;
 const part = n === undefined ? undefined : parts.find((p) => p.stages.includes(n));
 const optional = new Set(parts.filter((p) => p.optional).flatMap((p) => p.stages));
@@ -22,11 +25,11 @@ const pad = (i: number) => String(i).padStart(2, '0');
 					step <b>{pad(n)}</b> / {pad(stageCount - 1)}
 				</span>
 				<span>
-					{part.label} {part.title}
-					{part.optional && '（選修）'}
+					{part.label} {part.title[lang]}
+					{part.optional && strings.optional}
 				</span>
 			</p>
-			<ol class="strip" aria-label={`第 ${n + 1} 章，共 ${stageCount} 章`}>
+			<ol class="strip" aria-label={strings.stageOf(n + 1, stageCount)}>
 				{Array.from({ length: stageCount }, (_, i) => (
 					<li
 						class:list={{ done: i < n, now: i === n, optional: optional.has(i) }}

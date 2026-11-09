@@ -96,9 +96,9 @@ Jaccard 相似度 = 共同的 shingle 數 ÷ 全部不同的 shingle 數 = 3 ÷ 
 
 - **為什麼最小值相同的機率是 Jaccard**：把 A ∪ B 的所有 shingle 用同一個隨機 hash 排序，最小的那個落在誰身上是隨機的。A 和 B 的最小值相同，若且唯若整個聯集的最小值剛好是共同的 shingle，機率 = |A ∩ B| ÷ |A ∪ B|。
 - **估計的誤差**：每個 hash 函式是一次「相同或不同」的試驗，標準誤約 √(J(1−J)/k)。J = 0.43、k = 128 時約 0.044，所以 k 越大越準，但簽章也越長。
-- **hash 函式怎麼來**：常見做法是先把 shingle 字串 hash 成一個 32-bit 整數 x，再用 k 組隨機的 (a, b) 算 `(a·x + b) mod p`（p 是大於 2³² 的質數），得到 k 個不同的 hash。
+- **hash 函式怎麼來**：常見做法是先把 shingle 字串 hash 成一個 32-bit 整數 x，再用 k 組隨機的 (a, b) 算 `(a·x + b) mod p`（p 是大於 2³² 的質數），得到 k 個不同的 hash。a·x 可能大到 2⁶⁴，超過 JavaScript number 能精確表示的 2⁵³，在 TypeScript 裡要用 BigInt 算。
 - **LSH 的候選機率**：一段 r 個值全部相等的機率是 J^r，b 段裡至少一段相等的機率是 1 − (1 − J^r)^b。這條曲線是 S 形，轉折點大約在 (1/b)^(1/r)。32 × 4 的轉折點約 0.42，Jaccard 0.5 的文件對約 87% 會成為候選，Jaccard 0.2 的只有約 5%；16 × 8 約 0.71，在 Jaccard 0.5 時只有約 6% 會成為候選。要配合你的相似度門檻挑 b、r。
-- **規模化**：真實管線把簽章算好後，用每段的值當 key 分桶，同一桶裡的文件才互相比較，整個流程可以用 Spark 或 DuckDB 分散執行。
+- **規模化**：真實管線把簽章算好後，用每段的值當 key 分桶，同一桶裡的文件才互相比較，整個流程可以用 Spark 分散執行；資料量在單機範圍內，也可以用 DuckDB。
 
 </details>
 
@@ -212,7 +212,7 @@ Scaling laws 說的是：loss 隨模型大小、資料量、算力的變化非�
 
 大型訓練通常把幾種一起用：機器內用 tensor parallel，跨機器用 pipeline 和 data parallel（加上 ZeRO）。
 
-**容易誤會：GPU 加倍，速度就加倍。** 每種拆法都要在 GPU 之間傳資料，GPU 越多、通訊佔的比例越高；ZeRO 省下記憶體，但不會讓計算變快，反而多了通訊。這些取捨在推論端也會再出現（→ [S5 推論與 serving](/stages/s05-inference/)）。
+**容易誤會：GPU 加倍，速度就加倍。** 每種拆法都要在 GPU 之間傳資料，GPU 越多、通訊佔的比例越高；ZeRO 省下記憶體，但每步的計算量不變；省下的記憶體可以換成更大的 batch，吞吐量可能因此提升，Stage 3 則會多出通訊。這些取捨在推論端也會再出現（→ [S5 推論與 serving](/stages/s05-inference/)）。
 
 <details class="deep">
 <summary>深入一點：通訊方式、ZeRO 三個階段、pipeline 的空等</summary>
@@ -288,7 +288,7 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
 - 步驟 7 的 N 與 D，附算式。
 
 **提示**
-- TypeScript：hash 可以自己實作（例如對 32-bit 整數做 `(a·x + b) mod p` 的一組隨機參數），不需要套件。
+- TypeScript：hash 可以自己實作（例如對 32-bit 整數做 `(a·x + b) mod p` 的一組隨機參數），不需要套件。`a·x` 會超過 `Number.MAX_SAFE_INTEGER`，用 number 算會靜靜地出錯，要用 BigInt；可以拿一組輸入比對 number 與 BigInt 的結果確認。
 - Python：先自己寫一次，再用 `datasketch` 套件對照結果。
 - 卡住時：
   - 重讀：[訓練資料怎麼準備？](#-訓練資料怎麼準備)（含展開裡的候選機率公式）、[一筆預算走完全程](#-一筆預算走完全程)（必做步驟 7 用到其中的步驟 1）
@@ -375,7 +375,7 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
    <details class="hint">
    <summary>提示</summary>
 
-   **判斷重點**：一般 data parallel 每張 GPU 存完整一份狀態；ZeRO 把 optimizer 狀態、梯度、權重分散存，用更多通訊換記憶體，計算不會變快。**常見錯法**：以為 ZeRO 也會加速訓練。**回讀**：[一張 GPU 不夠怎麼辦？](#-一張-gpu-不夠怎麼辦)
+   **判斷重點**：一般 data parallel 每張 GPU 存完整一份狀態；ZeRO 把 optimizer 狀態、梯度、權重分散存，拿掉重複的副本。Stage 1、2 的通訊量和一般 data parallel 相當，Stage 3 要多花約一半的通訊。每步計算量不變，省下的記憶體可以換成更大的 batch，吞吐量可能提升。**常見錯法**：以為 ZeRO 本身減少了計算。**回讀**：[一張 GPU 不夠怎麼辦？](#-一張-gpu-不夠怎麼辦)
 
    </details>
 

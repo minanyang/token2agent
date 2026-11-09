@@ -309,7 +309,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 **提示**
 - TypeScript：用 `fetch` 呼叫 Ollama 的 HTTP API，計算器本身不需要套件。
 - Python：`requests` 或 `ollama` 套件；`config.json` 用 `json` 讀即可。
-- Ollama 的 [API](https://docs.ollama.com/api/usage) 會回傳 `prompt_eval_count`、`prompt_eval_duration`、`eval_count`、`eval_duration`（單位是奈秒）。注意 `prompt_eval_duration` 只算沒被快取的 prompt token，所以每次要換一點 prompt 內容。
+- Ollama 的 [API](https://docs.ollama.com/api/usage) 會回傳 `prompt_eval_count`、`prompt_eval_duration`、`eval_count`、`eval_duration`（單位是奈秒）。注意 `prompt_eval_duration` 只算沒被快取的 prompt token，`prompt_eval_cached_count` 是從快取讀出的數量。量 prefill 時把變動內容（例如一段隨機字串）放在 prompt **開頭**：只改結尾的話，前面整段仍會命中快取。每次確認 `prompt_eval_cached_count` 是 0。
 - 用 Ollama 時先調大 context（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#ollama-的-context-長度)）：預設可能只有 4K，步驟 5 的 4K、8K prompt 一定會碰到。
 - 記憶體頻寬查官方規格：Apple Silicon 寫在各機型的技術規格頁，NVIDIA 寫在 GPU 的 datasheet。
 - 量化過的模型（例如 Ollama 預設的 4-bit），每個參數不是 2 bytes，計算上限時要換算。

@@ -340,7 +340,7 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 
 **驗收**
 - 步驟 7 的 100 個測試字串（含中文、emoji、空白、換行）`decode(encode(s)) === s` 全部成立。
-- 壓縮率隨 merge 次數單調上升，附上四個數字。
+- 在 tiny Shakespeare 全文上量，壓縮率隨 merge 次數嚴格上升，附上四個數字。
 - temperature → 0（例如 1e-6）與 top_k = 1 時，10,000 次全部抽到 argmax。
 - temperature = 1、不設 top-k / top-p 時，每個 index 的實際頻率和 softmax 機率相差不超過 2 個百分點。
 - top_p = 0.9 時，落在 nucleus 外的 index 出現 0 次。

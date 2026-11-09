@@ -2,10 +2,16 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "token2agent",
 	"compatibility_date": "2026-11-01",
-	// Static site only: Cloudflare serves the Astro build output, no Worker script.
+	// The Astro build output, behind a small Worker that sends non-Chinese browsers to /en/ (worker/index.ts).
+	"main": "worker/index.ts",
 	"assets": {
 		"directory": "./dist",
-		"not_found_handling": "404-page"
+		"binding": "ASSETS",
+		"not_found_handling": "404-page",
+		// The Worker only needs root-locale pages; English pages and build assets are served directly.
+		"run_worker_first": ["/*", "!/en/*", "!/_astro/*", "!/pagefind/*"]
 	},
-	"routes": [{ "pattern": "token2agent.com", "custom_domain": true }]
+	"routes": [{ "pattern": "token2agent.com", "custom_domain": true }],
+	// Required by `wrangler preview`, the deploy command Workers Builds runs for non-production branches.
+	"previews": {}
 }

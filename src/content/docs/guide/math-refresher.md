@@ -98,6 +98,7 @@ ci = (results[0.025 * B], results[0.975 * B])
 
 **什麼時候不適用**：
 - 題數太少（例如少於 20 題）時，區間不可靠。這時直接說「樣本太少」，不要報一個看起來很精確的數字。
+- 通過率全對或全錯時，每次重抽的結果都一樣，區間會縮成一個點，例如 50 題全對得到 [100%, 100%]。真實的通過率仍有不確定性，這時改用 Wilson 區間：50 題全對的 95% 區間約 [92.9%, 100%]。接近全對或全錯時（例如 49/50），bootstrap 區間不會縮成一個點，但也偏窄，同樣建議用 Wilson 區間。
 - 題目之間不獨立（例如同一段對話拆成好幾題）時，要整組一起抽，不能逐題抽。
 
 **用在**：[S4 Post-training 與 reasoning](/stages/s04-post-training/)（N = 1 vs N = 8 的比較）、[S8 Eval 方法論](/stages/s08-evals/)（judge 通過率）、[S9 檢索與 RAG](/stages/s09-rag/)（Recall@k）、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S18 部署與架構](/stages/s18-deployment/)。

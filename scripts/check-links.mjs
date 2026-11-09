@@ -30,7 +30,8 @@ for (const [route, { html }] of pages) {
 			if (!existsSync(join(dist, target))) broken.push(`${route} -> ${href}`);
 			continue;
 		}
-		const page = pages.get(target);
+		// Starlight links a locale's home without the trailing slash (`/en`).
+		const page = pages.get(target) ?? pages.get(`${target}/`);
 		checked++;
 		if (!page) broken.push(`${route} -> ${href} (no page)`);
 		else if (hash && !page.ids.has(decodeURIComponent(hash))) broken.push(`${route} -> ${href} (no anchor)`);

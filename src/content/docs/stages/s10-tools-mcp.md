@@ -202,7 +202,7 @@ MCP 是一個開放協定：工具提供者寫一個 MCP server，任何支援 M
 
 **接回剛才的來回。** 有了 MCP，第 3 步「你的程式執行工具」變成：client 先用 `tools/list` 向 server 取得工具清單（名稱、描述、schema），host 把它放進給模型的 `tools`；模型回 `tool_use` 時，client 對 server 發 `tools/call`（工具名稱 + 參數），server 執行後回傳結果，host 再包成 `tool_result` 送回模型。模型那一端完全不變，它不知道工具背後是不是 MCP。
 
-Server 可以是本機子行程（stdio 傳輸，必做題用這個）或遠端服務（Streamable HTTP 傳輸，走 OAuth 授權：一種標準流程，使用者同意後，授權伺服器發憑證給 client）。走 HTTP 時，client 拿到的 token（授權憑證，不是文字 token）只發給這一個 server，server **不可以把它轉傳給下游服務**：轉傳等於讓下游接受一張不是發給它的憑證，繞過下游自己的授權檢查（→ S16 安全與治理）。規範在 2026-07-28 版有大改，見下方展開。
+Server 可以是本機子行程（stdio 傳輸，必做題用這個）或遠端服務（Streamable HTTP 傳輸）。授權在規範裡是選用的；遠端 server 需要授權時，規範定義的是 OAuth 流程：一種標準流程，使用者同意後，授權伺服器發憑證給 client。走 OAuth 時，client 拿到的 token（授權憑證，不是文字 token）只發給這一個 server，server **不可以把它轉傳給下游服務**：轉傳等於讓下游接受一張不是發給它的憑證，繞過下游自己的授權檢查（→ S16 安全與治理）。規範在 2026-07-28 版有大改，見下方展開。
 
 **容易誤會：MCP 讓模型直接連上外部系統。** 模型仍然只輸出 `tool_use`；MCP 是 host 與工具 server 之間的接線。風險分級、人工確認、egress 白名單都在 host 與 server 這兩端做，MCP 本身不會替你做。接上第三方 MCP server，它的工具描述和回傳內容也會進入你的 context，可信度要另外評估（→ S16 安全與治理）。
 
@@ -212,7 +212,7 @@ Server 可以是本機子行程（stdio 傳輸，必做題用這個）或遠端�
 | 傳輸 | Server 在哪 | 適合 | 憑證 |
 |---|---|---|---|
 | **stdio** | 本機子行程，透過標準輸入輸出傳訊息 | 本地工具，例如讀本機筆記資料夾 | 直接從環境變數取得 |
-| **Streamable HTTP** | 遠端，透過 HTTP | 多人共用的服務 | 規範中的 OAuth 授權流程 |
+| **Streamable HTTP** | 遠端，透過 HTTP | 多人共用的服務 | 授權是選用的；需要時用規範中的 OAuth 流程 |
 
 舊的 HTTP+SSE 傳輸已棄用（deprecated）。
 

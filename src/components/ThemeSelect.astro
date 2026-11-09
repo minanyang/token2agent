@@ -3,14 +3,25 @@
 // Simple mode collapses `<details class="deep">` blocks and hides `<section class="deep-section">` bodies (styles in src/styles/custom.css);
 // deep mode expands and shows them all.
 import { Icon } from '@astrojs/starlight/components';
+import { t } from '../i18n';
+
+const strings = t(Astro.locals.starlightRoute.lang);
+// Strings the client script needs; read back from these data attributes.
+const clientStrings = {
+	deepNotice: strings.deepNotice,
+	deepExpand: strings.deepExpand,
+	deepCollapse: strings.deepCollapse,
+	toDark: strings.toDark,
+	toLight: strings.toLight,
+};
 ---
 
-<div class="controls">
-	<div class="depth-toggle" role="group" aria-label="閱讀模式">
-		<button type="button" data-depth="simple" aria-pressed="true">淺顯</button>
-		<button type="button" data-depth="deep" aria-pressed="false">深入</button>
+<div class="controls" data-strings={JSON.stringify(clientStrings)}>
+	<div class="depth-toggle" role="group" aria-label={strings.depthGroup}>
+		<button type="button" data-depth="simple" aria-pressed="true">{strings.depthSimple}</button>
+		<button type="button" data-depth="deep" aria-pressed="false">{strings.depthDeep}</button>
 	</div>
-	<button type="button" class="theme-toggle" aria-label="切換成深色">
+	<button type="button" class="theme-toggle" aria-label={strings.toDark}>
 		<Icon name="moon" class="to-dark" />
 		<Icon name="sun" class="to-light" />
 	</button>
@@ -25,6 +36,9 @@ import { Icon } from '@astrojs/starlight/components';
 
 <script>
 	type Depth = 'simple' | 'deep';
+	const strings: Record<'deepNotice' | 'deepExpand' | 'deepCollapse' | 'toDark' | 'toLight', string> = JSON.parse(
+		document.querySelector<HTMLElement>('.controls')?.dataset.strings ?? '{}',
+	);
 	const storageKey = 'token2agent-depth';
 
 	const load = (): Depth => {
@@ -61,14 +75,14 @@ import { Icon } from '@astrojs/starlight/components';
 	for (const section of document.querySelectorAll('.deep-section')) {
 		const notice = document.createElement('p');
 		notice.className = 'deep-notice';
-		notice.textContent = '這部分是選讀或進階內容。';
+		notice.textContent = strings.deepNotice;
 		const button = document.createElement('button');
 		button.type = 'button';
-		button.textContent = '展開這一段';
+		button.textContent = strings.deepExpand;
 		button.setAttribute('aria-expanded', 'false');
 		button.addEventListener('click', () => {
 			const open = section.classList.toggle('is-open');
-			button.textContent = open ? '收起這一段' : '展開這一段';
+			button.textContent = open ? strings.deepCollapse : strings.deepExpand;
 			button.setAttribute('aria-expanded', String(open));
 		});
 		notice.append(button);
@@ -82,7 +96,7 @@ import { Icon } from '@astrojs/starlight/components';
 	const themeKey = 'starlight-theme';
 	const currentTheme = () => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
 	const syncThemeButtons = () => {
-		const label = currentTheme() === 'light' ? '切換成深色' : '切換成淺色';
+		const label = currentTheme() === 'light' ? strings.toDark : strings.toLight;
 		for (const button of document.querySelectorAll<HTMLButtonElement>('.theme-toggle')) {
 			button.setAttribute('aria-label', label);
 			button.title = label;

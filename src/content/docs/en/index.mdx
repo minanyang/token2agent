@@ -1,0 +1,81 @@
+---
+title: Token2Agent
+head:
+  - tag: title
+    content: 'Token2Agent: The AI/LLM Roadmap, from Tokens to Agents'
+description: Learn to build AI apps and agents that hold up in production, from LLM APIs, RAG and MCP tools to evals and security, with every concept worked through a concrete example. Free, no background required.
+template: splash
+hero:
+  title: Token2Agent
+  tagline: The AI/LLM roadmap, from tokens to agents.<br>No background needed. Go deeper in every chapter.
+  actions:
+    - text: Start with S0 The Big Picture
+      link: /en/stages/s00-big-picture/
+      icon: right-arrow
+    - text: Choose a route
+      link: '#choose-a-route'
+      variant: secondary
+    - text: How to use this roadmap
+      link: /en/guide/how-to-use/
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import RoadmapMap from '../../../components/RoadmapMap.astro';
+
+## The roadmap
+
+<RoadmapMap />
+
+## Choose a route
+
+<CardGrid>
+	<LinkCard
+		title="Application route (for most people)"
+		description="You want to build AI apps or agents: S0 The Big Picture → Model Crash Course → Part III to Part VII (S6–S19). No machine learning background needed."
+		href="/en/guide/app-first/"
+	/>
+	<LinkCard
+		title="Concepts route (no coding)"
+		description="You want to understand how AI systems work: read the lectures and do each chapter's Try it first and self-check."
+		href="/en/guide/how-to-use/#choose-a-route"
+	/>
+	<LinkCard
+		title="Full route (including how models work)"
+		description="You also want to know what happens inside the model: go from S0 The Big Picture through S19 Real Agent Systems and the Capstone in order. Part II How Models Work (S1–S5) is lower-level and uses more math."
+		href="/en/stages/s00-big-picture/"
+	/>
+</CardGrid>
+
+You can start without writing code: read the lectures and do each chapter's Try it first and self-check, and you will understand how AI systems work (the concepts route). The exercises need basic programming, HTTP and JSON (the hands-on routes).
+
+Every chapter reads two ways, switchable at the top of the page: **Simple** shows only the main line, written to make sense on a first read; **Deep** opens the implementation details, derivations, optional topics and advanced exercises.
+
+## What the system project leaves you with
+
+The system project is made up of the chapters' advanced exercises. Finish it and you have a deployed agent you use every day, with RAG, tools, memory, evals and security guardrails, plus engineering evidence you can hand to someone for review. Each chapter grows one capability (the number after A matches the chapter number; see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)):
+
+| Stage | What your system gains |
+|---|---|
+| Part III Application Foundations (A6–A8) | A streaming chat UI (Gradio, Chainlit or a CLI work too) with traces, reliable structured output and workflows, and a golden set and judge grown from real traces |
+| Part IV Knowledge and Action (A9–A11) | RAG with citations, tools and an MCP server with risk levels, and a context builder with a budget and caching |
+| Part V Agent Systems (A12–A15) | A hand-written harness, layered memory, trajectory evals and prompt optimization; multi-agent stays only if it wins the eval |
+| Part VI Trust, Product, Shipping (A16–A18) | A security audit and fixes, a complete frontend, and a multi-user deployment with an eval-gated release process |
+| Part VII Capstone (A19) | The capstone: extend it into an always-on agent |
+
+The full breakdown is in [System Project A6–A19](/en/projects/system-thread/#what-each-chapter-adds).
+
+## Two hands-on projects
+
+<CardGrid>
+	<LinkCard
+		title="Model project M1–M5"
+		description="From autograd to your own tiny GPT, then SFT, DPO and GRPO on a small model, and finally a mini inference server."
+		href="/en/projects/model-thread/"
+	/>
+	<LinkCard
+		title="System project A6–A19"
+		description="Pick an application you care about and grow it from a streaming chat into a deployed agent with RAG, tools, a harness, memory, evals and security guardrails."
+		href="/en/projects/system-thread/"
+	/>
+</CardGrid>

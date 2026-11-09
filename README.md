@@ -21,7 +21,7 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 <a href="https://token2agent.com">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-ids-fast-dark.gif">
-<img alt="Token2Agent 首頁：標題與標語的每個 token 依序顯示它的 token id，旁邊的 agent run log 一步一步跑完學習路線" src=".github/assets/hero-ids-fast-light.gif">
+<img alt="Token2Agent 首頁：標題與標語依序展示 token ID，旁邊示範從請求、工具呼叫到回應的七步流程，底部列出 S0–S19 課程章節" src=".github/assets/hero-ids-fast-light.gif">
 </picture>
 </a>
 

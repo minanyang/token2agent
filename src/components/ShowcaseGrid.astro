@@ -1,21 +1,22 @@
 ---
 // Lists shared projects from src/data/showcase, newest first; each stage tag links back to its lecture.
 import { getCollection } from 'astro:content';
+import { getStageEntries, t, toLang } from '../i18n';
+
+const lang = toLang(Astro.locals.starlightRoute.lang);
+const strings = t(lang);
 
 const projects = (await getCollection('showcase')).sort(
 	(a, b) => b.data.added.getTime() - a.data.added.getTime(),
 );
 const stageTitles = new Map(
-	(await getCollection('docs', (e) => e.id.startsWith('stages/'))).map((e) => [
-		Number(e.id.match(/^stages\/s(\d+)-/)?.[1]),
-		{ title: e.data.title, href: `/${e.id}/` },
-	]),
+	(await getStageEntries(lang)).map(({ n, entry, href }) => [n, { title: entry.data.title, href }]),
 );
 ---
 
 {
 	projects.length === 0 ? (
-		<p class="empty">還沒有專案。歡迎成為第一個分享的人，做法見下方。</p>
+		<p class="empty">{strings.showcaseEmpty}</p>
 	) : (
 		<ul class="showcase not-content" role="list">
 			{projects.map(({ data }) => (
@@ -35,7 +36,7 @@ const stageTitles = new Map(
 					</p>
 					{data.stages && (
 						<p class="stages">
-							用到：
+							{strings.showcaseUses}
 							{data.stages.map((n) => {
 								const s = stageTitles.get(n);
 								return s ? <a href={s.href}>{s.title}</a> : null;
