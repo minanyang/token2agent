@@ -214,7 +214,7 @@ Scaling laws 描述 loss 隨模型大小、資料量和算力變化的規律。�
 
 大型訓練通常把幾種一起用：機器內用 tensor parallel，跨機器用 pipeline 和 data parallel（加上 ZeRO）。
 
-**容易誤會：GPU 加倍，速度就加倍。** 每種拆法都要在 GPU 之間傳資料，GPU 越多、通訊佔的比例越高；ZeRO 省下記憶體，但每步的計算量不變；省下的記憶體可以換成更大的 batch，吞吐量可能因此提升，Stage 3 則會多出通訊。這些取捨在推論端也會再出現（→ [S5 推論與 serving](/stages/s05-inference/)）。
+每種拆法都要在 GPU 之間傳資料，GPU 越多、通訊佔的比例越高，所以 GPU 加倍不等於速度加倍。ZeRO 省下記憶體，但每步的計算量不變；省下的記憶體可以換成更大的 batch，吞吐量可能因此提升，Stage 3 則會多出通訊。這些取捨在推論端也會再出現（→ [S5 推論與 serving](/stages/s05-inference/)）。
 
 <details class="deep">
 <summary>深入一點：通訊方式、ZeRO 三個階段、pipeline 的空等</summary>
@@ -234,7 +234,7 @@ Scaling laws 描述 loss 隨模型大小、資料量和算力變化的規律。�
 
 **Perplexity。** 在模型沒看過的 held-out 資料上算 perplexity（← [S1 神經網路基礎](/stages/s01-neural-networks/)），直觀理解是「模型平均在幾個選項之間猶豫」，越低越好。驗證集要在訓練前就切出來，而且要和訓練資料一起去重，否則等於拿看過的題目考試。
 
-**容易誤會：不同 tokenizer 的 perplexity 可以直接比。** Perplexity 是「每個 token」的平均，而不同 tokenizer 的一個 token 代表的文字量不同。例子：同一段 1,000 個字元的文字，模型甲的 tokenizer 切成 250 個 token、perplexity 18；模型乙切成 400 個 token、perplexity 12。乙看起來比較好，但換算成整段文字的總 loss：甲是 250 × ln 18 ≈ 723，乙是 400 × ln 12 ≈ 994，甲預測這段文字其實更準。公平的比法是換成每個字元或每個 byte 的 loss（例如 bits-per-byte）。
+不同 tokenizer 的 perplexity 不能直接比。Perplexity 是「每個 token」的平均，而不同 tokenizer 的一個 token 代表的文字量不同。例子：同一段 1,000 個字元的文字，模型甲的 tokenizer 切成 250 個 token、perplexity 18；模型乙切成 400 個 token、perplexity 12。乙看起來比較好，但換算成整段文字的總 loss：甲是 250 × ln 18 ≈ 723，乙是 400 × ln 12 ≈ 994，甲預測這段文字其實更準。公平的比法是換成每個字元或每個 byte 的 loss（例如 bits-per-byte）。
 
 **Held-out exact match。** 準備一組有標準答案的題目（例如「法國的首都是」→「巴黎」），看模型完全答對的比例。它直接對應「能不能用」，但很粗糙：多一個空白或句號就算錯，而且如前面湧現能力的討論所說，exact match 會讓平滑的進步看起來像突然跳升。
 

@@ -131,7 +131,7 @@ The same data can be reported as 100%, 67% or 33%. When you report, always state
 
 The gap grows with k. Assuming independent trials and a per-trial success rate of 0.8: pass@3 = 1 − 0.2³ = 0.992, pass^3 = 0.8³ = 0.512. The same agent looks nearly perfect by pass@3 and only a bit better than a coin flip by pass^3.
 
-With few trials, these numbers are very uncertain. A success rate from 15 tasks × 5 trials needs a bootstrap confidence interval (← S8 Evals Methodology). When comparing two versions, run both on the same tasks and look at the interval of the paired difference: entirely above 0 means the new version is better, entirely below 0 means it's worse, and if it contains 0 you can't tell them apart. Don't just see which point estimate is bigger. **Common misconception: a high pass@k means the agent is reliable.** Task C counts as a "success" under pass@5, but in 4 out of 5 trials the user got an agent that deleted the wrong file or guessed blindly.
+With few trials, these numbers are very uncertain. A success rate from 15 tasks × 5 trials needs a bootstrap confidence interval (← S8 Evals Methodology). When comparing two versions, run both on the same tasks and look at the interval of the paired difference: entirely above 0 means the new version is better, entirely below 0 means it's worse, and if it contains 0 you can't tell them apart. Don't just see which point estimate is bigger. A high pass@k does not mean the agent is reliable. Task C counts as a "success" under pass@5, but in 4 out of 5 trials the user got an agent that deleted the wrong file or guessed blindly.
 
 <details class="deep">
 <summary>Going deeper: estimating pass@k and pass^k from n trials</summary>
@@ -163,7 +163,7 @@ Settings like machine resources and time limits directly change scores (infra no
 
 Anthropic's "Infrastructure noise in agentic coding evals" (2026-02-05) found on Terminal-Bench 2.0 that changing only the container's resource settings produced a success-rate gap of about 6 percentage points between the most generous and the most restrictive settings. They make three recommendations: treat resource and time limits as experimental variables to report, run multiple times at different times of day, and be skeptical of leaderboard gaps under 3 percentage points.
 
-Applied to the notes assistant: change the tool timeout from 10 seconds to 2, and `grep` on a large folder may occasionally time out; the agent then has to retry or give up, and the success rate may drop a few percentage points without a single line of the agent changing. Step 4 of the core exercise measures exactly this gap and writes it up as one line, "infra variables for this eval." **Common misconception: infra differences are noise that averages out.** They're a systematic shift: if two versions run under different settings, the whole gap might come from the settings.
+Applied to the notes assistant: change the tool timeout from 10 seconds to 2, and `grep` on a large folder may occasionally time out; the agent then has to retry or give up, and the success rate may drop a few percentage points without a single line of the agent changing. Step 4 of the core exercise measures exactly this gap and writes it up as one line, "infra variables for this eval." Infra differences are not noise that averages out. They are a systematic shift: if two versions run under different settings, the whole gap might come from the settings.
 
 ### ★ Does a higher score always mean better?
 
@@ -184,7 +184,7 @@ Public benchmarks age: tasks leak into training data (contamination) and get sol
 
 So whenever you see an agent benchmark score, first ask three questions (benchmark hygiene): Has anyone audited the tasks? Have they leaked? What were the infra settings? A 2-point gap between two agents is already smaller than the infra gap measured above.
 
-**METR time horizon** ([Kwa et al. 2025](https://arxiv.org/abs/2503.14499)) describes capability differently: how long human experts typically take on the tasks a model completes with 50% probability. The paper found this length has doubled roughly every 7 months since 2019. It's easier to interpret than a single benchmark score, but the tasks are concentrated in software and research work, and the authors spell out the limits on external validity. **Common misconception: a high benchmark score means your product will be good.** It only describes performance on that set of tasks with that setup; your notes assistant needs its own evals.
+**METR time horizon** ([Kwa et al. 2025](https://arxiv.org/abs/2503.14499)) describes capability differently: how long human experts typically take on the tasks a model completes with 50% probability. The paper found this length has doubled roughly every 7 months since 2019. It's easier to interpret than a single benchmark score, but the tasks are concentrated in software and research work, and the authors spell out the limits on external validity. A high benchmark score only describes performance on that set of tasks with that setup; your notes assistant needs its own evals.
 
 ### ★ What if there are too many traces to read?
 

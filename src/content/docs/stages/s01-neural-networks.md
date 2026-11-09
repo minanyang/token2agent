@@ -87,7 +87,7 @@ S0 AI 系統概觀裡回答問題的模型，是怎麼學出來的？Part I 模�
 
 M1 makemore MLP 要做的就是這個語言模型。Embedding 和每層的權重都是參數，一開始隨機設定，再透過下面幾節的訓練迴圈調整。後面各章的 LLM 也是 next-token predictor，只是規模更大、表現更好。
 
-**容易誤會：loss 不會、也不該降到 0。** `m` 後面本來就可能接很多字母，資料本身有不確定性。在 bigram 這種只看一個字元的設定下，最好的模型也只能給出真實的比例，loss 有下限（實測 bigram 約 2.45）。訓練 loss 降到接近 0，通常代表模型在背答案（見 [overfitting](#-模型在背答案怎麼辦)）。
+Loss 不會、也不該降到 0。`m` 後面本來就可能接很多字母，資料本身有不確定性。在 bigram 這種只看一個字元的設定下，最好的模型也只能給出真實的比例，loss 有下限（實測 bigram 約 2.45）。訓練 loss 降到接近 0，通常代表模型在背答案（見 [overfitting](#-模型在背答案怎麼辦)）。
 
 <details class="deep">
 <summary>準備動手做：公式、平滑化與 MLP 的形狀</summary>
@@ -197,7 +197,7 @@ PyTorch 的預設值是 β₁ = 0.9、β₂ = 0.999、ε = 1e-8；`AdamW` 的 `w
 
 **Normalization 層。** 初始化只管第一步，訓練中權重一直在變，每層輸入的尺度也跟著漂移。Normalization 層把每層的輸入重新調整成平均約 0、分散程度約 1，再乘上可學的縮放係數。BatchNorm 是對一個 batch 裡的同一個特徵做；LayerNorm 是對一筆資料自己的所有特徵做，Transformer 用的是後者，下一章會再換成更簡單的 RMSNorm（→ [S2 Transformer 與 decoding](/stages/s02-transformer/)）。M1 makemore MLP 不要求加 normalization，但網路一深就少不了它。
 
-**容易誤會：初始 loss 接近 3.30 不代表一切正常。** 輸出層正確，hidden 層仍可能大量飽和。所以兩件事都要量：初始 loss，以及每層 activation 的分布（例如畫直方圖，看是不是大量堆在 ±1）。
+初始 loss 接近 3.30 只說明輸出層正確，hidden 層仍可能大量飽和。所以兩件事都要量：初始 loss，以及每層 activation 的分布（例如畫直方圖，看是不是大量堆在 ±1）。
 
 <details class="deep">
 <summary>準備動手做：初始化公式與診斷圖</summary>
@@ -221,7 +221,7 @@ PyTorch 的預設值是 β₁ = 0.9、β₂ = 0.999、ε = 1e-8；`AdamW` 的 `w
 - **Dropout**：訓練時每一步隨機關掉一部分神經元，模型不能依賴任何單一路徑。
 - **更多資料，或更小的模型**：背不下來，就只能學規律。
 
-**容易誤會：train 和 val loss 有差距不一定是 overfitting。** 兩者有點差距很正常；關鍵是 val loss 有沒有停止下降甚至回升。反過來，train 和 val 都很高而且很接近，是模型太小或還沒訓練夠（underfitting），這時加正規化只會更糟。
+Train 和 val loss 有點差距很正常，不一定是 overfitting；關鍵是 val loss 有沒有停止下降甚至回升。反過來，train 和 val 都很高而且很接近，是模型太小或還沒訓練夠（underfitting），這時加正規化只會更糟。
 
 <details class="deep">
 <summary>深入一點：dropout 與 test set 的規矩</summary>
@@ -249,7 +249,7 @@ PyTorch 的預設值是 β₁ = 0.9、β₂ = 0.999、ε = 1e-8；`AdamW` 的 `w
 
 **實驗追蹤。** 實驗追蹤工具（例如 [Weights & Biases](https://docs.coreweave.com/products/wandb)）幫你記錄每次執行的超參數、loss 曲線、程式版本與隨機種子（seed），並排比較。例如 M1 makemore MLP 跑三組：學習率 0.1、0.03、0.01，其他都一樣，在同一個步數比較 val loss，就能看出哪組最好、好多少。
 
-**容易誤會：差一點點就是比較好。** 同一組設定換一個 seed 重跑，val loss 也會有小差異。先重跑一兩次看自然的雜訊有多大，小於雜訊的差距不算數。比較時也要在相同步數下比，訓練較久的那組本來就容易佔便宜。
+同一組設定換一個 seed 重跑，val loss 也會有小差異。先重跑一兩次看自然的雜訊有多大，小於雜訊的差距不算數。比較時也要在相同步數下比，訓練較久的那組本來就容易佔便宜。
 
 <section class="deep-section">
 

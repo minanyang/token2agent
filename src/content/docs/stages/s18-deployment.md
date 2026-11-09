@@ -283,7 +283,7 @@ Checkpoint 能恢復進度，但某一步仍可能在副作用已發生、結果
 
 兩份 Anthropic 的 postmortem 說明了為什麼光看系統訊號不夠。[A postmortem of three recent issues](https://www.anthropic.com/research/a-postmortem-of-three-recent-issues)（2025-09）中，三個基礎設施問題讓輸出品質下降，但標準 eval 沒抓到，症狀看起來像隨機雜訊。[An update on Claude Code quality reports](https://www.anthropic.com/research/april-23-postmortem)（2026-04）中，三個產品端的改動各自影響不同比例的流量、在不同時間上線，合起來就像整體品質不穩定。共同教訓：要有能分辨好壞的 eval、在線上流量持續跑品質評估、把「改 prompt」當部署管理，並能把使用者回報和最近的變更連起來（所以 trace 要記 prompt 版本與模型名稱）。
 
-容易誤會的是「錯誤率正常就代表沒事」。上面兩個案例裡，請求都成功回應了，只是答案變差；沒有品質訊號，就只能等使用者抱怨。
+上面兩個案例裡，請求都成功回應了，只是答案變差，所以錯誤率正常不代表沒事；沒有品質訊號，就只能等使用者抱怨。
 
 <details class="deep">
 <summary>深入一點：circuit breaker 的三個狀態</summary>

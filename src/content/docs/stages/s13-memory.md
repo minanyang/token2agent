@@ -87,7 +87,7 @@ s7 的那句「請記住……」不是小林說的，不能變成記憶（見�
 
 分類的用處是逼你問清楚每一筆該怎麼處理。Episodic 帶著時間，適合回答「上次我們做了什麼」；semantic 會被新事實取代，要能更新；procedural 改的是 agent 的做法，影響每一次任務，改錯的代價最大。
 
-**容易誤會：不同來源說的「memory」範圍不同。** Anthropic〈The components of agent memory〉（2026-11-06）的定義比較窄：agent 從經驗獲得、並跨 session 保留的知識，**不包含**改權重、in-context learning 和 compaction（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。照這個定義，上表的 working memory 不算「記憶」。讀資料時先確認作者說的是哪一種。
+不同來源說的「memory」範圍不同。Anthropic〈The components of agent memory〉（2026-11-06）的定義比較窄：agent 從經驗獲得、並跨 session 保留的知識，**不包含**改權重、in-context learning 和 compaction（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。照這個定義，上表的 working memory 不算「記憶」。讀資料時先確認作者說的是哪一種。
 
 ### ★ 記憶要放在哪一層？
 

@@ -87,7 +87,7 @@ Different information needs to be kept for different lengths of time, in differe
 
 Classifying forces you to ask how each memory should be handled. Episodic memories carry a time and suit questions like "What did we do last time?"; semantic memories get replaced by new facts and must be updatable; procedural memory changes how the agent works and affects every task, so getting it wrong costs the most.
 
-**Common misconception: every source means the same thing by "memory."** Anthropic's "The components of agent memory" (2026-11-06) uses a narrower definition: knowledge an agent acquires from experience and keeps across sessions, **not including** changes to weights, in-context learning or compaction (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)). By that definition, the working memory in the table above isn't "memory." When you read about it, first check which kind the author means.
+Sources differ in what they mean by "memory." Anthropic's "The components of agent memory" (2026-11-06) uses a narrower definition: knowledge an agent acquires from experience and keeps across sessions, **not including** changes to weights, in-context learning or compaction (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)). By that definition, the working memory in the table above isn't "memory." When you read about it, first check which kind the author means.
 
 ### ★ Which layer should a memory live in?
 

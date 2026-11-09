@@ -162,7 +162,7 @@ Output 2: { ..., "date": "2026-10-14", ... }   ← passes
 
 Suppose 95 of 100 notes pass the first time and repair rescues 4 of the 5 failures: the valid rate goes from 95% to 99%. Record the number of repairs: a sudden jump usually means the prompt or the model changed.
 
-**Common misconception: valid format means correct content.** Even if the output above wrote `date` as `2026-10-28` (the date of the next meeting, not this one), it would match the schema perfectly. Whether the content is right is a job for the evals in S8 Evals Methodology. Another cost is that **format constraints can hurt reasoning quality**: Tam et al. 2024 found that strict format constraints lowered performance on some reasoning tasks, though the results vary by task and model. A common compromise is to make the schema's first field the reasoning or evidence (for example `evidence`: sentences quoted from the note) and put the answer last.
+A valid format does not mean correct content. Even if the output above wrote `date` as `2026-10-28` (the date of the next meeting, not this one), it would match the schema perfectly. Whether the content is right is a job for the evals in S8 Evals Methodology. Another cost is that **format constraints can hurt reasoning quality**: Tam et al. 2024 found that strict format constraints lowered performance on some reasoning tasks, though the results vary by task and model. A common compromise is to make the schema's first field the reasoning or evidence (for example `evidence`: sentences quoted from the note) and put the answer last.
 
 <details class="deep">
 <summary>Before you build: libraries and vendor limits</summary>

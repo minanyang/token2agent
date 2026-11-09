@@ -73,7 +73,7 @@ A box holds 12 pencils. You buy 3 boxes and give 7 pencils to a classmate. How m
 
 During training, loss is usually computed only on the assistant part (including the closing `<|im_end|>`); the user part serves only as conditioning. This is **loss masking**. The reason is simple: you want the model to learn how to answer, not how to write questions. Some setups compute loss on the whole conversation, but answer-only is the common default. Learning to emit `<|im_end|>` at the end of an answer also matters, so the model knows when to stop.
 
-At inference time, the server joins the conversation with the same template and ends with `<|im_start|>assistant` so the model continues from there. **Common misconception: the template is just formatting, so being slightly off is fine.** In practice, any difference between the training and inference templates (one missing newline, a different role name) shows the model text it never saw in training. Performance can drop for no obvious reason, and nothing raises an error. When you run open models yourself, always use the template that ships with the tokenizer.
+At inference time, the server joins the conversation with the same template and ends with `<|im_start|>assistant` so the model continues from there. The template is not just formatting. Any difference between the training and inference templates (one missing newline, a different role name) shows the model text it never saw in training. Performance can drop for no obvious reason, and nothing raises an error. When you run open models yourself, always use the template that ships with the tokenizer.
 
 SFT needs less data than you might expect: one study (LIMA) got a fairly good assistant from just 1,000 curated examples. Knowledge mostly comes from pretraining; SFT mainly teaches behavior: answer format, style, when to stop, and specific narrow tasks (such as extracting information into fixed fields). A small amount of SFT can hardly teach a lot of new knowledge. But SFT on a large number of high-quality worked solutions can teach reasoning (see distillation later).
 
@@ -123,7 +123,7 @@ SFT needs someone to write the ideal answer. RL only needs a way to score the an
 
 **PPO**, the algorithm traditionally used for RLHF, trains a separate **value model** to estimate the baseline. The value model is about as big as the model itself, so PPO is memory-hungry.
 
-**KL penalty**: RLHF (especially with PPO) almost always penalizes the model for drifting too far from a reference model (usually the post-SFT model). Without this constraint, the model may produce weird text the reference model would almost never write, just to score high. Some RL with verifiable rewards drops it, such as DAPO later in this chapter. **Common misconception: the KL penalty is an optional tweak.** In RLHF it's actually the main constraint that keeps the model's original language ability. Too small a coefficient and the reward pulls the model off course; too large and it barely learns anything.
+**KL penalty**: RLHF (especially with PPO) almost always penalizes the model for drifting too far from a reference model (usually the post-SFT model). Without this constraint, the model may produce weird text the reference model would almost never write, just to score high. Some RL with verifiable rewards drops it, such as DAPO later in this chapter. The KL penalty is not an optional tweak: in RLHF it is the main constraint that keeps the model's original language ability. Too small a coefficient and the reward pulls the model off course; too large and it barely learns anything.
 
 <details class="deep">
 <summary>Going deeper: the formulas for policy gradient, PPO and GAE</summary>
@@ -230,7 +230,7 @@ Whenever the reward is a proxy, the model may find a shortcut that "scores high 
 
 **Sycophancy**: the model tends to agree with the user and say what the user wants to hear. The user says "I got 31, right?" and the model goes along: "Yes, it's 31." Part of the cause is the preference data itself: when people compare answers, they tend to rate answers that agree with them higher, and preference learning amplifies that tendency.
 
-**Common misconception: reward hacking means the model "wants to cheat."** It's just optimizing the score you gave it; the gap between the score and the goal is the actual problem. These concepts appear for the first time in this chapter, and you'll meet them again in judges in [S8 Evals Methodology](/en/stages/s08-evals/), personalized flattery in [S13 Memory and Personalization](/en/stages/s13-memory/), agent optimization in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), and safety in [S16 Security and Governance](/en/stages/s16-security/).
+Reward hacking does not mean the model "wants to cheat." It is just optimizing the score you gave it; the gap between the score and the goal is the actual problem. These concepts appear for the first time in this chapter, and you'll meet them again in judges in [S8 Evals Methodology](/en/stages/s08-evals/), personalized flattery in [S13 Memory and Personalization](/en/stages/s13-memory/), agent optimization in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), and safety in [S16 Security and Governance](/en/stages/s16-security/).
 
 ### ★ How does a small model learn from a big one?
 

@@ -87,7 +87,7 @@ The output is [−2, 3]: each output is one weighted sum of the inputs, and each
 
 You'll build this language model in M1 makemore MLP. Its embeddings and layer weights are parameters, initialized randomly and adjusted by the training loop. The LLMs in later chapters are larger, more capable next-token predictors.
 
-**Common misconception: a well-trained model drives the loss to 0.** It won't, and shouldn't. Many letters can genuinely follow `m`; the data itself is uncertain. In a bigram setup that only sees one character, the best model can only reproduce the true proportions, so the loss has a floor (about 2.45 measured for the bigram). A training loss near 0 usually means the model is memorizing (see [overfitting](#-what-if-the-model-is-memorizing)).
+The loss will not and should not reach 0. Many letters can genuinely follow `m`; the data itself is uncertain. In a bigram setup that only sees one character, the best model can only reproduce the true proportions, so the loss has a floor (about 2.45 measured for the bigram). A training loss near 0 usually means the model is memorizing (see [overfitting](#-what-if-the-model-is-memorizing)).
 
 <details class="deep">
 <summary>Before you build: formulas, smoothing and the shape of the MLP</summary>

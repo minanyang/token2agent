@@ -69,7 +69,7 @@ S10 工具與 MCP 的確認畫面會顯示「寄給 helper@example.net」，但�
 
 整理風險的共同語言是 OWASP 的兩份清單：Top 10 for LLM Applications 2025（第一項是 prompt injection），以及 Top 10 for Agentic Applications 2026（2025-12-09 發布，第一項是 agent 目標劫持）。
 
-**容易誤會：清單就是設計方法。** 清單適合稽核時打勾，不會告訴你該拆掉哪個工具。
+清單適合稽核時打勾，但不會告訴你該拆掉哪個工具，設計還是要另外做。
 
 <details class="deep">
 <summary>深入一點：兩份清單的完整項目</summary>
@@ -250,7 +250,7 @@ Egress 白名單限制可連線的目的地，卻不限制使用哪個身分、�
 
 如果連模型本身都不完全可信，就靠多層監控：權限、guardrail、推理過程、trace。
 
-**容易誤會：看得到推理過程，就能放心。** 推理文字不一定忠實反映決策，不能只依賴這一種訊號。
+推理文字不一定忠實反映決策，看得到推理過程也不能只依賴這一種訊號。
 
 <details class="deep">
 <summary>深入一點：AI control 與 CoT monitorability</summary>

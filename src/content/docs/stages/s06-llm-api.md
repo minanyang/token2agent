@@ -103,7 +103,7 @@ TypeScript SDK（`@anthropic-ai/sdk`）的形狀相同；OpenAI 的 SDK 欄位�
 
 用示意單價（輸入每百萬 token 3 美元、輸出每百萬 token 15 美元）算這次：2,000 × 3 / 1,000,000 + 300 × 15 / 1,000,000 = 0.006 + 0.0045 = **0.0105 美元**。換成真正的第一版（20 篇筆記、約 3 萬輸入 token），光輸入就要 30,000 × 3 / 1,000,000 = 0.09 美元。token 數不要自己估，直接讀 `usage`：各家 tokenizer 不同，同一段中文在兩家模型上的 token 數可能差很多。
 
-**容易誤會：模型記得上一輪。** LLM API 基本上是**無狀態**的，每次呼叫都要把整段對話重新送一次：系統提示詞、過去的使用者與助理訊息、工具結果。所以多輪對話的成本會累加。假設（同樣只放 2 篇筆記）筆記加系統提示詞 1,800 token、每個問題 200 token、每個回答 300 token：第 1 輪輸入 2,000 token，第 2 輪要帶上第 1 輪的問答，變成 2,500，之後每輪多 500，第 10 輪是 6,500。10 輪的輸入合計 42,500 token，是「每輪都只送 2,000」的兩倍多。降低方法有兩類：讓不變的開頭命中 prompt caching（→ [S11 Context engineering](/stages/s11-context-engineering/)），以及截斷或摘要舊對話（→ S11 的工具結果預算、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) 的 compaction）。
+LLM API 基本上是**無狀態**的，模型不會記得上一輪，每次呼叫都要把整段對話重新送一次：系統提示詞、過去的使用者與助理訊息、工具結果。所以多輪對話的成本會累加。假設（同樣只放 2 篇筆記）筆記加系統提示詞 1,800 token、每個問題 200 token、每個回答 300 token：第 1 輪輸入 2,000 token，第 2 輪要帶上第 1 輪的問答，變成 2,500，之後每輪多 500，第 10 輪是 6,500。10 輪的輸入合計 42,500 token，是「每輪都只送 2,000」的兩倍多。降低方法有兩類：讓不變的開頭命中 prompt caching（→ [S11 Context engineering](/stages/s11-context-engineering/)），以及截斷或摘要舊對話（→ S11 的工具結果預算、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) 的 compaction）。
 
 **Batch API** 讓你一次送出大量請求、非同步取回結果（通常在 24 小時內），價格大約是即時呼叫的一半。適合不急的工作，例如替一千篇筆記產生摘要，或跑 eval（→ S8 Evals 方法論）。
 
@@ -187,7 +187,7 @@ data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text
 
 筆記助理的做法：定義一個 `callLLM(messages) → { 文字, 工具呼叫, usage }`，provider、模型名稱、base URL、金鑰都從設定檔讀。換 provider 或換成本地模型，只改設定，其他程式不動。
 
-**容易誤會：「OpenAI 相容」就是完全相同。** Ollama、llama.cpp server、vLLM 都提供 OpenAI 相容 API，但細節可能不同：
+「OpenAI 相容」不等於完全相同。Ollama、llama.cpp server、vLLM 都提供 OpenAI 相容 API，但細節可能不同：
 
 - 系統提示詞放哪、工具呼叫的格式
 - 停止原因的名稱：Anthropic 正常結束是 `end_turn`、達到上限是 `max_tokens`；OpenAI Chat Completions 是 `stop` 與 `length`

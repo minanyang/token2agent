@@ -252,7 +252,7 @@ Agentic search 適合逐步縮小搜尋範圍，但語料很大，或查詢與�
 - **Generator–evaluator**（〈Harness design for long-running apps〉，深化 [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 的 evaluator-optimizer）：一個 agent 產出，另一個 agent 實際操作成品（例如用 Playwright，一種自動操作瀏覽器的工具，點過網頁）並依標準打分。把評估者獨立出來，比要求產出者自我批評更容易把標準調嚴。
 - **Sprint contracts**：每一輪開始前，產出者先提出「這輪要做什麼、怎麼驗證」，評估者審過、雙方同意才動工，把模糊的規格變成可測的條件。
 
-**容易誤會：「worker 只改 `passes` 欄位」是靠指示，不是技術限制。** 文章的做法是在 prompt 裡要求，而不是用程式強制；模型仍然**可以**改其他欄位，只是被要求不要改。這和上面 🔒 一節是同一件事：prompt 指示降低機率，程式才能保證。如果你需要保證，就得自己在 harness 加檢查，例如用 hook 比對 JSON 前後的差異，發現其他欄位被改就拒絕寫入（這是這份路線的建議，不是文章的做法）。
+「worker 只改 `passes` 欄位」是靠指示，不是技術限制。文章的做法是在 prompt 裡要求，而不是用程式強制；模型仍然**可以**改其他欄位，只是被要求不要改。這和上面 🔒 一節是同一件事：prompt 指示降低機率，程式才能保證。如果你需要保證，就得自己在 harness 加檢查，例如用 hook 比對 JSON 前後的差異，發現其他欄位被改就拒絕寫入（這是這份路線的建議，不是文章的做法）。
 
 ### ★ 改 harness 後怎麼判斷？
 
@@ -273,7 +273,7 @@ Agentic search 適合逐步縮小搜尋範圍，但語料很大，或查詢與�
 
 平均 86% 聽起來不錯，但使用者把同一件事交給它 5 次，只有 6 成的任務每次都會成功。
 
-**容易誤會：一兩次試跑就能判斷改動有沒有用。** 假設加了 compaction 之後整體成功率變成 80%，從 86% 掉到 80% 不代表 compaction 讓它變差。兩版要跑同一批任務，看配對差值（新 − 舊）的信賴區間是否包含 0；只看單一版本的區間不夠（→ [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)）。差值的區間包含 0 時，就不能說哪個比較好，得增加任務數再比。
+一兩次試跑看不出改動有沒有用。假設加了 compaction 之後整體成功率變成 80%，從 86% 掉到 80% 不代表 compaction 讓它變差。兩版要跑同一批任務，看配對差值（新 − 舊）的信賴區間是否包含 0；只看單一版本的區間不夠（→ [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)）。差值的區間包含 0 時，就不能說哪個比較好，得增加任務數再比。
 
 <details class="deep">
 <summary>深入一點：信賴區間的兩個細節</summary>
