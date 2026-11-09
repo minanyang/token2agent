@@ -20,7 +20,7 @@ Each chapter has a lecture you can read without opening external resources. Furt
 
 The application route prepares you to build products with existing models, often called AI engineering. The full route adds model training and modification for ML engineering and research.
 
-The two **hands-on routes** require basic programming: variables, functions and loops, plus HTTP API calls and JSON. The **concepts route** requires no programming. Read the lectures, Try it first and self-check sections, then return to core exercises when you want to build. Look up unfamiliar terms in the [glossary's quick reference](/en/reference/glossary/#quick-reference).
+The two **hands-on routes** require basic programming: variables, functions and loops, plus HTTP API calls and JSON. The **concepts route** requires no programming. Read the lectures, Try it first and self-check sections, then pick up the core exercises when you want to build. Look up unfamiliar terms in the [glossary's quick reference](/en/reference/glossary/#quick-reference).
 
 Part I Models (S1–S5) is optional and uses more math. You can complete Part II to Part VI (S6–S19) without it. Later chapters first link to the [Model Crash Course](/en/guide/app-first/#model-crash-course) for required background, then offer Part I references such as "Deeper: S2 Transformers and Decoding". If unsure, start with the application route and return to model internals as needed.
 

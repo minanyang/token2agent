@@ -25,7 +25,7 @@ sidebar:
 
 An agent repeats the tool-calling process from S10 Tools and MCP: the model chooses a step, your code executes it, and the result returns to context until the model declares completion. This is the loop you saw in mini-SWE-agent in S0 AI Systems Overview.
 
-The **harness** adds permissions, stopping conditions, error handling, state, long-running context management and skills. Each component addresses a limitation of the model. Use a minimal agent eval from the start to check whether these choices make the agent safer and more reliable, including when it fails.
+The **harness** adds permissions, stopping conditions, error handling, state, long-running context management and skills. Each component addresses a limitation of the model. Use a minimal agent eval from the start to check whether these choices make the agent safer and more reliable, and whether it stops cleanly when something goes wrong.
 
 ## After this chapter you can
 
@@ -446,7 +446,7 @@ For the notes assistant: "Turn all of last week's meeting notes into a weekly re
    <details class="hint">
    <summary>Hint</summary>
 
-   **Key point**: pick any two of how state is stored, whether you can pause between choosing a tool and running it, where hooks and permissions go, and what a trace looks like, and state your choice. **Common mistake**: saying only "frameworks are more convenient" without naming the hidden decisions. **Reread**: the "Common misconception" in [One example, end to end](#-one-example-end-to-end)
+   **Key point**: pick any two of how state is stored, whether you can pause between choosing a tool and running it, where hooks and permissions go, and what a trace looks like, and state your choice. **Common mistake**: saying only "frameworks are more convenient" without naming the hidden decisions. **Reread**: the closing paragraph on frameworks in [One example, end to end](#-one-example-end-to-end)
 
    </details>
 

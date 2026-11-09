@@ -54,7 +54,7 @@ Useful AI products are rarely "one model answering directly." They're systems ma
 
 An LLM on its own knows only what it saw during training, so it can't read your notes. It can output text but can't search or save files. Each call also starts from zero, with no memory of what you said last week. Ask it what you decided in last week's meeting, and it can say it doesn't know or invent a plausible answer. The latter is called hallucination.
 
-Code and other components can fill these gaps. Berkeley's BAIR calls this a **compound AI system** and argues that system design increasingly drives quality gains alongside larger models. Anthropic calls a model with retrieval, tools and memory an **augmented LLM**, a basic building block for these systems.
+Code and other components can fill these gaps. Berkeley's BAIR calls this a **compound AI system** and argues that quality gains increasingly come from system design, not just from switching to a bigger model. Anthropic calls a model with retrieval, tools and memory an **augmented LLM**, a basic building block for these systems.
 
 Here are the notes assistant's main components (in the "Covered in" column, S plus a number is a chapter code; see [How to Use This Roadmap](/en/guide/how-to-use/#how-to-read-the-codes) for how to read the codes):
 

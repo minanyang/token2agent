@@ -113,7 +113,7 @@ Real training keeps merging until it hits a set number of merges (i.e. the targe
 
 **Start from bytes.** Unicode has well over a hundred thousand characters, and many barely appear in training data. So most modern LLMs start merging from UTF-8 bytes: there are only 256 base units, and any text (Chinese, emoji, code) can be represented. An English letter is 1 byte, but a Chinese character usually takes 3 (你, "you," is `E4 BD A0`). This is where language starts to affect cost. If the data the tokenizer learned its merges from had plenty of Chinese, 你 is likely merged into a single token; if not, one character can take 2–3 tokens. A common English word, by contrast, is usually a single token. So on some tokenizers the same sentence takes far more tokens in Chinese (or another language underrepresented in the tokenizer's training data) than in English, which costs more and uses up more context. Newer multilingual tokenizers narrow the gap considerably.
 
-A token can span part of a character or word, so neither is a reliable counting unit. Tokenization also explains several apparent failures of model ability:
+Tokens do not line up with characters or words. Tokenization also explains several apparent failures of model ability:
 
 - **Can't count letters**: "strawberry" might be split into 2–3 tokens. The input units don't correspond to single letters, which makes counting letter by letter harder.
 - **Shaky arithmetic**: some tokenizers, for example, split numbers into chunks of 3 digits from left to right. For `12345 + 678`, the first number becomes `123|45` and the second is `678`. The last chunk of one represents two digits and the other three, so the place values don't line up, and adding digit by digit gets harder.

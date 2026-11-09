@@ -251,7 +251,7 @@ Chroma 測了 18 個模型，發現輸入越長，表現越不穩定，連簡單
 
 ### ○ 壓縮 prompt 或改放權重？
 
-LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的 token，在長 context 下壓縮輸入，並維持甚至提升表現；代價是壓縮後的文字人類難讀，每次壓縮結果不同也可能和快取衝突。一份知識應該每次放進 context，還是透過微調放進權重（← S4 Post-training 與 reasoning、[S9 檢索與 RAG](/stages/s09-rag/) 的決策）？
+LongLLMLingua（Jiang et al. 2023）用小模型刪掉 prompt 中較不重要的 token，在長 context 下壓縮輸入，並維持甚至提升表現；代價是壓縮後的文字人類難讀，每次壓縮結果不同也可能和快取衝突。另一個問題是：一份知識應該每次放進 context，還是透過微調放進權重（← S4 Post-training 與 reasoning、[S9 檢索與 RAG](/stages/s09-rag/) 的決策）？
 
 </section>
 

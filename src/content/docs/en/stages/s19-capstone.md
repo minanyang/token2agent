@@ -128,7 +128,7 @@ To decide whether multi-agent is worth it, ask four questions: Is the answer wor
 
 Evaluating these systems is also hard, because research reports often have no single correct answer. BrowseComp (Wei et al. 2025) gets around this with questions that are "hard to find but easy to verify once found": the answer is a short string you can check at a glance; the hard part is the process of finding it. You can borrow this idea when designing your own evals. For example, a notes assistant question like "On what day did I first note down GraphRAG?" requires digging through lots of notes, but the answer is a date, which can be graded automatically.
 
-Both multipliers use regular chat as the baseline. Compare multi-agent with a single agent when choosing the architecture: about 15 ÷ 4 ≈ 3.75× (← [S15 Multi-agent Systems](/en/stages/s15-multi-agent/)).
+The 4× and 15× multipliers both use regular chat as the baseline. Compare multi-agent with a single agent when choosing the architecture: about 15 ÷ 4 ≈ 3.75× (← [S15 Multi-agent Systems](/en/stages/s15-multi-agent/)).
 
 <details class="deep">
 <summary>Going deeper: how orchestrator instructions go wrong, and how to fix them</summary>

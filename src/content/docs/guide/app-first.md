@@ -64,7 +64,7 @@ Part I 模型原理（S1–S5）介紹神經網路、Transformer、預訓練、�
 
 #### Token 與斷詞
 
-Tokenizer 會用 BPE 等演算法，把常一起出現的字元合併成 token，再轉成整數供模型處理。一個英文單字通常是一到兩個 token，中文常是一到兩個字一個 token。
+模型讀到的不是字元，而是 token。Tokenizer 會用 BPE 等演算法，把常一起出現的字元合併成 token，再轉成整數供模型處理。一個英文單字通常是一到兩個 token，中文常是一到兩個字一個 token。
 
 同樣意思的中文會不會比英文花更多 token，要看 tokenizer。詞彙表小或以英文為主時，差距較大；新一代多語 tokenizer 的差距小得多。API 計價、context 上限與速度都以 token 計算，所以 token 較多也會更貴、更佔 context。數不清單字字母、算術不穩等問題，也和這種切法有關。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 

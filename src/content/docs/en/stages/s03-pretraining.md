@@ -163,7 +163,7 @@ Plugging numbers into the formula fitted in the Chinchilla paper (formula in the
 | 2.5 billion | 8 billion | 3.2 | 2.64 |
 | 10 billion | 2 billion | 0.2 | 2.87 |
 
-The table reads as a U-shaped curve: a model that's too small can't hold more, however much data you give it; a model that's too big doesn't get enough data to reach what it could. The bottom is very flat: from 250 million to 2.5 billion parameters (a 10× range) the predicted loss stays within 2.58–2.64, so 20:1 is a good starting point, not an exact answer. Kaplan's earlier advice was for models to grow faster than data. One widely accepted reason is that they didn't adjust the LR schedule to each run's length, so short runs were underestimated: exactly the "common misconception" from the previous section.
+The table reads as a U-shaped curve: a model that's too small can't hold more, however much data you give it; a model that's too big doesn't get enough data to reach what it could. The bottom is very flat: from 250 million to 2.5 billion parameters (a 10× range) the predicted loss stays within 2.58–2.64, so 20:1 is a good starting point, not an exact answer. Kaplan's earlier advice was for models to grow faster than data. One widely accepted reason is that they didn't adjust the LR schedule to each run's length, so short runs were underestimated: exactly the cosine-schedule point from the previous section.
 
 **Why many new models use far more than 20× tokens.** 20:1 is the configuration that's cheapest *to train*. But once trained, a model serves users, and inference costs about 2N per generated token (← [S2 Transformers and Decoding](/en/stages/s02-transformer/#-how-much-compute-and-memory-does-a-model-need)), so smaller models are cheaper. If a model will serve trillions of tokens, spending more training compute to get a smaller model of similar quality is well worth it. That's why many models today deliberately train smaller models on far more than 20× tokens. For example, Meta reported that the 8B Llama 3 model was pretrained on over 15T tokens, close to 2,000 tokens per parameter.
 
@@ -214,7 +214,7 @@ When a model is too big for one GPU, or training is too slow, you split the work
 
 Large training runs usually combine several of these: tensor parallel within a machine, pipeline and data parallel (plus ZeRO) across machines.
 
-Adding GPUs also adds communication. ZeRO reduces memory use without reducing computation per step, which can let you increase the batch size and throughput. Stage 3 adds communication, however, so twice the GPUs need not give twice the speed. Similar tradeoffs appear during inference (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
+Adding GPUs also adds communication, so twice the GPUs need not give twice the speed. ZeRO reduces memory use without reducing computation per step, which can let you raise the batch size and throughput; Stage 3 adds communication of its own. Similar tradeoffs appear during inference (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
 
 <details class="deep">
 <summary>Going deeper: communication, the three ZeRO stages, and pipeline idle time</summary>

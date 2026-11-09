@@ -64,9 +64,9 @@ Before S6 LLM APIs and Application Basics, understand tokens, text generation, c
 
 #### Tokens and tokenization
 
-A tokenizer uses an algorithm such as BPE to merge frequent character sequences into tokens and map them to integers. An English word is usually one or two tokens; one or two Chinese characters often form a token.
+A model reads tokens, not characters. A tokenizer uses an algorithm such as BPE to merge frequent character sequences into tokens and map them to integers. An English word is usually one or two tokens; one or two Chinese characters often form a token.
 
-Equivalent text can use more tokens in Chinese than in English, especially with a small or English-heavy vocabulary. Newer multilingual tokenizers narrow that gap. Check this for any languages your users write: API pricing, context limits and speed depend on tokens, not word counts. Tokenization also contributes to letter-counting errors and unreliable arithmetic. → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
+Equivalent text can use more tokens in Chinese than in English, especially with a small or English-heavy vocabulary. Newer multilingual tokenizers narrow that gap, but check it for any language your users write in. API pricing, context limits and speed depend on tokens, not word counts. Tokenization also contributes to letter-counting errors and unreliable arithmetic. → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 
 #### Next-token prediction
 
