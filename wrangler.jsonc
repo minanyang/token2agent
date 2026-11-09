@@ -11,5 +11,7 @@
 		// The Worker only needs root-locale pages; English pages and build assets are served directly.
 		"run_worker_first": ["/*", "!/en/*", "!/_astro/*", "!/pagefind/*"]
 	},
-	"routes": [{ "pattern": "token2agent.com", "custom_domain": true }]
+	"routes": [{ "pattern": "token2agent.com", "custom_domain": true }],
+	// Required by `wrangler preview`, the deploy command Workers Builds runs for non-production branches.
+	"previews": {}
 }
