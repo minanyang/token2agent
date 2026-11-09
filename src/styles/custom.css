@@ -90,6 +90,17 @@
 	font-size: var(--sl-text-2xl);
 }
 
+/* Reveal heading links over the heading or link, rather than the full-width wrapper. */
+@media (hover: hover) {
+	.sl-markdown-content .sl-heading-wrapper > .sl-anchor-link {
+		opacity: 0;
+	}
+	.sl-markdown-content .sl-heading-wrapper > :first-child:hover + .sl-anchor-link,
+	.sl-markdown-content .sl-heading-wrapper > .sl-anchor-link:is(:hover, :focus) {
+		opacity: 1;
+	}
+}
+
 /* Home hero buttons: visible hover feedback, and the minimal action reads as a link. */
 .hero .sl-link-button {
 	transition:
