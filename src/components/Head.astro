@@ -6,6 +6,7 @@ import { getStageEntries, localizePath, t, toLang } from '../i18n';
 const site = 'https://token2agent.com';
 const route = Astro.locals.starlightRoute;
 const lang = toLang(route.lang);
+const socialImage = `${site}/${lang === 'en' ? 'og-en.png' : 'og.png'}`;
 const home = `${site}${localizePath(lang, '/')}`;
 const { title, description } = route.entry.data;
 const url = new URL(Astro.url.pathname, site).href;
@@ -67,5 +68,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
 ---
 
 <Default />
+<meta property="og:image" content={socialImage} />
+<meta name="twitter:image" content={socialImage} />
 <meta property="og:image:alt" content={t(lang).siteName} />
 <script type="application/ld+json" set:html={jsonLd} />

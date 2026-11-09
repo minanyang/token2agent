@@ -20,8 +20,8 @@ Read it at **[token2agent.com/en](https://token2agent.com/en/)**.
 
 <a href="https://token2agent.com/en/">
 <picture>
-<source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-ids-fast-dark.gif">
-<img alt="Token2Agent home page: each token of the title and tagline shows its token id in turn while an agent run log steps through the roadmap" src=".github/assets/hero-ids-fast-light.gif">
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-ids-fast-en-dark.gif">
+<img alt="Token2Agent home page: token IDs appear over the title and tagline beside a seven-step request, tool-call and response demo, with S0–S19 course chapters below" src=".github/assets/hero-ids-fast-en-light.gif">
 </picture>
 </a>
 
@@ -29,12 +29,12 @@ Read it at **[token2agent.com/en](https://token2agent.com/en/)**.
 
 <a href="https://token2agent.com/en/">
 <picture>
-<source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.gif">
-<img alt="Token2Agent roadmap: 20 chapters in seven parts, each with its core topics" src=".github/assets/roadmap-light.gif">
+<source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-en-dark.gif">
+<img alt="Token2Agent roadmap: 20 chapters in seven parts, each with its core topics" src=".github/assets/roadmap-en-light.gif">
 </picture>
 </a>
 
-The diagram is in Traditional Chinese. Click it for the interactive English version on the site, where every chapter and topic links to its lecture.
+Click the diagram for the interactive roadmap, where every chapter and topic links to its lecture.
 
 | Part | Chapters |
 |---|---|

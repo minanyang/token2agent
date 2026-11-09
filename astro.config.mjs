@@ -22,10 +22,8 @@ export default defineConfig({
 						href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap',
 					},
 				},
-				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://token2agent.com/og.png' } },
 				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
 				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
-				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://token2agent.com/og.png' } },
 			],
 			customCss: ['./src/styles/custom.css'],
 			// x-default → English, hreflang="zh" → zh-TW (see the file).

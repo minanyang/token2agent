@@ -4,8 +4,8 @@
 // Tokens come from o200k_base (GPT-4o's tokenizer, public); Claude's tokenizer is not public.
 import { getEncoding } from 'js-tiktoken';
 import { LinkButton } from '@astrojs/starlight/components';
-import { stageCount } from '../data/parts';
 import { t } from '../i18n';
+import { stageCount } from '../data/parts';
 
 // Starlight's skip link targets this id (PAGE_TITLE_ID, not exported).
 const PAGE_TITLE_ID = '_top';
@@ -40,35 +40,32 @@ const [taglineFirst = '', ...taglineRest] = tagline.split(/<br\s*\/?>/).map((lin
 const taglineLines = [tokenize(taglineFirst)];
 // Running index so the load animation streams title then tagline in order.
 const lineOffsets = taglineLines.map((_, li) => titleTokens.length + taglineLines.slice(0, li).flat().length);
-const tokenCount = [titleTokens, ...taglineLines].flat().reduce((n, t) => n + t.ids.length, 0);
 
-// `stage`: the chapter the run has reached at this step (drives the progress strip below the log).
-// Texts are in src/i18n.ts (runLog), in the same order.
+// One tool round trip: feedback triggers another prefill/decode before the response.
 const runSteps = [
-	{ kind: 'plan' },
-	{ kind: 'tool', stage: 0 },
-	{ kind: 'observe', stage: 0 },
-	{ kind: 'tool', stage: 6 },
-	{ kind: 'tool', stage: 9 },
-	{ kind: 'tool', stage: 12 },
-	{ kind: 'tool', stage: 18 },
-	{ kind: 'done', stage: 19 },
+	{ kind: 'context', tick: 0 },
+	{ kind: 'tokenize', tick: 1 },
+	{ kind: 'prefill', tick: 2, revisit: 6 },
+	{ kind: 'decode', tick: 3, revisit: 7 },
+	{ kind: 'tool', tick: 4 },
+	{ kind: 'feedback', tick: 5 },
+	{ kind: 'respond', tick: 8 },
 ];
-const runLog = runSteps.map((step, i) => ({ ...step, text: strings.runLog[i] }));
-
-// Progress strip: one block per chapter. Each block lights up at the first step that reaches it.
-const lastStage = stageCount - 1;
-const blocks = Array.from({ length: stageCount }, (_, i) => ({
-	step: runLog.findIndex((l) => l.stage !== undefined && l.stage >= i),
+const requestTokenIds = enc.encode(strings.heroGoal);
+const runLog = runSteps.map((step, i) => ({
+	...step,
+	text: step.kind === 'tokenize' ? `user → [${requestTokenIds.slice(0, 3).join(', ')}, …]` : strings.runLog[i],
 }));
-// Label shown from the step where the stage changes until the next change.
-const labelSteps = runLog
-	.map((l, i) => ({ stage: l.stage, step: i }))
-	.filter((l, i, all) => l.stage !== undefined && l.stage !== all[i - 1]?.stage);
-const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }));
+const executionOrder = [0, 1, 2, 3, 4, 5, 2, 3, 6];
+// The footer previews the curriculum independently of the request demonstration.
+const lastStage = stageCount - 1;
+const labels = Array.from({ length: stageCount }, (_, stage) => ({
+	stage,
+	next: stage === lastStage ? undefined : stage + 1,
+}));
 ---
 
-<div class="hero t2a-hero">
+<div class="hero t2a-hero" style={`--run-step-count:${executionOrder.length}`}>
 	<div class="copy">
 		<h1 id={PAGE_TITLE_ID} data-page-title aria-label={title}>
 			{titleTokens.map((t, i) => <span class="tok" style={`--i:${i}`} data-ids={t.ids.join(' + ')} aria-hidden="true">{t.text}</span>)}
@@ -81,10 +78,6 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 			))}
 		</p>
 		{taglineRest.length > 0 && <p class="tagline-rest">{taglineRest.join(' ')}</p>}
-		<p class="tok-meta">
-			<span><b>{tokenCount}</b> tokens</span>
-			<span>o200k_base tokenizer · {strings.heroTokenHint}</span>
-		</p>
 		{actions.length > 0 && (
 			<div class="actions">
 				{actions.map(({ attrs: { class: className, ...attrs } = {}, icon, link: href, text, variant }) => (
@@ -100,31 +93,36 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 	<figure class="run" aria-label={strings.heroRunLabel}>
 		<figcaption>
 			<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-			<span>token2agent — agent run</span>
+			<span>token2agent — request demo</span>
 		</figcaption>
 		<p class="prompt"><span class="ps" aria-hidden="true">$</span> agent run --goal "{strings.heroGoal}"</p>
 		<ol>
-			{runLog.map((l, i) => (
-				<li style={`--i:${i}`}>
+			{runLog.map((l) => (
+				<li class:list={{ revisit: 'revisit' in l }} style={`--i:${l.tick};--revisit:${'revisit' in l ? l.revisit : 0}`}>
 					<span class:list={['kind', l.kind]}>{l.kind}</span>
-					<span class="text">{l.text}</span>
+					{l.kind === 'decode' ? (
+						<span class="text decode-output">
+							<span class="decode-call">{l.text}</span>
+							<span class="decode-answer">{strings.heroAnswer}</span>
+						</span>
+					) : <span class="text">{l.text}</span>}
 				</li>
 			))}
 		</ol>
-		<p class="prompt next" style={`--i:${runLog.length}`} aria-hidden="true"><span class="ps">$</span> <span class="cursor"></span></p>
+		<p class="prompt next" style={`--i:${executionOrder.length}`} aria-hidden="true"><span class="ps">$</span> <span class="cursor"></span></p>
 		<div class="progress" role="img" aria-label={strings.heroProgress(lastStage)}>
 			<p class="progress-label" aria-hidden="true">
-				<span>progress</span>
+				<span>{strings.heroFlowLabel}</span>
 				<span class="steps">
 					{labels.map((l) => (
-						<b class:list={['step', { final: l.next === undefined }]} style={`--k:${l.step};--next:${l.next ?? 0}`}>
+						<b class:list={['step', { final: l.next === undefined }]} style={`--k:${l.stage};--next:${l.next ?? 0}`}>
 							S{l.stage} / S{lastStage}
 						</b>
 					))}
 				</span>
 			</p>
 			<div class="strip" aria-hidden="true">
-				{blocks.map((b, i) => <i class="blk" style={`--k:${b.step}`} title={`S${i}`} />)}
+				{labels.map((l) => <i class="blk" style={`--k:${l.stage}`} title={`S${l.stage}`} />)}
 			</div>
 		</div>
 	</figure>
@@ -132,6 +130,11 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 
 <style>
 	.t2a-hero {
+		--inspect-start: 850ms;
+		--inspect-step: 320ms;
+		--run-step: 400ms;
+		--base: 250ms;
+		--chapter-step: 100ms;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		gap: 2rem;
@@ -141,8 +144,7 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 	@media (min-width: 64rem) {
 		.t2a-hero {
 			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-			/* Top-aligned: the title and the terminal's title bar share one top edge. */
-			align-items: start;
+			align-items: center;
 			gap: 3rem;
 			padding-block: 3.5rem 1.45rem;
 		}
@@ -168,7 +170,7 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 	.tok:nth-child(6n + 4) { --c: var(--tok-4); }
 	.tok:nth-child(6n + 5) { --c: var(--tok-5); }
 	.tok:nth-child(6n + 6) { --c: var(--tok-6); }
-	.tok:hover::after {
+	.tok::after {
 		content: 'id ' attr(data-ids);
 		position: absolute;
 		left: 50%;
@@ -182,6 +184,19 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 		letter-spacing: 0;
 		white-space: nowrap;
 		z-index: 2;
+		opacity: 0;
+		pointer-events: none;
+	}
+	.tok:hover {
+		outline: 2px solid var(--sl-color-accent-high);
+		outline-offset: 2px;
+	}
+	/* Manual inspection takes precedence over the automatic demonstration. */
+	.copy:has(.tok:hover) .tok::after {
+		animation: none;
+	}
+	.tok:hover::after {
+		opacity: 1;
 	}
 
 	h1 {
@@ -212,18 +227,6 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 		margin: 0;
 		max-width: 34em;
 		color: var(--sl-color-gray-2);
-	}
-	.tok-meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.25rem 1rem;
-		margin: 0;
-		font: var(--sl-text-xs) var(--__sl-font-mono);
-		color: var(--sl-color-gray-3);
-	}
-	.tok-meta b {
-		color: var(--sl-color-white);
-		font-variant-numeric: tabular-nums;
 	}
 	.actions {
 		display: flex;
@@ -317,7 +320,7 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 	}
 	li {
 		display: grid;
-		grid-template-columns: 4.5rem minmax(0, 1fr);
+		grid-template-columns: 5rem minmax(0, 1fr);
 		gap: 0.75rem;
 		margin: 0;
 		white-space: nowrap;
@@ -329,11 +332,15 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 		}
 	}
 	.kind { color: var(--term-muted); }
-	.kind.plan { color: var(--term-blue); }
+	.kind.context, .kind.tokenize { color: var(--term-blue); }
 	.kind.tool { color: var(--term-amber); }
-	.kind.observe { color: var(--term-green); }
-	.kind.done { color: var(--term-green); font-weight: 700; }
+	.kind.feedback { color: var(--term-green); }
+	.kind.respond { color: var(--term-green); font-weight: 700; }
 	.text { color: var(--term-fg); }
+	.decode-output { display: grid; }
+	.decode-output > span { grid-area: 1 / 1; }
+	.decode-call { opacity: 0; }
+	.decode-answer { opacity: 1; }
 	/* Progress strip. The static styles are the finished run; the load sequence below animates toward it. */
 	.progress {
 		display: grid;
@@ -373,43 +380,71 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 	}
 
 	/*
-	 * Load sequence: tokens stream in, then the run log steps appear and the progress strip follows them.
-	 * Step k starts at --base + k × 140ms; replays (see script) drop the initial wait for the title tokens.
+	 * Tokens, the request demo and the curriculum preview animate independently on load.
+	 * The run log starts promptly rather than waiting for every token ID to be inspected.
 	 * Content and the finished state are in the HTML either way.
 	 */
-	.run {
-		--base: 600ms;
-	}
-	.run.replay {
-		--base: 0ms;
-	}
 	@media (prefers-reduced-motion: no-preference) {
 		.tok {
-			animation: tok-in 0.25s both;
-			animation-delay: calc(var(--i) * 45ms);
+			animation: tok-in 0.25s both, tok-inspect var(--inspect-step);
+			animation-delay: calc(var(--i) * 45ms), calc(var(--inspect-start) + var(--i) * var(--inspect-step));
+		}
+		.tok::after {
+			animation: token-id var(--inspect-step);
+			animation-delay: calc(var(--inspect-start) + var(--i) * var(--inspect-step));
 		}
 		li,
 		.prompt.next {
 			animation: tok-in 0.3s both;
-			animation-delay: calc(var(--base) + var(--i) * 140ms);
+			animation-delay: calc(var(--base) + var(--i) * var(--run-step));
+		}
+		li.revisit {
+			animation: tok-in 0.3s both, loop-return var(--run-step);
+			animation-delay: calc(var(--base) + var(--i) * var(--run-step)), calc(var(--base) + var(--revisit) * var(--run-step));
+		}
+		.decode-call {
+			animation: step-show 1ms both, step-hide 1ms forwards;
+			animation-delay: calc(var(--base) + var(--i) * var(--run-step)), calc(var(--base) + var(--revisit) * var(--run-step));
+		}
+		.decode-answer {
+			animation: step-show 1ms both;
+			animation-delay: calc(var(--base) + var(--revisit) * var(--run-step));
 		}
 		.cursor {
-			animation: blink 1s steps(1) infinite;
+			animation: blink 1s steps(1) 3;
+			animation-delay: calc(var(--base) + var(--run-step-count) * var(--run-step));
 		}
 		.blk {
 			animation: blk-fill 0.2s both;
-			animation-delay: calc(var(--base) + var(--k) * 140ms);
+			animation-delay: calc(var(--base) + var(--k) * var(--chapter-step));
 		}
 		/* Each label shows from its step until the next label's step; the last one stays. */
 		.step {
 			animation:
 				step-show 1ms both,
 				step-hide 1ms forwards;
-			animation-delay: calc(var(--base) + var(--k) * 140ms), calc(var(--base) + var(--next) * 140ms);
+			animation-delay: calc(var(--base) + var(--k) * var(--chapter-step)), calc(var(--base) + var(--next) * var(--chapter-step));
 		}
 		.step.final {
 			animation: step-show 1ms both;
-			animation-delay: calc(var(--base) + var(--k) * 140ms);
+			animation-delay: calc(var(--base) + var(--k) * var(--chapter-step));
+		}
+	}
+	@keyframes loop-return {
+		from, to {
+			background: #303b4b;
+			box-shadow: -3px 0 var(--term-blue);
+		}
+	}
+	@keyframes tok-inspect {
+		from, to {
+			outline: 2px solid var(--sl-color-accent-high);
+			outline-offset: 2px;
+		}
+	}
+	@keyframes token-id {
+		from, to {
+			opacity: 1;
 		}
 	}
 	@keyframes blink {
@@ -445,22 +480,3 @@ const labels = labelSteps.map((l, i) => ({ ...l, next: labelSteps[i + 1]?.step }
 		}
 	}
 </style>
-
-<script>
-	// Replay the run log every so often, like a new run starting. Paused while the tab is hidden.
-	const REPLAY_MS = 10_000;
-	const run = document.querySelector<HTMLElement>('.t2a-hero .run');
-	if (run && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-		setInterval(() => {
-			if (document.hidden) return;
-			// Replays skip the initial wait for the title tokens (see .run.replay in the styles).
-			run.classList.add('replay');
-			// Toggling classes does not restart a finished CSS animation; restart each one explicitly
-			// (log lines, progress blocks and labels).
-			for (const animation of run.getAnimations({ subtree: true })) {
-				animation.cancel();
-				animation.play();
-			}
-		}, REPLAY_MS);
-	}
-</script>
