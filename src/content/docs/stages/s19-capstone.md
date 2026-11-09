@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：讀講義需理解 agent loop（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；必做題另需 [S8 Eval 方法論](/stages/s08-evals/) 的重複試跑與 pass^k 概念、基本 Git 操作與自動化測試能力；選 mini-SWE-agent 時需能閱讀 Python，但不需要系統專案的成果；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18
+**前置**：讀講義需理解 agent loop（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；必做題另需 [S8 Evals 方法論](/stages/s08-evals/) 的重複試跑與 pass^k 概念、基本 Git 操作與自動化測試能力；選 mini-SWE-agent 時需能閱讀 Python，但不需要系統專案的成果；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18
 
 **銜接**：路線的終點；之後回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層往深處走
 :::
@@ -29,7 +29,7 @@ sidebar:
 
 ## 學完能
 
-- 讀一條 trajectory，指出每一步落在六塊地圖（loop、工具、context、memory、eval、安全）的哪一塊、對應哪一章。（講義與自我檢查）
+- 讀一條 trajectory，指出每一步落在六塊地圖（loop、工具、context、memory、evals、安全）的哪一塊、對應哪一章。（講義與自我檢查）
 - 說明 deep research 系統的 orchestrator-worker 與 citation 設計，以及它們的成本。（講義與自我檢查）
 - 拿到任何一個開源 agent，畫出它的六塊並在程式碼裡找到位置。（必做）
 - 解釋 Agentless 與 SWE-agent 為什麼都能在同一個 benchmark 上有競爭力，以及這對「何時該用 agent」的意義。（必做）
@@ -52,7 +52,7 @@ sidebar:
 | 工具 | 模型能做哪些動作？介面怎麼設計？ | `notes_search`、`notes_create`、`web_clip` | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
 | Context | 每一步模型看到什麼？太長怎麼辦？ | 系統提示詞、問題、搜到的 5 篇筆記；對話太長時做 compaction | [S9 檢索與 RAG](/stages/s09-rag/)、[S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | Memory | 跨 session 記得什麼？ | 「使用者偏好條列式」、時區 UTC+9 | [S13 Memory 與個人化](/stages/s13-memory/) |
-| Eval | 怎麼知道它變好或變壞？ | 50 題的 regression suite，每題跑 3 次 | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| Evals | 怎麼知道它變好或變壞？ | 50 題的 regression suite，每題跑 3 次 | [S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | 安全 | 能碰哪些資料、能對外做什麼、誰核准？ | 寄信草稿要人按送出；剪藏的網頁一律當不可信輸入 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)（權限）、[S16 安全與治理](/stages/s16-security/) |
 
 最快的拆法是從一條 trajectory 讀起，也就是一次任務從頭到尾的完整紀錄：每一次模型回應、每一次工具呼叫與結果。它的每一步都會落在某一塊上。以筆記助理回答「上個月我記了哪些 RAG 的重點？」為例：
@@ -61,7 +61,7 @@ sidebar:
 2. 模型呼叫 `notes_search(query="RAG", month="2026-10")`。→ loop、工具
 3. 回傳 5 篇筆記，其中 1 篇是剪藏的網頁，hook 把它標成不可信內容。→ 安全
 4. 模型判斷資料夠了，用條列式回答並附筆記連結，不再呼叫工具。→ loop 的停止條件
-5. 這次的 trace 被抽樣，之後可能變成 regression suite 的一題。→ eval
+5. 這次的 trace 被抽樣，之後可能變成 regression suite 的一題。→ evals
 
 容易誤會的是，以為六塊就是程式裡的六個模組。一段程式常同時屬於兩塊（compaction 既管 context，也決定留下什麼），一列標兩章是正常的。另外，「沒有」也是一種選擇：mini-SWE-agent 完全沒有 memory，也沒有專用工具，這本身就是值得寫下的設計取捨。
 
@@ -89,7 +89,7 @@ Coding agent 是目前最成熟的 agent 類型。四個代表系統各自把六
 
 固定 workflow 不夠用的情況，是下一步要看前一步的結果才知道：要先把程式跑起來才能重現 bug、要讀 log 才知道該改哪個模組、一個功能要改五個檔案而順序事先看不出來，或是 issue 本身寫得不清楚、得先問人。
 
-容易誤會的是「benchmark 分數相近就代表一樣好」。分數相近時，成本、每次結果的穩定度（pass^k：k 次都成功的比例，← S8 Eval 方法論）可能差很多；而且你自己的任務不一定長得像 benchmark 的題目。必做題就是在你自己的 5 個任務上把這些量出來。
+容易誤會的是「benchmark 分數相近就代表一樣好」。分數相近時，成本、每次結果的穩定度（pass^k：k 次都成功的比例，← S8 Evals 方法論）可能差很多；而且你自己的任務不一定長得像 benchmark 的題目。必做題就是在你自己的 5 個任務上把這些量出來。
 
 <details class="deep">
 <summary>深入一點：spec-driven development 與 Claude Code 的設定點</summary>
@@ -97,7 +97,7 @@ Coding agent 是目前最成熟的 agent 類型。四個代表系統各自把六
 - **Spec-driven development** 是和 coding agent 協作的一種方法：先寫清楚要做什麼、為什麼做（spec），再轉成技術計畫、拆成任務，最後才實作並驗證。GitHub 的 spec-kit 把這個流程做成工具。它的價值在於讓「人的意圖」成為可檢查的文件，而不是散落在對話裡；對照六塊地圖，spec 是一份每個 session 都會載入的 context，也是驗收時的 eval 依據。
 - **Claude Code 的設定點對應到哪一塊**：
   - `CLAUDE.md` 在 session 開始時載入（context、memory）。
-  - hooks 可以在工具呼叫前擋下或改寫動作、呼叫後做檢查或紀錄（安全、eval）。
+  - hooks 可以在工具呼叫前擋下或改寫動作、呼叫後做檢查或紀錄（安全、evals）。
   - skills 平時只露出名稱與描述，需要時才載入全文（progressive disclosure，← S11 Context engineering、S12 Agent loop 與 harness）。
   - sub-agent 在自己的 context 裡工作、只回傳結果（context 隔離，← S12 Agent loop 與 harness）。
   - 權限模式決定哪些動作要先問人（← S12 Agent loop 與 harness）。
@@ -199,9 +199,9 @@ Demo 只能證明某一次跑得起來；系統要證明它能上線、能被量
 
 </details>
 
-**第一，先量出雜訊有多大。** 同一個 commit（程式碼的一個存檔版本）重跑，分數也會變，原因可能只是環境：工具 timeout、並行數、容器資源。[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 提過，Anthropic 只改容器的資源設定，最寬鬆與最嚴格的設定之間成功率就差約 6 個百分點，並建議對低於 3 個百分點的差距保持懷疑。所以 infra 變因報告先在同一個 commit 上跑 5 次，看分數的分布有多寬；之後任何「變好了」的差距，都要比這個寬度大才算數。
+**第一，先量出雜訊有多大。** 同一個 commit（程式碼的一個存檔版本）重跑，分數也會變，原因可能只是環境：工具 timeout、並行數、容器資源。[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 提過，Anthropic 只改容器的資源設定，最寬鬆與最嚴格的設定之間成功率就差約 6 個百分點，並建議對低於 3 個百分點的差距保持懷疑。所以 infra 變因報告先在同一個 commit 上跑 5 次，看分數的分布有多寬；之後任何「變好了」的差距，都要比這個寬度大才算數。
 
-**第二，同一批題目要做配對比較。** 比較兩個版本時，讓它們跑同一批案例，對每個案例算「新版減舊版」的差值，再算差值平均的 95% 信賴區間（← S8 Eval 方法論）。配對的好處是題目本身的難易度互相抵消，區間比兩版各算一個區間窄得多。只有兩版都能跑的案例才能配對：A18 多使用者部署完成時的版本沒有排程與通知，新增的常駐行為案例就無法配對，只能單獨報 pass^3。
+**第二，同一批題目要做配對比較。** 比較兩個版本時，讓它們跑同一批案例，對每個案例算「新版減舊版」的差值，再算差值平均的 95% 信賴區間（← S8 Evals 方法論）。配對的好處是題目本身的難易度互相抵消，區間比兩版各算一個區間窄得多。只有兩版都能跑的案例才能配對：A18 多使用者部署完成時的版本沒有排程與通知，新增的常駐行為案例就無法配對，只能單獨報 pass^3。
 
 要證明新版「沒有變差」，跑之前先寫下容許的差距 δ，例如 5 個百分點；配對差值的 95% 信賴區間下界不低於 −δ，才算過關。δ 一定要事先定，看完結果再定就失去意義。
 
@@ -257,7 +257,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 5. 寫出它做的 3 個設計取捨，例如「它不給模型任何專用工具，只給 bash」，以及你認為各自的代價。其中至少一個和 Agentless 的固定三階段 workflow 對照：在你的 5 個任務上，哪一種做法比較合適？
 
 **驗收**
-- 一張 5 任務 × 3 次的結果表，含成功率、pass^3（3 次都成功的任務比例，← S8 Eval 方法論）、每任務的平均成本與時間。
+- 一張 5 任務 × 3 次的結果表，含成功率、pass^3（3 次都成功的任務比例，← S8 Evals 方法論）、每任務的平均成本與時間。
 - 拆解表 ≥ 10 列，每列都有程式碼位置（檔案與行號，或函式名稱）與對應的章。
 - 3 個設計取捨，每個附一個你在 trajectory 中看到的具體例子；至少一個附上和 Agentless 的對照。
 
@@ -281,10 +281,10 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
 | 交付物 | 證明什麼 | 用到哪些章 |
 |---|---|---|
-| Regression suite | 改動不會讓已經能做的事壞掉（evaluable） | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| Infra 變因報告 | 分數的變化是真的，不是環境雜訊（evaluable） | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| Regression suite | 改動不會讓已經能做的事壞掉（evaluable） | [S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| Infra 變因報告 | 分數的變化是真的，不是環境雜訊（evaluable） | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | Trifecta 稽核 | 新增的管道與排程沒有開出新的攻擊路徑（defensible） | [S16 安全與治理](/stages/s16-security/) |
-| Harness ablation 筆記 | 每個 harness 元件都有存在的理由（defensible） | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| Harness ablation 筆記 | 每個 harness 元件都有存在的理由（defensible） | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | 架構文件 | 它能上線、能擴充、出事時知道怎麼辦（shippable） | [S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
 
 **步驟**
@@ -310,7 +310,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 **提示**
 - TypeScript：排程可用 node-cron 或系統的 launchd / systemd timer；通知管道最簡單的是 Telegram Bot API、Slack incoming webhook 或 email；durable 狀態可以沿用 S18 部署與架構的資料庫或 checkpoint。
 - Python：APScheduler 或系統排程；Temporal 的 Python SDK 適合長時間任務；通知同上。
-- 成本（eval）：regression suite 跑一輪是 50 × 3 = 150 次 agent 執行；infra 變因報告在同一 commit 上共跑 5 輪，上面那一輪之外另跑 4 輪（4 × 150 = 600 次），再加改變因素後重跑 1–5 輪（150–750 次），共 750–1,350 次；ablation 2 × 20 × 5 = 200 次。合計約 150 + 750–1,350 + 200 = 1,100–1,700 次 agent 執行，還不含 CI 上每個 PR 的 suite。先用 S8 Eval 方法論的成本會計估出每次執行的平均成本再乘上去；流程先用小模型或本地模型跑一遍，最後才用正式模型跑；用 Ollama 時先調大 context（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#ollama-的-context-長度)）。
+- 成本（eval）：regression suite 跑一輪是 50 × 3 = 150 次 agent 執行；infra 變因報告在同一 commit 上共跑 5 輪，上面那一輪之外另跑 4 輪（4 × 150 = 600 次），再加改變因素後重跑 1–5 輪（150–750 次），共 750–1,350 次；ablation 2 × 20 × 5 = 200 次。合計約 150 + 750–1,350 + 200 = 1,100–1,700 次 agent 執行，還不含 CI 上每個 PR 的 suite。先用 S8 Evals 方法論的成本會計估出每次執行的平均成本再乘上去；流程先用小模型或本地模型跑一遍，最後才用正式模型跑；用 Ollama 時先調大 context（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#ollama-的-context-長度)）。
 - 成本（常駐）：heartbeat 每次都是一次完整的模型呼叫。先算好「每天幾次 × 每次成本」，再決定間隔；可以讓第一層檢查用規則或本地小模型，需要時才呼叫雲端模型。
 - 卡住時：
   - 重讀：[常駐 agent 多了什麼？](#-常駐-agent-多了什麼)、[怎麼證明它能上線？](#-怎麼證明它能上線)；你自己在 S16 安全與治理、S18 部署與架構寫的文件
@@ -367,7 +367,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
    </details>
 
-6. 挑筆記助理（或你自己的系統）的一個功能，例如「每天早上寄摘要」，照六塊地圖說出它的 loop、工具、context、memory、eval、安全各是什麼，各對應哪一章。
+6. 挑筆記助理（或你自己的系統）的一個功能，例如「每天早上寄摘要」，照六塊地圖說出它的 loop、工具、context、memory、evals、安全各是什麼，各對應哪一章。
 
    <details class="hint">
    <summary>提示</summary>
@@ -396,7 +396,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices)（官方文件）— 一個成熟 coding agent 的實際使用方式，可以從中反推它的 harness 設計；做必做題時拿來對照拆解表。
 - [Anthropic: How we built our multi-agent research system](https://www.anthropic.com/research/multi-agent-research-system)（2025-06-13）— deep research 的完整架構、prompt 設計原則與踩過的坑，比講義的摘要多很多細節。
-- [Anthropic: Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise)（2026-02-05）— 畢業專題 infra 變因報告的方法來源，有完整的實驗設定（← S14 Agent eval、資料與最佳化）。
+- [Anthropic: Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise)（2026-02-05）— 畢業專題 infra 變因報告的方法來源，有完整的實驗設定（← S14 Agent evals、資料與最佳化）。
 - [OpenClaw 文件](https://docs.openclaw.ai/) — 常駐個人 agent 的 gateway、channels、自動化設計；講義只用到元件名稱，實作細節在這裡。
 
 ### 原始論文
@@ -423,7 +423,7 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 ### 走完之後
 
 - Science agents、theorem proving、embodied agents：各領域的專門 benchmark 與環境。
-- Agentic RL（← S14 Agent eval、資料與最佳化的選修）：用你在畢業專題累積的 trace 與 regression suite 當訓練環境，回到[模型專案](/projects/model-thread/)把小模型訓練成你系統的專用 agent。
+- Agentic RL（← S14 Agent evals、資料與最佳化的選修）：用你在畢業專題累積的 trace 與 regression suite 當訓練環境，回到[模型專案](/projects/model-thread/)把小模型訓練成你系統的專用 agent。
 - 回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層你覺得最薄弱的往深處走。
 
 </section>

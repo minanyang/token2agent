@@ -19,9 +19,9 @@ Every course, book, article and repo this roadmap cites is listed here, each wit
 | Course | What it's for | Chapters |
 |---|---|---|
 | [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/) (Fall 2026) | Covers agent components, optimization, evaluation and safety, with readings on the syllabus. Slides appear as the course runs (checked 2026-11-09: available through the Nov 4 evaluation lecture); recordings are Stanford-internal only | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S9 Retrieval and RAG](/en/stages/s09-rag/) to [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
-| [CMU 11-768 AI Agents](https://www.cmu-agents.com/) (Neubig, Fried, Fall 2026) | Assignments go harness → eval → training, the closest match to this roadmap | [S10 Tools and MCP](/en/stages/s10-tools-mcp/) to [S16 Security and Governance](/en/stages/s16-security/) |
+| [CMU 11-768 AI Agents](https://www.cmu-agents.com/) (Neubig, Fried, Fall 2026) | Assignments go harness → evals → training, the closest match to this roadmap | [S10 Tools and MCP](/en/stages/s10-tools-mcp/) to [S16 Security and Governance](/en/stages/s16-security/) |
 | [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | Spring 2026: implements language models, training and inference systems from scratch; assumes Python, PyTorch, linear algebra and probability | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/) |
-| [Stanford CS224N](https://web.stanford.edu/class/cs224n/) (Winter 2026) | The classic introduction from NLP to LLMs; assignment 4 is LLM evaluation | [S1 Neural Network Basics](/en/stages/s01-neural-networks/) to [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S8 Eval Methodology](/en/stages/s08-evals/) |
+| [Stanford CS224N](https://web.stanford.edu/class/cs224n/) (Winter 2026) | The classic introduction from NLP to LLMs; assignment 4 is LLM evaluation | [S1 Neural Network Basics](/en/stages/s01-neural-networks/) to [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S8 Evals Methodology](/en/stages/s08-evals/) |
 | [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/) (Welleck) | Assignment 1 is Build Your Own LLaMa; includes lectures on RL basics | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/) |
 | [CMU 11-766 LLM Applications](https://cmu-llms.org/schedule/) | Application side: prompt sensitivity, deep research, attacking LLM applications | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S16 Security and Governance](/en/stages/s16-security/) |
 | [CMU 15-442 ML Systems](https://mlsyscourse.org/schedule) | GPUs, parallelism, serving | [S3 Pretraining and Scaling](/en/stages/s03-pretraining/), [S5 Inference and Serving](/en/stages/s05-inference/) |
@@ -54,7 +54,7 @@ Every course, book, article and repo this roadmap cites is listed here, each wit
 | [Hugging Face Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook) | The standard reading on parallel training | [S3 Pretraining and Scaling](/en/stages/s03-pretraining/) |
 | [Hugging Face LLM Course](https://huggingface.co/learn/llm-course), [MCP Course](https://huggingface.co/learn/mcp-course), [Agents Course](https://github.com/huggingface/agents-course) | Chapters 11–12 cover SFT and GRPO; the Agents Course leans on frameworks | [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) | 18 lessons; L03 is one of the few that covers agentic UX. Heavily tied to Azure | [S16 Security and Governance](/en/stages/s16-security/) to [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
-| [anthropics/courses](https://github.com/anthropics/courses) | Prompting tutorials and a prompt evaluations lab. **Archived**, but the content is still usable | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S8 Eval Methodology](/en/stages/s08-evals/) |
+| [anthropics/courses](https://github.com/anthropics/courses) | Prompting tutorials and a prompt evaluations lab. **Archived**, but the content is still usable | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S8 Evals Methodology](/en/stages/s08-evals/) |
 | [humanlayer/12-factor-agents](https://github.com/humanlayer/12-factor-agents) | "Own your prompts, context and control flow." Partly promotes HumanLayer's product | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S11 Context Engineering](/en/stages/s11-context-engineering/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) | A complete agent in about 100 lines | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) *(in Chinese)* | An agent learning map in Traditional Chinese; strong 8-component harness checklist and evals. Leans toward the Claude Code ecosystem; shallow on how models work | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
@@ -86,7 +86,7 @@ Every course, book, article and repo this roadmap cites is listed here, each wit
 | [Introducing advanced tool use for Claude](https://www.anthropic.com/research/advanced-tool-use) | 2025-11-24 | [S10 Tools and MCP](/en/stages/s10-tools-mcp/) |
 | [Mitigating prompt injections in browser use](https://www.anthropic.com/research/prompt-injection-defenses) | 2025-11-24 (covers browser agents only) | [S16 Security and Governance](/en/stages/s16-security/) |
 | [Effective harnesses for long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents) | 2025-11-26 | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
-| [Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents) | 2026-01-09 | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| [Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents) | 2026-01-09 | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | [Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise) | 2026-02-05 | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | [Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp) | 2026-03-06 | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) |
 | [Harness design for long-running apps](https://www.anthropic.com/research/harness-design-long-running-apps) | 2026-03-24 | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
@@ -124,12 +124,12 @@ Every course, book, article and repo this roadmap cites is listed here, each wit
 
 | Source | Date | Chapters |
 |---|---|---|
-| [Hamel Husain: Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/) | 2024-03-29 | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/) | 2025-03-24 | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/) | 2024-10-29 | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/) (formerly the Evals FAQ) | 2026-09-18 | [S8 Eval Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
-| [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/) | 2024-06 | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S8 Eval Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S17 Product and AI UX](/en/stages/s17-ai-ux/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
-| [Eugene Yan: Patterns for Building LLM-based Systems & Products](https://eugeneyan.com/writing/llm-patterns/) | 2023 | [S8 Eval Methodology](/en/stages/s08-evals/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
+| [Hamel Husain: Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/) | 2024-03-29 | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/) | 2025-03-24 | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/) | 2024-10-29 | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/) (formerly the Evals FAQ) | 2026-09-18 | [S8 Evals Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/) | 2024-06 | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S8 Evals Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S17 Product and AI UX](/en/stages/s17-ai-ux/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
+| [Eugene Yan: Patterns for Building LLM-based Systems & Products](https://eugeneyan.com/writing/llm-patterns/) | 2023 | [S8 Evals Methodology](/en/stages/s08-evals/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
 | [Lilian Weng: LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) | 2023-06-23 | [S0 AI Systems Overview](/en/stages/s00-big-picture/) |
 | [Lilian Weng: Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/) | 2023-03-15 | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) |
 | [Lilian Weng: Reward Hacking in Reinforcement Learning](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/) | 2024-11-28 | [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
@@ -270,7 +270,7 @@ API docs, SDKs, libraries, model cards, datasets, and local inference and evalua
 | [Laws & Regulations Database of the Republic of China (Taiwan)](https://law.moj.gov.tw/) *(in Chinese)* | Full text of Taiwanese laws in Traditional Chinese; the document set for the S9 Retrieval and RAG core exercise | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | [LongMemEval](https://github.com/xiaowu0162/LongMemEval) | Data and code for long-term memory evals; paper: [Wu et al. 2024](https://arxiv.org/abs/2410.10813) | [S13 Memory and Personalization](/en/stages/s13-memory/) |
 | [MultiHop-RAG](https://huggingface.co/datasets/yixuantt/MultiHopRAG) | QA set whose questions need several news articles combined; paper: [Tang & Yang 2024](https://arxiv.org/abs/2401.15391); ODC-BY license | [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) |
-| [abisee/cnn_dailymail](https://huggingface.co/datasets/abisee/cnn_dailymail) | English news articles and summaries; the English alternative dataset for the S8 Eval Methodology core exercise (version 3.0.0) | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| [abisee/cnn_dailymail](https://huggingface.co/datasets/abisee/cnn_dailymail) | English news articles and summaries; the English alternative dataset for the S8 Evals Methodology core exercise (version 3.0.0) | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | [goodbooks-10k](https://github.com/zygmuntz/goodbooks-10k) | Metadata and ratings for ten thousand books; the data for the S10 Tools and MCP core exercise | [S10 Tools and MCP](/en/stages/s10-tools-mcp/) |
 
 ### RAG and retrieval
@@ -285,7 +285,7 @@ API docs, SDKs, libraries, model cards, datasets, and local inference and evalua
 | [LanceDB](https://docs.lancedb.com/) | Embedded vector database | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | [unpdf](https://github.com/unjs/unpdf) | PDF text extraction for JavaScript | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | [Docling](https://github.com/docling-project/docling) | Parsing documents with complex layouts | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
-| [Ragas](https://docs.ragas.io/) | Definitions of RAG evaluation metrics | [S8 Eval Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/) |
+| [Ragas](https://docs.ragas.io/) | Definitions of RAG evaluation metrics | [S8 Evals Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 
 ### Evaluation, testing and observability
 
@@ -300,8 +300,8 @@ API docs, SDKs, libraries, model cards, datasets, and local inference and evalua
 | [httpx](https://github.com/encode/httpx) | Python HTTP client | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) |
 | [respx](https://github.com/lundberg/respx) | Mocking for httpx | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) |
 | [pytest-recording](https://github.com/kiwicom/pytest-recording) | Record / replay built on VCR.py | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) |
-| [promptfoo](https://www.promptfoo.dev/docs/intro/) | Eval runner | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| [`scipy.stats.bootstrap`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html) | Bootstrap confidence intervals | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| [promptfoo](https://www.promptfoo.dev/docs/intro/) | Eval runner | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| [`scipy.stats.bootstrap`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html) | Bootstrap confidence intervals | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | [AgentDojo](https://github.com/ethz-spylab/agentdojo) | An evaluation environment for prompt injection attacks and defenses; paper: [Debenedetti et al. 2024](https://arxiv.org/abs/2406.13352). The S16 Security and Governance core exercise borrows its injection templates | [S16 Security and Governance](/en/stages/s16-security/) |
 
 ### Web and API basics
@@ -327,13 +327,13 @@ Every paper cited in the chapters' Further reading is listed here.
 | Rafailov et al. 2023, [Direct Preference Optimization](https://arxiv.org/abs/2305.18290) | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) |
 | Sumers et al. 2023, [Cognitive Architectures for Language Agents (CoALA)](https://arxiv.org/abs/2309.02427) | [S13 Memory and Personalization](/en/stages/s13-memory/) |
 | Kapoor et al. 2024, [AI Agents That Matter](https://arxiv.org/abs/2407.01502) | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
-| Miller 2024, [Adding Error Bars to Evals](https://arxiv.org/abs/2411.00640) | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| Miller 2024, [Adding Error Bars to Evals](https://arxiv.org/abs/2411.00640) | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | Liu et al. 2023, [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) | [S9 Retrieval and RAG](/en/stages/s09-rag/), [S11 Context Engineering](/en/stages/s11-context-engineering/) |
 | Sclar et al. 2023, [Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design](https://arxiv.org/abs/2310.11324) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) |
 | Yang et al. 2024, [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](https://arxiv.org/abs/2405.15793) | [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
-| Yao et al. 2024, [τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| Yao et al. 2024, [τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | Welleck et al. 2024, [From Decoding to Meta-Generation](https://arxiv.org/abs/2406.16838) | [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S5 Inference and Serving](/en/stages/s05-inference/) |
-| Shankar et al. 2024, [Who Validates the Validators?](https://arxiv.org/abs/2404.12272) | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| Shankar et al. 2024, [Who Validates the Validators?](https://arxiv.org/abs/2404.12272) | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | Cemri et al. 2025, [Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657) | [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) |
 | Kwa et al. 2025, [Measuring AI Ability to Complete Long Tasks](https://arxiv.org/abs/2503.14499) (METR time horizon) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | Opsahl-Ong et al. 2024, [MIPROv2](https://arxiv.org/abs/2406.11695) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
@@ -361,10 +361,10 @@ Every paper cited in the chapters' Further reading is listed here.
 | Zhao et al. 2021, [Calibrate Before Use: Improving Few-Shot Performance of Language Models](https://arxiv.org/abs/2102.09690) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) |
 | Wei et al. 2022, [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) |
 | Tam et al. 2024, [Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models](https://arxiv.org/abs/2408.02442) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) |
-| Zheng et al. 2023, [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685) | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| Chen et al. 2021, [Evaluating Large Language Models Trained on Code](https://arxiv.org/abs/2107.03374) | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| Bean et al. 2025, [Measuring what Matters: Construct Validity in Large Language Model Benchmarks](https://arxiv.org/abs/2511.04703) | [S8 Eval Methodology](/en/stages/s08-evals/) |
-| Kadavath et al. 2022, [Language Models (Mostly) Know What They Know](https://arxiv.org/abs/2207.05221) | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| Zheng et al. 2023, [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685) | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| Chen et al. 2021, [Evaluating Large Language Models Trained on Code](https://arxiv.org/abs/2107.03374) | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| Bean et al. 2025, [Measuring what Matters: Construct Validity in Large Language Model Benchmarks](https://arxiv.org/abs/2511.04703) | [S8 Evals Methodology](/en/stages/s08-evals/) |
+| Kadavath et al. 2022, [Language Models (Mostly) Know What They Know](https://arxiv.org/abs/2207.05221) | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | Karpukhin et al. 2020, [Dense Passage Retrieval for Open-Domain Question Answering](https://arxiv.org/abs/2004.04906) | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | Khattab & Zaharia 2020, [ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT](https://arxiv.org/abs/2004.12832) | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | Malkov & Yashunin 2016, [Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs](https://arxiv.org/abs/1603.09320) | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
@@ -404,7 +404,7 @@ Every paper cited in the chapters' Further reading is listed here.
 | Source | What it's for | Chapters |
 |---|---|---|
 | Courses by Hung-yi Lee, Yun-Nung Chen and Hung-Yu Kao *(in Chinese)* | See [University courses](#university-courses) above | — |
-| [MiuLab/Taiwan-LLM](https://github.com/MiuLab/Taiwan-LLM) | A Traditional Chinese model repo; TMLU, TMMLU+ and TCEval, mentioned in its README, are references for evaluating in Traditional Chinese (it's a model repo, not teaching material) | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| [MiuLab/Taiwan-LLM](https://github.com/MiuLab/Taiwan-LLM) | A Traditional Chinese model repo; TMLU, TMMLU+ and TCEval, mentioned in its README, are references for evaluating in Traditional Chinese (it's a model repo, not teaching material) | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | [iThome 2025: Team AI Operations Handbook: Designing, Deploying and Maintaining System Prompts](https://ithelp.ithome.com.tw/users/20178160/ironman/8461) *(in Chinese)* | Managing prompts as a team asset | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) |
 | [iThome 2025: A Journey Through AI Product and Architecture Design: From 0 to 1, Then Day 2](https://ithelp.ithome.com.tw/users/20178352/ironman/8789) *(in Chinese)* | Product and architecture in practice | [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
 | [iThome 2025: Hands-on LLMOps in 30 Days: From RAG to Observability and Deployment](https://ithelp.ithome.com.tw/users/20120069/ironman/8557) *(in Chinese)* | LLMOps, observability, deployment | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
@@ -419,11 +419,11 @@ The iThome series are 30-day daily series written by practitioners, and their qu
 | Source | What it's for | Chapters |
 |---|---|---|
 | [RUC: Large Language Models](https://llmbook-zh.github.io/) *(in Chinese)* | A university textbook, free PDF; the agent and application parts are dated | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S3 Pretraining and Scaling](/en/stages/s03-pretraining/), [S4 Post-training and Reasoning](/en/stages/s04-post-training/) |
-| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) *(in Chinese)* | A Chinese version of CS336; the best Chinese companion to Part I Models (S1–S5) | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/), [S8 Eval Methodology](/en/stages/s08-evals/) |
+| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) *(in Chinese)* | A Chinese version of CS336; the best Chinese companion to Part I Models (S1–S5) | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/), [S8 Evals Methodology](/en/stages/s08-evals/) |
 | [datawhalechina/happy-llm](https://github.com/datawhalechina/happy-llm) *(in Chinese)* | Builds an LLM from scratch; chapter 8 goes deep on agentic RL | [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | [ZJU-LLMs/Foundations-of-LLMs](https://github.com/ZJU-LLMs/Foundations-of-LLMs) *(in Chinese)* | Zhejiang University's *Foundations of LLMs*; has a chapter on model editing | [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | [Lordog/dive-into-llms](https://github.com/Lordog/dive-into-llms) *(in Chinese)* | Shanghai Jiao Tong University's *Dive into LLMs*; many security labs | [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S16 Security and Governance](/en/stages/s16-security/) |
-| [datawhalechina/tiny-universe](https://github.com/datawhalechina/tiny-universe) *(in Chinese)* | Minimal implementations: TinyTransformer / TinyEval / TinyRAG / TinyAgent | [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S8 Eval Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
+| [datawhalechina/tiny-universe](https://github.com/datawhalechina/tiny-universe) *(in Chinese)* | Minimal implementations: TinyTransformer / TinyEval / TinyRAG / TinyAgent | [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S8 Evals Methodology](/en/stages/s08-evals/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) *(in Chinese)* | A course made with the SGLang team: write your own inference server. Part three of the course is not finished yet | [S5 Inference and Serving](/en/stages/s05-inference/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | [datawhalechina/all-in-rag](https://github.com/datawhalechina/all-in-rag) *(in Chinese)* | The best Chinese material for S9 Retrieval and RAG; leans on Milvus | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) *(in Chinese)* | Complete material for building agents from scratch; deep on context engineering, memory and agentic RL. Leans toward the Chinese tech stack | [S11 Context Engineering](/en/stages/s11-context-engineering/) to [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) |

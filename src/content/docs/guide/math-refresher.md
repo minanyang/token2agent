@@ -42,7 +42,7 @@ T 越小分布越尖（趨近 0 時就是永遠挑第一名，等於 greedy）�
 
 API 的 `temperature` 參數就是這個 T，但部分 API 已不接受這些參數（例如 Claude 帶 `temperature` 會回 400，見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#sampling-參數的限制)）；需要調 T 的練習請用本地模型（Ollama、llama.cpp）。
 
-**用在**：[S1 神經網路基礎](/stages/s01-neural-networks/)（cross-entropy、perplexity）、[S2 Transformer 與 decoding](/stages/s02-transformer/)（decoding 與 sampling 必做題）、[S4 Post-training 與 reasoning](/stages/s04-post-training/)（抽樣多次）、[模型速成](/guide/app-first/)、[S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S8 Eval 方法論](/stages/s08-evals/)（logprobs 與 calibration）。
+**用在**：[S1 神經網路基礎](/stages/s01-neural-networks/)（cross-entropy、perplexity）、[S2 Transformer 與 decoding](/stages/s02-transformer/)（decoding 與 sampling 必做題）、[S4 Post-training 與 reasoning](/stages/s04-post-training/)（抽樣多次）、[模型速成](/guide/app-first/)、[S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S8 Evals 方法論](/stages/s08-evals/)（logprobs 與 calibration）。
 
 ## 對數尺度與 log–log 圖
 
@@ -71,7 +71,7 @@ API 的 `temperature` 參數就是這個 T，但部分 API 已不接受這些參
 
 **例子**：50 題、通過率 0.8。SE = √(0.8 × 0.2 / 50) = √0.0032 ≈ 0.057，95% 信賴區間約 ±11 個百分點，也就是 69%–91%。題數變 4 倍（200 題），SE 才減半（約 ±5.5 個百分點）。所以想看出幾個百分點的差異，通常需要數百題。
 
-**用在**：[S4 Post-training 與 reasoning](/stages/s04-post-training/)（GRPO 的組內標準差、self-consistency 比較）、[S8 Eval 方法論](/stages/s08-evals/)（統計一節）。
+**用在**：[S4 Post-training 與 reasoning](/stages/s04-post-training/)（GRPO 的組內標準差、self-consistency 比較）、[S8 Evals 方法論](/stages/s08-evals/)（統計一節）。
 
 ## Bootstrap 信賴區間
 
@@ -101,7 +101,7 @@ ci = (results[0.025 * B], results[0.975 * B])
 - 通過率全對或全錯時，每次重抽的結果都一樣，區間會縮成一個點，例如 50 題全對得到 [100%, 100%]。真實的通過率仍有不確定性，這時改用 Wilson 區間：50 題全對的 95% 區間約 [92.9%, 100%]。接近全對或全錯時（例如 49/50），bootstrap 區間不會縮成一個點，但也偏窄，同樣建議用 Wilson 區間。
 - 題目之間不獨立（例如同一段對話拆成好幾題）時，要整組一起抽，不能逐題抽。
 
-**用在**：[S4 Post-training 與 reasoning](/stages/s04-post-training/)（N = 1 vs N = 8 的比較）、[S8 Eval 方法論](/stages/s08-evals/)（judge 通過率）、[S9 檢索與 RAG](/stages/s09-rag/)（Recall@k）、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S18 部署與架構](/stages/s18-deployment/)。
+**用在**：[S4 Post-training 與 reasoning](/stages/s04-post-training/)（N = 1 vs N = 8 的比較）、[S8 Evals 方法論](/stages/s08-evals/)（judge 通過率）、[S9 檢索與 RAG](/stages/s09-rag/)（Recall@k）、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S18 部署與架構](/stages/s18-deployment/)。
 
 ## 內積與 cosine 相似度
 

@@ -12,7 +12,7 @@ sidebar:
 :::note[這一章]
 **前置**：[S3 Pretraining 與 scaling](/stages/s03-pretraining/)（也會用到 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的 sampling）
 
-**銜接**：→ [S5 推論與 serving](/stages/s05-inference/)；agentic RL 在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)接續
+**銜接**：→ [S5 推論與 serving](/stages/s05-inference/)；agentic RL 在 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)接續
 :::
 
 :::tip[理解路線重點]
@@ -230,7 +230,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 **Sycophancy**（諂媚）：模型傾向同意使用者、說使用者想聽的話。使用者說「我算出來是 31，對吧？」，模型就附和「對，是 31」。部分原因在偏好資料本身：人在比較回答時，往往給認同自己的回答比較高的分數，偏好學習就把這個傾向放大了。
 
-**容易誤會：reward hacking 代表模型「想作弊」。** 它只是在最佳化你給的分數；分數和目標之間的落差，才是問題所在。這些概念在本章首次出現，[S8 Eval 方法論](/stages/s08-evals/) 的 judge、[S13 Memory 與個人化](/stages/s13-memory/) 的個人化迎合、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 的 agent 最佳化、[S16 安全與治理](/stages/s16-security/) 的安全都會再遇到。
+**容易誤會：reward hacking 代表模型「想作弊」。** 它只是在最佳化你給的分數；分數和目標之間的落差，才是問題所在。這些概念在本章首次出現，[S8 Evals 方法論](/stages/s08-evals/) 的 judge、[S13 Memory 與個人化](/stages/s13-memory/) 的個人化迎合、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 的 agent 最佳化、[S16 安全與治理](/stages/s16-security/) 的安全都會再遇到。
 
 ### ★ 小模型怎麼向大模型學？
 
@@ -251,9 +251,9 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 
 每一步微調都要回答「比 base 好嗎？好多少？」，而且答案要附上誤差範圍。
 
-**用沒看過的題目。** 準備訓練時沒看過的 held-out 題目：有標準答案的（例如數學題）算準確率；沒有標準答案的（例如回答品質），算 **win rate**：讓人或 judge 模型兩兩比較微調前後的回答，看新模型贏的比例（→ [S8 Eval 方法論](/stages/s08-evals/)）。永遠和 base 及上一步比，不只報一個絕對數字。
+**用沒看過的題目。** 準備訓練時沒看過的 held-out 題目：有標準答案的（例如數學題）算準確率；沒有標準答案的（例如回答品質），算 **win rate**：讓人或 judge 模型兩兩比較微調前後的回答，看新模型贏的比例（→ [S8 Evals 方法論](/stages/s08-evals/)）。永遠和 base 及上一步比，不只報一個絕對數字。
 
-**附上信賴區間。** 例如 50 題上，base 答對 30 題（60%），SFT 後答對 32 題（64%）。60% 在 50 題上的標準誤是 √(0.6 × 0.4 ÷ 50) ≈ 6.9 個百分點，95% 信賴區間約是標準誤的 2 倍（精確是 1.96 倍），也就是 ±13.6 個百分點。差 4 個百分點，很可能只是雜訊（標準誤怎麼算見[數學補給](/guide/math-refresher/#平均變異數與標準誤)，bootstrap 見[數學補給〈Bootstrap 信賴區間〉](/guide/math-refresher/#bootstrap-信賴區間)；完整的統計方法在 S8 Eval 方法論）。
+**附上信賴區間。** 例如 50 題上，base 答對 30 題（60%），SFT 後答對 32 題（64%）。60% 在 50 題上的標準誤是 √(0.6 × 0.4 ÷ 50) ≈ 6.9 個百分點，95% 信賴區間約是標準誤的 2 倍（精確是 1.96 倍），也就是 ±13.6 個百分點。差 4 個百分點，很可能只是雜訊（標準誤怎麼算見[數學補給](/guide/math-refresher/#平均變異數與標準誤)，bootstrap 見[數學補給〈Bootstrap 信賴區間〉](/guide/math-refresher/#bootstrap-信賴區間)；完整的統計方法在 S8 Evals 方法論）。
 
 **檢查沒被訓練到的能力。** 數學變好了，聊天、寫作有沒有退步？微調新任務讓舊能力退步，叫遺忘（catastrophic forgetting）。
 
@@ -301,7 +301,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 3. 從 [GSM8K](https://huggingface.co/datasets/openai/gsm8k) 的 `main` 設定、`test` split 取前 50 題（注意：這個資料集很可能已出現在模型的訓練資料裡，分數只能拿來做相對比較）。
 4. 選一個能設 temperature 的小模型：用 Ollama 或 llama.cpp 在本機跑 [Qwen3](https://ollama.com/library/qwen3) 0.6B 或 1.7B，或用文件明確寫出支援 `temperature` 的其他 provider / 模型。Claude 模型在目前的 API 版本下不接受 `temperature`（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#sampling-參數的限制)）。
 5. 每題用 temperature 0.7 抽樣 8 次，從回答中解析出最後的數字。50 題 × 8 次 = 400 次生成，在筆電上可能要跑一到數小時，先用 5 題試跑估時間。
-6. 計算兩個準確率：只取第 1 次抽樣（N = 1）、8 次多數決（N = 8），並用 bootstrap 算 95% 信賴區間，做法照[數學補給〈Bootstrap 信賴區間〉](/guide/math-refresher/#bootstrap-信賴區間)的十行寫法即可（S8 Eval 方法論會完整教）。
+6. 計算兩個準確率：只取第 1 次抽樣（N = 1）、8 次多數決（N = 8），並用 bootstrap 算 95% 信賴區間，做法照[數學補給〈Bootstrap 信賴區間〉](/guide/math-refresher/#bootstrap-信賴區間)的十行寫法即可（S8 Evals 方法論會完整教）。
 7. 記錄兩種做法的總 token 數。
 
 **驗收**
@@ -338,7 +338,7 @@ RLHF 傳統上用的演算法 **PPO** 另外訓練一個 **value model** 來估 
 - 所有實驗的設定（資料集、超參數、seed）都有紀錄，可以重跑。
 
 **提示**
-- Python：Hugging Face [TRL](https://huggingface.co/docs/trl)（SFT、DPO、GRPO 都有對應的 trainer）、[PEFT](https://huggingface.co/docs/peft)（LoRA）。win rate 的 judge 可以先用簡單版本，S8 Eval 方法論會教怎麼校準它。
+- Python：Hugging Face [TRL](https://huggingface.co/docs/trl)（SFT、DPO、GRPO 都有對應的 trainer）、[PEFT](https://huggingface.co/docs/peft)（LoRA）。win rate 的 judge 可以先用簡單版本，S8 Evals 方法論會教怎麼校準它。
 - **算力**：這一步需要 NVIDIA GPU。可以用 Colab、Modal、Lambda 等租用服務，整個 M4 小模型後訓練（[代號說明](/guide/how-to-use/#代號怎麼讀)）預估是數十美元等級，但很依賴模型大小、資料量與實作效率，**請先用小設定實測再放大**。Mac 的 MPS 只建議用在模型專案的前三步 M1–M3（micrograd 與 MLP、tiny GPT、小模型 pretraining），不建議用在這一步。詳見[模型專案總覽](/projects/model-thread/)。
 - 卡住時：
   - 重讀：[SFT](#-怎麼教模型好好回答)、[LoRA](#-lora-怎麼省記憶體)、[偏好學習](#-沒有標準答案怎麼教)、[GRPO](#-推理模型怎麼練出來)、[reward hacking](#-為什麼會鑽獎勵漏洞)

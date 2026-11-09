@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；會用到 [S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S13 Memory 與個人化](/stages/s13-memory/) 的 🔒 檢查點（講義開頭複習）
+**前置**：[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)；會用到 [S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S13 Memory 與個人化](/stages/s13-memory/) 的 🔒 檢查點（講義開頭複習）
 
 **銜接**：→ [S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
@@ -25,7 +25,7 @@ sidebar:
 
 一個會讀資料、會用工具的 agent，可能被它讀到的一段文字劫持。這一章回答：怎麼找出這種風險、為什麼「偵測攻擊」擋不住會調整策略的攻擊者，以及怎麼用架構讓「被注入」也造成不了傷害。後半段處理資料放哪裡、留多久、受哪些法規管。
 
-排在 [S12 Agent loop 與 harness](/stages/s12-agent-harness/) 和 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後：要先有會行動的 agent，攻擊才有對象；要先有可信的 eval，才量得出防禦的誤報與漏報。
+排在 [S12 Agent loop 與 harness](/stages/s12-agent-harness/) 和 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 之後：要先有會行動的 agent，攻擊才有對象；要先有可信的 eval，才量得出防禦的誤報與漏報。
 
 ## 學完能
 
@@ -274,7 +274,7 @@ Watermarking 在生成內容中嵌入可偵測的訊號，provenance 則記錄�
 
 前面講的是被攻擊；另一類風險來自模型本身的輸出。模型會帶著訓練資料裡的偏見，例如對某些族群的刻板描述，或對不同語言的使用者給出品質不一的回答；也可能產生仇恨、暴力、自傷等不當內容。常見做法有三種：
 
-1. **量偏見**：用一組刻意設計的題目（同一個問題只換掉性別、族群、語言）比較輸出差異，把結果納入 eval（← S8 Eval 方法論）。
+1. **量偏見**：用一組刻意設計的題目（同一個問題只換掉性別、族群、語言）比較輸出差異，把結果納入 eval（← S8 Evals 方法論）。
 2. **內容審核**：在輸入與輸出加上審核，標出或擋下不當內容（← 前面的 guardrail），例如 OpenAI 的 moderation endpoint、Meta 的 Llama Guard，或自己的分類器。
 3. **附上匿名使用者 ID**：每次請求帶一個匿名化的使用者 ID。這一項是為了追查濫用：出問題時能找到是哪個帳號，而不是只能整個關掉服務。
 

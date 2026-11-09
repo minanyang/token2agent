@@ -1,16 +1,16 @@
 ---
-title: S14 Agent eval、資料與最佳化
+title: S14 Agent evals、資料與最佳化
 head:
   - tag: title
     content: AI agent 評估：軌跡、benchmark 與最佳化（S14）｜Token2Agent
 description: AI agent 評估怎麼做：看懂 benchmark 分數為什麼會失準，同時評估結果與整條軌跡，做出可重跑的 agent eval，再用 trace、ablation 與 prompt 最佳化有系統地改進。
 sidebar:
   order: 14
-  label: S14 Agent eval、資料與最佳化
+  label: S14 Agent evals、資料與最佳化
 ---
 
 :::note[這一章]
-**前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）
+**前置**：[S8 Evals 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）
 
 **銜接**：→ [S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)
 :::
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-S8 Eval 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用了最小的 agent eval。這一章處理 agent 評估真正難的地方：要看整條軌跡而不只最後答案、同一題每次結果都不同、對話型 agent 需要有人扮演使用者、連機器資源這類環境設定都能讓分數差好幾個百分點。學會做出可信的評估之後，本章後半學讓 agent 變好的方法：從 trace 找失敗、接成 data flywheel、自動最佳化 prompt、蒸餾小型 router，以及用 ablation 檢驗 harness 元件。到了 S15 Multi-agent，要不要用 multi-agent，就靠這一章的 eval 決定。
+S8 Evals 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用了最小的 agent eval。這一章處理 agent 評估真正難的地方：要看整條軌跡而不只最後答案、同一題每次結果都不同、對話型 agent 需要有人扮演使用者、連機器資源這類環境設定都能讓分數差好幾個百分點。學會做出可信的評估之後，本章後半學讓 agent 變好的方法：從 trace 找失敗、接成 data flywheel、自動最佳化 prompt、蒸餾小型 router，以及用 ablation 檢驗 harness 元件。到了 S15 Multi-agent，要不要用 multi-agent，就靠這一章的 eval 決定。
 
 ## 學完能
 
@@ -89,9 +89,9 @@ S8 Eval 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用
 | 找到目標 | | 10 | 1 |
 | 修改 | | | 4 |
 
-格子加總 4 + 1 + 10 + 1 + 4 = 20，等於失敗次數。最大的格子是「找到目標 → 修改」的 10 次，也就是找對了檔案卻寫錯，和試跑 1 同一類。先修這裡（例如在 harness 裡要求寫完後讀回比對），比籠統地「改 prompt」有效得多。它比單純的「失敗原因統計」多了位置資訊：同樣是「檔名錯」，發生在找目標時和發生在抄寫時，修法不同。這是 [S8 Eval 方法論](/stages/s08-evals/) 的錯誤分析在 agent 上的延伸。
+格子加總 4 + 1 + 10 + 1 + 4 = 20，等於失敗次數。最大的格子是「找到目標 → 修改」的 10 次，也就是找對了檔案卻寫錯，和試跑 1 同一類。先修這裡（例如在 harness 裡要求寫完後讀回比對），比籠統地「改 prompt」有效得多。它比單純的「失敗原因統計」多了位置資訊：同樣是「檔名錯」，發生在找目標時和發生在抄寫時，修法不同。這是 [S8 Evals 方法論](/stages/s08-evals/) 的錯誤分析在 agent 上的延伸。
 
-**Grader 有三種**：程式檢查（比對檔案內容、查資料庫）、LLM judge（← S8 Eval 方法論的 judge 校準），以及 **agent-as-a-judge**（[Zhuge et al. 2024](https://arxiv.org/abs/2410.10934)）。最後一種讓評估者本身也是 agent：它能讀檔、跑程式、操作成品，再根據證據打分，適合檢查「做出來的東西」，例如 agent 寫的一份週報筆記格式對不對、連結點不點得開。能寫程式檢查的就用程式；judge 與 agent judge 都要先和人工標註對齊。
+**Grader 有三種**：程式檢查（比對檔案內容、查資料庫）、LLM judge（← S8 Evals 方法論的 judge 校準），以及 **agent-as-a-judge**（[Zhuge et al. 2024](https://arxiv.org/abs/2410.10934)）。最後一種讓評估者本身也是 agent：它能讀檔、跑程式、操作成品，再根據證據打分，適合檢查「做出來的東西」，例如 agent 寫的一份週報筆記格式對不對、連結點不點得開。能寫程式檢查的就用程式；judge 與 agent judge 都要先和人工標註對齊。
 
 **容易誤會：agent 的回覆不是證據。** 試跑 1 說寫了 6 個、實際只有 5 個。grader 讀回覆而不查環境，這次就會被判成功。
 
@@ -107,7 +107,7 @@ S8 Eval 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用
 
 ### ★ 每次結果不同怎麼算分？
 
-agent 每次試跑結果不同，所以同一任務要跑 k 次，再決定怎麼把 k 個結果合成一個數字。[S8 Eval 方法論](/stages/s08-evals/) 介紹過兩種計算方式：**pass@k** 是 k 次中**至少一次**成功的比例，**pass^k** 是 k 次**全部**成功的比例。
+agent 每次試跑結果不同，所以同一任務要跑 k 次，再決定怎麼把 k 個結果合成一個數字。[S8 Evals 方法論](/stages/s08-evals/) 介紹過兩種計算方式：**pass@k** 是 k 次中**至少一次**成功的比例，**pass^k** 是 k 次**全部**成功的比例。
 
 **選哪個看使用情境。** 如果結果能自動驗證、可以讓 agent 多試幾次再挑對的那個（例如有測試的程式碼），pass@k 有意義。如果使用者每次都直接拿到 agent 的結果，例如筆記助理整理 TODO，該看 pass^k：它量的是「每次都能信任它」。
 
@@ -127,7 +127,7 @@ agent 每次試跑結果不同，所以同一任務要跑 k 次，再決定怎�
 
 差距隨 k 變大。假設每次試跑獨立、單次成功率 0.8：pass@3 = 1 − 0.2³ = 0.992，pass^3 = 0.8³ = 0.512。同一個 agent，用 pass@3 看幾乎完美，用 pass^3 看只比擲硬幣好一點。
 
-試跑次數少時，這些數字的不確定性很大。15 題 × 5 次的成功率要附 bootstrap 信賴區間（← S8 Eval 方法論）；比較兩個版本時，兩版跑同一批任務，看配對差值的區間：整個大於 0 才算新版比較好，整個小於 0 是變差，包含 0 就分不出來，不是看兩個點估計誰大。**容易誤會：pass@k 高不代表 agent 可靠。** C 題的 pass@5 是「成功」，但使用者 5 次裡有 4 次遇到 agent 直接刪錯檔或亂猜。
+試跑次數少時，這些數字的不確定性很大。15 題 × 5 次的成功率要附 bootstrap 信賴區間（← S8 Evals 方法論）；比較兩個版本時，兩版跑同一批任務，看配對差值的區間：整個大於 0 才算新版比較好，整個小於 0 是變差，包含 0 就分不出來，不是看兩個點估計誰大。**容易誤會：pass@k 高不代表 agent 可靠。** C 題的 pass@5 是「成功」，但使用者 5 次裡有 4 次遇到 agent 直接刪錯檔或亂猜。
 
 <details class="deep">
 <summary>深入一點：從 n 次試跑估計 pass@k 與 pass^k</summary>
@@ -173,7 +173,7 @@ Reward hacking 是 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 
 
 ### ★ Agent benchmark 多了哪些坑？
 
-公開 benchmark 會老化：題目外洩進訓練資料（contamination）、被做到滿分附近（saturation）（← S8 Eval 方法論）。agent benchmark 還多了題目本身的瑕疵。兩個近期的例子：
+公開 benchmark 會老化：題目外洩進訓練資料（contamination）、被做到滿分附近（saturation）（← S8 Evals 方法論）。agent benchmark 還多了題目本身的瑕疵。兩個近期的例子：
 
 - **SWE-bench Verified**：OpenAI 在 2024 年和 SWE-bench 作者一起整理出這個人工確認過的子集。2026-02 OpenAI 發文宣布不再用它評估，理由是汙染（題目來自公開 repo，部分題目的原始修正，模型能憑記憶重現）與題目瑕疵：他們找出 o3 跑 64 次都無法穩定解出的 138 題，請工程師逐題檢查，其中 59.4% 的測試或題目描述有實質問題。OpenAI 改為建議使用 SWE-bench Pro。
 - **τ-bench**：[SABER](https://arxiv.org/abs/2512.07850)（Cuadron et al. 2025）指出 τ-bench 的航空與零售題目有標註錯誤與規格不清，壓低了分數上限，並釋出修正後的 τ-Bench Verified。
@@ -184,7 +184,7 @@ Reward hacking 是 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 
 
 ### ★ Trace 多到讀不完怎麼辦？
 
-上線之後，trace 會多到讀不完。叢集分析幫你決定先讀哪些；data flywheel 把讀到的東西接回 eval 與改進。
+上線之後，trace 會多到讀不完。叢集分析幫你決定先讀哪些；data flywheel 把讀到的東西接回 evals 與改進。
 
 **叢集分析**是把 trace（或它們的摘要）轉成 embedding、分群，再從每一群抽幾條來讀，找出哪一群特別多失敗、哪一群是你沒想過的用法。Hamel 的 FAQ 也把分群列為挑選要人工檢查的 trace 的一種抽樣方法。示意的例子：筆記助理累積 2,000 條 trace，分成 12 群。整體倒讚率 8%，但「相對日期」那一群（「上週的會議」「前天的筆記」）有 150 條、倒讚率 30%。抽讀 15 條後發現 agent 常把「上週」算成過去 7 天而不是上一個日曆週，於是加進 10 個相對日期的 eval 任務。
 
@@ -192,7 +192,7 @@ Reward hacking 是 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 
 
 使用者回饋與從 S6 LLM API 與應用基本功開始收集的 trace → 錯誤分析與分群 → 新的 eval 題目與失敗分類 → 改 prompt、工具或 harness → 用 eval 確認 → 上線後再收新的 trace。
 
-關鍵是每一環都要接得上：回饋要能對回 trace、trace 要能變成 eval 題目、capability eval 穩定之後畢業成 regression eval（← S8 Eval 方法論）。回饋介面怎麼設計在 S17 產品與 AI UX。**容易誤會：分群結果就是結論。** 分群只決定先讀哪些；「相對日期」這個失敗類別是人讀過 trace 之後才成立的（← S8 Eval 方法論的錯誤分析）。
+關鍵是每一環都要接得上：回饋要能對回 trace、trace 要能變成 eval 題目、capability eval 穩定之後畢業成 regression eval（← S8 Evals 方法論）。回饋介面怎麼設計在 S17 產品與 AI UX。**容易誤會：分群結果就是結論。** 分群只決定先讀哪些；「相對日期」這個失敗類別是人讀過 trace 之後才成立的（← S8 Evals 方法論的錯誤分析）。
 
 ### ★ 能自動找出更好的 prompt 嗎？
 
@@ -203,14 +203,14 @@ Prompt 最佳化是讓程式自動搜尋更好的 prompt：你提供 metric 和�
 - [MIPROv2](https://arxiv.org/abs/2406.11695)（Opsahl-Ong et al. 2024）同時搜尋每個模組的指示文字與 few-shot 範例。
 - [GEPA](https://arxiv.org/abs/2507.19457)（Agrawal et al. 2025）讓模型用文字反思執行軌跡、提出 prompt 修改，並保留在不同題目上各有長處的候選。GEPA 論文報告它在用少很多次試跑的情況下勝過 GRPO（一種用強化學習直接調整模型權重的訓練方法；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）與 MIPROv2。
 
-使用前提有兩個：可靠的 metric（S8 Eval 方法論校準過的 judge 或程式檢查），以及**分開的訓練與測試資料**。示意的例子：筆記助理的意圖分類（「搜尋筆記」「建立筆記」「寄信」），300 筆有標籤的請求，分成 200 筆訓練、100 筆測試。最佳化前，訓練 81%、測試 80%；最佳化後，訓練 93%、測試 86%。真正的進步是測試上的 6 個百分點，不是訓練上的 12 個；兩者的落差就是 optimizer 貼合訓練資料的部分。
+使用前提有兩個：可靠的 metric（S8 Evals 方法論校準過的 judge 或程式檢查），以及**分開的訓練與測試資料**。示意的例子：筆記助理的意圖分類（「搜尋筆記」「建立筆記」「寄信」），300 筆有標籤的請求，分成 200 筆訓練、100 筆測試。最佳化前，訓練 81%、測試 80%；最佳化後，訓練 93%、測試 86%。真正的進步是測試上的 6 個百分點，不是訓練上的 12 個；兩者的落差就是 optimizer 貼合訓練資料的部分。
 
 **容易誤會：在最佳化用的資料上報告分數。** 那個數字一定好看，因為 optimizer 就是在讓它變高（上一節的 reward hacking）。結果只能在測試資料上報告，並附上最佳化前後的輸出範例。
 
 <details class="deep">
 <summary>準備動手做：跑一輪 prompt 最佳化前的準備</summary>
 
-- 先寫好 metric 函式，輸入一筆範例和模型輸出，回傳 0–1 的分數。用 judge 當 metric 的話，先確認它和人工標註的一致程度（← S8 Eval 方法論）。
+- 先寫好 metric 函式，輸入一筆範例和模型輸出，回傳 0–1 的分數。用 judge 當 metric 的話，先確認它和人工標註的一致程度（← S8 Evals 方法論）。
 - 先設預算上限。optimizer 會呼叫模型很多次；常見做法是用小模型最佳化，再在目標模型上驗證。
 - 測試資料在最佳化結束前完全不要看，也不要拿它挑「最好的那一輪」，否則它就變成訓練資料的一部分。需要挑選時另外切一份驗證資料。
 - 最佳化後抽讀 10–20 個輸出，確認沒有出現「永遠列 10 點」這類迎合 metric 的模式。
@@ -306,7 +306,9 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 
 <section class="deep-section">
 
-### 進階：系統專案 A14：agent eval 與最佳化
+<span id="進階系統專案-a14agent-eval-與最佳化"></span>
+
+### 進階：系統專案 A14：agent evals 與最佳化
 
 **目標**：為你的系統建出完整的 agent eval，並用三種方法各改進一次，每個結論都附信賴區間。
 
@@ -405,7 +407,7 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 - [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（2026-09）— 讀 agentic workflows 與 multi-step workflows 兩題，以及抽樣方法表。
 - [Kaggle: Agent Quality](https://www.kaggle.com/whitepaper-agent-quality)（2025-11）— 四支柱、outside-in、軌跡評估、agent-as-a-judge、可觀測性的完整版。偏 Google 生態。
 - [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) — agent 評估與 agent ops。
-- [DSPy](https://dspy.ai) — 官方文件的 optimizer 教學，做 A14 agent eval 與最佳化第 4 步時的主要參考。
+- [DSPy](https://dspy.ai) — 官方文件的 optimizer 教學，做 A14 agent evals 與最佳化第 4 步時的主要參考。
 
 ### 原始論文
 
@@ -429,7 +431,7 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 ### 中文資源
 
 - [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) — 簡中；第 12 章（agent 性能評估）、第 11 章（Agentic RL，選修）。
-- [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) — 繁中；eval 部分整理得好。
+- [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) — 繁中；evals 部分整理得好。
 - [datawhalechina/agentic-rl-lab](https://github.com/datawhalechina/agentic-rl-lab) — 簡中；Search-R1、ReTool 等可執行重現，選修的 agentic RL 主教材。
 - [datawhalechina/happy-llm](https://github.com/datawhalechina/happy-llm) — 簡中；第 8 章 agentic RL，選修。
 

@@ -165,7 +165,7 @@ The most common rate-limiting algorithm is the token bucket (here a token is a "
 
 ### ★ Which model should you start with?
 
-Choose models in reverse order (best-first, then swap down): first use the strongest model to prove the task can be done; its score is your quality ceiling. Then swap in smaller, cheaper, faster models one at a time, running the same evals at each step to see whether quality stays within the margin of error (← confidence intervals in [S8 Eval Methodology](/en/stages/s08-evals/)).
+Choose models in reverse order (best-first, then swap down): first use the strongest model to prove the task can be done; its score is your quality ceiling. Then swap in smaller, cheaper, faster models one at a time, running the same evals at each step to see whether quality stays within the margin of error (← confidence intervals in [S8 Evals Methodology](/en/stages/s08-evals/)).
 
 For example, on the notes assistant's 200-question "single-note lookup" set: the strong model scores 92%, the mid-size model 90%, the small model 84%. If the 95% confidence interval for the mid-size model's paired difference from the strong model is [−5, +1], within the tolerance you set, you can swap. If the small model's interval is [−12, −4], it's clearly worse; use it only for simpler subtasks, or keep it in the router for the simplest requests.
 
@@ -257,7 +257,7 @@ Long sessions have another cost: each session's sandbox or container takes time 
 
 In an LLM system, changing a prompt is a deployment. Every change passes the eval gate first, then rolls out starting with a small slice of traffic, and can be rolled back within minutes if something goes wrong.
 
-Changing a prompt, swapping a model, changing how context is assembled, upgrading a tool: each counts as a deployment and goes through the same gates. **Eval-gated CI** means every change runs the regression eval (← [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)), and if the score falls below your threshold, the PR (pull request, a code change submitted for review before merging) can't merge. For example, the notes assistant's golden set has 200 questions with a baseline of 88%; after a PR changes the system prompt it scores 82%, and the 95% confidence interval of the paired difference is [−10, −2]. The lower bound is below the −5 percentage points set in advance, so CI blocks it.
+Changing a prompt, swapping a model, changing how context is assembled, upgrading a tool: each counts as a deployment and goes through the same gates. **Eval-gated CI** means every change runs the regression eval (← [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)), and if the score falls below your threshold, the PR (pull request, a code change submitted for review before merging) can't merge. For example, the notes assistant's golden set has 200 questions with a baseline of 88%; after a PR changes the system prompt it scores 82%, and the 95% confidence interval of the paired difference is [−10, −2]. The lower bound is below the −5 percentage points set in advance, so CI blocks it.
 
 Even after passing CI, don't roll out to everyone at once:
 
@@ -341,10 +341,10 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 **Goal**: on a set of questions with reference answers, measure the quality, cost and latency of three plans: "strong model only," "weak model only" and "cascade."
 
 **Steps**
-1. Pick 100–200 questions whose answers can be graded by code (see the acceptance criteria for how many), for example the first 200 questions of the GSM8K test set (Hugging Face `openai/gsm8k`, `main` config, `test` split; the answer is the number after `####`, so you can compare directly), or the code-gradable part of the golden set you built in S8 Eval Methodology.
+1. Pick 100–200 questions whose answers can be graded by code (see the acceptance criteria for how many), for example the first 200 questions of the GSM8K test set (Hugging Face `openai/gsm8k`, `main` config, `test` split; the answer is the number after `####`, so you can compare directly), or the code-gradable part of the golden set you built in S8 Evals Methodology.
 2. Pick a strong model and a weak model (for example a large and a small model from the same vendor, or a strong cloud model + a small local Ollama model). GSM8K is close to saturated for current cloud models; two cloud models often both land around 95%, so the cascade barely needs to upgrade and you learn nothing. So a small Ollama model is recommended as the weak model; or run 20 questions on each first to test the waters, and if the gap is under 5 percentage points, switch to a harder question set (for example the code-gradable part of your golden set).
 3. Plan A: strong model for everything; plan B: weak model for everything. For each question, record whether it's correct, input / output tokens, cost, TTFT and total latency.
-4. Plan C (cascade): use the weak model first, then a scoring method to decide whether to upgrade, for example having the weak model rate its own confidence, using logprobs (← S8 Eval Methodology), or using another cheap model as a judge. Try at least two thresholds. Pick the threshold on a separate dev set (for example questions 201–300 of the GSM8K test set), and only then run the final results on the questions from step 1; if you don't have enough questions to split, say in the report that the threshold was picked on the same questions, so the results are optimistic.
+4. Plan C (cascade): use the weak model first, then a scoring method to decide whether to upgrade, for example having the weak model rate its own confidence, using logprobs (← S8 Evals Methodology), or using another cheap model as a judge. Try at least two thresholds. Pick the threshold on a separate dev set (for example questions 201–300 of the GSM8K test set), and only then run the final results on the questions from step 1; if you don't have enough questions to split, say in the report that the threshold was picked on the same questions, so the results are optimistic.
 5. Add an exact cache layer, resend every question once more, and record the hit rate and latency on hits.
 
 **Acceptance criteria**
@@ -355,7 +355,7 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 
 **Hints**
 - TypeScript: Vercel AI SDK or each vendor's SDK directly; compute cost from the usage in the response (← S6 LLM APIs and Application Basics).
-- Python: LiteLLM unifies calls and cost calculation across providers; for the confidence interval of the paired difference, bootstrap: each time, resample the same number of questions from the set, drawing A's and C's results for the same question together (← S8 Eval Methodology).
+- Python: LiteLLM unifies calls and cost calculation across providers; for the confidence interval of the paired difference, bootstrap: each time, resample the same number of questions from the set, drawing A's and C's results for the same question together (← S8 Evals Methodology).
 - Cost: 200 questions × a few calls each is a few dollars on cloud models; all-local models are free, but the latency numbers mean something different.
 - If you get stuck:
   - Reread: [Which model should each request go to?](#-which-model-should-each-request-go-to), [How do you keep the bill under control?](#-how-do-you-keep-the-bill-under-control)

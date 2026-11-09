@@ -62,7 +62,7 @@ Part I 的五章各有一題**必做題**，不需要模型專案的成果也能
 模型專案的技術會在系統專案（[系統專案總覽](/projects/system-thread/)）的三個地方再用到：
 
 - **微調 embedding 模型**（[A9 附引用的 RAG](/stages/s09-rag/)）：用 M4 小模型後訓練學到的微調流程與評估習慣，在自己的資料上微調檢索用的 embedding 模型，並比較微調前後的 Recall@k。
-- **從 trace 蒸餾 router**（[A14 agent eval 與最佳化](/stages/s14-agent-evals/)）：把系統累積的 trace 當成訓練資料，訓練一個小型分類器或 router，決定請求該交給哪個模型或哪條流程。資料準備與「附信賴區間的前後比較」都是 M4 小模型後訓練的延續。
+- **從 trace 蒸餾 router**（[A14 agent evals 與最佳化](/stages/s14-agent-evals/)）：把系統累積的 trace 當成訓練資料，訓練一個小型分類器或 router，決定請求該交給哪個模型或哪條流程。資料準備與「附信賴區間的前後比較」都是 M4 小模型後訓練的延續。
 - **自架與 API 的比較**（[A18 多使用者部署](/stages/s18-deployment/)）：用 M5 迷你推論伺服器量到的 TTFT、TPOT、吞吐量與 GPU 時薪，估算自架的每百萬 token 成本，和 API 價格並列比較。
 
 只走[應用路線](/guide/app-first/)的人，可以先略過這三個橋接，等讀 Part I 模型原理（S1–S5）時再回來做。

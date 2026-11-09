@@ -67,7 +67,7 @@ next:
 | 記憶 | 記住「回答用條列、最多三點」這類使用者偏好 | [S13 Memory 與個人化](/stages/s13-memory/) |
 | 控制迴圈的程式 | 呼叫模型、執行工具、決定何時停下 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | 介面 | 串流顯示回答、寄信前讓使用者確認草稿 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
-| 評估、安全與上線 | 確認回答正確、防範攻擊、記錄成本與延遲 | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/) |
+| 評估、安全與上線 | 確認回答正確、防範攻擊、記錄成本與延遲 | [S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/) |
 
 **容易誤會：元件越多越好。** 每加一個元件，就多一處可能出錯，也多一份延遲與成本。元件是用來補具體缺口的：如果筆記助理只需要把使用者貼上的一段文字改寫成條列，一次模型呼叫就夠了，不需要檢索或工具。
 
@@ -116,7 +116,7 @@ API 依 token 數計價，輸出的單價通常是輸入的好幾倍（原因是
 
 </details>
 
-模型本身為什麼能做到步驟 3–4，是 S1 神經網路基礎到 S4 Post-training 與 reasoning 的內容；整個迴圈怎麼評估、怎麼防攻擊、怎麼上線，是後面幾章的內容（[S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)）。表外還有三章：
+模型本身為什麼能做到步驟 3–4，是 S1 神經網路基礎到 S4 Post-training 與 reasoning 的內容；整個迴圈怎麼評估、怎麼防攻擊、怎麼上線，是後面幾章的內容（[S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)）。表外還有三章：
 
 - **S13 Memory 與個人化**：步驟 1 組 context 時讀取使用者的長期記憶，步驟 7 之後把值得記住的事寫回去。
 - **S15 Multi-agent**：步驟 5 呼叫的「工具」也可以是另一個 agent，由它跑自己的一整條路徑再回報結果。
@@ -274,7 +274,7 @@ Anthropic〈Building effective AI agents〉的建議更直接：先找最簡單�
 **驗收**
 - 路徑圖至少 7 個步驟，每個步驟都標上上表的對應章號；圖旁另外說明下面這幾章分別作用在哪一段（依[一句話怎麼變成答案？](#-一句話怎麼變成答案)表格後「表外還有三章」那段說明）：
   - S1 神經網路基礎到 S4 Post-training 與 reasoning
-  - S8 Eval 方法論
+  - S8 Evals 方法論
   - S13 Memory 與個人化到 S16 安全與治理
   - S19 真實 agent 系統與畢業專題
 - 三個情境的判斷都引用了「何時該做 agent」的條件之一。
@@ -372,7 +372,7 @@ Anthropic〈Building effective AI agents〉的建議更直接：先找最簡單�
 
 - [BAIR: The Shift from Models to Compound AI Systems](https://bair.berkeley.edu/blog/2024/02/18/compound-ai-systems/)（2024-02-18）— 為什麼系統設計比單一模型更重要，附了多個產品的實例。
 - [Lilian Weng: LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/)（2023-06-23）— planning、memory、tool use 的經典整理；部分例子已過時，但分類仍好用。
-- [Kapoor et al. 2024, AI Agents That Matter](https://arxiv.org/abs/2407.01502) — agent 評估只看準確率、不看成本的問題；先建立懷疑精神，[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)會再用到。
+- [Kapoor et al. 2024, AI Agents That Matter](https://arxiv.org/abs/2407.01502) — agent 評估只看準確率、不看成本的問題；先建立懷疑精神，[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)會再用到。
 - [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/)（2024-06）— 讀 Strategic 部分，看實際做產品的團隊怎麼取捨。
 
 ### 課程與地圖

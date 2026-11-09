@@ -42,13 +42,13 @@ Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tra
 |---|---|---|
 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S18 部署與架構](/stages/s18-deployment/) | 輸入與輸出 token 的計價差異、延遲的組成 | [S5 推論與 serving](/stages/s05-inference/) |
 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) | constrained decoding 怎麼保證格式 | [S5 推論與 serving](/stages/s05-inference/) |
-| [S8 Eval 方法論](/stages/s08-evals/) | logprobs 與信心、sampling 造成的隨機性 | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
+| [S8 Evals 方法論](/stages/s08-evals/) | logprobs 與信心、sampling 造成的隨機性 | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
 | [S9 檢索與 RAG](/stages/s09-rag/) | 微調 embedding 模型（A9 附引用的 RAG） | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[模型專案](/projects/model-thread/) |
 | [S11 Context engineering](/stages/s11-context-engineering/) | prompt caching 為什麼省錢 | [S5 推論與 serving](/stages/s05-inference/) |
-| [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) | reward hacking、蒸餾 router（A14 agent eval 與最佳化） | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
+| [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) | reward hacking、蒸餾 router（A14 agent evals 與最佳化） | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | [S18 部署與架構](/stages/s18-deployment/) | 自架與 API 的成本比較（A18 多使用者部署用 M5 迷你推論伺服器的實測數字） | [S5 推論與 serving](/stages/s05-inference/)、[模型專案](/projects/model-thread/) |
 
-想補應用相關的原理，可以先挑小節，不必一次讀完整個模型章節：走完 S8 Eval 方法論後，讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的斷詞與 decoding 兩節，或 S5 推論與 serving 開頭的例子與 prefill／decode 一節。走完 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)後，可以對照 S4 Post-training 與 reasoning 的[獎勵漏洞](/stages/s04-post-training/#-為什麼會鑽獎勵漏洞)與[蒸餾](/stages/s04-post-training/#-小模型怎麼向大模型學)兩節；想讀懂完整的訓練機制與推導，再依 S1–S4 的前置順序讀。數學工具（softmax、標準誤、bootstrap 等）見[數學補給](/guide/math-refresher/)。
+想補應用相關的原理，可以先挑小節，不必一次讀完整個模型章節：走完 S8 Evals 方法論後，讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的斷詞與 decoding 兩節，或 S5 推論與 serving 開頭的例子與 prefill／decode 一節。走完 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)後，可以對照 S4 Post-training 與 reasoning 的[獎勵漏洞](/stages/s04-post-training/#-為什麼會鑽獎勵漏洞)與[蒸餾](/stages/s04-post-training/#-小模型怎麼向大模型學)兩節；想讀懂完整的訓練機制與推導，再依 S1–S4 的前置順序讀。數學工具（softmax、標準誤、bootstrap 等）見[數學補給](/guide/math-refresher/)。
 
 ## 模型速成
 
@@ -97,9 +97,9 @@ API 費用約等於「輸入 token 數 × 輸入單價 + 輸出 token 數 × 輸
 
 #### Logits 與 softmax
 
-「輸出機率分布」具體是這樣：模型最後一層為詞彙表裡的每個 token 各輸出一個分數，叫 logit；softmax 把這些分數轉成加總為 1 的機率，分數高的機率就高。Temperature 就是在 softmax 之前先把 logits 除以 T。有些 API 會回傳 logprobs，也就是這些機率取對數，S8 Eval 方法論會用它看模型有多「確定」。手算例子見[數學補給](/guide/math-refresher/#logitssoftmax-與-temperature)。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
+「輸出機率分布」具體是這樣：模型最後一層為詞彙表裡的每個 token 各輸出一個分數，叫 logit；softmax 把這些分數轉成加總為 1 的機率，分數高的機率就高。Temperature 就是在 softmax 之前先把 logits 除以 T。有些 API 會回傳 logprobs，也就是這些機率取對數，S8 Evals 方法論會用它看模型有多「確定」。手算例子見[數學補給](/guide/math-refresher/#logitssoftmax-與-temperature)。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 
-**什麼時候回來讀**：S8 Eval 方法論用 logprobs 判斷模型有多確定時。
+**什麼時候回來讀**：S8 Evals 方法論用 logprobs 判斷模型有多確定時。
 
 #### KV cache，以及為什麼輸出 token 比較貴
 
@@ -111,7 +111,7 @@ API 費用約等於「輸入 token 數 × 輸入單價 + 輸出 token 數 × 輸
 
 LLM 的訓練大致分成幾個階段。Pretraining 用大量網路文字訓練 next-token prediction，得到只會「接著寫」的 base model，知識大多在這個階段學到。SFT 用「指令 → 好回答」的資料教它聽指令、用對話格式回答。偏好學習（RLHF、DPO）用人類對回答的比較，讓它更有用、更安全。最近的 reasoning model 再用可自動驗證答案的任務（數學、程式）做強化學習（也常搭配蒸餾），讓模型學會先寫出很長的思考過程再回答，所以它們更擅長難題，但也更慢、花更多 token。→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)
 
-**什麼時候回來讀**：[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)和 [S16 安全與治理](/stages/s16-security/)提到 reward hacking、model spec 時。
+**什麼時候回來讀**：[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)和 [S16 安全與治理](/stages/s16-security/)提到 reward hacking、model spec 時。
 
 #### Chat template
 

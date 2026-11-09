@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (you can attempt this core exercise early after S6, but first read this chapter's tool-state, approval and cancellation mechanisms; basic backend and testing skills are needed, plus frontend skills for the web version); the advanced exercise builds on your work from [S8 Eval Methodology](/en/stages/s08-evals/), [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) and [S16 Security and Governance](/en/stages/s16-security/); the lecture cites a few examples from the last two, which you can skip if you haven't read them
+**Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (you can attempt this core exercise early after S6, but first read this chapter's tool-state, approval and cancellation mechanisms; basic backend and testing skills are needed, plus frontend skills for the web version); the advanced exercise builds on your work from [S8 Evals Methodology](/en/stages/s08-evals/), [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) and [S16 Security and Governance](/en/stages/s16-security/); the lecture cites a few examples from the last two, which you can skip if you haven't read them
 
 **Next**: → [S18 Deployment and Architecture](/en/stages/s18-deployment/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
 :::
@@ -163,7 +163,7 @@ The user's own actions (for example deleting a memory) can use an **optimistic u
 
 ### ★ How much should users trust it?
 
-Matching users' trust to how reliable the AI actually is is called **trust calibration**: too much trust and mistakes slip through; too little and users recheck everything. You covered calibration and abstention in [S8 Eval Methodology](/en/stages/s08-evals/); here the question is how to present them:
+Matching users' trust to how reliable the AI actually is is called **trust calibration**: too much trust and mistakes slip through; too little and users recheck everything. You covered calibration and abstention in [S8 Evals Methodology](/en/stages/s08-evals/); here the question is how to present them:
 
 - Don't show raw scores people can't interpret. Use a few levels, for example "supported by sources / partly supported / no source found."
 - For RAG answers, the most useful signal is usually **citations** (← [S9 Retrieval and RAG](/en/stages/s09-rag/)): mark the source of each sentence, and clicking jumps to the matching passage in the original note.
@@ -173,15 +173,15 @@ There are three ways to present a sentence with no source: mark it sentence by s
 
 First verify that the levels actually track accuracy. For example, in a 200-question golden set, the 150 questions marked "supported by sources" got 141 right (94%), and the 50 marked "no source found" got 30 right (60%). If the two groups were about the same, showing the levels would only mislead.
 
-**Common misconception: showing "92% confident" means it's calibrated.** Users have a hard time interpreting that number, and the confidence a model reports about itself is often inaccurate (← S8 Eval Methodology).
+**Common misconception: showing "92% confident" means it's calibrated.** Users have a hard time interpreting that number, and the confidence a model reports about itself is often inaccurate (← S8 Evals Methodology).
 
 <details class="deep">
 <summary>Going deeper: where per-answer uncertainty signals come from</summary>
 
-The judge in S8 Eval Methodology is for offline evaluation. Each live answer needs its own signal, and Claude's API doesn't return logprobs. Common approaches:
+The judge in S8 Evals Methodology is for offline evaluation. Each live answer needs its own signal, and Claude's API doesn't return logprobs. Common approaches:
 
 - **Self-consistency**: run the same question 2–3 times and check whether the answers agree; downgrade if they don't. The cost is 2–3× the calls.
-- **Online judge**: run the judge you calibrated in S8 Eval Methodology on every answer. This adds both latency and cost.
+- **Online judge**: run the judge you calibrated in S8 Evals Methodology on every answer. This adds both latency and cost.
 - **Citation coverage**: the share of sentences supported by sources (← the citation metrics in S9 Retrieval and RAG). Adds almost no cost, and suits RAG-style answers best. But a citation doesn't mean the source actually supports the sentence, so spot-check it with citation precision from S9 Retrieval and RAG.
 
 Once you've picked a signal, compute accuracy per group on the golden set, the same way as the 150 / 50 split above. Confirm that higher levels mean higher accuracy before you display them. This is step 0 of the advanced exercise, A17 Complete Frontend ([how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)).
@@ -234,7 +234,7 @@ A **personalized interface** (← [S13 Memory and Personalization](/en/stages/s1
 
 Example: the task "Organize last week's tax notes and email them to your accountant." The second participant didn't finish: the confirmation card was only visible after scrolling down, and they thought the assistant had frozen. After pinning the confirmation card above the input box, the retest took 1.5 minutes.
 
-**Common misconception: asking "Do you find it easy to use?" is enough.** What you get back is mostly politeness. Two participants are enough to find the worst problems, but comparing success rates between versions needs more people (← S8 Eval Methodology).
+**Common misconception: asking "Do you find it easy to use?" is enough.** What you get back is mostly politeness. Two participants are enough to find the worst problems, but comparing success rates between versions needs more people (← S8 Evals Methodology).
 
 <section class="deep-section">
 
@@ -332,7 +332,7 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 0. **Prerequisite: a per-answer uncertainty signal**. The judge from A8 Error Analysis and Golden Set is for offline evaluation; none of the earlier system project steps produced an uncertainty signal for each live answer, and Claude's API doesn't return logprobs. If you don't have one yet, add one: for example self-consistency (run the same question 2–3 times and check whether the answers agree), running the same judge online on every answer, or citation coverage (the share of sentences supported by sources, ← S9 Retrieval and RAG; a citation isn't necessarily correct, so spot-check citation precision first). Confirm on the golden set that the signal's levels track accuracy before you display it.
 1. Connect the core exercise's state machine to your real agent (← S12 The Agent Loop and Harness). Every tool has a matching component, and at least 2 tools use generative UI (structured cards, not JSON strings).
 2. **Citations** (← S9 Retrieval and RAG): every citation in an answer can be clicked to jump to the matching passage in the original source; sentences with no source are marked with a different style.
-3. **Uncertainty** (← S8 Eval Methodology): based on the signal from step 0, show three or fewer levels; when the system chooses not to answer (abstention), give the reason.
+3. **Uncertainty** (← S8 Evals Methodology): based on the signal from step 0, show three or fewer levels; when the system chooses not to answer (abstention), give the reason.
 4. **Confirmation**: for actions that are high risk under the S10 Tools and MCP tiers, or marked high risk after your S16 Security and Governance audit, always show the actual content (recipients, diff and so on) before letting the user confirm.
 5. **Feedback**: explicit (thumbs up / down + reason) and at least 2 kinds of implicit signals (for example copying, editing an AI draft, regenerating), all written to the trace store with the trace ID.
 6. **Reviewer UI**: a page just for you that lists traces with negative feedback, lets you tag failure types, and exports to the eval dataset in one click (← S14 Agent Evals, Data and Optimization).

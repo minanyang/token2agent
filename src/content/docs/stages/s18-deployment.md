@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（eval 與 trace）；會用到 [S16 安全與治理](/stages/s16-security/)的威脅模型與 [S17 產品與 AI UX](/stages/s17-ai-ux/) 講的介面狀態與回饋（不必先做進階題 A17 完整前端；[代號說明](/guide/how-to-use/#代號怎麼讀)）；推論相關的模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S5 推論與 serving](/stages/s05-inference/)）
+**前置**：[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)（evals 與 trace）；會用到 [S16 安全與治理](/stages/s16-security/)的威脅模型與 [S17 產品與 AI UX](/stages/s17-ai-ux/) 講的介面狀態與回饋（不必先做進階題 A17 完整前端；[代號說明](/guide/how-to-use/#代號怎麼讀)）；推論相關的模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S5 推論與 serving](/stages/s05-inference/)）
 
 **銜接**：→ [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
@@ -25,7 +25,7 @@ sidebar:
 
 只有你自己在用的 demo，和給多人用的服務，差別不在模型，而在模型周圍的工程。這章回答：筆記助理要開放給 100 個人用時，每個請求要經過哪些關卡、每個月要花多少錢、怎麼改 prompt 才不會把線上弄壞、品質悄悄變差時怎麼發現。
 
-排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後，是因為 eval 把關的發布流程需要那一章建立的 eval 與 trace。本章同時會出現兩個「CI」：統計上的信賴區間（confidence interval）一律寫「信賴區間」，「CI」只指持續整合（CI/CD）。
+排在 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 之後，是因為 eval 把關的發布流程需要那一章建立的 evals 與 trace。本章同時會出現兩個「CI」：統計上的信賴區間（confidence interval）一律寫「信賴區間」，「CI」只指持續整合（CI/CD）。
 
 ## 學完能
 
@@ -165,7 +165,7 @@ sidebar:
 
 ### ★ 該從哪個模型開始？
 
-選模型的順序要反過來（best-first，再 swap down）：先用最強的模型證明任務做得到，它的分數就是品質上限；再一個個換成更小、更便宜、更快的模型，每換一次都跑同一組 eval，看品質是否還在誤差範圍內（← [S8 Eval 方法論](/stages/s08-evals/) 的信賴區間）。
+選模型的順序要反過來（best-first，再 swap down）：先用最強的模型證明任務做得到，它的分數就是品質上限；再一個個換成更小、更便宜、更快的模型，每換一次都跑同一組 eval，看品質是否還在誤差範圍內（← [S8 Evals 方法論](/stages/s08-evals/) 的信賴區間）。
 
 例如筆記助理的「單篇查詢」題組 200 題：強模型 92%，中型模型 90%，小模型 84%。和強模型的配對差值，中型模型的 95% 信賴區間如果是 [−5, +1]，在你定的容忍範圍內，可以換；小模型的信賴區間如果是 [−12, −4]，就明確變差了，只能用在更簡單的子任務上，或留在路由裡處理最簡單的請求。
 
@@ -177,7 +177,7 @@ sidebar:
 
 Routing 在呼叫前選模型，cascade 先試便宜的、不夠好才升級；gateway 是集中處理這些事的那一層，cache 則讓重複的請求不必再付一次錢。
 
-**Routing** 是在呼叫前決定要用哪個模型（[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 的 routing workflow 是在不同 prompt 之間選，這裡是在不同模型之間選）。可以是規則（請求類型、長度），也可以是一個訓練過的 router：RouteLLM（Ong et al. 2024）用偏好資料訓練 router，判斷這個請求交給強模型和交給弱模型的差別大不大。你在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 從 trace 蒸餾的 router 就是同一個概念。
+**Routing** 是在呼叫前決定要用哪個模型（[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 的 routing workflow 是在不同 prompt 之間選，這裡是在不同模型之間選）。可以是規則（請求類型、長度），也可以是一個訓練過的 router：RouteLLM（Ong et al. 2024）用偏好資料訓練 router，判斷這個請求交給強模型和交給弱模型的差別大不大。你在 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 從 trace 蒸餾的 router 就是同一個概念。
 
 **Cascade** 則是先呼叫便宜的模型，再用一個評分方法判斷結果夠不夠好，不夠好才升級到強模型。FrugalGPT（Chen et al. 2023）是這個做法的經典論文。用上一節的單價，假設評分每次多花 0.0005 美元：
 
@@ -229,7 +229,7 @@ LLM 服務的延遲要拆開看（← [模型速成](/guide/app-first/#成本與
 
 **Goodput** 是「同時符合延遲目標（SLO）的請求」的吞吐量。例如 SLO 是 TTFT < 1 秒且總時間 < 10 秒，系統每秒處理 10 個請求，其中 7 個符合，goodput 就是每秒 7 個。它比原始吞吐量更貼近使用者體驗。
 
-使用者不多時，容量規劃要靠**合成負載測試**：用模擬使用者（← S14 Agent eval、資料與最佳化）或錄下來的真實請求，從 1 位同時在線的使用者開始逐步加，觀察 TTFT、P99 與錯誤率在哪一點開始惡化。
+使用者不多時，容量規劃要靠**合成負載測試**：用模擬使用者（← S14 Agent evals、資料與最佳化）或錄下來的真實請求，從 1 位同時在線的使用者開始逐步加，觀察 TTFT、P99 與錯誤率在哪一點開始惡化。
 
 | 同時在線 | TTFT P50 | TTFT P99 | 錯誤率 |
 |---|---|---|---|
@@ -257,7 +257,7 @@ LLM 服務的延遲要拆開看（← [模型速成](/guide/app-first/#成本與
 
 在 LLM 系統裡，改 prompt 也是部署。每個改動先過 eval 這道門，再從一小部分流量開始放，出問題時能在幾分鐘內退回去。
 
-改 prompt、換模型、改 context 組裝方式、升級工具，都算一次部署，都要經過同樣的關卡。**Eval-gated CI** 的意思是：每個改動都要跑 regression eval（← [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)），分數掉出你定的門檻，PR（pull request，合併前送審的程式碼改動）就不能合併。例如筆記助理的 golden set 200 題，基準 88%；一個 PR 改了系統提示詞後是 82%，配對差值的 95% 信賴區間是 [−10, −2]，下界低於事先定好的 −5 個百分點，CI 擋下。
+改 prompt、換模型、改 context 組裝方式、升級工具，都算一次部署，都要經過同樣的關卡。**Eval-gated CI** 的意思是：每個改動都要跑 regression eval（← [S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)），分數掉出你定的門檻，PR（pull request，合併前送審的程式碼改動）就不能合併。例如筆記助理的 golden set 200 題，基準 88%；一個 PR 改了系統提示詞後是 82%，配對差值的 95% 信賴區間是 [−10, −2]，下界低於事先定好的 −5 個百分點，CI 擋下。
 
 通過 CI 之後也不要一次全量上線：
 
@@ -341,10 +341,10 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 **目標**：在一組有標準答案的題目上，量出「只用強模型」、「只用弱模型」、「cascade」三種方案的品質、成本、延遲。
 
 **步驟**
-1. 選 100–200 題有可程式判分答案的題目（題數見驗收），例如 GSM8K 測試集的前 200 題（Hugging Face 的 `openai/gsm8k`，`main` 設定的 `test` split；答案是 `####` 後面的數字，可以直接比對），或你在 S8 Eval 方法論建好的 golden set 中可以用程式判分的部分。
+1. 選 100–200 題有可程式判分答案的題目（題數見驗收），例如 GSM8K 測試集的前 200 題（Hugging Face 的 `openai/gsm8k`，`main` 設定的 `test` split；答案是 `####` 後面的數字，可以直接比對），或你在 S8 Evals 方法論建好的 golden set 中可以用程式判分的部分。
 2. 選一個強模型與一個弱模型（例如同一家的大小兩款，或雲端強模型 + Ollama 本地小模型）。GSM8K 對目前的雲端模型已接近飽和，兩個雲端模型常常都在 95% 上下，cascade 幾乎不必升級，這題就學不到東西。所以弱模型建議用 Ollama 的小模型；或先各跑 20 題試水溫，兩者差距小於 5 個百分點時，改用較難的題組（例如你的 golden set 中可程式判分的部分）。
 3. 方案 A：全部用強模型；方案 B：全部用弱模型。每題記錄是否正確、輸入 / 輸出 token 數、成本、TTFT、總延遲。
-4. 方案 C（cascade）：先用弱模型，再用一個評分方法決定要不要升級，例如讓弱模型自評信心、用 logprobs（← S8 Eval 方法論）、或用另一個便宜的模型當 judge。至少試兩個門檻。門檻要在另一組 dev 題目上選（例如 GSM8K 測試集的第 201–300 題），選定後才在第 1 步的題目上跑最終結果；題目不夠切的話，在報告寫明門檻是在同一組題目上挑的，結果會偏樂觀。
+4. 方案 C（cascade）：先用弱模型，再用一個評分方法決定要不要升級，例如讓弱模型自評信心、用 logprobs（← S8 Evals 方法論）、或用另一個便宜的模型當 judge。至少試兩個門檻。門檻要在另一組 dev 題目上選（例如 GSM8K 測試集的第 201–300 題），選定後才在第 1 步的題目上跑最終結果；題目不夠切的話，在報告寫明門檻是在同一組題目上挑的，結果會偏樂觀。
 5. 加一層 exact cache，把所有題目各重送一次，記錄命中率與命中時的延遲。
 
 **驗收**
@@ -355,7 +355,7 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 
 **提示**
 - TypeScript：Vercel AI SDK 或直接用各家 SDK；成本從 response 的 usage 計算（← S6 LLM API 與應用基本功）。
-- Python：LiteLLM 可以統一不同 provider 的呼叫與成本計算；配對差值的信賴區間用 bootstrap：每次從題組中重抽同樣題數，同一題的 A、C 結果一起抽（← S8 Eval 方法論）。
+- Python：LiteLLM 可以統一不同 provider 的呼叫與成本計算；配對差值的信賴區間用 bootstrap：每次從題組中重抽同樣題數，同一題的 A、C 結果一起抽（← S8 Evals 方法論）。
 - 成本：200 題 × 數次呼叫，用雲端模型約數美元；全部用本地模型則免費，但延遲數字的意義不同。
 - 卡住時：
   - 重讀：[每個請求該送哪個模型？](#-每個請求該送哪個模型)、[怎麼不讓帳單失控？](#-怎麼不讓帳單失控)
@@ -369,8 +369,8 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 
 **步驟**
 1. **多租戶**：把 A6 串流聊天與 trace 以來每個請求都帶的使用者 ID 換成真正的身分驗證（登入或 API token），讓每一層（資料庫、向量索引、memory、cache key、trace）都帶租戶 ID。寫一組跨租戶測試：用租戶 A 的身分，以直接查詢、語意相近的問題、prompt injection 三種方式嘗試取得租戶 B 的資料。
-2. **Gateway 與路由**：所有模型呼叫經過一個 gateway，實作至少一條路由規則（例如簡單請求走本地模型、複雜請求走雲端，或使用從 trace 蒸餾的 router，← S14 Agent eval、資料與最佳化），以及一個 provider 失敗時的 fallback 與 circuit breaker。
-3. **負載測試**：用模擬使用者（← S14 Agent eval、資料與最佳化）或錄下的請求，從 1 位同時在線使用者逐步加到 TTFT 或錯誤率明顯惡化為止。先定 SLO（例如 TTFT P99 < 2 秒、任務完成時間 P99 < 60 秒），再算 goodput。
+2. **Gateway 與路由**：所有模型呼叫經過一個 gateway，實作至少一條路由規則（例如簡單請求走本地模型、複雜請求走雲端，或使用從 trace 蒸餾的 router，← S14 Agent evals、資料與最佳化），以及一個 provider 失敗時的 fallback 與 circuit breaker。
+3. **負載測試**：用模擬使用者（← S14 Agent evals、資料與最佳化）或錄下的請求，從 1 位同時在線使用者逐步加到 TTFT 或錯誤率明顯惡化為止。先定 SLO（例如 TTFT P99 < 2 秒、任務完成時間 P99 < 60 秒），再算 goodput。
 4. **自架比較**：如果你做過 M5 迷你推論伺服器，或可以在本地跑 vLLM / Ollama，就把同一組負載與 eval 分別跑在自架與 API 上，比較品質、延遲、每千次請求的成本。
 5. **Eval-gated pipeline**：PR 觸發 regression eval；分數低於門檻時 CI 失敗。
 6. **Canary 與回滾演練**：故意做一個會讓品質下降的改動（例如刪掉系統提示詞裡關鍵的一段），讓它通過 CI 的一部分（或暫時調低門檻），canary 給一位使用者，靠線上監控或抽樣 eval 發現問題並回滾。記錄每一步的時間。

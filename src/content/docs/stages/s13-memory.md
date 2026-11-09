@@ -12,7 +12,7 @@ sidebar:
 :::note[這一章]
 **前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)
 
-**銜接**：→ [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（個人化介面）
+**銜接**：→ [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（個人化介面）
 :::
 
 :::tip[理解路線重點]
@@ -25,7 +25,7 @@ sidebar:
 
 S12 Agent loop 與 harness 做出的 agent 每次開新 session 都從零開始：使用者上週說過「回答用條列」，這週還得再說一次。這一章回答四個問題：該記住什麼、怎麼寫進去和讀出來、什麼時候更新或忘掉（包括使用者要求刪除時怎麼真的刪乾淨）、怎麼證明它記得對而且不會把別人的記憶拿出來。最後處理記憶被惡意寫入的風險。
 
-排在 S12 Agent loop 與 harness 之後，是因為記憶的讀寫本身就是 agent 的工具；排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之前，是因為記憶系統的好壞要靠 agent eval 才看得出來。
+排在 S12 Agent loop 與 harness 之後，是因為記憶的讀寫本身就是 agent 的工具；排在 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 之前，是因為記憶系統的好壞要靠 agent eval 才看得出來。
 
 ## 學完能
 
@@ -231,7 +231,7 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
 
 - **LongMemEval**：每題附一段很長的對話歷史，相關資訊散在其中幾個 session，其他是干擾。必做題的提示列出了它的資料檔和 `question_type` 怎麼對應這五類，想看真實題型可以挑幾題跑。
 - **LoCoMo**（Maharana et al. 2024）：平均約 300 輪、最多 35 個 session 的超長對話，評估問答與事件摘要。
-- 自己出題時，先寫答案表（哪件事在哪個 session、何時改變），再依答案表出題，判分才有依據。判分可以用 [S8 Eval 方法論](/stages/s08-evals/) 校準過的 judge。
+- 自己出題時，先寫答案表（哪件事在哪個 session、何時改變），再依答案表出題，判分才有依據。判分可以用 [S8 Evals 方法論](/stages/s08-evals/) 校準過的 judge。
 
 </details>
 
@@ -245,7 +245,7 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
 
 - **範圍隔離**：每筆記憶屬於一位使用者，檢索時在查詢條件裡就依使用者 ID 過濾，再排序。例如另一位使用者 `u_042` 問「週報要寄給誰」，如果檢索先找最相似的 5 筆再過濾，或根本沒過濾，就可能拿到小林的記憶。不要靠 prompt 叫模型「只用這位使用者的記憶」，模型會出錯；隔離要在程式裡做（多租戶的完整做法 → [S18 部署與架構](/stages/s18-deployment/)）。
 - **使用者控制權**：看得到系統記了什麼、能改、能刪（介面設計 → [S17 產品與 AI UX](/stages/s17-ai-ux/)）。刪除的語意就是上一節的表格。
-- **可評估**：同一組任務，有個人化和沒有個人化各跑一次，用 [S8 Eval 方法論](/stages/s08-evals/) 的 judge 比較。
+- **可評估**：同一組任務，有個人化和沒有個人化各跑一次，用 [S8 Evals 方法論](/stages/s08-evals/) 的 judge 比較。
 
 **隱私。** 記得越多，外洩時傷害越大。基本原則：只記之後用得到的事；健康、財務、感情這類敏感內容，除非使用者明確要求，否則不記；每筆記憶都讓使用者看得到；「已刪除」的承諾要涵蓋所有副本。
 
@@ -323,7 +323,7 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
 **提示**
 - TypeScript：記憶存在 SQLite（`better-sqlite3`）加一欄 embedding，或直接用 JSON 檔；用 Zod 定義記憶的 schema。
 - Python：`sqlite3` 或 JSON；Pydantic 定義 schema；embedding 可沿用 S9 檢索與 RAG 的模型。
-- 判斷題目對錯可以用 S8 Eval 方法論校準過的 judge，題目少時人工判斷也可以。
+- 判斷題目對錯可以用 S8 Evals 方法論校準過的 judge，題目少時人工判斷也可以。
 - 想對照現成資料：[LongMemEval](https://github.com/xiaowu0162/LongMemEval) 的 `longmemeval_oracle.json`（500 題，只含和題目相關的 session）可以挑幾題跑你的系統，看題型怎麼出。檔案目前放在 Hugging Face 的 `xiaowu0162/longmemeval-cleaned`。`question_type` 和五類的對應：三種 `single-session-*` = 資訊擷取，`multi-session` = 跨 session 推理，`temporal-reasoning`、`knowledge-update` 各自對應；拒答題不是一個 type，而是 `question_id` 以 `_abs` 結尾的題目。
 - 卡住時：
   - 重讀：[寫入](#-該記什麼怎麼記出處)、[更新與遺忘](#-說法變了或要刪除怎麼辦)、[評估記憶](#-怎麼知道它記得對)、[Memory poisoning](#-記憶被惡意寫入怎麼辦)
@@ -337,7 +337,7 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
 
 **步驟**
 
-0. 準備 pairwise judge：A8 錯誤分析與 golden set（[代號說明](/guide/how-to-use/#代號怎麼讀)）的 judge 是單一回答的通過 / 不通過，第 6 步需要的是兩個回答比較。依 S8 Eval 方法論的做法另建一個 pairwise judge（輸入兩個回答、交換位置各判一次，兩次不一致記為平手），並用至少 10 筆人工判斷抽查它和你的判斷一致幾筆。
+0. 準備 pairwise judge：A8 錯誤分析與 golden set（[代號說明](/guide/how-to-use/#代號怎麼讀)）的 judge 是單一回答的通過 / 不通過，第 6 步需要的是兩個回答比較。依 S8 Evals 方法論的做法另建一個 pairwise judge（輸入兩個回答、交換位置各判一次，兩次不一致記為平手），並用至少 10 筆人工判斷抽查它和你的判斷一致幾筆。
 1. 把從 A6 串流聊天與 trace 開始累積的紀錄當 transcripts 層；在上面建立 notes 層（每位使用者的記憶）與 representation 層（例如每位使用者的偏好頁、每個主題的整理頁）。
 2. 決定 injected 層放什麼，並設上限（例如 1,000 token 以內）；其他記憶透過工具或檢索在需要時讀取。
 3. 擷取在 session 中做少量同步寫入，整併放到背景（例如每天一次）。每筆記憶都有使用者 ID、來源、時間、是否來自可信來源。
@@ -358,7 +358,7 @@ MemGPT（Packer et al. 2023）把 context 比喻成電腦的主記憶體、外�
 **提示**
 - TypeScript：可以參考 Claude Code 的記憶檔設計，把每位使用者的 notes 存成檔案或資料表；檢視頁沿用 A6 串流聊天與 trace 的介面。
 - Python：同上；背景整併可以先用 cron 或簡單的排程。
-- 成本：擷取與整併都是額外的 LLM 呼叫，記得在 trace 裡分開記錄這部分的 token（← S8 Eval 方法論的成本會計）；整併可用較便宜的模型。
+- 成本：擷取與整併都是額外的 LLM 呼叫，記得在 trace 裡分開記錄這部分的 token（← S8 Evals 方法論的成本會計）；整併可用較便宜的模型。
 - 卡住時：
   - 重讀：[四個層級](#-記憶要放在哪一層)、[更新與遺忘](#-說法變了或要刪除怎麼辦)、[個人化](#-怎麼依使用者調整又不外洩)、[Memory poisoning](#-記憶被惡意寫入怎麼辦)
   - 延伸：learn-claude-code s09；Kaggle〈Context Engineering: Sessions & Memory〉

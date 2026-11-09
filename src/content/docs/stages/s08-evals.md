@@ -1,18 +1,18 @@
 ---
-title: S8 Eval 方法論
+title: S8 Evals 方法論
 head:
   - tag: title
-    content: LLM 評估怎麼做？Eval 與 LLM judge（S8）｜Token2Agent
+    content: LLM 評估怎麼做？Evals 與 LLM judge（S8）｜Token2Agent
 description: LLM 評估怎麼做才可信：從真實 trace 做錯誤分析、寫二元評分標準、用人工標註校準 LLM judge，並為每個指標附上信賴區間，判斷系統是不是真的變好了。
 sidebar:
   order: 8
-  label: S8 Eval 方法論
+  label: S8 Evals 方法論
 ---
 
 :::note[這一章]
 **前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（進階題需要 A6 串流聊天與 trace、A7 structured output 與 workflow 累積的 trace；[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）；logprobs 的背景見 [模型速成](/guide/app-first/#logits-與-softmax)（深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)）
 
-**銜接**：→ [S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（agent eval）
+**銜接**：→ [S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)（agent evals）
 :::
 
 :::tip[理解路線重點]
@@ -25,7 +25,7 @@ sidebar:
 
 改了 prompt、換了模型、加了檢索之後，怎麼知道系統真的變好了？只看幾個例子的感覺，很容易被少數印象深刻的案例誤導。這一章學一套可以重跑的方法：先讀真實的 trace、歸納出失敗類型，再針對每種失敗設計評分方式，驗證模型評分者跟人的判斷一致，最後用誤差範圍判斷差異是不是真的。
 
-Eval 排在 RAG 和工具之前，因為後面每一章的改動都需要它來判斷值不值得。
+Evals 排在 RAG 和工具之前，因為後面每一章的改動都需要它來判斷值不值得。
 
 ## 學完能
 
@@ -225,7 +225,7 @@ Bootstrap 的步驟（完整版與虛擬碼見[數學補給](/guide/math-refresh
 
 題目分兩組：量「還做不到的事」的 capability eval，和量「應該一直做得到的事」的 regression eval。同一題跑多次時，要看的是「至少一次成功」還是「每次都成功」，取決於使用者怎麼用這個功能。
 
-**兩種 eval。** **Capability eval** 的通過率低，目的是告訴你往哪裡改進，例如「回答需要跨三篇筆記整合的問題」。**Regression eval** 的通過率應該接近 100%，目的是防止改 A 壞 B，例如「標籤都在詞表內」。capability eval 裡的題目穩定通過之後，就「畢業」移到 regression eval。
+**兩種 evals。** **Capability eval** 的通過率低，目的是告訴你往哪裡改進，例如「回答需要跨三篇筆記整合的問題」。**Regression eval** 的通過率應該接近 100%，目的是防止改 A 壞 B，例如「標籤都在詞表內」。capability eval 裡的題目穩定通過之後，就「畢業」移到 regression eval。
 
 **同一題跑多次。** LLM 的輸出每次可能不同，所以同一題常會跑 k 次：
 
@@ -236,7 +236,7 @@ Bootstrap 的步驟（完整版與虛擬碼見[數學補給](/guide/math-refresh
 
 **容易誤會：pass@k 高不代表使用者體驗好。** 使用者只會看到一個答案，沒有人幫他從 k 個答案裡挑對的那個。除非系統真的會自動驗證並挑選，否則應該看 pass^k 或單次成功率。
 
-Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留到 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)。
+Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留到 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)。
 
 <details class="deep">
 <summary>深入一點：從 n 次樣本估 pass@k 與 pass^k</summary>
@@ -409,7 +409,7 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
 - TypeScript：eval runner 可以是一個 Vitest 以外的獨立 script，避免和單元測試混在一起；結果存成 JSONL 方便比較。
 - Python：pytest 或純 script 皆可；[promptfoo](https://www.promptfoo.dev/docs/intro/) 也能當 runner，但先自己寫一次，才知道它幫你做了什麼。
 - 資料檢視：Langfuse、Phoenix 都能標註 trace；或自己做一個簡單的檢視頁，Hamel 的 Field Guide 很推薦這樣做。不寫網頁的話，Jupyter notebook 或 Streamlit 也能做出同樣的「一筆一筆看、快速標註」流程。
-- 成本：一次 eval run 通常是幾十到幾百次呼叫；記下來，到 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 時會反覆跑。
+- 成本：一次 eval run 通常是幾十到幾百次呼叫；記下來，到 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 時會反覆跑。
 - 卡住時：
   - 重讀：[系統到底怎麼出錯？](#-系統到底怎麼出錯)、[題目從哪裡來？](#-題目從哪裡來)、[差幾分才算真的變好？](#-差幾分才算真的變好)
   - 延伸：Hamel〈A Field Guide to Rapidly Improving AI Products〉；Miller 2024 的配對比較段落
@@ -498,7 +498,7 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
 - [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（2026-09）— 錯誤分析、binary vs Likert、judge 校準的問答集；持續更新，是這一章最值得追蹤的來源。
 - [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/)（2025-03-24）— 錯誤分析與資料檢視工具的實務，做 A8 錯誤分析與 golden set 時很有用。
 - [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/)（2024-10-29）— 一步步建立並校準 judge，對應必做題。
-- [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)（2026-01-09）— 先讀詞彙與 grader 分類的部分，agent 部分留到 S14 Agent eval、資料與最佳化。
+- [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)（2026-01-09）— 先讀詞彙與 grader 分類的部分，agent 部分留到 S14 Agent evals、資料與最佳化。
 - Chip Huyen《AI Engineering》（付費書）第 3–4 章 — 評估方法與評估流程的系統性整理。
 
 ### 原始論文

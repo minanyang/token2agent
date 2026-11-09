@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course)
+**Prerequisites**: [S8 Evals Methodology](/en/stages/s08-evals/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course)
 
 **Next**: → [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)
 :::
@@ -258,15 +258,15 @@ Every component assumes "the model can't do this on its own," and that assumptio
 
 One line from "Harness design for long-running apps" is worth remembering: every component in a harness encodes an assumption about what the model can't do on its own. In the article, the context reset (clearing the context and handing off to a new agent through a handoff document), added because the model rushed to wrap up, was removed once models improved; the sprint structure was removed for the next model generation too, while the planner and evaluator stayed.
 
-A minimal agent eval needs just three things (← [S8 Eval Methodology](/en/stages/s08-evals/)):
+A minimal agent eval needs just three things (← [S8 Evals Methodology](/en/stages/s08-evals/)):
 
 - **Run each task n times**: an agent gives different results each time, so one run doesn't count.
-- **pass^k**: the fraction of tasks where all k runs succeed (← S8 Eval Methodology). It's closer to "users can trust it every time" than the average success rate. With a 75% per-run success rate and independent runs, the chance of 3 successes in a row is only 0.75³ ≈ 42%.
-- **Confidence interval**: the score is estimated from a finite number of runs, so attach a margin of error (← S8 Eval Methodology).
+- **pass^k**: the fraction of tasks where all k runs succeed (← S8 Evals Methodology). It's closer to "users can trust it every time" than the average success rate. With a 75% per-run success rate and independent runs, the chance of 3 successes in a row is only 0.75³ ≈ 42%.
+- **Confidence interval**: the score is estimated from a finite number of runs, so attach a margin of error (← S8 Evals Methodology).
 
 Work it through at the core exercise's scale: 10 tasks, 5 runs each, with per-task success counts of 5, 5, 4, 5, 3, 5, 5, 2, 5, 4.
 
-- Overall success rate: 43 successes ÷ 50 runs = 86%. Using the approximation from S8 Eval Methodology, the standard error is √(0.86 × 0.14 ÷ 50) ≈ 0.049, and the 95% confidence interval is about 86% ± 9.6 percentage points, or roughly 76%–96%. This approximation treats the 50 runs as independent samples; the 5 runs of the same task are correlated, so the real interval is wider (→ S14 Agent Evals, Data and Optimization).
+- Overall success rate: 43 successes ÷ 50 runs = 86%. Using the approximation from S8 Evals Methodology, the standard error is √(0.86 × 0.14 ÷ 50) ≈ 0.049, and the 95% confidence interval is about 86% ± 9.6 percentage points, or roughly 76%–96%. This approximation treats the 50 runs as independent samples; the 5 runs of the same task are correlated, so the real interval is wider (→ S14 Agent Evals, Data and Optimization).
 - pass^5: only tasks with all 5 runs correct count. There are 6, so pass^5 = 6 ÷ 10 = 60%.
 
 An 86% average sounds good, but if a user hands it the same job 5 times, only 60% of tasks succeed every time.
@@ -276,7 +276,7 @@ An 86% average sounds good, but if a user hands it the same job 5 times, only 60
 <details class="deep">
 <summary>Going deeper: two details about confidence intervals</summary>
 
-- **The 5 runs of one task aren't independent.** Some tasks are just hard, and all 5 runs fail together. The formula above treats the 50 runs as independent samples, so the interval comes out too narrow. A more robust approach is a bootstrap by task: each time, sample 10 tasks with replacement (each with its 5 results), recompute the success rate, repeat 1,000+ times and take the 2.5th and 97.5th percentiles (← S8 Eval Methodology).
+- **The 5 runs of one task aren't independent.** Some tasks are just hard, and all 5 runs fail together. The formula above treats the 50 runs as independent samples, so the interval comes out too narrow. A more robust approach is a bootstrap by task: each time, sample 10 tasks with replacement (each with its 5 results), recompute the success rate, repeat 1,000+ times and take the 2.5th and 97.5th percentiles (← S8 Evals Methodology).
 - **When the number of runs n is larger than k**: if a task has c successes, you can estimate pass^k as the probability that k runs drawn from the n are all successes, i.e. C(c, k) ÷ C(n, k). For example, n = 8, c = 6, k = 3: C(6, 3) ÷ C(8, 3) = 20 ÷ 56 ≈ 0.36. When n = k, this reduces to "1 if all k runs are correct, else 0," which is the calculation above.
 
 </details>
@@ -327,7 +327,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 **Acceptance criteria**
 - 10 tasks × 5 runs = 50 runs, each with a complete JSONL trace.
-- Report the overall success rate with a 95% confidence interval (← S8 Eval Methodology), plus each task's success count (0–5) and pass^5.
+- Report the overall success rate with a 95% confidence interval (← S8 Evals Methodology), plus each task's success count (0–5) and pass^5.
 - Show from the traces that across the 15 auto-mode runs of the permission tasks, every `delete_file` call triggered an ask before executing, while `write_file` ran directly without asking (report the total call count for each; count runs where the model never tried to delete separately). In plan mode, write tools were executed 0 times.
 - Test with a tool that fails on purpose: after 3 consecutive failures, the loop stops and records the escalation reason, without reaching the step limit.
 - No run exceeds 15 steps; runs that hit the limit count as failures, with the reason recorded.

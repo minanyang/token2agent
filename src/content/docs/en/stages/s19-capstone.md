@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: the lecture assumes the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the core exercise also needs repeated-trial and pass^k concepts from [S8 Eval Methodology](/en/stages/s08-evals/), basic Git and automated testing skills, and the ability to read Python if you choose mini-SWE-agent. It does not require the system project; the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18
+**Prerequisites**: the lecture assumes the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the core exercise also needs repeated-trial and pass^k concepts from [S8 Evals Methodology](/en/stages/s08-evals/), basic Git and automated testing skills, and the ability to read Python if you choose mini-SWE-agent. It does not require the system project; the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18
 
 **Next**: the end of the route; afterward, go back to [S0 AI Systems Overview](/en/stages/s00-big-picture/) and pick a layer to go deeper on
 :::
@@ -29,7 +29,7 @@ The capstone extends your system into an always-on agent and delivers five piece
 
 ## After this chapter you can
 
-- Read a trajectory and say which of the six parts (loop, tools, context, memory, eval, security) each step falls into and which chapter covers it. (lecture and self-check)
+- Read a trajectory and say which of the six parts (loop, tools, context, memory, evals, security) each step falls into and which chapter covers it. (lecture and self-check)
 - Explain the orchestrator-worker and citation design of deep research systems, and what they cost. (lecture and self-check)
 - Take any open-source agent, map out its six parts, and find each one in the code. (core)
 - Explain why Agentless and SWE-agent can both be competitive on the same benchmark, and what that means for "when to use an agent." (core)
@@ -52,7 +52,7 @@ Feature lists can't be compared with each other; describing every system with th
 | Tools | What actions can the model take? How is the interface designed? | `notes_search`, `notes_create`, `web_clip` | [S10 Tools and MCP](/en/stages/s10-tools-mcp/) |
 | Context | What does the model see at each step? What if it gets too long? | System prompt, the question, 5 retrieved notes; compaction when the conversation gets too long | [S9 Retrieval and RAG](/en/stages/s09-rag/), [S11 Context Engineering](/en/stages/s11-context-engineering/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | Memory | What does it remember across sessions? | "User prefers bullet points," time zone UTC+9 | [S13 Memory and Personalization](/en/stages/s13-memory/) |
-| Eval | How do you know it got better or worse? | A 50-case regression suite, 3 runs per case | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| Evals | How do you know it got better or worse? | A 50-case regression suite, 3 runs per case | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | Security | What data can it touch, what can it do externally, who approves? | Email drafts need a human to click send; clipped web pages are always untrusted input | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) (permissions), [S16 Security and Governance](/en/stages/s16-security/) |
 
 The fastest way to take an agent apart is to read a trajectory: the complete record of one task from start to finish, every model response, every tool call and its result. Each step falls into one of the parts. Take the notes assistant answering "What did I note down about RAG last month?":
@@ -61,7 +61,7 @@ The fastest way to take an agent apart is to read a trajectory: the complete rec
 2. The model calls `notes_search(query="RAG", month="2026-10")`. → loop, tools
 3. 5 notes come back; 1 is a clipped web page, and a hook marks it as untrusted content. → security
 4. The model decides it has enough, answers in bullet points with links to the notes, and makes no more tool calls. → the loop's stop condition
-5. This trace gets sampled and may later become a case in the regression suite. → eval
+5. This trace gets sampled and may later become a case in the regression suite. → evals
 
 A common misconception is that the six parts are six modules in the code. One piece of code often belongs to two parts (compaction manages context and also decides what to keep), so a row listing two chapters is normal. Also, "none" is a choice too: mini-SWE-agent has no memory at all and no specialized tools, and that in itself is a design tradeoff worth writing down.
 
@@ -89,7 +89,7 @@ Both approaches are competitive on benchmarks like SWE-bench because of the shap
 
 A fixed workflow falls short when you can't know the next step until you see the result of the previous one: you have to run the program before you can reproduce the bug, you have to read the logs to know which module to change, a feature touches five files in an order you can't see in advance, or the issue itself is unclear and you have to ask someone first.
 
-A common misconception is that similar benchmark scores mean equally good. With similar scores, cost and run-to-run consistency (pass^k: the share of tasks that succeed all k times, ← S8 Eval Methodology) can still differ a lot, and your own tasks don't necessarily look like benchmark cases. The core exercise measures exactly these things on 5 tasks of your own.
+A common misconception is that similar benchmark scores mean equally good. With similar scores, cost and run-to-run consistency (pass^k: the share of tasks that succeed all k times, ← S8 Evals Methodology) can still differ a lot, and your own tasks don't necessarily look like benchmark cases. The core exercise measures exactly these things on 5 tasks of your own.
 
 <details class="deep">
 <summary>Going deeper: spec-driven development and Claude Code's configuration points</summary>
@@ -97,7 +97,7 @@ A common misconception is that similar benchmark scores mean equally good. With 
 - **Spec-driven development** is one way of working with a coding agent: first write down clearly what to build and why (the spec), turn it into a technical plan, break that into tasks, and only then implement and verify. GitHub's spec-kit turns this process into a tool. Its value is making human intent a document you can check, instead of something scattered through a conversation. On the six-part map, a spec is context loaded into every session, and also the basis for evaluation at acceptance.
 - **Which part each Claude Code configuration point maps to**:
   - `CLAUDE.md` is loaded at session start (context, memory).
-  - Hooks can block or rewrite an action before a tool call, and check or log after it (security, eval).
+  - Hooks can block or rewrite an action before a tool call, and check or log after it (security, evals).
   - Skills normally expose only a name and description, loading the full text only when needed (progressive disclosure, ← S11 Context Engineering, S12 The Agent Loop and Harness).
   - Sub-agents work in their own context and return only the result (context isolation, ← S12 The Agent Loop and Harness).
   - Permission modes decide which actions ask a human first (← S12 The Agent Loop and Harness).
@@ -201,7 +201,7 @@ Limits: what wasn't tested, what to do next
 
 **First, measure how big the noise is.** Rerunning the same commit (one saved version of the code) can change the score, and the cause may be nothing but the environment: tool timeouts, concurrency, container resources. As [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) mentioned, Anthropic found that changing only the container's resource settings moved the success rate by about 6 percentage points between the most lenient and strictest settings, and recommends being skeptical of gaps under 3 points. So the infra variance report starts by running the same commit 5 times to see how wide the score distribution is; after that, any "it got better" gap has to be larger than that width to count.
 
-**Second, compare paired on the same set of cases.** When comparing two versions, run them on the same cases, compute "new minus old" for each case, then compute the 95% confidence interval of the mean difference (← S8 Eval Methodology). Pairing cancels out the difficulty of individual cases, so the interval is much narrower than computing a separate interval for each version. Only cases both versions can run can be paired: the version at the end of A18 Multi-user Deployment has no schedules or notifications, so the new always-on behavior cases can't be paired and are reported on their own as pass^3.
+**Second, compare paired on the same set of cases.** When comparing two versions, run them on the same cases, compute "new minus old" for each case, then compute the 95% confidence interval of the mean difference (← S8 Evals Methodology). Pairing cancels out the difficulty of individual cases, so the interval is much narrower than computing a separate interval for each version. Only cases both versions can run can be paired: the version at the end of A18 Multi-user Deployment has no schedules or notifications, so the new always-on behavior cases can't be paired and are reported on their own as pass^3.
 
 To show the new version "isn't worse," write down the allowed gap δ before running, say 5 percentage points; it passes only if the lower bound of the paired difference's 95% confidence interval is no lower than −δ. δ must be set in advance; setting it after seeing the results makes it meaningless.
 
@@ -213,7 +213,7 @@ A common misconception is "the two versions' confidence intervals overlap, so th
 
 ### ○ What other agent domains are there?
 
-Science agents, theorem proving and embodied agents apply agents to scientific discovery, formal proofs and physical robots. Each has its own specialized environments and evaluation methods, outside the scope of this route. If you're interested, start from the eval, harness and security ideas in this course and then read a survey of that field.
+Science agents, theorem proving and embodied agents apply agents to scientific discovery, formal proofs and physical robots. Each has its own specialized environments and evaluation methods, outside the scope of this route. If you're interested, start from the evals, harness and security ideas in this course and then read a survey of that field.
 
 </section>
 
@@ -257,7 +257,7 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 5. Write down 3 design tradeoffs it makes, for example "it gives the model no specialized tools, only bash," and what you think each costs. Compare at least one against Agentless's fixed three-phase workflow: on your 5 tasks, which approach fits better?
 
 **Acceptance criteria**
-- A results table of 5 tasks × 3 runs, with success rate, pass^3 (the share of tasks that succeed all 3 times, ← S8 Eval Methodology), and average cost and time per task.
+- A results table of 5 tasks × 3 runs, with success rate, pass^3 (the share of tasks that succeed all 3 times, ← S8 Evals Methodology), and average cost and time per task.
 - A breakdown table with ≥ 10 rows, each with a code location (file and line number, or function name) and the chapter it maps to.
 - 3 design tradeoffs, each with a concrete example you saw in the trajectory; at least one includes a comparison with Agentless.
 
@@ -281,7 +281,7 @@ Concepts route (no coding): after "Try it first," you can skip to the self-check
 
 | Deliverable | What it proves | Chapters it draws on |
 |---|---|---|
-| Regression suite | Changes don't break what already works (evaluable) | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| Regression suite | Changes don't break what already works (evaluable) | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | Infra variance report | Score changes are real, not environment noise (evaluable) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | Trifecta audit | New channels and schedules don't open new attack paths (defensible) | [S16 Security and Governance](/en/stages/s16-security/) |
 | Harness ablation notes | Every harness component has a reason to exist (defensible) | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
@@ -310,7 +310,7 @@ The notes assistant as an example: every morning it organizes the previous day's
 **Hints**
 - TypeScript: use node-cron or the system's launchd / systemd timers for scheduling; the simplest notification channels are the Telegram Bot API, a Slack incoming webhook or email; durable state can reuse the database or checkpointing from S18 Deployment and Architecture.
 - Python: APScheduler or the system scheduler; Temporal's Python SDK suits long-running tasks; notifications as above.
-- Cost (evals): one round of the regression suite is 50 × 3 = 150 agent runs; the infra variance report runs 5 rounds on the same commit, so 4 rounds beyond that first one (4 × 150 = 600 runs), plus 1–5 rounds after changing a factor (150–750 runs), for 750–1,350 runs; the ablation is 2 × 20 × 5 = 200 runs. In total about 150 + 750–1,350 + 200 = 1,100–1,700 agent runs, not counting the suite on every PR in CI. Use the cost accounting from S8 Eval Methodology to estimate the average cost per run and multiply; run the pipeline with a small or local model first, and only use the production model at the end; if you use Ollama, increase the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)).
+- Cost (evals): one round of the regression suite is 50 × 3 = 150 agent runs; the infra variance report runs 5 rounds on the same commit, so 4 rounds beyond that first one (4 × 150 = 600 runs), plus 1–5 rounds after changing a factor (150–750 runs), for 750–1,350 runs; the ablation is 2 × 20 × 5 = 200 runs. In total about 150 + 750–1,350 + 200 = 1,100–1,700 agent runs, not counting the suite on every PR in CI. Use the cost accounting from S8 Evals Methodology to estimate the average cost per run and multiply; run the pipeline with a small or local model first, and only use the production model at the end; if you use Ollama, increase the context length first (see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#context-length-in-ollama)).
 - Cost (always-on): every heartbeat is a full model call. Work out "runs per day × cost per run" before deciding the interval; the first check layer can use rules or a small local model, calling the cloud model only when needed.
 - If you get stuck:
   - Reread: [What does an always-on agent add?](#-what-does-an-always-on-agent-add), [How do you prove it's ready to ship?](#-how-do-you-prove-its-ready-to-ship); the documents you wrote yourself in S16 Security and Governance and S18 Deployment and Architecture
@@ -367,7 +367,7 @@ The notes assistant as an example: every morning it organizes the previous day's
 
    </details>
 
-6. Pick one feature of the notes assistant (or your own system), for example "email a summary every morning," and use the six-part map to say what its loop, tools, context, memory, eval and security are, and which chapter each maps to.
+6. Pick one feature of the notes assistant (or your own system), for example "email a summary every morning," and use the six-part map to say what its loop, tools, context, memory, evals and security are, and which chapter each maps to.
 
    <details class="hint">
    <summary>Hint</summary>

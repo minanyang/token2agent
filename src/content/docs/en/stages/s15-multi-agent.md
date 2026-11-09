@@ -157,7 +157,7 @@ This table shows three things:
 - **The multiple depends on the design.** Here it's 1.43×, Anthropic's system is about 3.75×, and your core exercise will measure your own number.
 - **Parallel can be faster.** There are more total tokens but fewer sequential calls, so wall-clock time may be shorter.
 
-When reporting multi-agent results, always put total tokens (including every sub-agent), cost, latency and quality in the same table (← [cost accounting in S8 Eval Methodology](/en/stages/s08-evals/)).
+When reporting multi-agent results, always put total tokens (including every sub-agent), cost, latency and quality in the same table (← [cost accounting in S8 Evals Methodology](/en/stages/s08-evals/)).
 
 **Common misconception: only the orchestrator's token usage counts.** In the example above, the orchestrator itself used only 7,500 tokens, while the total was 372,000. Add up every call of every sub-agent, and reconcile the numbers on 1 task per version first.
 
@@ -183,7 +183,7 @@ When reading multi-agent traces, label failures with an existing taxonomy first,
 
 The paper's observation: multi-agent gains on common benchmarks are often small, and many failures stem from system design, not just model capability.
 
-In practice, use MAST as the starting categories for the error analysis from [S8 Eval Methodology](/en/stages/s08-evals/): label traces with these three categories first, then refine into subcategories for your system, count each one, and start fixing the most frequent.
+In practice, use MAST as the starting categories for the error analysis from [S8 Evals Methodology](/en/stages/s08-evals/): label traces with these three categories first, then refine into subcategories for your system, count each one, and start fixing the most frequent.
 
 **Common misconception: whichever agent the failure shows up in is the one at fault.** The final note is missing the application deadline, so on the surface the orchestrator left it out; reading the trace might show the brief never asked the sub-agent to find the deadline, so the root cause is in the handoff.
 
@@ -195,7 +195,7 @@ Multi-agent is an assumption that costs money. Whether to keep it depends on two
 
 1. **Before running**, write down the maximum cost multiple you'll accept (multi-agent ÷ single agent), and where you expect multi-agent to win. If you set the cap after the fact, it's easy to rationalize the result.
 2. Run both versions on the same tasks, with the same model and the same tools, several times per task.
-3. Keep multi-agent only if the 95% confidence interval of the quality difference (multi-agent − single agent) is entirely above 0 **and** the cost multiple is within the cap (confidence intervals ← [S8 Eval Methodology](/en/stages/s08-evals/)).
+3. Keep multi-agent only if the 95% confidence interval of the quality difference (multi-agent − single agent) is entirely above 0 **and** the cost multiple is within the cap (confidence intervals ← [S8 Evals Methodology](/en/stages/s08-evals/)).
 
 Two illustrative results for the notes assistant, each with a pre-registered cost cap of 2×:
 
@@ -259,7 +259,7 @@ Each sub-agent makes 6 searches plus a summary, 7 calls: 7 × 1,500 + 3,000 × (
 2. Single-agent version: one agent loop (← S12 The Agent Loop and Harness) with two tools, `search` and `read_document`.
 3. Orchestrator-worker version: the orchestrator splits the question into 2–4 subquestions; each worker researches in its own context with the same tools and returns a summary under 1,000 tokens; the orchestrator merges them into an answer. Both versions use the same model and the same tools.
 4. Run each version 3 times per question. Record total tokens (including every worker), wall-clock time and cost.
-5. Score against the key-point checklist (each question's key-point coverage); you can use the judge calibrated in S8 Eval Methodology to decide whether each key point appears.
+5. Score against the key-point checklist (each question's key-point coverage); you can use the judge calibrated in S8 Evals Methodology to decide whether each key point appears.
 6. Define a failed run as one with key-point coverage < 100%. Pick 3 failed runs from each version and read their traces (if there are fewer than 3, read them all), and label the multi-agent version's failures with MAST's three categories.
 
 **Acceptance criteria**

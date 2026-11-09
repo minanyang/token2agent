@@ -19,15 +19,15 @@ sidebar:
 | 課程 | 定位 | 對應章節 |
 |---|---|---|
 | [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/)（2026 秋） | 涵蓋 agent 元件、最佳化、評估與安全的課程，課綱附讀物。投影片隨課程陸續公開（2026-11-09 核對：已有至 11/4 評估講次的投影片），錄影只在 Stanford 內部 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S9 檢索與 RAG](/stages/s09-rag/) 到 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
-| [CMU 11-768 AI Agents](https://www.cmu-agents.com/)（Neubig、Fried，2026 秋） | 作業是 harness → eval → 訓練，跟本路線最接近 | [S10 工具與 MCP](/stages/s10-tools-mcp/) 到 [S16 安全與治理](/stages/s16-security/) |
+| [CMU 11-768 AI Agents](https://www.cmu-agents.com/)（Neubig、Fried，2026 秋） | 作業是 harness → evals → 訓練，跟本路線最接近 | [S10 工具與 MCP](/stages/s10-tools-mcp/) 到 [S16 安全與治理](/stages/s16-security/) |
 | [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | 2026 春季，從零實作語言模型與訓練、推論系統；需熟悉 Python、PyTorch、線性代數與機率 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
-| [Stanford CS224N](https://web.stanford.edu/class/cs224n/)（2026 冬） | NLP 到 LLM 的經典入門；第 4 份作業是 LLM 評估 | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S8 Eval 方法論](/stages/s08-evals/) |
+| [Stanford CS224N](https://web.stanford.edu/class/cs224n/)（2026 冬） | NLP 到 LLM 的經典入門；第 4 份作業是 LLM 評估 | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S8 Evals 方法論](/stages/s08-evals/) |
 | [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/)（Welleck） | 第 1 份作業是 Build Your Own LLaMa；有 RL 基礎講次 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
 | [CMU 11-766 LLM Applications](https://cmu-llms.org/schedule/) | 應用面：prompt 敏感度、deep research、攻擊 LLM 應用 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S16 安全與治理](/stages/s16-security/) |
 | [CMU 15-442 ML Systems](https://mlsyscourse.org/schedule) | GPU、平行化、serving | [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S5 推論與 serving](/stages/s05-inference/) |
 | [CMU 11-868 LLM Systems](https://llmsystem.github.io/llmsystem2026spring/docs/Syllabus) | FlashAttention、vLLM、DistServe 等 serving 系統 | [S5 推論與 serving](/stages/s05-inference/)、[S18 部署與架構](/stages/s18-deployment/) |
 | [MIT 6.5940 TinyML and Efficient AI](https://hanlab.mit.edu/courses/2024-fall-65940) | 量化、蒸餾；有「筆電上部署 LLM」的 lab | [S5 推論與 serving](/stages/s05-inference/) |
-| [Stanford CS329A Self-Improving AI Agents](https://cs329a.stanford.edu/) | test-time compute、verifier、self-improvement | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [Stanford CS329A Self-Improving AI Agents](https://cs329a.stanford.edu/) | test-time compute、verifier、self-improvement | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [Stanford CS329H ML from Human Preferences](https://web.stanford.edu/class/cs329h/) | 偏好學習的理論（Bradley–Terry 等），選修 | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | [Stanford CS 224G Building & Scaling LLM Applications](https://web.stanford.edu/class/cs224g/) | 創業導向；context engineering 兩講、產品面 | [S11 Context engineering](/stages/s11-context-engineering/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Stanford CS146S The Modern Software Developer](https://themodernsoftware.dev/) | 跟 coding agent 協作：MCP、skills、spec-driven | [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
@@ -47,17 +47,17 @@ sidebar:
 
 | 來源 | 定位 | 對應章節 |
 |---|---|---|
-| Chip Huyen《AI Engineering》（O'Reilly 2025），[配套 repo](https://github.com/chiphuyen/aie-book) | 應用工程的主幹：eval、RAG、微調、資料、推論、架構、使用者回饋。付費書，repo 只有摘要 | [S5 推論與 serving](/stages/s05-inference/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 到 [S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
+| Chip Huyen《AI Engineering》（O'Reilly 2025），[配套 repo](https://github.com/chiphuyen/aie-book) | 應用工程的主幹：evals、RAG、微調、資料、推論、架構、使用者回饋。付費書，repo 只有摘要 | [S5 推論與 serving](/stages/s05-inference/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) 到 [S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
 | [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | 從零實作 GPT；bonus 有 KV cache、GQA、MLA、MoE、DPO | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
 | [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) | 影片系列；backprop 與訓練直覺最好。2024 後未更新 | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S2 Transformer 與 decoding](/stages/s02-transformer/) |
 | [mlabonne/llm-course](https://github.com/mlabonne/llm-course) | roadmap 式連結地圖；資料工程、量化、安全少見地完整。2025-12 後未更新內容 | [S3 Pretraining 與 scaling](/stages/s03-pretraining/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S9 檢索與 RAG](/stages/s09-rag/) |
 | [Hugging Face Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook) | 平行化訓練的標準讀物 | [S3 Pretraining 與 scaling](/stages/s03-pretraining/) |
 | [Hugging Face LLM Course](https://huggingface.co/learn/llm-course)、[MCP Course](https://huggingface.co/learn/mcp-course)、[Agents Course](https://github.com/huggingface/agents-course) | ch11–12 有 SFT 與 GRPO；Agents Course 偏框架 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) | 18 課；L03 是少數講 agentic UX 的。強烈綁定 Azure | [S16 安全與治理](/stages/s16-security/) 到 [S18 部署與架構](/stages/s18-deployment/) |
-| [anthropics/courses](https://github.com/anthropics/courses) | prompt 教學與 prompt evaluations lab。**已封存**，內容仍可用 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S8 Eval 方法論](/stages/s08-evals/) |
+| [anthropics/courses](https://github.com/anthropics/courses) | prompt 教學與 prompt evaluations lab。**已封存**，內容仍可用 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S8 Evals 方法論](/stages/s08-evals/) |
 | [humanlayer/12-factor-agents](https://github.com/humanlayer/12-factor-agents) | 「自己掌握 prompt、context、control flow」。部分是 HumanLayer 的產品推廣 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) | 約 100 行的完整 agent | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
-| [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) | 繁中 agent 學習地圖；harness 8 元件檢查表、eval 很好。偏 Claude Code 生態，模型原理很淺 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) | 繁中 agent 學習地圖；harness 8 元件檢查表、evals 很好。偏 Claude Code 生態，模型原理很淺 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [karpathy/makemore](https://github.com/karpathy/makemore) | 字元級語言模型；S1 神經網路基礎的練習取 `names.txt` 資料。2024 後未更新 | [S1 神經網路基礎](/stages/s01-neural-networks/) |
 | [karpathy/nanoGPT](https://github.com/karpathy/nanoGPT) | 最精簡的 GPT 訓練 repo；S2 Transformer 與 decoding 借設定、自己寫模型本體 | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
 | [karpathy/nanochat](https://github.com/karpathy/nanochat) | 端對端小型 ChatGPT 訓練；完整版需 8×H100，有 CPU / MPS 縮小版 | [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、模型專案 |
@@ -86,9 +86,9 @@ sidebar:
 | [Introducing advanced tool use for Claude](https://www.anthropic.com/research/advanced-tool-use) | 2025-11-24 | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
 | [Mitigating prompt injections in browser use](https://www.anthropic.com/research/prompt-injection-defenses) | 2025-11-24（只談 browser agent） | [S16 安全與治理](/stages/s16-security/) |
 | [Effective harnesses for long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents) | 2025-11-26 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
-| [Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents) | 2026-01-09 | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise) | 2026-02-05 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp) | 2026-03-06 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
+| [Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents) | 2026-01-09 | [S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise) | 2026-02-05 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp) | 2026-03-06 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [Harness design for long-running apps](https://www.anthropic.com/research/harness-design-long-running-apps) | 2026-03-24 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [How we built Claude Code auto mode](https://www.anthropic.com/research/claude-code-auto-mode) | 2026-03-25 | [S16 安全與治理](/stages/s16-security/) |
 | [Scaling Managed Agents with stable interfaces](https://www.anthropic.com/research/managed-agents) | 2026-04-08 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S18 部署與架構](/stages/s18-deployment/) |
@@ -106,17 +106,17 @@ sidebar:
 | [OpenAI: Understanding prompt injections](https://openai.com/index/prompt-injections/) | 2025-11-07 | [S16 安全與治理](/stages/s16-security/) |
 | [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/)（guardrails、handoffs、tracing） | — | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/) |
 | [OpenAI Agents SDK: Handoffs](https://openai.github.io/openai-agents-python/handoffs/) | — | [S15 Multi-agent](/stages/s15-multi-agent/) |
-| [OpenAI: Why we no longer evaluate SWE-bench Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/) | 2026-02-23 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [OpenAI: Why we no longer evaluate SWE-bench Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/) | 2026-02-23 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [OpenAI Model Spec](https://model-spec.openai.com/)（模型行為規範） | 持續更新（目前版本 2026-10-29） | [S16 安全與治理](/stages/s16-security/) |
 | [Kaggle: Foundational Large Language Models & Text Generation](https://www.kaggle.com/whitepaper-foundational-llm-and-text-generation) | 2025-02 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S5 推論與 serving](/stages/s05-inference/) |
 | [Kaggle: Prompt Engineering](https://www.kaggle.com/whitepaper-prompt-engineering) | 2025-02 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | [Kaggle: Embeddings & Vector Stores](https://www.kaggle.com/whitepaper-embeddings-and-vector-stores) | 2025-02 | [S9 檢索與 RAG](/stages/s09-rag/) |
-| [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) | 2025 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
+| [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) | 2025 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [Kaggle: Operationalizing Generative AI on Vertex AI using MLOps](https://www.kaggle.com/whitepaper-operationalizing-generative-ai-on-vertex-ai-using-mlops) | 2025（偏 Google Cloud） | [S18 部署與架構](/stages/s18-deployment/) |
 | [Kaggle: Introduction to Agents](https://www.kaggle.com/whitepaper-introduction-to-agents) | 2025-11 | [S0 AI 系統概觀](/stages/s00-big-picture/) |
 | [Kaggle: Agent Tools & Interoperability with MCP](https://www.kaggle.com/whitepaper-agent-tools-and-interoperability-with-mcp) | 2025-11 | [S10 工具與 MCP](/stages/s10-tools-mcp/)、[S16 安全與治理](/stages/s16-security/) |
 | [Kaggle: Context Engineering: Sessions & Memory](https://www.kaggle.com/whitepaper-context-engineering-sessions-and-memory) | 2025-11 | [S13 Memory 與個人化](/stages/s13-memory/) |
-| [Kaggle: Agent Quality](https://www.kaggle.com/whitepaper-agent-quality) | 2025-11 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [Kaggle: Agent Quality](https://www.kaggle.com/whitepaper-agent-quality) | 2025-11 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [Kaggle: Prototype to Production](https://www.kaggle.com/whitepaper-prototype-to-production) | 2025-11 | [S18 部署與架構](/stages/s18-deployment/) |
 | [Meta: Agents Rule of Two: A Practical Approach to AI Agent Security](https://ai.meta.com/blog/practical-ai-agent-security/) | 2025-10-31 | [S16 安全與治理](/stages/s16-security/) |
 
@@ -124,15 +124,15 @@ sidebar:
 
 | 來源 | 日期 | 對應章節 |
 |---|---|---|
-| [Hamel Husain: Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/) | 2024-03-29 | [S8 Eval 方法論](/stages/s08-evals/) |
-| [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/) | 2025-03-24 | [S8 Eval 方法論](/stages/s08-evals/) |
-| [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/) | 2024-10-29 | [S8 Eval 方法論](/stages/s08-evals/) |
-| [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（原 Evals FAQ） | 2026-09-18 | [S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/) | 2024-06 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
-| [Eugene Yan: Patterns for Building LLM-based Systems & Products](https://eugeneyan.com/writing/llm-patterns/) | 2023 | [S8 Eval 方法論](/stages/s08-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
+| [Hamel Husain: Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/) | 2024-03-29 | [S8 Evals 方法論](/stages/s08-evals/) |
+| [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/) | 2025-03-24 | [S8 Evals 方法論](/stages/s08-evals/) |
+| [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/) | 2024-10-29 | [S8 Evals 方法論](/stages/s08-evals/) |
+| [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（原 Evals FAQ） | 2026-09-18 | [S8 Evals 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/) | 2024-06 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S8 Evals 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
+| [Eugene Yan: Patterns for Building LLM-based Systems & Products](https://eugeneyan.com/writing/llm-patterns/) | 2023 | [S8 Evals 方法論](/stages/s08-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Lilian Weng: LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) | 2023-06-23 | [S0 AI 系統概觀](/stages/s00-big-picture/) |
 | [Lilian Weng: Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/) | 2023-03-15 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
-| [Lilian Weng: Reward Hacking in Reinforcement Learning](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/) | 2024-11-28 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [Lilian Weng: Reward Hacking in Reinforcement Learning](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/) | 2024-11-28 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [Lilian Weng: Why We Think](https://lilianweng.github.io/posts/2025-05-01-thinking/) | 2025-05-01 | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | [Simon Willison: The lethal trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) | 2025-06-16 | [S16 安全與治理](/stages/s16-security/) |
 | [Graham Neubig: Don't Sleep on Single-Agent Systems](https://www.openhands.dev/blog/dont-sleep-on-single-agent-systems)（部落格，不是論文） | 2024-09-26 | [S15 Multi-agent](/stages/s15-multi-agent/) |
@@ -218,7 +218,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | [Outlines](https://github.com/dottxt-ai/outlines) | 本地模型的約束解碼 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | [BAML](https://docs.boundaryml.com/home) | 用 DSL 定義 LLM 函式並產生 client | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | [XGrammar](https://github.com/mlc-ai/xgrammar) | grammar 約束解碼引擎 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
-| [DSPy](https://dspy.ai) | 把 LLM 程式寫成可最佳化的模組 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [DSPy](https://dspy.ai) | 把 LLM 程式寫成可最佳化的模組 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [Gradio: ChatInterface](https://www.gradio.app/docs/gradio/chatinterface) | Python 的聊天介面元件：generator 串流、停止鍵、讚 / 倒讚；不寫前端時 A6 串流聊天與 trace 的介面 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Chainlit](https://docs.chainlit.io/) | Python 的對話式應用框架：串流、停止、回饋 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Streamlit: st.write_stream](https://docs.streamlit.io/develop/api-reference/write-magic/st.write_stream) | 在 Streamlit 頁面上串流顯示輸出 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
@@ -270,7 +270,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | [全國法規資料庫](https://law.moj.gov.tw/) | 繁中法規全文；S9 檢索與 RAG 必做題的文件集 | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [LongMemEval](https://github.com/xiaowu0162/LongMemEval) | 長期記憶 eval 的資料與程式；論文 [Wu et al. 2024](https://arxiv.org/abs/2410.10813) | [S13 Memory 與個人化](/stages/s13-memory/) |
 | [MultiHop-RAG](https://huggingface.co/datasets/yixuantt/MultiHopRAG) | 需要綜合多篇新聞才能回答的問答集；論文 [Tang & Yang 2024](https://arxiv.org/abs/2401.15391)；ODC-BY 授權 | [S15 Multi-agent](/stages/s15-multi-agent/) |
-| [abisee/cnn_dailymail](https://huggingface.co/datasets/abisee/cnn_dailymail) | 英文新聞與摘要；S8 Eval 方法論必做題的英文替代資料（版本 3.0.0） | [S8 Eval 方法論](/stages/s08-evals/) |
+| [abisee/cnn_dailymail](https://huggingface.co/datasets/abisee/cnn_dailymail) | 英文新聞與摘要；S8 Evals 方法論必做題的英文替代資料（版本 3.0.0） | [S8 Evals 方法論](/stages/s08-evals/) |
 | [goodbooks-10k](https://github.com/zygmuntz/goodbooks-10k) | 一萬本書的書目與評分；S10 工具與 MCP 必做題的資料 | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
 
 ### RAG 與檢索
@@ -285,7 +285,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | [LanceDB](https://docs.lancedb.com/) | 嵌入式向量資料庫 | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [unpdf](https://github.com/unjs/unpdf) | JS 的 PDF 文字擷取 | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [Docling](https://github.com/docling-project/docling) | 複雜版面文件解析 | [S9 檢索與 RAG](/stages/s09-rag/) |
-| [Ragas](https://docs.ragas.io/) | RAG 評估指標定義 | [S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/) |
+| [Ragas](https://docs.ragas.io/) | RAG 評估指標定義 | [S8 Evals 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/) |
 
 ### 評估、測試與觀測
 
@@ -300,8 +300,8 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | [httpx](https://github.com/encode/httpx) | Python HTTP client | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [respx](https://github.com/lundberg/respx) | mock httpx | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
 | [pytest-recording](https://github.com/kiwicom/pytest-recording) | 基於 VCR.py 的 record / replay | [S6 LLM API 與應用基本功](/stages/s06-llm-api/) |
-| [promptfoo](https://www.promptfoo.dev/docs/intro/) | eval runner | [S8 Eval 方法論](/stages/s08-evals/) |
-| [`scipy.stats.bootstrap`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html) | bootstrap 信賴區間 | [S8 Eval 方法論](/stages/s08-evals/) |
+| [promptfoo](https://www.promptfoo.dev/docs/intro/) | eval runner | [S8 Evals 方法論](/stages/s08-evals/) |
+| [`scipy.stats.bootstrap`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html) | bootstrap 信賴區間 | [S8 Evals 方法論](/stages/s08-evals/) |
 | [AgentDojo](https://github.com/ethz-spylab/agentdojo) | prompt injection 攻防的評估環境；論文 [Debenedetti et al. 2024](https://arxiv.org/abs/2406.13352)。S16 安全與治理的必做題借用它的注入模板 | [S16 安全與治理](/stages/s16-security/) |
 
 ### Web 與 API 基礎
@@ -326,18 +326,18 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | Shao et al. 2024, [DeepSeekMath](https://arxiv.org/abs/2402.03300)（GRPO） | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | Rafailov et al. 2023, [Direct Preference Optimization](https://arxiv.org/abs/2305.18290) | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | Sumers et al. 2023, [Cognitive Architectures for Language Agents (CoALA)](https://arxiv.org/abs/2309.02427) | [S13 Memory 與個人化](/stages/s13-memory/) |
-| Kapoor et al. 2024, [AI Agents That Matter](https://arxiv.org/abs/2407.01502) | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| Miller 2024, [Adding Error Bars to Evals](https://arxiv.org/abs/2411.00640) | [S8 Eval 方法論](/stages/s08-evals/) |
+| Kapoor et al. 2024, [AI Agents That Matter](https://arxiv.org/abs/2407.01502) | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| Miller 2024, [Adding Error Bars to Evals](https://arxiv.org/abs/2411.00640) | [S8 Evals 方法論](/stages/s08-evals/) |
 | Liu et al. 2023, [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) | [S9 檢索與 RAG](/stages/s09-rag/)、[S11 Context engineering](/stages/s11-context-engineering/) |
 | Sclar et al. 2023, [Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design](https://arxiv.org/abs/2310.11324) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | Yang et al. 2024, [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](https://arxiv.org/abs/2405.15793) | [S10 工具與 MCP](/stages/s10-tools-mcp/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
-| Yao et al. 2024, [τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| Yao et al. 2024, [τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) | [S8 Evals 方法論](/stages/s08-evals/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | Welleck et al. 2024, [From Decoding to Meta-Generation](https://arxiv.org/abs/2406.16838) | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S5 推論與 serving](/stages/s05-inference/) |
-| Shankar et al. 2024, [Who Validates the Validators?](https://arxiv.org/abs/2404.12272) | [S8 Eval 方法論](/stages/s08-evals/) |
+| Shankar et al. 2024, [Who Validates the Validators?](https://arxiv.org/abs/2404.12272) | [S8 Evals 方法論](/stages/s08-evals/) |
 | Cemri et al. 2025, [Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657) | [S15 Multi-agent](/stages/s15-multi-agent/) |
-| Kwa et al. 2025, [Measuring AI Ability to Complete Long Tasks](https://arxiv.org/abs/2503.14499)（METR time horizon） | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| Opsahl-Ong et al. 2024, [MIPROv2](https://arxiv.org/abs/2406.11695) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| Agrawal et al. 2025, [GEPA](https://arxiv.org/abs/2507.19457) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| Kwa et al. 2025, [Measuring AI Ability to Complete Long Tasks](https://arxiv.org/abs/2503.14499)（METR time horizon） | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| Opsahl-Ong et al. 2024, [MIPROv2](https://arxiv.org/abs/2406.11695) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| Agrawal et al. 2025, [GEPA](https://arxiv.org/abs/2507.19457) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | Beurer-Kellner et al. 2025, [Design Patterns for Securing LLM Agents against Prompt Injections](https://arxiv.org/abs/2506.08837) | [S16 安全與治理](/stages/s16-security/) |
 | Debenedetti et al. 2025, [Defeating Prompt Injections by Design (CaMeL)](https://arxiv.org/abs/2503.18813) | [S16 安全與治理](/stages/s16-security/) |
 | Nasr et al. 2025, [The Attacker Moves Second](https://arxiv.org/abs/2510.09023) | [S16 安全與治理](/stages/s16-security/) |
@@ -361,10 +361,10 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | Zhao et al. 2021, [Calibrate Before Use: Improving Few-Shot Performance of Language Models](https://arxiv.org/abs/2102.09690) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | Wei et al. 2022, [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | Tam et al. 2024, [Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models](https://arxiv.org/abs/2408.02442) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
-| Zheng et al. 2023, [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685) | [S8 Eval 方法論](/stages/s08-evals/) |
-| Chen et al. 2021, [Evaluating Large Language Models Trained on Code](https://arxiv.org/abs/2107.03374) | [S8 Eval 方法論](/stages/s08-evals/) |
-| Bean et al. 2025, [Measuring what Matters: Construct Validity in Large Language Model Benchmarks](https://arxiv.org/abs/2511.04703) | [S8 Eval 方法論](/stages/s08-evals/) |
-| Kadavath et al. 2022, [Language Models (Mostly) Know What They Know](https://arxiv.org/abs/2207.05221) | [S8 Eval 方法論](/stages/s08-evals/) |
+| Zheng et al. 2023, [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685) | [S8 Evals 方法論](/stages/s08-evals/) |
+| Chen et al. 2021, [Evaluating Large Language Models Trained on Code](https://arxiv.org/abs/2107.03374) | [S8 Evals 方法論](/stages/s08-evals/) |
+| Bean et al. 2025, [Measuring what Matters: Construct Validity in Large Language Model Benchmarks](https://arxiv.org/abs/2511.04703) | [S8 Evals 方法論](/stages/s08-evals/) |
+| Kadavath et al. 2022, [Language Models (Mostly) Know What They Know](https://arxiv.org/abs/2207.05221) | [S8 Evals 方法論](/stages/s08-evals/) |
 | Karpukhin et al. 2020, [Dense Passage Retrieval for Open-Domain Question Answering](https://arxiv.org/abs/2004.04906) | [S9 檢索與 RAG](/stages/s09-rag/) |
 | Khattab & Zaharia 2020, [ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT](https://arxiv.org/abs/2004.12832) | [S9 檢索與 RAG](/stages/s09-rag/) |
 | Malkov & Yashunin 2016, [Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs](https://arxiv.org/abs/1603.09320) | [S9 檢索與 RAG](/stages/s09-rag/) |
@@ -382,11 +382,11 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | Park et al. 2023, [Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442) | [S13 Memory 與個人化](/stages/s13-memory/) |
 | Maharana et al. 2024, [Evaluating Very Long-Term Conversational Memory of LLM Agents](https://arxiv.org/abs/2402.17753) | [S13 Memory 與個人化](/stages/s13-memory/) |
 | Chen et al. 2024, [AgentPoison: Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases](https://arxiv.org/abs/2407.12784) | [S13 Memory 與個人化](/stages/s13-memory/) |
-| [Agent-as-a-Judge: Evaluate Agents with Agents](https://arxiv.org/abs/2410.10934) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [$τ^2$-Bench: Evaluating Conversational Agents in a Dual-Control Environment](https://arxiv.org/abs/2506.07982) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [SABER: Small Actions, Big Errors -- Safeguarding Mutating Steps in LLM Agents](https://arxiv.org/abs/2512.07850) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines](https://arxiv.org/abs/2310.03714) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning](https://arxiv.org/abs/2503.09516) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [Agent-as-a-Judge: Evaluate Agents with Agents](https://arxiv.org/abs/2410.10934) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [$τ^2$-Bench: Evaluating Conversational Agents in a Dual-Control Environment](https://arxiv.org/abs/2506.07982) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [SABER: Small Actions, Big Errors -- Safeguarding Mutating Steps in LLM Agents](https://arxiv.org/abs/2512.07850) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines](https://arxiv.org/abs/2310.03714) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning](https://arxiv.org/abs/2503.09516) | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | Wu et al. 2023, [AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155) | [S15 Multi-agent](/stages/s15-multi-agent/) |
 | Shao et al. 2024, [PrivacyLens: Evaluating Privacy Norm Awareness of Language Models in Action](https://arxiv.org/abs/2409.00138) | [S16 安全與治理](/stages/s16-security/) |
 | Greenblatt et al. 2023, [AI Control: Improving Safety Despite Intentional Subversion](https://arxiv.org/abs/2312.06942) | [S16 安全與治理](/stages/s16-security/) |
@@ -404,7 +404,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | 來源 | 定位 | 對應章節 |
 |---|---|---|
 | 李宏毅、陳縕儂、高宏宇課程 | 見上方「大學課程」 | — |
-| [MiuLab/Taiwan-LLM](https://github.com/MiuLab/Taiwan-LLM) | 繁中模型 repo；README 提到的 TMLU、TMMLU+、TCEval 可作繁中評測參考（是模型 repo，不是教材） | [S8 Eval 方法論](/stages/s08-evals/) |
+| [MiuLab/Taiwan-LLM](https://github.com/MiuLab/Taiwan-LLM) | 繁中模型 repo；README 提到的 TMLU、TMMLU+、TCEval 可作繁中評測參考（是模型 repo，不是教材） | [S8 Evals 方法論](/stages/s08-evals/) |
 | [iThome 2025〈團隊 AI 運維手冊：System Prompt 的設計、部署與維護〉](https://ithelp.ithome.com.tw/users/20178160/ironman/8461) | prompt 當作團隊資產管理 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | [iThome 2025〈AI 產品與架構設計之旅：從 0 到 1，再到 Day 2〉](https://ithelp.ithome.com.tw/users/20178352/ironman/8789) | 產品與架構實戰 | [S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [iThome 2025〈30 天帶你實戰 LLMOps：從 RAG 到觀測與部署〉](https://ithelp.ithome.com.tw/users/20120069/ironman/8557) | LLMOps、觀測、部署 | [S18 部署與架構](/stages/s18-deployment/) |
@@ -419,15 +419,15 @@ iThome 系列是實作者的 30 天連載，品質不一。上表列的是得獎
 | 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [RUC《大语言模型》](https://llmbook-zh.github.io/) | 大學教科書，免費 PDF；agent 與應用部分較舊 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/) |
-| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | 以 CS336 為基礎的中文教材，另有本地化補充與第 6 份評估作業；可搭配 Part I 模型原理（S1–S5） | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Eval 方法論](/stages/s08-evals/) |
-| [datawhalechina/happy-llm](https://github.com/datawhalechina/happy-llm) | 從零建 LLM；第 8 章 agentic RL 很深 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | 以 CS336 為基礎的中文教材，另有本地化補充與第 6 份評估作業；可搭配 Part I 模型原理（S1–S5） | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Evals 方法論](/stages/s08-evals/) |
+| [datawhalechina/happy-llm](https://github.com/datawhalechina/happy-llm) | 從零建 LLM；第 8 章 agentic RL 很深 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [ZJU-LLMs/Foundations-of-LLMs](https://github.com/ZJU-LLMs/Foundations-of-LLMs) | 浙大《大模型基础》；有 model editing 專章 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S9 檢索與 RAG](/stages/s09-rag/) |
 | [Lordog/dive-into-llms](https://github.com/Lordog/dive-into-llms) | 上海交大《动手学大模型》；安全相關 lab 多 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S16 安全與治理](/stages/s16-security/) |
-| [datawhalechina/tiny-universe](https://github.com/datawhalechina/tiny-universe) | TinyTransformer / TinyEval / TinyRAG / TinyAgent 最小實作 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
+| [datawhalechina/tiny-universe](https://github.com/datawhalechina/tiny-universe) | TinyTransformer / TinyEval / TinyRAG / TinyAgent 最小實作 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S8 Evals 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) | SGLang 官方合作課程，自己寫推論伺服器。該課程的第三部分尚未完成 | [S5 推論與 serving](/stages/s05-inference/)、[S18 部署與架構](/stages/s18-deployment/) |
 | [datawhalechina/all-in-rag](https://github.com/datawhalechina/all-in-rag) | S9 檢索與 RAG 的中文補充教材，含檢索最佳化與實作；範例偏 Milvus | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) | 從零建 agent 的完整教材；context engineering、memory、agentic RL 深。偏中國技術棧 | [S11 Context engineering](/stages/s11-context-engineering/) 到 [S15 Multi-agent](/stages/s15-multi-agent/) |
-| [datawhalechina/agentic-rl-lab](https://github.com/datawhalechina/agentic-rl-lab) | GRPO 變體、Search-R1、ReTool 可執行重現 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| [datawhalechina/agentic-rl-lab](https://github.com/datawhalechina/agentic-rl-lab) | GRPO 變體、Search-R1、ReTool 可執行重現 | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
 | [datawhalechina/base-llm](https://github.com/datawhalechina/base-llm) | 含安全與威脅建模、部署；有一章是廠商 API 教學 | [S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/) |
 | [datawhalechina/deepagents-in-action](https://github.com/datawhalechina/deepagents-in-action) | harness 主題地圖完整；綁 LangChain | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) | 17 課從零手寫 Claude Code 式 harness；S12 Agent loop 與 harness 的主教材。以根目錄的 s01–s17 為準，舊的 `docs/` 資料夾編號不同 | [S10 工具與 MCP](/stages/s10-tools-mcp/) 到 [S15 Multi-agent](/stages/s15-multi-agent/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |

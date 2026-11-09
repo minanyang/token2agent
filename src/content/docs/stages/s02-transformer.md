@@ -205,7 +205,7 @@ T 小於 1 讓分布更集中；T 大於 1 讓分布更平均、更多變化；T
 
 **Top-p（nucleus sampling）**：由高到低累加機率，加到 p 為止，只在這些候選裡抽。例如機率 [0.5, 0.3, 0.15, 0.05]、p = 0.9：前兩個加起來 0.8 還不夠，加上第三個是 0.95，所以保留前三個，重新換算成總和為 1 的機率 [0.526, 0.316, 0.158]，第四個永遠抽不到。候選數會隨模型的把握程度自動伸縮，所以通常比 top-k 好用。
 
-**怎麼選。** 需要較集中、較穩定輸出的任務（資料擷取、分類、程式碼），可以先從低 temperature 或 greedy 開始，正確率另用 eval 確認（→ S8 Eval 方法論）；要多樣性的任務（發想、寫作）用較高的 temperature 加上 top-p 約 0.9–0.95，擋掉機率極低的胡言亂語。temperature 設成 0 也不保證每次輸出完全相同，伺服器端的批次處理與浮點運算都可能造成差異（→ [S6 LLM API 與應用基本功](/stages/s06-llm-api/)）。
+**怎麼選。** 需要較集中、較穩定輸出的任務（資料擷取、分類、程式碼），可以先從低 temperature 或 greedy 開始，正確率另用 eval 確認（→ S8 Evals 方法論）；要多樣性的任務（發想、寫作）用較高的 temperature 加上 top-p 約 0.9–0.95，擋掉機率極低的胡言亂語。temperature 設成 0 也不保證每次輸出完全相同，伺服器端的批次處理與浮點運算都可能造成差異（→ [S6 LLM API 與應用基本功](/stages/s06-llm-api/)）。
 
 這些就是 API 裡 `temperature`、`top_p` 參數的意思。部分 API 已不接受它們（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#sampling-參數的限制)），這時改用 prompt 指示，或用 structured output（要求模型照指定的 JSON 格式輸出，→ [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)）來控制輸出。
 

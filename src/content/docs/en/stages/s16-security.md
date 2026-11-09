@@ -274,7 +274,7 @@ Watermarking embeds a detectable signal in generated content; provenance records
 
 Everything so far has been about attacks. Another kind of risk comes from the model's own output. Models carry biases from their training data, such as stereotyped descriptions of some groups, or answers of uneven quality for users of different languages. They can also produce hateful, violent, self-harm or other harmful content. Three common practices:
 
-1. **Measure bias**: use a deliberately designed set of prompts (the same question with only gender, ethnicity or language swapped), compare the outputs, and fold the results into your evals (← S8 Eval Methodology).
+1. **Measure bias**: use a deliberately designed set of prompts (the same question with only gender, ethnicity or language swapped), compare the outputs, and fold the results into your evals (← S8 Evals Methodology).
 2. **Content moderation**: add moderation on input and output to flag or block harmful content (← the guardrails above), for example OpenAI's moderation endpoint, Meta's Llama Guard, or your own classifier.
 3. **Attach an anonymous user ID**: send an anonymized user ID with each request. This one is for tracing abuse: when something goes wrong, you can find which account it was, instead of having to shut down the whole service.
 

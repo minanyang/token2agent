@@ -42,13 +42,13 @@ On the application route, these are the places where you first learn *how* to do
 |---|---|---|
 | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) | Why input and output tokens are priced differently, what latency is made of | [S5 Inference and Serving](/en/stages/s05-inference/) |
 | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) | How constrained decoding guarantees the format | [S5 Inference and Serving](/en/stages/s05-inference/) |
-| [S8 Eval Methodology](/en/stages/s08-evals/) | Logprobs and confidence, randomness from sampling | [S2 Transformers and Decoding](/en/stages/s02-transformer/) |
+| [S8 Evals Methodology](/en/stages/s08-evals/) | Logprobs and confidence, randomness from sampling | [S2 Transformers and Decoding](/en/stages/s02-transformer/) |
 | [S9 Retrieval and RAG](/en/stages/s09-rag/) | Fine-tuning an embedding model (A9 RAG with Citations) | [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [model project](/en/projects/model-thread/) |
 | [S11 Context Engineering](/en/stages/s11-context-engineering/) | Why prompt caching saves money | [S5 Inference and Serving](/en/stages/s05-inference/) |
 | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) | Reward hacking, distilling a router (A14 Agent Evals and Optimization) | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) |
 | [S18 Deployment and Architecture](/en/stages/s18-deployment/) | Self-hosting vs. API cost (A18 Multi-user Deployment uses measured numbers from the M5 mini inference server) | [S5 Inference and Serving](/en/stages/s05-inference/), [model project](/en/projects/model-thread/) |
 
-For application-related intuition, choose a section rather than a whole model chapter. After S8 Eval Methodology, try the tokenization and decoding sections of [S2 Transformers and Decoding](/en/stages/s02-transformer/), or the opening example and the prefill/decode section of S5 Inference and Serving. After [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), compare the [reward hacking](/en/stages/s04-post-training/#-why-do-models-game-the-reward) and [distillation](/en/stages/s04-post-training/#-how-does-a-small-model-learn-from-a-big-one) sections in S4 Post-training and Reasoning. For the full training mechanisms and derivations, follow the prerequisites through S1–S4. For softmax, standard error, bootstrap and other math tools, see the [Math Refresher](/en/guide/math-refresher/).
+For application-related intuition, choose a section rather than a whole model chapter. After S8 Evals Methodology, try the tokenization and decoding sections of [S2 Transformers and Decoding](/en/stages/s02-transformer/), or the opening example and the prefill/decode section of S5 Inference and Serving. After [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), compare the [reward hacking](/en/stages/s04-post-training/#-why-do-models-game-the-reward) and [distillation](/en/stages/s04-post-training/#-how-does-a-small-model-learn-from-a-big-one) sections in S4 Post-training and Reasoning. For the full training mechanisms and derivations, follow the prerequisites through S1–S4. For softmax, standard error, bootstrap and other math tools, see the [Math Refresher](/en/guide/math-refresher/).
 
 ## Model Crash Course
 
@@ -97,9 +97,9 @@ Pages from S6 LLM APIs and Application Basics on link back to these five topics 
 
 #### Logits and softmax
 
-Here's what "outputs a probability distribution" means concretely: the model's last layer outputs one score for each token in the vocabulary, called a logit. Softmax turns these scores into probabilities that sum to 1; a higher score means a higher probability. Temperature is just dividing the logits by T before the softmax. Some APIs return logprobs, the logarithms of these probabilities, and S8 Eval Methodology uses them to see how "sure" the model is. For a worked example by hand, see the [Math Refresher](/en/guide/math-refresher/#logits-softmax-and-temperature). → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
+Here's what "outputs a probability distribution" means concretely: the model's last layer outputs one score for each token in the vocabulary, called a logit. Softmax turns these scores into probabilities that sum to 1; a higher score means a higher probability. Temperature is just dividing the logits by T before the softmax. Some APIs return logprobs, the logarithms of these probabilities, and S8 Evals Methodology uses them to see how "sure" the model is. For a worked example by hand, see the [Math Refresher](/en/guide/math-refresher/#logits-softmax-and-temperature). → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 
-**When to come back**: when S8 Eval Methodology uses logprobs to judge how sure the model is.
+**When to come back**: when S8 Evals Methodology uses logprobs to judge how sure the model is.
 
 #### KV cache, and why output tokens cost more
 

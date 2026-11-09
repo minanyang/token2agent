@@ -67,7 +67,7 @@ Here are the notes assistant's main components (in the "Covered in" column, S pl
 | Memory | Remembers user preferences like "answer in bullet points, three at most" | [S13 Memory and Personalization](/en/stages/s13-memory/) |
 | Loop control code | Calls the model, runs tools, decides when to stop | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | Interface | Streams the answer, lets the user confirm a draft before an email goes out | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
-| Evals, security and shipping | Checks that answers are correct, defends against attacks, records cost and latency | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
+| Evals, security and shipping | Checks that answers are correct, defends against attacks, records cost and latency | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 
 **Common misconception: more components are better.** Every component you add is one more thing that can break, and one more source of latency and cost. Components exist to fill specific gaps. If the notes assistant only needs to rewrite a pasted paragraph as bullet points, one model call is enough. No retrieval, no tools.
 
@@ -116,7 +116,7 @@ Output costs 5 times as much per token, yet most of the spend is input, because 
 
 </details>
 
-Why the model itself can do steps 3–4 is the subject of S1 Neural Network Basics through S4 Post-training and Reasoning. How to evaluate, secure and ship the whole loop is covered in later chapters ([S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)). Three more chapters sit outside the table:
+Why the model itself can do steps 3–4 is the subject of S1 Neural Network Basics through S4 Post-training and Reasoning. How to evaluate, secure and ship the whole loop is covered in later chapters ([S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)). Three more chapters sit outside the table:
 
 - **S13 Memory and Personalization**: reads the user's long-term memory when assembling context in step 1, and writes back anything worth remembering after step 7.
 - **S15 Multi-agent Systems**: the "tool" called in step 5 can be another agent, which runs its own full path and reports back.
@@ -274,7 +274,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 **Acceptance criteria**
 - The path diagram has at least 7 steps, each labeled with its chapter code from the table. Next to the diagram, note which part of the path each of these chapters acts on (based on the "Three more chapters sit outside the table" paragraph after the table in [How does one message become an answer?](#-how-does-one-message-become-an-answer)):
   - S1 Neural Network Basics through S4 Post-training and Reasoning
-  - S8 Eval Methodology
+  - S8 Evals Methodology
   - S13 Memory and Personalization through S16 Security and Governance
   - S19 Real Agent Systems and the Capstone
 - Each of the three scenario decisions cites one of the "when to build an agent" conditions.

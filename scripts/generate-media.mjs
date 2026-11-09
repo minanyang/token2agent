@@ -67,7 +67,7 @@ async function prepareSocialCard(page, locale, theme) {
 		hero.querySelector('.actions')?.remove();
 		const topics = document.createElement('p'); topics.className = 'social-topics';
 		const chapterCount = hero.querySelectorAll('.progress .blk').length;
-		topics.textContent = chapterCount + ${JSON.stringify(`${locale === 'en' ? ' chapters · Free' : ' 章 · 免費'} · LLM API · RAG · MCP · Eval · Guardrails`)};
+		topics.textContent = chapterCount + ${JSON.stringify(`${locale === 'en' ? ' chapters · Free' : ' 章 · 免費'} · LLM API · RAG · MCP · Evals · Guardrails`)};
 		hero.querySelector('.copy').append(topics);
 		document.body.replaceChildren(hero);
 		const brand = document.createElement('div'); brand.className = 'social-brand';

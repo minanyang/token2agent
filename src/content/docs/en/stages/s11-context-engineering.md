@@ -127,7 +127,7 @@ Write the system prompt at the right "altitude" (Anthropic's term): don't turn e
 
 **Too low** means hard-coding a pile of if-else rules ("if... then... otherwise...") into the prompt, which is brittle and hard to maintain. For example: "If the user asks about the budget, first search notes containing 'budget'; if nothing turns up, search for 'quote' instead; if there's still nothing..." **Too high** is an instruction like "You are a helpful notes assistant," which gives the model nothing to follow. The right altitude states the principles and the necessary format clearly: "Check the retrieved notes before answering; cite the note's title and date in your answer; if you can't find it, say so instead of guessing; confirm the content before creating or editing a note."
 
-This ties directly into the error analysis from [S8 Eval Methodology](/en/stages/s08-evals/): every instruction you add should map to an observed failure category.
+This ties directly into the error analysis from [S8 Evals Methodology](/en/stages/s08-evals/): every instruction you add should map to an observed failure category.
 
 **Common misconception: more rules are safer.** With many rules, they tend to conflict (the clash in the previous section) and each one's influence gets diluted. A system prompt with 60 rules can usually be boiled down to a dozen or so principles plus a few examples.
 
@@ -145,7 +145,7 @@ Write what happened in this notes-assistant turn as a single message, for exampl
 <question>What budget did we settle on?</question>
 ```
 
-Compared with several messages in the standard format, this drops each message's role markers and JSON wrapper, and compresses "what was searched, how many came back, how many are shown" into one line. Whether it's worth it is decided by comparing the two formats' quality and token counts with an eval (← S8 Eval Methodology).
+Compared with several messages in the standard format, this drops each message's role markers and JSON wrapper, and compresses "what was searched, how many came back, how many are shown" into one line. Whether it's worth it is decided by comparing the two formats' quality and token counts with an eval (← S8 Evals Methodology).
 
 </details>
 
@@ -183,7 +183,7 @@ Tool results and conversation history are the two fastest-growing parts of the c
 
 - **Fix the drop order**: for example, cut tool results first, then compress history, and touch retrieval results last; never cut the system prompt or the user's input for this turn. A fixed order makes behavior predictable and testable.
 - **Don't rewrite the summary every time**: the summary sits at the start of the history, and if it's rewritten every turn, nothing after it can hit the cache (see the next section). A common approach is to fold the oldest batch into the summary only after a set number of turns (say every 10).
-- **Who writes the summary**: a cheap small model is fine, but spot-check it with the S8 Eval Methodology approach for dropped decisions or numbers; a fact the summary drops no longer exists as far as the model is concerned.
+- **Who writes the summary**: a cheap small model is fine, but spot-check it with the S8 Evals Methodology approach for dropped decisions or numbers; a fact the summary drops no longer exists as far as the model is concerned.
 - **The truncation note costs tokens too**: leave room for that line in the budget.
 
 </details>

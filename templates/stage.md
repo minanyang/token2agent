@@ -8,6 +8,8 @@ sidebar:
 
 <!--
 Authoring rules (keep this comment out of published pages):
+- Use evals for the topic or evaluations collectively, eval for one evaluation (which may contain many test cases), and singular modifiers
+  such as eval runner, eval score and eval harness. Preserve code identifiers and external source titles.
 - Language: Traditional Chinese (Taiwan) with English technical terms. Follow /reference/glossary/.
   First mention: 中文（English）. 推論 = inference, 推理 = reasoning. No Simplified-Chinese vocabulary.
 - Every link to an external source must come from /reference/sources/ (same URL). If a needed source is

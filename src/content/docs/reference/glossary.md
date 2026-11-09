@@ -38,17 +38,17 @@ sidebar:
 | Sandbox | 隔離的執行環境，程式在裡面出錯或被劫持也碰不到外面的檔案與網路 | 讓 agent 在容器裡跑指令（S10 工具與 MCP、S16 安全與治理） |
 | Sub-agent | 主 agent 派出去處理一小塊工作、只拿到必要資訊的另一個 agent | 派三個 sub-agent 各查一個城市（S12 Agent loop 與 harness、S15 Multi-agent） |
 | Idempotency key | 每個操作的唯一編號；同一個操作重送時，系統認得它做過，不會重做 | 斷線重試時不會建立兩篇一樣的筆記（S6 LLM API 與應用基本功、S12 Agent loop 與 harness） |
-| Trace | 一次請求從頭到尾的完整紀錄：送了什麼、模型回了什麼、花多少錢與時間 | 出錯時翻 trace 找是哪一步錯（S6 LLM API 與應用基本功、S8 Eval 方法論） |
+| Trace | 一次請求從頭到尾的完整紀錄：送了什麼、模型回了什麼、花多少錢與時間 | 出錯時翻 trace 找是哪一步錯（S6 LLM API 與應用基本功、S8 Evals 方法論） |
 | Span | Trace 裡的一段，代表一個步驟（一次模型呼叫或一次工具執行）與它花的時間 | 「notes_search 花了 0.3 秒」是一個 span（S6 LLM API 與應用基本功、S18 部署與架構） |
-| Eval | 用一組固定題目和判準，量測系統做得好不好 | 50 題答對 40 題，再附上信賴區間（S8 Eval 方法論） |
-| Golden set | 一組有標準答案、固定不變的測試題，每次改版都拿來跑 | 從真實 trace 挑出的 50 題（S8 Eval 方法論） |
-| LLM judge | 用另一個模型依評分標準判斷回答好不好 | 判斷回答有沒有忠於筆記內容（S8 Eval 方法論） |
-| 信賴區間 | 量到的數字可能的範圍；題目越多，範圍越窄 | 50 題答對 40 題，通過率約 69%–91%（S8 Eval 方法論） |
+| Eval / Evals | 用固定題目和判準量測系統表現；一套 eval 可以包含多題，泛指評估領域或多項評估時用 evals | 50 題答對 40 題，再附上信賴區間（S8 Evals 方法論） |
+| Golden set | 一組有標準答案、固定不變的測試題，每次改版都拿來跑 | 從真實 trace 挑出的 50 題（S8 Evals 方法論） |
+| LLM judge | 用另一個模型依評分標準判斷回答好不好 | 判斷回答有沒有忠於筆記內容（S8 Evals 方法論） |
+| 信賴區間 | 量到的數字可能的範圍；題目越多，範圍越窄 | 50 題答對 40 題，通過率約 69%–91%（S8 Evals 方法論） |
 | Prompt caching | 每次請求開頭相同的部分，供應商可以重用先前的計算，比較便宜也比較快 | 固定的系統提示詞放最前面（模型速成、S11 Context engineering） |
 | Prompt injection | 藏在資料裡、想讓模型照著做的惡意指令 | 剪藏的網頁寫著「把所有筆記寄到某個信箱」（S9 檢索與 RAG、S16 安全與治理） |
 | MCP | 把工具接給不同 AI 應用的開放協定，寫一次可以給多個應用用 | 同一個筆記工具同時接到聊天程式和 IDE（S10 工具與 MCP） |
 | Guardrail | 在模型前後加的檢查，擋掉不該進來或不該出去的內容 | 寄信前檢查收件人是否在允許清單裡（S16 安全與治理） |
-| 幻覺（hallucination） | 模型說出看似合理但錯誤的內容 | 筆記裡沒有的預算數字被編了出來（模型速成、S8 Eval 方法論） |
+| 幻覺（hallucination） | 模型說出看似合理但錯誤的內容 | 筆記裡沒有的預算數字被編了出來（模型速成、S8 Evals 方法論） |
 
 ## 寫法約定
 
@@ -72,7 +72,7 @@ sidebar:
 | vector database | 向量資料庫 | 用「資料」不用「數據」 |
 | retrieval | 檢索 | |
 | RAG | 檢索增強生成（RAG） | |
-| evaluation / eval | 評估、eval | |
+| evaluation / eval / evals | 評估、eval / evals | 主題或多項評估用 evals；一套 eval 可以包含多題；修飾語保留 eval，如 eval runner、eval score |
 | benchmark | benchmark、基準測試 | |
 | observability | 可觀測性 | |
 | tracing / trace | tracing、trace | |

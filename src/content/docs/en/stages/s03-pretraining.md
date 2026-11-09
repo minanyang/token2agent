@@ -74,7 +74,7 @@ What a model learns depends on what it reads (data engineering). Most raw data s
 
 The proportions vary a lot by source, but "most of it gets thrown away" is common. A common way to build a quality classifier: take a batch of widely accepted good text (e.g. encyclopedias, textbooks) as positives and random web pages as negatives, train a small model to score each document, and keep only the high scorers.
 
-**Why deduplicate.** Repeated content gets seen many times, so the model tends to memorize it word for word. Spending compute on duplicates is also waste. And there's a hidden problem: if eval questions are scattered around the web, they can end up in the training data and the scores become meaningless (this is called data contamination; → [S8 Eval Methodology](/en/stages/s08-evals/)).
+**Why deduplicate.** Repeated content gets seen many times, so the model tends to memorize it word for word. Spending compute on duplicates is also waste. And there's a hidden problem: if eval questions are scattered around the web, they can end up in the training data and the scores become meaningless (this is called data contamination; → [S8 Evals Methodology](/en/stages/s08-evals/)).
 
 **Identical documents are easy to find with a hash:** compute a hash for each document, and equal hashes mean duplicates. The trouble is "nearly identical": an article reposted with a few words changed has a completely different hash. For those you have to compare how much the content overlaps.
 
@@ -230,7 +230,7 @@ Large training runs usually combine several of these: tensor parallel within a m
 
 ### ★ How do you know if training went well?
 
-After training, you need to judge whether the model is any good. This chapter uses only the two most basic metrics (perplexity and held-out exact match); the full eval methodology is in [S8 Eval Methodology](/en/stages/s08-evals/).
+After training, you need to judge whether the model is any good. This chapter uses only the two most basic metrics (perplexity and held-out exact match); the full eval methodology is in [S8 Evals Methodology](/en/stages/s08-evals/).
 
 **Perplexity.** Compute perplexity on held-out data the model hasn't seen (← [S1 Neural Network Basics](/en/stages/s01-neural-networks/)). Intuitively it's "how many options the model is torn between on average," and lower is better. The validation set has to be split off before training and deduplicated together with the training data; otherwise it's like testing on questions the model has already seen.
 

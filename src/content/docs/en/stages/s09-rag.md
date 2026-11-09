@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/). The embedding fine-tuning step in A9 RAG with Citations ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) uses fine-tuning concepts; see the Model Crash Course topic "[What fine-tuning can and can't do](/en/guide/app-first/#what-fine-tuning-can-and-cant-do)" (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)). If you haven't read it, skip that step for now.
+**Prerequisites**: [S8 Evals Methodology](/en/stages/s08-evals/). The embedding fine-tuning step in A9 RAG with Citations ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) uses fine-tuning concepts; see the Model Crash Course topic "[What fine-tuning can and can't do](/en/guide/app-first/#what-fine-tuning-can-and-cant-do)" (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)). If you haven't read it, skip that step for now.
 
 **Next**: → [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/)
 :::
@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-In S6 LLM APIs and Application Basics, the notes assistant stuffed the 20 most recent notes into the system prompt (about 30,000 tokens), and every request paid for those input tokens. S8 Eval Methodology gave you a way to measure quality. This chapter answers: how do you put only "the few passages relevant to this question" into the context, have the model answer from them with sources, and use those eval methods to show quality didn't drop? That's retrieval-augmented generation (RAG).
+In S6 LLM APIs and Application Basics, the notes assistant stuffed the 20 most recent notes into the system prompt (about 30,000 tokens), and every request paid for those input tokens. S8 Evals Methodology gave you a way to measure quality. This chapter answers: how do you put only "the few passages relevant to this question" into the context, have the model answer from them with sources, and use those eval methods to show quality didn't drop? That's retrieval-augmented generation (RAG).
 
 This chapter is also the first 🔒 security checkpoint: once your system reads documents someone else wrote, the text in those documents can try to manipulate your model.
 
@@ -254,7 +254,7 @@ Example with three queries:
 | Q2 | c03, c04 | c04 at 3, c03 at 8 | 0.5 | 1 | 1/3 |
 | Q3 | c20 | c20 at 7 | 0 | 1 | 1/7 |
 
-Recall@5 = (1 + 0.5 + 0) / 3 = 0.5; Recall@10 = 1; MRR = (1 + 0.333 + 0.143) / 3 ≈ 0.49. Three queries are far too few; in practice use 50 or more and attach a 95% confidence interval with the bootstrap (← [S8 Eval Methodology](/en/stages/s08-evals/)).
+Recall@5 = (1 + 0.5 + 0) / 3 = 0.5; Recall@10 = 1; MRR = (1 + 0.333 + 0.143) / 3 ≈ 0.49. Three queries are far too few; in practice use 50 or more and attach a 95% confidence interval with the bootstrap (← [S8 Evals Methodology](/en/stages/s08-evals/)).
 
 **Generation metrics** look at the relationship between the answer and the retrieved passages (definitions follow ALCE, Gao et al. 2023):
 
@@ -262,7 +262,7 @@ Recall@5 = (1 + 0.5 + 0) / 3 = 0.5; Recall@10 = 1; MRR = (1 + 0.333 + 0.143) / 3
 - **Citation precision**: the share of citations in the answer that actually support their claim.
 - **Citation recall**: the share of claims needing a citation that have a correct one.
 
-For example, an answer makes 3 claims. Claim 1 is tagged [1], and [1] does support it. Claim 2 is tagged [2], but neither [2] nor any other passage mentions it. Claim 3 has no citation, but [1] actually supports it. Faithfulness = 2/3 (claims 1 and 3 are supported); citation precision = 1/2 (of two citations, only one is right); citation recall = 1/3 (of three claims, only claim 1 is correctly cited). These are usually scored by a judge calibrated as in S8 Eval Methodology.
+For example, an answer makes 3 claims. Claim 1 is tagged [1], and [1] does support it. Claim 2 is tagged [2], but neither [2] nor any other passage mentions it. Claim 3 has no citation, but [1] actually supports it. Faithfulness = 2/3 (claims 1 and 3 are supported); citation precision = 1/2 (of two citations, only one is right); citation recall = 1/3 (of three claims, only claim 1 is correctly cited). These are usually scored by a judge calibrated as in S8 Evals Methodology.
 
 **Synthetic queries**: labeling takes a lot of time, so a common approach is to have an LLM read a passage and write a question that passage answers, giving you one (query, correct passage) pair. **Common misconception: scores on synthetic queries reflect real performance.** Synthetic questions often copy the passage's wording, which makes BM25 look especially strong. Always mix in queries phrased the way real users talk, and report the two sets of scores separately.
 
@@ -304,7 +304,7 @@ The three approaches solve different problems, and you usually try them in the o
 | RAG | Knowledge the model doesn't have or that changes, with sources | Answering "What was the budget last time?" |
 | Fine-tuning | Stable behavior, format and style, or "baking" the effect of a big prompt into a smaller model to save cost | Making a small model reliably produce a fixed summary format |
 
-Prompting is fastest and cheapest; always try it first. Each step further down needs an eval (← S8 Eval Methodology) to prove it's worth it. **Common misconception: fine-tuning is a way to add new knowledge.** It's not reliable for that: the model may still answer wrong after fine-tuning, you have to retrain whenever the data changes, and it can't tell you which document an answer came from.
+Prompting is fastest and cheapest; always try it first. Each step further down needs an eval (← S8 Evals Methodology) to prove it's worth it. **Common misconception: fine-tuning is a way to add new knowledge.** It's not reliable for that: the model may still answer wrong after fine-tuning, you have to retrain whenever the data changes, and it can't tell you which document an answer came from.
 
 ### 🔒 What if a document hides instructions?
 
@@ -395,7 +395,7 @@ The core exercise uses a public document set rather than the notes assistant: an
 3. Generation and citations: the model tags each claim with a passage ID, and the frontend shows it as a clickable source. If you're not building a web frontend (CLI, Gradio, Chainlit), list sources like "[1] filename, page 3" after the answer, or use Markdown links instead; the clickable, expandable version is in S17 Product and AI UX.
 4. Filter by user during retrieval, searching only documents that user is allowed to see. User identity reuses the user ID every request has carried since A6 Streaming Chat and Traces (the system project will have 2–3 users later).
 5. Build a 50-query set: take queries from the golden set (← A8 Error Analysis and Golden Set) and real traces, fill gaps with synthetic queries, and label the correct passages.
-6. Evaluate: Recall@10 and MRR for retrieval; faithfulness and citation precision for generation (calibrate the judge as in S8 Eval Methodology).
+6. Evaluate: Recall@10 and MRR for retrieval; faithfulness and citation precision for generation (calibrate the judge as in S8 Evals Methodology).
 7. **Optional model-project bridge: fine-tune the embedding model**. You can complete A9's RAG, isolation and security criteria without this step. Train on synthetic (query, passage) pairs, and compare Recall@10 before and after fine-tuning on queries **not used in training**. This step shares techniques with the model project's fine-tuning (see [Model Crash Course, "What fine-tuning can and can't do"](/en/guide/app-first/#what-fine-tuning-can-and-cant-do); deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)).
 8. Complete the 🔒 indirect injection check above and write the results into your project docs.
 9. ○ Text2SQL variant (optional; readers comfortable with SQL can do it instead of step 7): using a database you know, or a subset of [Spider](https://yale-lily.github.io/spider), build 50 natural-language-to-SQL questions. Score by comparing execution results (execution accuracy: the model's SQL counts as correct only if it returns the same result as the reference SQL), with a 95% confidence interval; compare a prompt with "table names only" against one that "adds column descriptions and 3 examples." Always run queries with a read-only account.

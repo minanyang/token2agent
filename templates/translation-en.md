@@ -12,6 +12,7 @@ Write for an English-speaking engineer who never saw the Chinese edition.
 - **Locale-specific details.** Taiwan-specific services, currency (NT$) and places become neutral or US equivalents (USD). Prices stated in USD stay as they are.
 - **Chinese-only resources.** Drop "中文資源" subsections from Further reading and drop advice that only applies to Chinese readers (OpenCC, Simplified-Chinese reading tips). In `reference/sources.md`, keep Chinese-language entries but mark them *(in Chinese)*.
 - **Voice.** Second person, plain and direct, short sentences. American spelling. No hype words.
+- **Evaluation terminology.** Use `evals` for the topic or evaluations collectively, `eval` for one evaluation (which may contain many test cases), and singular modifiers such as `eval runner`, `eval score` and `eval harness`. Follow the fixed chapter and project names below; preserve code identifiers and external source titles.
 - **Table labels.** Keep short labels such as `Level&nbsp;0` together with a non-breaking space (`&nbsp;`) in both editions. Descriptive cells should wrap normally; do not disable wrapping for an entire table or column.
 
 ## Fixed names
@@ -28,7 +29,7 @@ Chapter titles (frontmatter `title` and every in-text reference use exactly thes
 | S5 | Inference and Serving |
 | S6 | LLM APIs and Application Basics |
 | S7 | Prompts, Structured Output and Workflows |
-| S8 | Eval Methodology |
+| S8 | Evals Methodology |
 | S9 | Retrieval and RAG |
 | S10 | Tools and MCP |
 | S11 | Context Engineering |

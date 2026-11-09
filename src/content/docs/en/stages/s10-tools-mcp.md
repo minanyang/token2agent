@@ -181,7 +181,7 @@ Whether a tool is well designed has to be shown with evals, not gut feeling. Pre
 
 1. **Tasks close to real use, with results verified by code.** For example, "Create a note for each to-do from the 10/14 design team meeting": a check function confirms the database has exactly one note per to-do, rather than trusting the model saying "Done."
 2. **Log every run**: success or failure, which tools were called with which arguments, total tokens, number of calls.
-3. **Run each task several times** (pass^k from ← [S8 Eval Methodology](/en/stages/s08-evals/)), because the same task can come out differently each time; use bootstrap confidence intervals (← S8 Eval Methodology) to judge whether a difference is noise.
+3. **Run each task several times** (pass^k from ← [S8 Evals Methodology](/en/stages/s08-evals/)), because the same task can come out differently each time; use bootstrap confidence intervals (← S8 Evals Methodology) to judge whether a difference is noise.
 4. **Hold out some tasks from tuning**, and use them only at the end to confirm.
 
 **Example (illustrative numbers).** 20 tasks, 3 runs each: v1, wrapped straight from the API, averages 18,000 tokens per task; v2, designed around tasks, averages 6,500, a reduction of (18,000 − 6,500) ÷ 18,000 ≈ 64%. Success rate needs a confidence interval: with 20 tasks, even a 10-point difference can be noise, so the core exercise's acceptance criteria are written in terms of "the lower bound of the confidence interval."

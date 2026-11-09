@@ -36,7 +36,7 @@ When you can't find a concept, check here first. The math and statistics tools (
 | GRPO / RLVR, reasoning models | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (using them in applications) |
 | Test-time compute, verifiers | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
 | Reward hacking, sycophancy | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S13 Memory and Personalization](/en/stages/s13-memory/) (personalization that panders), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (optimization that games the metric) |
-| Synthetic data and distillation | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (router distillation) |
+| Synthetic data and distillation | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (router distillation) |
 | A mental model of the GPU | [S5 Inference and Serving](/en/stages/s05-inference/) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | Prefill / decode, KV cache | [S5 Inference and Serving](/en/stages/s05-inference/) ([S0 AI Systems Overview](/en/stages/s00-big-picture/) and the Model Crash Course preview it) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S11 Context Engineering](/en/stages/s11-context-engineering/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | Continuous batching, PagedAttention | [S5 Inference and Serving](/en/stages/s05-inference/) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
@@ -49,7 +49,7 @@ When you can't find a concept, check here first. The math and statistics tools (
 
 | Concept | First taught | Deepened in |
 |---|---|---|
-| Messages / roles, token pricing | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S8 Eval Methodology](/en/stages/s08-evals/) (cost accounting) |
+| Messages / roles, token pricing | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S8 Evals Methodology](/en/stages/s08-evals/) (cost accounting) |
 | Streaming (SSE, partial JSON) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
 | Retries, rate limits, idempotency | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
 | Cancellation and interruption | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
@@ -57,25 +57,25 @@ When you can't find a concept, check here first. The math and statistics tools (
 | Collecting feedback (minimal version: thumbs up / down) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
 | Local and small models | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | [Ollama's context length](/en/stages/s06-llm-api/#context-length-in-ollama) (the default may be only 4K; beyond it, earlier content is dropped) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) ([S5 Inference and Serving](/en/stages/s05-inference/) mentions it first and links here) | Later chapters link here whenever they give tips on local models |
-| Tracing (OpenTelemetry GenAI) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S8 Eval Methodology](/en/stages/s08-evals/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
-| Testing nondeterministic code | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S8 Eval Methodology](/en/stages/s08-evals/) |
+| Tracing (OpenTelemetry GenAI) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S8 Evals Methodology](/en/stages/s08-evals/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| Testing nondeterministic code | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) | [S8 Evals Methodology](/en/stages/s08-evals/) |
 | Prompt structure, few-shot, CoT | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) | — |
 | Prompt sensitivity | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) | — |
 | Structured output, function calling | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) | [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S13 Memory and Personalization](/en/stages/s13-memory/) (memory extraction) |
 | Prompts as code, migrating across models | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | The five workflow patterns | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) (orchestrator-worker), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
 | Multimodal input (feeding images and PDFs to the model directly) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) (○) | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
-| Error analysis (open / axial coding) | [S8 Eval Methodology](/en/stages/s08-evals/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) (the MAST failure taxonomy) |
-| LLM-as-judge and calibration | [S8 Eval Methodology](/en/stages/s08-evals/) | [S13 Memory and Personalization](/en/stages/s13-memory/) (the pairwise judge in step 0 of A13 Layered Memory, for evaluating personalization), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (agent-as-judge) |
-| Capability vs regression evals, pass@k / pass^k | [S8 Eval Methodology](/en/stages/s08-evals/) | [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
-| Benchmark contamination and construct validity | [S8 Eval Methodology](/en/stages/s08-evals/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
-| Error bars, bootstrap confidence intervals ([Math Refresher: standard error](/en/guide/math-refresher/#mean-variance-and-standard-error), [bootstrap](/en/guide/math-refresher/#bootstrap-confidence-intervals); used once earlier in S4 Post-training and Reasoning) | [S8 Eval Methodology](/en/stages/s08-evals/) | [S9 Retrieval and RAG](/en/stages/s09-rag/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
-| Sample size planning (statistical power) | [S8 Eval Methodology](/en/stages/s08-evals/) (○) | — |
-| Multiple comparisons (Bonferroni) | [S8 Eval Methodology](/en/stages/s08-evals/) (○) | — |
-| Inter-annotator agreement (Cohen's κ) | [S8 Eval Methodology](/en/stages/s08-evals/) (○) | — |
-| Cost accounting (cost per task, budgets) | [S8 Eval Methodology](/en/stages/s08-evals/) | [S13 Memory and Personalization](/en/stages/s13-memory/), [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) |
-| Uncertainty (logprobs, calibration) | [S8 Eval Methodology](/en/stages/s08-evals/) | [S17 Product and AI UX](/en/stages/s17-ai-ux/) (per-item uncertainty signals and how to show them, step 0 of A17 Complete Frontend), [S18 Deployment and Architecture](/en/stages/s18-deployment/) (cascades) |
-| Calibration metrics (ECE, Brier score) | [S8 Eval Methodology](/en/stages/s08-evals/) (○) | — |
+| Error analysis (open / axial coding) | [S8 Evals Methodology](/en/stages/s08-evals/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) (the MAST failure taxonomy) |
+| LLM-as-judge and calibration | [S8 Evals Methodology](/en/stages/s08-evals/) | [S13 Memory and Personalization](/en/stages/s13-memory/) (the pairwise judge in step 0 of A13 Layered Memory, for evaluating personalization), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (agent-as-judge) |
+| Capability vs regression evals, pass@k / pass^k | [S8 Evals Methodology](/en/stages/s08-evals/) | [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
+| Benchmark contamination and construct validity | [S8 Evals Methodology](/en/stages/s08-evals/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) |
+| Error bars, bootstrap confidence intervals ([Math Refresher: standard error](/en/guide/math-refresher/#mean-variance-and-standard-error), [bootstrap](/en/guide/math-refresher/#bootstrap-confidence-intervals); used once earlier in S4 Post-training and Reasoning) | [S8 Evals Methodology](/en/stages/s08-evals/) | [S9 Retrieval and RAG](/en/stages/s09-rag/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
+| Sample size planning (statistical power) | [S8 Evals Methodology](/en/stages/s08-evals/) (○) | — |
+| Multiple comparisons (Bonferroni) | [S8 Evals Methodology](/en/stages/s08-evals/) (○) | — |
+| Inter-annotator agreement (Cohen's κ) | [S8 Evals Methodology](/en/stages/s08-evals/) (○) | — |
+| Cost accounting (cost per task, budgets) | [S8 Evals Methodology](/en/stages/s08-evals/) | [S13 Memory and Personalization](/en/stages/s13-memory/), [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) |
+| Uncertainty (logprobs, calibration) | [S8 Evals Methodology](/en/stages/s08-evals/) | [S17 Product and AI UX](/en/stages/s17-ai-ux/) (per-item uncertainty signals and how to show them, step 0 of A17 Complete Frontend), [S18 Deployment and Architecture](/en/stages/s18-deployment/) (cascades) |
+| Calibration metrics (ECE, Brier score) | [S8 Evals Methodology](/en/stages/s08-evals/) (○) | — |
 | Document parsing, OCR | [S9 Retrieval and RAG](/en/stages/s09-rag/) | — |
 | Embeddings, vector search, hybrid search, reranking ([Math Refresher: cosine similarity](/en/guide/math-refresher/#dot-product-and-cosine-similarity)) | [S9 Retrieval and RAG](/en/stages/s09-rag/) | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) (compared with agentic search) |
 | Retrieval eval vs generation eval | [S9 Retrieval and RAG](/en/stages/s09-rag/) | — |

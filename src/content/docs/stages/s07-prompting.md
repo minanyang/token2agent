@@ -12,7 +12,7 @@ sidebar:
 :::note[這一章]
 **前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)；模型知識見 [模型速成](/guide/app-first/)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/) 的 chat template、[S5 推論與 serving](/stages/s05-inference/) 的 constrained decoding）
 
-**銜接**：→ [S8 Eval 方法論](/stages/s08-evals/)
+**銜接**：→ [S8 Evals 方法論](/stages/s08-evals/)
 :::
 
 :::tip[理解路線重點]
@@ -96,7 +96,7 @@ Prompt 寫得清楚，模型才知道任務、限制和輸出長什麼樣子；�
 <details class="deep">
 <summary>深入一點：few-shot 偏誤的三種來源與校準</summary>
 
-Zhao et al. 2021 把 few-shot 的偏誤分成三種：majority label bias（偏向範例中多數的標籤）、recency bias（偏向靠近結尾的範例標籤）、common token bias（偏向預訓練資料裡常見的詞）。他們提出的修正叫 contextual calibration：把真正的輸入換成沒有內容的「N/A」，看模型在什麼都沒看到時偏向哪個標籤，再用這個偏差去校正實際輸出的機率。這需要拿得到每個標籤的機率（logprobs，→ [S8 Eval 方法論](/stages/s08-evals/)），用 API 時常常做不到；實務上多半靠「範例平衡、順序打散、多跑幾種順序比較」。
+Zhao et al. 2021 把 few-shot 的偏誤分成三種：majority label bias（偏向範例中多數的標籤）、recency bias（偏向靠近結尾的範例標籤）、common token bias（偏向預訓練資料裡常見的詞）。他們提出的修正叫 contextual calibration：把真正的輸入換成沒有內容的「N/A」，看模型在什麼都沒看到時偏向哪個標籤，再用這個偏差去校正實際輸出的機率。這需要拿得到每個標籤的機率（logprobs，→ [S8 Evals 方法論](/stages/s08-evals/)），用 API 時常常做不到；實務上多半靠「範例平衡、順序打散、多跑幾種順序比較」。
 
 </details>
 
@@ -111,7 +111,7 @@ Sclar et al. 2023 在 few-shot 設定下，用 LLaMA-2-13B 測到同一任務只
 實務上的結論：
 
 - **不要只用一個 prompt 版本就下結論。** 比較兩個模型或兩個 prompt 時，至少試幾種合理的格式變體，回報結果的範圍。
-- **Prompt 改一個字，也要跑一次回歸。** 下一章會教怎麼把它做成 eval（→ [S8 Eval 方法論](/stages/s08-evals/)）。
+- **Prompt 改一個字，也要跑一次回歸。** 下一章會教怎麼把它做成 eval（→ [S8 Evals 方法論](/stages/s08-evals/)）。
 - **抽樣的隨機性也會混進結果。** 用預設抽樣，每個條件多跑幾次取平均（原因見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#sampling-參數的限制)）。
 
 **容易誤會：找到最好的格式就一勞永逸。** 最好的格式是「這個模型、這批資料」的最好；換模型或資料分布變了，排名可能整個洗牌。
@@ -162,7 +162,7 @@ Sclar et al. 2023 在 few-shot 設定下，用 LLaMA-2-13B 測到同一任務只
 
 假設 100 篇筆記第一次有 95 篇通過，5 篇失敗的修復後救回 4 篇，合法率就從 95% 變成 99%。修復次數要記錄下來：它突然變多，通常代表 prompt 或模型變了。
 
-**容易誤會：格式合法不代表內容正確。** 上面的輸出就算把 `date` 寫成 `2026-10-28`（下次開會的日期，不是這次開會的日期），也完全符合 schema。內容對不對要靠 S8 Eval 方法論的 eval。另一個代價是**格式限制可能影響推理品質**：Tam et al. 2024 發現嚴格的格式限制會讓部分推理任務表現下降，但結果依任務與模型而異。常見的折衷是讓 schema 第一個欄位是推理或依據（例如 `evidence`：從筆記摘出的原句），最後才是答案。
+**容易誤會：格式合法不代表內容正確。** 上面的輸出就算把 `date` 寫成 `2026-10-28`（下次開會的日期，不是這次開會的日期），也完全符合 schema。內容對不對要靠 S8 Evals 方法論的 eval。另一個代價是**格式限制可能影響推理品質**：Tam et al. 2024 發現嚴格的格式限制會讓部分推理任務表現下降，但結果依任務與模型而異。常見的折衷是讓 schema 第一個欄位是推理或依據（例如 `evidence`：從筆記摘出的原句），最後才是答案。
 
 <details class="deep">
 <summary>準備動手做：函式庫與各家限制</summary>
@@ -253,7 +253,7 @@ prompts/
 
 **容易誤會：orchestrator-workers 和 agent 是同一件事。** 前者仍是 workflow：拆解是模型做的，但「拆解 → 分派 → 彙整」這個流程是程式寫死的，只跑一輪。Agent 則是模型在迴圈裡一步一步決定下一步做什麼（→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。
 
-Evaluator-optimizer 在這裡第一次出現，[S8 Eval 方法論](/stages/s08-evals/) 的 LLM-as-judge、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 的最佳化會再深化；orchestrator-workers 在 [S15 Multi-agent](/stages/s15-multi-agent/) 會變成 multi-agent 的基礎。
+Evaluator-optimizer 在這裡第一次出現，[S8 Evals 方法論](/stages/s08-evals/) 的 LLM-as-judge、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 的最佳化會再深化；orchestrator-workers 在 [S15 Multi-agent](/stages/s15-multi-agent/) 會變成 multi-agent 的基礎。
 
 <details class="deep">
 <summary>深入一點：voting 能提升多少信心</summary>
@@ -290,7 +290,7 @@ Evaluator-optimizer 在這裡第一次出現，[S8 Eval 方法論](/stages/s08-e
 <details class="hint">
 <summary>對照答案</summary>
 
-Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的輸出加具體錯誤，例如「UI 不在詞表中，只能從 5 個標籤選；請只輸出修正後的 JSON」。修復後合法不代表正確：這篇可能也該有「預算」，要靠 eval（→ S8 Eval 方法論）。
+Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的輸出加具體錯誤，例如「UI 不在詞表中，只能從 5 個標籤選；請只輸出修正後的 JSON」。修復後合法不代表正確：這篇可能也該有「預算」，要靠 eval（→ S8 Evals 方法論）。
 
 </details>
 
@@ -308,7 +308,7 @@ Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的�
 5. 用方式 (c) 做格式實驗：寫 4 種只改格式、不改意思的 prompt 變體（例如：欄位說明用條列或段落、分隔符號用 XML 或 `###`、範例放前或放後），不要設 temperature（Claude 不接受，見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#sampling-參數的限制)），用模型的預設值，每個變體跑 3 次 100 段，用平均值。
 6. 每筆輸出都記錄 prompt 名稱與版本號。
 
-**欄位準確率的定義**：只算 `category`、`date`、`amount`、`sentiment` 四個欄位。日期先轉成 `YYYY-MM-DD`、金額轉成整數再比對；標準答案留空的欄位，輸出也必須是空值（`null`）才算對。`summary` 不計（S8 Eval 方法論會用 judge 評它）。準確率 = 對的欄位數 /（筆數 × 4）。
+**欄位準確率的定義**：只算 `category`、`date`、`amount`、`sentiment` 四個欄位。日期先轉成 `YYYY-MM-DD`、金額轉成整數再比對；標準答案留空的欄位，輸出也必須是空值（`null`）才算對。`summary` 不計（S8 Evals 方法論會用 judge 評它）。準確率 = 對的欄位數 /（筆數 × 4）。
 
 **驗收**
 - 一張表：三種方式各自的 schema 合法率（合法筆數 / 100）；最好的方式合法率 ≥ 99%，並記錄 repair 次數。
@@ -445,7 +445,7 @@ Schema 的 `tags` 是 `enum`，驗證會在「UI」擋下。送回上一次的�
 
 - [BAML](https://docs.boundaryml.com/home) — 用 DSL 定義 LLM 函式與型別，自動產生 TypeScript / Python client。
 - [XGrammar](https://github.com/mlc-ai/xgrammar) — 高效的 grammar 約束解碼引擎，推論伺服器常用（推論伺服器見 S5 推論與 serving）。
-- 自動化 prompt 最佳化（DSPy、GEPA）：先有 eval 才有意義，見 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)。
+- 自動化 prompt 最佳化（DSPy、GEPA）：先有 eval 才有意義，見 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)。
 
 ### 中文資源
 

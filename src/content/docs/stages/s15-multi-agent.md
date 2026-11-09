@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；模型知識見 [模型速成](/guide/app-first/)
+**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)；模型知識見 [模型速成](/guide/app-first/)
 
 **銜接**：→ [S16 安全與治理](/stages/s16-security/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-多個 agent 分工聽起來很自然，但它會讓 token 成本倍增、多出交接時遺失資訊的風險，也更難除錯。這一章回答：什麼時候值得把一個 agent 拆成好幾個、怎麼拆、要付出多少代價。它刻意排在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 之後，因為答案只能由 eval 給：**只有在 eval 上勝過單一 agent，才保留 multi-agent**。
+多個 agent 分工聽起來很自然，但它會讓 token 成本倍增、多出交接時遺失資訊的風險，也更難除錯。這一章回答：什麼時候值得把一個 agent 拆成好幾個、怎麼拆、要付出多少代價。它刻意排在 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 之後，因為答案只能由 eval 給：**只有在 eval 上勝過單一 agent，才保留 multi-agent**。
 
 ## 學完能
 
@@ -35,7 +35,7 @@ sidebar:
 
 ## 講義
 
-先看全貌。到 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 為止，筆記助理是**一個** agent：一個 loop、一份 context、一組工具。Multi-agent 是把工作分給好幾個 agent，各自有自己的 context，彼此之間靠訊息交接。這一章依序回答五件事：
+先看全貌。到 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 為止，筆記助理是**一個** agent：一個 loop、一份 context、一組工具。Multi-agent 是把工作分給好幾個 agent，各自有自己的 context，彼此之間靠訊息交接。這一章依序回答五件事：
 
 1. **要不要拆**：多數情況單一 agent 就夠，只有少數條件下拆開才有好處。
 2. **怎麼拆**：manager 模式（一個 agent 把其他 agent 當工具）或 handoff 模式（把對話交給另一個 agent）。
@@ -157,7 +157,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 - **倍數取決於設計。** 這裡是 1.43×，Anthropic 的系統約 3.75×，你的必做題會量到自己的數字。
 - **平行可能更快。** 總 token 較多，但依序的呼叫數較少，實際耗時可能較短。
 
-報告多 agent 結果時，一定要把總 token（包含所有 sub-agent）、成本、延遲和品質放在同一張表（← [S8 Eval 方法論的成本會計](/stages/s08-evals/)）。
+報告多 agent 結果時，一定要把總 token（包含所有 sub-agent）、成本、延遲和品質放在同一張表（← [S8 Evals 方法論的成本會計](/stages/s08-evals/)）。
 
 **容易誤會：只看 orchestrator 的 token 用量。** 上面的例子裡 orchestrator 自己只用了 7,500 token，總和卻是 372,000。每個 sub-agent 的每次呼叫都要加總，先各跑 1 題對帳。
 
@@ -183,7 +183,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 論文的觀察是：多 agent 在常見 benchmark 上的提升常常很小，而很多失敗來自系統設計，不只是模型能力。
 
-做法上，把 MAST 當成 [S8 Eval 方法論](/stages/s08-evals/) 錯誤分析的起始分類：讀 trace 時先用這三大類標記，再依你的系統細分子類，數出每類的次數，從最多的那類開始修。
+做法上，把 MAST 當成 [S8 Evals 方法論](/stages/s08-evals/) 錯誤分析的起始分類：讀 trace 時先用這三大類標記，再依你的系統細分子類，數出每類的次數，從最多的那類開始修。
 
 **容易誤會：失敗出現在哪個 agent，就是哪個 agent 的錯。** 最後的筆記漏了申請期限，表面上是 orchestrator 寫漏了；讀 trace 可能發現是 brief 沒要求 sub-agent 找期限，根源在交接。
 
@@ -191,11 +191,11 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 多 agent 是一個要付成本的假設。決定保不保留，看的是同一組 eval 上的兩個數字：品質差值的信賴區間，和成本倍數。
 
-[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 講過怎麼建立可信的 agent eval。比較時的規則：
+[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 講過怎麼建立可信的 agent eval。比較時的規則：
 
 1. **跑之前**寫下可以接受的成本倍數上限（多 agent ÷ 單一 agent），以及預期多 agent 贏在哪裡。事後才定上限，很容易替結果找理由。
 2. 兩個版本跑同一組題目、同一個模型、同樣的工具，每題多跑幾次。
-3. 只有在品質差值（多 agent − 單一 agent）的 95% 信賴區間整個大於 0、**且**成本倍數在上限內，才保留 multi-agent（信賴區間 ← [S8 Eval 方法論](/stages/s08-evals/)）。
+3. 只有在品質差值（多 agent − 單一 agent）的 95% 信賴區間整個大於 0、**且**成本倍數在上限內，才保留 multi-agent（信賴區間 ← [S8 Evals 方法論](/stages/s08-evals/)）。
 
 用筆記助理舉兩個示意結果，事先寫下的成本上限都是 2 倍：
 
@@ -259,7 +259,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 2. 單一 agent 版本：用一個 agent loop（← S12 Agent loop 與 harness），給它 `search`、`read_document` 兩個工具。
 3. Orchestrator-worker 版本：orchestrator 把問題拆成 2–4 個子問題，每個 worker 在自己的 context 中用同樣的工具研究，回傳 1,000 token 以內的摘要；orchestrator 彙整成答案。兩個版本用同一個模型、同樣的工具。
 4. 每個版本每題跑 3 次。記錄總 token（包含所有 worker）、實際耗時（wall-clock time）、成本。
-5. 用要點清單評分（每題的要點涵蓋率），可以用 S8 Eval 方法論校準過的 judge 判斷每個要點是否出現。
+5. 用要點清單評分（每題的要點涵蓋率），可以用 S8 Evals 方法論校準過的 judge 判斷每個要點是否出現。
 6. 失敗執行定義為要點涵蓋率 < 100% 的執行。從兩個版本的失敗執行中各挑 3 條讀 trace（不足 3 條就全部讀），用 MAST 三大類標記多 agent 版本的失敗。
 
 **驗收**
@@ -281,14 +281,14 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 ### 進階：系統專案 A15：有證據才保留的 multi-agent
 
-**目標**：為你的系統試做一個 research → write → review 的多 agent 流程，在 A14 agent eval 與最佳化（[代號說明](/guide/how-to-use/#代號怎麼讀)）建立的評估集上和單一 agent 比較，只有贏了才保留。
+**目標**：為你的系統試做一個 research → write → review 的多 agent 流程，在 A14 agent evals 與最佳化（[代號說明](/guide/how-to-use/#代號怎麼讀)）建立的評估集上和單一 agent 比較，只有贏了才保留。
 
 **步驟**
-1. 從 A14 agent eval 與最佳化的評估集中挑（或新增）至少 20 個適合拆分的任務。先寫下你預期 multi-agent 會贏在哪裡、你可以接受的成本上限。
+1. 從 A14 agent evals 與最佳化的評估集中挑（或新增）至少 20 個適合拆分的任務。先寫下你預期 multi-agent 會贏在哪裡、你可以接受的成本上限。
 2. 用 manager 模式實作：manager 把 researcher、writer、reviewer 當工具呼叫。為每個交接寫明傳遞的內容（哪些欄位、多少 token、是否包含不可信的工具輸出）。
 3. （選做）做一個 handoff 版本，用 input filter 控制交接內容，和 manager 版本比較。
 4. 如果有多個 writer 平行修改資料，給每個 writer 獨立的工作區（git worktree 或獨立草稿區），由一個步驟負責合併。
-5. 單一 agent 與 multi-agent 各跑 20 題 × 3 次，grader 沿用 A14 agent eval 與最佳化。
+5. 單一 agent 與 multi-agent 各跑 20 題 × 3 次，grader 沿用 A14 agent evals 與最佳化。
 6. 讀多 agent 的失敗 trace，用 MAST 分類，修一輪最常見的失敗後重跑。
 
 **驗收**
@@ -377,7 +377,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 - [Cemri et al. 2025, Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657) — 完整的 14 種失敗模式表與每類的真實例子。
 - [Graham Neubig: Don't Sleep on Single-Agent Systems](https://www.openhands.dev/blog/dont-sleep-on-single-agent-systems)（2024-09-26）— 單一 agent 的完整論點；部落格文章，篇幅短。
 - [Wu et al. 2023, AutoGen](https://arxiv.org/abs/2308.08155) — 用多 agent 對話組系統的早期框架。
-- [Anthropic: Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp)（2026-03-06）— [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) 讀過；注意其中一個數字：同一批 1,266 題重跑，非預期的解法在單一 agent 下約 0.24%，多 agent 下約 0.87%，原文寫約 3.7 倍（兩個百分比是四捨五入後的數字，直接相除約 3.6）。作者認為模型的傾向沒有變，而是平行花更多 token、搜尋更多次，碰到外洩答案或察覺自己在被測試的機會也跟著變多。
+- [Anthropic: Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp)（2026-03-06）— [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 讀過；注意其中一個數字：同一批 1,266 題重跑，非預期的解法在單一 agent 下約 0.24%，多 agent 下約 0.87%，原文寫約 3.7 倍（兩個百分比是四捨五入後的數字，直接相除約 3.6）。作者認為模型的傾向沒有變，而是平行花更多 token、搜尋更多次，碰到外洩答案或察覺自己在被測試的機會也跟著變多。
 
 ### 官方文件與指南
 

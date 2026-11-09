@@ -1,12 +1,12 @@
 ---
-title: S8 Eval Methodology
+title: S8 Evals Methodology
 head:
   - tag: title
     content: How to Evaluate LLMs? Evals and LLM Judges (S8) | Token2Agent
 description: How to make LLM evaluation trustworthy. Do error analysis on real traces, write binary grading criteria, calibrate an LLM judge against human labels, and put a confidence interval on every metric to tell whether your system really got better.
 sidebar:
   order: 8
-  label: S8 Eval Methodology
+  label: S8 Evals Methodology
 ---
 
 :::note[This chapter]
@@ -225,7 +225,7 @@ Bootstrap steps (full version and pseudocode in the [Math Refresher](/en/guide/m
 
 Split cases into two groups: capability evals, which measure "what it can't do yet", and regression evals, which measure "what it should always be able to do". When running the same case several times, whether you care about "at least one success" or "every run succeeds" depends on how users use the feature.
 
-**Two kinds of eval.** A **capability eval** has a low pass rate, and its purpose is to show you where to improve, for example "answer questions that require combining three notes". A **regression eval** should pass close to 100% of the time, and its purpose is to keep a change to A from breaking B, for example "every tag is in the vocabulary". Once a capability eval case passes reliably, it "graduates" to the regression eval.
+**Two kinds of evals.** A **capability eval** has a low pass rate, and its purpose is to show you where to improve, for example "answer questions that require combining three notes". A **regression eval** should pass close to 100% of the time, and its purpose is to keep a change to A from breaking B, for example "every tag is in the vocabulary". Once a capability eval case passes reliably, it "graduates" to the regression eval.
 
 **Running the same case several times.** LLM output can differ every time, so you'll often run the same case k times:
 

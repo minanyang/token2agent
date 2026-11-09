@@ -42,7 +42,7 @@ The smaller T is, the sharper the distribution (as it approaches 0 you always pi
 
 An API's `temperature` parameter is this T, but some APIs no longer accept these parameters (for example, Claude returns a 400 if you send `temperature`; see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#limits-on-sampling-parameters)). For exercises that need you to tune T, use a local model (Ollama, llama.cpp).
 
-**Used in**: [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (cross-entropy, perplexity), [S2 Transformers and Decoding](/en/stages/s02-transformer/) (the decoding and sampling core exercise), [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (sampling multiple times), [Model Crash Course](/en/guide/app-first/), [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S8 Eval Methodology](/en/stages/s08-evals/) (logprobs and calibration).
+**Used in**: [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (cross-entropy, perplexity), [S2 Transformers and Decoding](/en/stages/s02-transformer/) (the decoding and sampling core exercise), [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (sampling multiple times), [Model Crash Course](/en/guide/app-first/), [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S8 Evals Methodology](/en/stages/s08-evals/) (logprobs and calibration).
 
 ## Log scales and log–log plots
 
@@ -71,7 +71,7 @@ An API's `temperature` parameter is this T, but some APIs no longer accept these
 
 **Example**: 50 questions, pass rate 0.8. SE = √(0.8 × 0.2 / 50) = √0.0032 ≈ 0.057, so the 95% confidence interval is about ±11 percentage points, or 69%–91%. Quadruple the questions (200) and the SE only halves (about ±5.5 percentage points). So to see a difference of a few percentage points, you usually need hundreds of questions.
 
-**Used in**: [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (the within-group standard deviation in GRPO, comparing self-consistency), [S8 Eval Methodology](/en/stages/s08-evals/) (the statistics section).
+**Used in**: [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (the within-group standard deviation in GRPO, comparing self-consistency), [S8 Evals Methodology](/en/stages/s08-evals/) (the statistics section).
 
 ## Bootstrap confidence intervals
 
@@ -101,7 +101,7 @@ ci = (results[0.025 * B], results[0.975 * B])
 - When a pass rate is all correct or all wrong, every resample gives the same result and the interval collapses to a point: 50 out of 50 correct gives [100%, 100%]. The true pass rate is still uncertain, so use a Wilson interval instead: for 50 out of 50, the 95% interval is about [92.9%, 100%]. Close to all correct or all wrong (say 49/50), the bootstrap interval doesn't collapse but tends to be too narrow, so a Wilson interval is still the better choice.
 - When questions aren't independent (for example, one conversation split into several questions), resample whole groups together, not individual questions.
 
-**Used in**: [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (comparing N = 1 vs. N = 8), [S8 Eval Methodology](/en/stages/s08-evals/) (judge pass rates), [S9 Retrieval and RAG](/en/stages/s09-rag/) (Recall@k), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/).
+**Used in**: [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (comparing N = 1 vs. N = 8), [S8 Evals Methodology](/en/stages/s08-evals/) (judge pass rates), [S9 Retrieval and RAG](/en/stages/s09-rag/) (Recall@k), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S18 Deployment and Architecture](/en/stages/s18-deployment/).
 
 ## Dot product and cosine similarity
 

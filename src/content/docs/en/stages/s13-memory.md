@@ -231,7 +231,7 @@ This memory system gets 1 fewer question right, but uses only about one-eighth o
 
 - **LongMemEval**: each question comes with a very long conversation history; the relevant information is scattered across a few sessions and the rest is distraction. The hints in the core exercise list its data files and how `question_type` maps to the five categories; if you want to see real questions, pick a few and run them.
 - **LoCoMo** (Maharana et al. 2024): extremely long conversations averaging about 300 turns and up to 35 sessions, evaluating question answering and event summarization.
-- When writing your own questions, write the answer key first (which fact appears in which session, and when it changed), then write questions from the key, so grading has a basis. For grading you can use the judge calibrated in [S8 Eval Methodology](/en/stages/s08-evals/).
+- When writing your own questions, write the answer key first (which fact appears in which session, and when it changed), then write questions from the key, so grading has a basis. For grading you can use the judge calibrated in [S8 Evals Methodology](/en/stages/s08-evals/).
 
 </details>
 
@@ -245,7 +245,7 @@ Personalization means the system adjusts its behavior to "this user": preferred 
 
 - **Scope isolation**: each memory belongs to one user. At retrieval time, filter by user ID inside the query itself, then rank. For example, if another user `u_042` asks "Who should the weekly report go to?" and retrieval first finds the 5 most similar memories and filters afterward, or doesn't filter at all, it may come back with Sam's memories. Don't rely on the prompt telling the model "only use this user's memories"; the model will slip. Isolation has to happen in code (the full multi-tenant approach → [S18 Deployment and Architecture](/en/stages/s18-deployment/)).
 - **User control**: users can see what the system remembers, and edit and delete it (interface design → [S17 Product and AI UX](/en/stages/s17-ai-ux/)). The meaning of deletion is the table in the previous section.
-- **Evaluable**: run the same set of tasks with and without personalization and compare them with the judge from [S8 Eval Methodology](/en/stages/s08-evals/).
+- **Evaluable**: run the same set of tasks with and without personalization and compare them with the judge from [S8 Evals Methodology](/en/stages/s08-evals/).
 
 **Privacy.** The more you remember, the more harm a leak does. Basic principles: remember only what will be useful later; don't remember sensitive content like health, finances or relationships unless the user explicitly asks; make every memory visible to the user; and make the promise of "deleted" cover every copy.
 
@@ -323,7 +323,7 @@ Mark it invalid and link it to the new "not vegetarian" memory. This is a change
 **Hints**
 - TypeScript: store memories in SQLite (`better-sqlite3`) with an embedding column, or just in a JSON file; define the memory schema with Zod.
 - Python: `sqlite3` or JSON; define the schema with Pydantic; reuse the embedding model from S9 Retrieval and RAG.
-- To grade answers, use the judge calibrated in S8 Eval Methodology; with few questions, grading by hand works too.
+- To grade answers, use the judge calibrated in S8 Evals Methodology; with few questions, grading by hand works too.
 - If you want ready-made data to compare against: [LongMemEval](https://github.com/xiaowu0162/LongMemEval)'s `longmemeval_oracle.json` (500 questions, containing only the sessions relevant to each question). Pick a few to run through your system and see how the questions are written. The file currently lives on Hugging Face at `xiaowu0162/longmemeval-cleaned`. How `question_type` maps to the five categories: the three `single-session-*` types = information extraction, `multi-session` = multi-session reasoning, and `temporal-reasoning` and `knowledge-update` map directly; abstention isn't a type but the questions whose `question_id` ends in `_abs`.
 - If you get stuck:
   - Reread: [writing](#-what-to-remember-and-where-did-it-come-from), [updating and forgetting](#-what-if-a-fact-changes-or-must-be-deleted), [evaluating memory](#-how-do-you-know-it-remembers-correctly), [memory poisoning](#-what-if-memory-is-written-maliciously)
@@ -337,7 +337,7 @@ Mark it invalid and link it to the new "not vegetarian" memory. This is a change
 
 **Steps**
 
-0. Prepare a pairwise judge: the judge from A8 Error Analysis and Golden Set ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) gives pass / fail on a single answer, but step 6 needs a comparison of two answers. Following S8 Eval Methodology, build a separate pairwise judge (takes two answers, judges once with each ordering, and records a tie when the two disagree), and spot-check it against at least 10 of your own judgments to see how many agree.
+0. Prepare a pairwise judge: the judge from A8 Error Analysis and Golden Set ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) gives pass / fail on a single answer, but step 6 needs a comparison of two answers. Following S8 Evals Methodology, build a separate pairwise judge (takes two answers, judges once with each ordering, and records a tie when the two disagree), and spot-check it against at least 10 of your own judgments to see how many agree.
 1. Use the records you've accumulated since A6 Streaming Chat and Traces as the transcripts layer; on top of them build the notes layer (each user's memories) and the representation layer (e.g. a preferences page per user, a summary page per topic).
 2. Decide what goes in the injected layer and set a cap (e.g. under 1,000 tokens); other memories are read through tools or retrieval when needed.
 3. Extraction writes a small amount synchronously during the session; consolidation runs in the background (e.g. once a day). Every memory has a user ID, source, time, and whether it came from a trusted source.
@@ -358,7 +358,7 @@ For the notes assistant (user A here is a different user from Sam): user A said 
 **Hints**
 - TypeScript: you can borrow from Claude Code's memory file design and store each user's notes as files or table rows; reuse the interface from A6 Streaming Chat and Traces for the viewing page.
 - Python: same as above; background consolidation can start as a cron job or a simple scheduler.
-- Cost: extraction and consolidation are extra LLM calls, so record their tokens separately in the trace (← cost accounting in S8 Eval Methodology); consolidation can use a cheaper model.
+- Cost: extraction and consolidation are extra LLM calls, so record their tokens separately in the trace (← cost accounting in S8 Evals Methodology); consolidation can use a cheaper model.
 - If you get stuck:
   - Reread: [the four layers](#-which-layer-should-a-memory-live-in), [updating and forgetting](#-what-if-a-fact-changes-or-must-be-deleted), [personalization](#-how-do-you-personalize-without-leaking), [memory poisoning](#-what-if-memory-is-written-maliciously)
   - Further: learn-claude-code s09; Kaggle's "Context Engineering: Sessions & Memory"

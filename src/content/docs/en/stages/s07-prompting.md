@@ -12,7 +12,7 @@ sidebar:
 :::note[This chapter]
 **Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); for model background see the [Model Crash Course](/en/guide/app-first/) (deeper: chat templates in [S4 Post-training and Reasoning](/en/stages/s04-post-training/), constrained decoding in [S5 Inference and Serving](/en/stages/s05-inference/))
 
-**Next**: → [S8 Eval Methodology](/en/stages/s08-evals/)
+**Next**: → [S8 Evals Methodology](/en/stages/s08-evals/)
 :::
 
 :::tip[Concepts route: key points]
@@ -96,7 +96,7 @@ The rewritten prompt has the five ingredients common to good prompts: the task, 
 <details class="deep">
 <summary>Going deeper: three sources of few-shot bias, and calibration</summary>
 
-Zhao et al. 2021 split few-shot bias into three kinds: majority label bias (leaning toward the label most common in the examples), recency bias (leaning toward the labels of examples near the end), and common token bias (leaning toward words common in the pretraining data). Their fix is called contextual calibration: replace the real input with a content-free "N/A", see which label the model leans toward when it has nothing to go on, and use that bias to correct the probabilities of the real outputs. This requires the probability of each label (logprobs, → [S8 Eval Methodology](/en/stages/s08-evals/)), which you often can't get through an API; in practice people rely on "balance the examples, shuffle the order, and compare a few orderings."
+Zhao et al. 2021 split few-shot bias into three kinds: majority label bias (leaning toward the label most common in the examples), recency bias (leaning toward the labels of examples near the end), and common token bias (leaning toward words common in the pretraining data). Their fix is called contextual calibration: replace the real input with a content-free "N/A", see which label the model leans toward when it has nothing to go on, and use that bias to correct the probabilities of the real outputs. This requires the probability of each label (logprobs, → [S8 Evals Methodology](/en/stages/s08-evals/)), which you often can't get through an API; in practice people rely on "balance the examples, shuffle the order, and compare a few orderings."
 
 </details>
 
@@ -111,7 +111,7 @@ Picture it with the notes assistant (the numbers are illustrative): write the sa
 What this means in practice:
 
 - **Don't draw conclusions from a single prompt version.** When comparing two models or two prompts, try at least a few reasonable format variants and report the range of results.
-- **Change one word in a prompt, run the regression again.** The next chapter shows how to turn that into an eval (→ [S8 Eval Methodology](/en/stages/s08-evals/)).
+- **Change one word in a prompt, run the regression again.** The next chapter shows how to turn that into an eval (→ [S8 Evals Methodology](/en/stages/s08-evals/)).
 - **Sampling randomness gets mixed into the results too.** Use the default sampling and average several runs per condition (for why, see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#limits-on-sampling-parameters)).
 
 **Common misconception: once you find the best format, you're done.** The best format is the best for *this model and this data*. Switch models or let the data distribution shift, and the ranking may reshuffle completely.
@@ -162,7 +162,7 @@ Output 2: { ..., "date": "2026-10-14", ... }   ← passes
 
 Suppose 95 of 100 notes pass the first time and repair rescues 4 of the 5 failures: the valid rate goes from 95% to 99%. Record the number of repairs: a sudden jump usually means the prompt or the model changed.
 
-**Common misconception: valid format means correct content.** Even if the output above wrote `date` as `2026-10-28` (the date of the next meeting, not this one), it would match the schema perfectly. Whether the content is right is a job for the evals in S8 Eval Methodology. Another cost is that **format constraints can hurt reasoning quality**: Tam et al. 2024 found that strict format constraints lowered performance on some reasoning tasks, though the results vary by task and model. A common compromise is to make the schema's first field the reasoning or evidence (for example `evidence`: sentences quoted from the note) and put the answer last.
+**Common misconception: valid format means correct content.** Even if the output above wrote `date` as `2026-10-28` (the date of the next meeting, not this one), it would match the schema perfectly. Whether the content is right is a job for the evals in S8 Evals Methodology. Another cost is that **format constraints can hurt reasoning quality**: Tam et al. 2024 found that strict format constraints lowered performance on some reasoning tasks, though the results vary by task and model. A common compromise is to make the schema's first field the reasoning or evidence (for example `evidence`: sentences quoted from the note) and put the answer last.
 
 <details class="deep">
 <summary>Before you build: libraries and vendor limits</summary>
@@ -253,7 +253,7 @@ A small model is usually enough for classification. Routing lets each route's pr
 
 **Common misconception: orchestrator-workers is the same thing as an agent.** It's still a workflow: the model does the breaking down, but the "break down → assign → combine" flow is fixed in code and runs only once. In an agent, the model decides what to do next, step by step, in a loop (→ [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 
-Evaluator-optimizer appears here for the first time; LLM-as-judge in [S8 Eval Methodology](/en/stages/s08-evals/) and optimization in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) take it further. Orchestrator-workers becomes the basis of multi-agent systems in [S15 Multi-agent Systems](/en/stages/s15-multi-agent/).
+Evaluator-optimizer appears here for the first time; LLM-as-judge in [S8 Evals Methodology](/en/stages/s08-evals/) and optimization in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) take it further. Orchestrator-workers becomes the basis of multi-agent systems in [S15 Multi-agent Systems](/en/stages/s15-multi-agent/).
 
 <details class="deep">
 <summary>Going deeper: how much confidence voting buys you</summary>
@@ -290,7 +290,7 @@ Trace one repair yourself: the model outputs `tags` as `["design", "UI"]`, but "
 <details class="hint">
 <summary>Check your answer</summary>
 
-The schema's `tags` is an `enum`, so validation stops at "UI". Send back the previous output plus the specific error, for example "UI is not in the tag list; choose only from the 5 tags. Output only the corrected JSON." Valid after repair doesn't mean correct: this note may also need `budget`, and only an eval will tell you that (→ S8 Eval Methodology).
+The schema's `tags` is an `enum`, so validation stops at "UI". Send back the previous output plus the specific error, for example "UI is not in the tag list; choose only from the 5 tags. Output only the corrected JSON." Valid after repair doesn't mean correct: this note may also need `budget`, and only an eval will tell you that (→ S8 Evals Methodology).
 
 </details>
 
@@ -308,7 +308,7 @@ This exercise uses synthetic customer-service texts instead of the notes assista
 5. Run the format experiment with method (c): write 4 prompt variants that change only the format, not the meaning (for example: field descriptions as a list or a paragraph, XML or `###` separators, examples before or after). Don't set temperature (Claude doesn't accept it; see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#limits-on-sampling-parameters)); use the model's default. Run each variant 3 times over the 100 texts and use the average.
 6. Record the prompt name and version number with every output.
 
-**Definition of field accuracy**: count only the four fields `category`, `date`, `amount` and `sentiment`. Convert dates to `YYYY-MM-DD` and amounts to integers before comparing; where the ground truth field is empty, the output must also be empty (`null`) to count as correct. `summary` isn't counted (S8 Eval Methodology grades it with a judge). Accuracy = correct fields / (records × 4).
+**Definition of field accuracy**: count only the four fields `category`, `date`, `amount` and `sentiment`. Convert dates to `YYYY-MM-DD` and amounts to integers before comparing; where the ground truth field is empty, the output must also be empty (`null`) to count as correct. `summary` isn't counted (S8 Evals Methodology grades it with a judge). Accuracy = correct fields / (records × 4).
 
 **Acceptance criteria**
 - A table of each method's schema valid rate (valid records / 100); the best method reaches ≥ 99%, with the number of repairs recorded.

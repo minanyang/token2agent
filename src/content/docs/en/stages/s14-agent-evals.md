@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S13 Memory and Personalization](/en/stages/s13-memory/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/))
+**Prerequisites**: [S8 Evals Methodology](/en/stages/s08-evals/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S13 Memory and Personalization](/en/stages/s13-memory/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/))
 
 **Next**: → [S15 Multi-agent Systems](/en/stages/s15-multi-agent/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)
 :::
@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-S8 Eval Methodology taught evaluation of single answers, and S12 The Agent Loop and Harness used a minimal agent eval. This chapter deals with what's actually hard about evaluating agents: you have to look at the whole trajectory, not just the final answer; the same task gives different results each time; conversational agents need someone to play the user; and even environment settings like machine resources can move the score by several percentage points. Once you can build a trustworthy evaluation, the second half of the chapter covers ways to make the agent better: finding failures in traces, connecting them into a data flywheel, optimizing prompts automatically, distilling a small router, and testing harness components with ablations. In S15 Multi-agent Systems, whether to go multi-agent is decided with this chapter's evals.
+S8 Evals Methodology taught evaluation of single answers, and S12 The Agent Loop and Harness used a minimal agent eval. This chapter deals with what's actually hard about evaluating agents: you have to look at the whole trajectory, not just the final answer; the same task gives different results each time; conversational agents need someone to play the user; and even environment settings like machine resources can move the score by several percentage points. Once you can build a trustworthy evaluation, the second half of the chapter covers ways to make the agent better: finding failures in traces, connecting them into a data flywheel, optimizing prompts automatically, distilling a small router, and testing harness components with ablations. In S15 Multi-agent Systems, whether to go multi-agent is decided with this chapter's evals.
 
 ## After this chapter you can
 
@@ -89,9 +89,9 @@ A **transition failure matrix** (Hamel's "AI Evals FAQ") tallies failures by "th
 | Find the target | | 10 | 1 |
 | Modify | | | 4 |
 
-The cells sum to 4 + 1 + 10 + 1 + 4 = 20, equal to the number of failures. The biggest cell is "find the target → modify" with 10: it found the right files but wrote them wrong, the same kind of failure as trial 1. Fixing this first (e.g. requiring in the harness that it read back and compare after writing) is far more effective than a vague "tweak the prompt." It adds location information to a plain "failure reason tally": the same "wrong file name" calls for different fixes when it happens while finding the target versus while copying. This is the error analysis from [S8 Eval Methodology](/en/stages/s08-evals/) extended to agents.
+The cells sum to 4 + 1 + 10 + 1 + 4 = 20, equal to the number of failures. The biggest cell is "find the target → modify" with 10: it found the right files but wrote them wrong, the same kind of failure as trial 1. Fixing this first (e.g. requiring in the harness that it read back and compare after writing) is far more effective than a vague "tweak the prompt." It adds location information to a plain "failure reason tally": the same "wrong file name" calls for different fixes when it happens while finding the target versus while copying. This is the error analysis from [S8 Evals Methodology](/en/stages/s08-evals/) extended to agents.
 
-**There are three kinds of grader**: code checks (comparing file contents, querying a database), LLM judges (← judge calibration in S8 Eval Methodology) and **agent-as-a-judge** ([Zhuge et al. 2024](https://arxiv.org/abs/2410.10934)). In the last one, the evaluator is itself an agent: it can read files, run code and operate the product, then score based on evidence. It suits checking "the thing that was built," for example whether a weekly-report note written by the agent has the right format and whether its links open. Use code wherever code can check it; align judges and agent judges with human labels first.
+**There are three kinds of grader**: code checks (comparing file contents, querying a database), LLM judges (← judge calibration in S8 Evals Methodology) and **agent-as-a-judge** ([Zhuge et al. 2024](https://arxiv.org/abs/2410.10934)). In the last one, the evaluator is itself an agent: it can read files, run code and operate the product, then score based on evidence. It suits checking "the thing that was built," for example whether a weekly-report note written by the agent has the right format and whether its links open. Use code wherever code can check it; align judges and agent judges with human labels first.
 
 **Common misconception: the agent's reply is evidence.** Trial 1 says it wrote 6, but there are only 5. A grader that reads the reply instead of checking the environment would have marked this trial a success.
 
@@ -107,7 +107,7 @@ The cells sum to 4 + 1 + 10 + 1 + 4 = 20, equal to the number of failures. The b
 
 ### ★ How do you score results that vary every run?
 
-An agent's results vary from trial to trial, so you run each task k times and then decide how to combine the k results into one number. [S8 Eval Methodology](/en/stages/s08-evals/) introduced two ways: **pass@k** is the fraction of tasks where **at least one** of k trials succeeds; **pass^k** is the fraction where **all** k succeed.
+An agent's results vary from trial to trial, so you run each task k times and then decide how to combine the k results into one number. [S8 Evals Methodology](/en/stages/s08-evals/) introduced two ways: **pass@k** is the fraction of tasks where **at least one** of k trials succeeds; **pass^k** is the fraction where **all** k succeed.
 
 **Which one depends on the use case.** If results can be verified automatically and you can let the agent try several times and pick the right one (e.g. code with tests), pass@k is meaningful. If the user gets the agent's result directly every time, as when the notes assistant collects TODOs, look at pass^k: it measures "you can trust it every time."
 
@@ -127,7 +127,7 @@ The same data can be reported as 100%, 67% or 33%. When you report, always state
 
 The gap grows with k. Assuming independent trials and a per-trial success rate of 0.8: pass@3 = 1 − 0.2³ = 0.992, pass^3 = 0.8³ = 0.512. The same agent looks nearly perfect by pass@3 and only a bit better than a coin flip by pass^3.
 
-With few trials, these numbers are very uncertain. A success rate from 15 tasks × 5 trials needs a bootstrap confidence interval (← S8 Eval Methodology). When comparing two versions, run both on the same tasks and look at the interval of the paired difference: entirely above 0 means the new version is better, entirely below 0 means it's worse, and if it contains 0 you can't tell them apart. Don't just see which point estimate is bigger. **Common misconception: a high pass@k means the agent is reliable.** Task C counts as a "success" under pass@5, but in 4 out of 5 trials the user got an agent that deleted the wrong file or guessed blindly.
+With few trials, these numbers are very uncertain. A success rate from 15 tasks × 5 trials needs a bootstrap confidence interval (← S8 Evals Methodology). When comparing two versions, run both on the same tasks and look at the interval of the paired difference: entirely above 0 means the new version is better, entirely below 0 means it's worse, and if it contains 0 you can't tell them apart. Don't just see which point estimate is bigger. **Common misconception: a high pass@k means the agent is reliable.** Task C counts as a "success" under pass@5, but in 4 out of 5 trials the user got an agent that deleted the wrong file or guessed blindly.
 
 <details class="deep">
 <summary>Going deeper: estimating pass@k and pass^k from n trials</summary>
@@ -173,7 +173,7 @@ The defenses are the same: have graders check environment state rather than surf
 
 ### ★ What extra pitfalls do agent benchmarks have?
 
-Public benchmarks age: tasks leak into training data (contamination) and get solved to near-perfect scores (saturation) (← S8 Eval Methodology). Agent benchmarks add flaws in the tasks themselves. Two recent examples:
+Public benchmarks age: tasks leak into training data (contamination) and get solved to near-perfect scores (saturation) (← S8 Evals Methodology). Agent benchmarks add flaws in the tasks themselves. Two recent examples:
 
 - **SWE-bench Verified**: OpenAI assembled this human-verified subset with the SWE-bench authors in 2024. In 2026-02, OpenAI announced it would no longer evaluate on it, citing contamination (the tasks come from public repos, and for some of them models can reproduce the original fix from memory) and flawed tasks: they took the 138 tasks that o3 couldn't solve consistently across 64 runs, had engineers check each one, and found substantive problems with the tests or task descriptions in 59.4% of them. OpenAI now recommends SWE-bench Pro instead.
 - **τ-bench**: [SABER](https://arxiv.org/abs/2512.07850) (Cuadron et al. 2025) showed that τ-bench's airline and retail tasks contain labeling errors and unclear specs that lower the achievable ceiling, and released a corrected τ-Bench Verified.
@@ -192,7 +192,7 @@ A **data flywheel** turns use of the system into fuel for improving it automatic
 
 User feedback and the traces collected since S6 LLM APIs and Application Basics → error analysis and clustering → new eval tasks and failure categories → changes to prompts, tools or harness → confirmation with evals → new traces after launch.
 
-The key is that every link has to connect: feedback must map back to traces, traces must be able to become eval tasks, and once a capability eval is stable it graduates to a regression eval (← S8 Eval Methodology). How to design the feedback interface is covered in S17 Product and AI UX. **Common misconception: the clusters are the conclusion.** Clustering only decides what to read first; the "relative dates" failure category only exists because a person read the traces (← error analysis in S8 Eval Methodology).
+The key is that every link has to connect: feedback must map back to traces, traces must be able to become eval tasks, and once a capability eval is stable it graduates to a regression eval (← S8 Evals Methodology). How to design the feedback interface is covered in S17 Product and AI UX. **Common misconception: the clusters are the conclusion.** Clustering only decides what to read first; the "relative dates" failure category only exists because a person read the traces (← error analysis in S8 Evals Methodology).
 
 ### ★ Can a better prompt be found automatically?
 
@@ -203,14 +203,14 @@ Prompt optimization lets a program search for better prompts automatically: you 
 - [MIPROv2](https://arxiv.org/abs/2406.11695) (Opsahl-Ong et al. 2024) searches each module's instruction text and few-shot examples together.
 - [GEPA](https://arxiv.org/abs/2507.19457) (Agrawal et al. 2025) has the model reflect in text on execution trajectories, propose prompt changes, and keep candidates that each do well on different tasks. The GEPA paper reports beating GRPO (a training method that tunes model weights directly with reinforcement learning; deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)) and MIPROv2 while using far fewer rollouts.
 
-There are two prerequisites: a reliable metric (a judge calibrated per S8 Eval Methodology, or a code check), and **separate training and test data**. An illustrative example: intent classification for the notes assistant ("search notes," "create note," "send email"), 300 labeled requests split into 200 for training and 100 for testing. Before optimization: 81% on training, 80% on test; after: 93% on training, 86% on test. The real improvement is the 6 points on test, not the 12 on training; the gap between them is the part where the optimizer fit the training data.
+There are two prerequisites: a reliable metric (a judge calibrated per S8 Evals Methodology, or a code check), and **separate training and test data**. An illustrative example: intent classification for the notes assistant ("search notes," "create note," "send email"), 300 labeled requests split into 200 for training and 100 for testing. Before optimization: 81% on training, 80% on test; after: 93% on training, 86% on test. The real improvement is the 6 points on test, not the 12 on training; the gap between them is the part where the optimizer fit the training data.
 
 **Common misconception: reporting scores on the data used for optimization.** That number always looks good, because the optimizer's job is to push it up (the reward hacking from the previous section). Report results only on test data, along with example outputs from before and after optimization.
 
 <details class="deep">
 <summary>Before you build: preparing for a round of prompt optimization</summary>
 
-- Write the metric function first: it takes an example and the model output and returns a score from 0 to 1. If you use a judge as the metric, first check how well it agrees with human labels (← S8 Eval Methodology).
+- Write the metric function first: it takes an example and the model output and returns a score from 0 to 1. If you use a judge as the metric, first check how well it agrees with human labels (← S8 Evals Methodology).
 - Set a budget cap first. The optimizer calls the model many times; a common approach is to optimize with a small model and validate on the target model.
 - Don't look at the test data at all until optimization is finished, and don't use it to pick "the best round," or it becomes part of the training data. If you need to choose, split off a separate validation set.
 - After optimization, read 10–20 outputs to make sure no metric-pleasing pattern like "always list 10 points" has appeared.

@@ -26,7 +26,7 @@ prev:
 
 ## What this chapter covers
 
-This chapter answers one question: how do you wire a model into your code reliably? It covers the structure and cost of one API call, streaming and cancellation, errors and retries, how the SDKs differ, local models, using reasoning models from the application side, and how to log and test code whose output is different every time. This is where the application route starts, and every later chapter builds on it: error analysis in S8 Eval Methodology reads traces, the agents in S12 The Agent Loop and Harness depend on reliable retries and cancellation, and cost control in S18 Deployment and Architecture depends on the token counts you log for every call.
+This chapter answers one question: how do you wire a model into your code reliably? It covers the structure and cost of one API call, streaming and cancellation, errors and retries, how the SDKs differ, local models, using reasoning models from the application side, and how to log and test code whose output is different every time. This is where the application route starts, and every later chapter builds on it: error analysis in S8 Evals Methodology reads traces, the agents in S12 The Agent Loop and Harness depend on reliable retries and cancellation, and cost control in S18 Deployment and Architecture depends on the token counts you log for every call.
 
 ## After this chapter you can
 
@@ -103,7 +103,7 @@ With illustrative prices ($3 per million input tokens, $15 per million output to
 
 **Common misconception: the model remembers the previous turn.** LLM APIs are essentially **stateless**: every call has to resend the whole conversation, including the system prompt, the earlier user and assistant messages, and tool results. So the cost of a multi-turn conversation adds up. Suppose (again with only 2 notes) the notes plus system prompt are 1,800 tokens, each question 200 tokens and each answer 300 tokens. Turn 1 has 2,000 input tokens. Turn 2 has to carry turn 1's question and answer, so it's 2,500, and each turn after that adds 500, so turn 10 is 6,500. The input over 10 turns totals 42,500 tokens, more than twice the "2,000 every turn" you might expect. There are two kinds of fixes: keep the unchanging start of the request so it hits prompt caching (→ [S11 Context Engineering](/en/stages/s11-context-engineering/)), and truncate or summarize old turns (→ the tool-result budget in S11, compaction in [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 
-A **Batch API** lets you submit many requests at once and collect the results asynchronously (usually within 24 hours) at roughly half the price of real-time calls. It suits work that isn't urgent, such as generating summaries for a thousand notes, or running evals (→ S8 Eval Methodology).
+A **Batch API** lets you submit many requests at once and collect the results asynchronously (usually within 24 hours) at roughly half the price of real-time calls. It suits work that isn't urgent, such as generating summaries for a thousand notes, or running evals (→ S8 Evals Methodology).
 
 <details class="deep">
 <summary>Going deeper: message format differences and server-side conversation state</summary>
@@ -198,7 +198,7 @@ A local model runs on your own machine: it's free and the data never leaves, but
 
 Three common ways to run one: **Ollama** is the easiest to start with; one command downloads and runs a model, and it offers an OpenAI-compatible API. **llama.cpp** is the underlying engine; it runs quantized GGUF models (GGUF is the model file format llama.cpp uses), ships an HTTP server, and has the most knobs. **MLX** is Apple's framework for Apple Silicon; `mlx-lm` runs and fine-tunes models on a Mac.
 
-When to use one: the data can't leave the machine, you need to work offline, you don't want to pay for every call during development and testing, or your volume is high enough that API costs exceed hardware costs. The price: quality is usually lower, the usable context window shorter, tool calling less reliable, and the hardware and operations are on you. During development, the notes assistant can start on a small Ollama model (such as `qwen3:0.6b`) to confirm the whole pipeline works, then switch back to a cloud model to compare quality. Choosing a model works the same way: first confirm the task is doable with the strongest model, then use evals to decide whether you can move to a smaller, cheaper or local one (→ S8 Eval Methodology, S18 Deployment and Architecture).
+When to use one: the data can't leave the machine, you need to work offline, you don't want to pay for every call during development and testing, or your volume is high enough that API costs exceed hardware costs. The price: quality is usually lower, the usable context window shorter, tool calling less reliable, and the hardware and operations are on you. During development, the notes assistant can start on a small Ollama model (such as `qwen3:0.6b`) to confirm the whole pipeline works, then switch back to a cloud model to compare quality. Choosing a model works the same way: first confirm the task is doable with the strongest model, then use evals to decide whether you can move to a smaller, cheaper or local one (→ S8 Evals Methodology, S18 Deployment and Architecture).
 
 **Quantization** stores each parameter in fewer bits, for example 4 bits instead of 16. It saves a lot of memory at a small cost in quality. Local models are almost always run quantized.
 
@@ -209,7 +209,7 @@ When to use one: the data can't leave the machine, you need to work offline, you
 
 - **Closed vs. open-weight**: you can't get the weights of closed models (such as Claude, OpenAI's flagship GPT models, Gemini); you can only use them through an API (the vendor's own, a cloud platform, or an aggregator). Open-weight models (such as Llama, Qwen, Gemma, DeepSeek, Mistral's open-weight series, OpenAI's gpt-oss) can be downloaded and run on your own machine or server, and fine-tuned. The former usually have the best quality and the least operations work; the latter keep data in-house and give you more control, but the hardware and operations are your responsibility.
 - **Where to get them**: call the vendor's API directly; use an aggregator (such as OpenRouter) that puts many vendors' models behind one OpenAI-compatible API, which is handy for comparisons but adds a middleman; Hugging Face Hub is the central place for open-weight models, where you can download models or use its inference services; to run locally, use Ollama, llama.cpp, or LM Studio, which has a GUI.
-- **How to choose**: list the task's hard requirements first (can the data leave, context length, whether you need tool calling and structured output, latency and budget), cross off the models that don't meet them, then compare the rest with your own evals. Public leaderboards are only good for a first cut; see the benchmark section of S8 Eval Methodology.
+- **How to choose**: list the task's hard requirements first (can the data leave, context length, whether you need tool calling and structured output, latency and budget), cross off the models that don't meet them, then compare the rest with your own evals. Public leaderboards are only good for a first cut; see the benchmark section of S8 Evals Methodology.
 
 </details>
 
@@ -256,7 +256,7 @@ Once the system gets more complex (retrieval, several LLM calls and tool executi
 
 The smallest version of **feedback collection** starts here too: put thumbs up / thumbs down next to each answer, and when you store a vote, link it to that answer's trace ID. Later, when you see a thumbs down, you can open the full prompt and response from that moment directly.
 
-**Common misconception: add logging once the system is stable.** The error analysis in S8 Eval Methodology reads exactly these records; if you add them later, you lose the earliest and most realistic batch of data. Also, full prompts and responses may contain personal data, so decide now whether to log them and how long to keep them (→ [S16 Security and Governance](/en/stages/s16-security/)).
+**Common misconception: add logging once the system is stable.** The error analysis in S8 Evals Methodology reads exactly these records; if you add them later, you lose the earliest and most realistic batch of data. Also, full prompts and responses may contain personal data, so decide now whether to log them and how long to keep them (→ [S16 Security and Governance](/en/stages/s16-security/)).
 
 <details class="deep">
 <summary>Before you build: common GenAI convention fields and backends</summary>
@@ -277,7 +277,7 @@ Even with temperature set to 0, output isn't guaranteed to be identical, and som
 1. **Mock**: when testing your own logic (retries, parsing, error handling), replace the model with a fake that returns fixed content or fixed errors. For example, have the fake return a 429 and then a normal response, and check that the call layer makes exactly 2 attempts.
 2. **Record / replay**: the first run hits the real API and saves the HTTP exchange to a file (a fixture); later tests replay it, with no network, the same result every time, and no cost. When you change the prompt or model, re-record and review the diff.
 3. **Snapshot**: snapshot *what you send*, such as the assembled system prompt and tool definitions. That's far more stable than snapshotting model output, and it's the best way to catch an accidentally broken prompt.
-4. **Assert properties, don't compare full text**: for real output, check only properties, such as valid JSON, cited note titles that actually exist, length within range. Full quality evaluation is the job of [S8 Eval Methodology](/en/stages/s08-evals/).
+4. **Assert properties, don't compare full text**: for real output, check only properties, such as valid JSON, cited note titles that actually exist, length within range. Full quality evaluation is the job of [S8 Evals Methodology](/en/stages/s08-evals/).
 
 **Common misconception: if it fails, rerun until it's green.** That lets flaky tests quietly hide real problems. **Flaky policy**: deterministic tests (mock, replay) must pass in CI (continuous integration); tests that hit a real model run separately N times and are judged by a pass-rate threshold (for example, at least 9 out of 10), with every run's result recorded.
 
@@ -373,7 +373,7 @@ This is the first step of the system project (for the step codes, see [how to re
 5. Create one OpenTelemetry span per LLM call, recording the model, provider and token counts in `gen_ai.*` fields, plus cost, TTFT and total latency; send it to a backend you can view locally. Store the trace ID with every assistant message.
 6. Put thumbs up / thumbs down buttons and optional text feedback next to each answer (a CLI version can use commands like `/good` and `/bad reason`), store it, and link it to the same trace ID.
 7. Attach a user ID to every request: switching it via a config file or request header is enough for now, no login needed (real authentication comes in A18 Multi-user Deployment). Write the user ID into every trace and every piece of feedback; the isolation tests in A9 RAG with Citations and A13 Layered Memory use it later.
-8. Start using it yourself, and collect at least 30 real conversations before moving on to S8 Eval Methodology.
+8. Start using it yourself, and collect at least 30 real conversations before moving on to S8 Evals Methodology.
 
 **Acceptance criteria**
 - 100% of the last 50 LLM calls have a trace, and every trace has the model, provider, input / output token counts, cost, TTFT and total latency.
@@ -382,7 +382,7 @@ This is the first step of the system project (for the step codes, see [how to re
 - Pick any 5 pieces of feedback; each one leads you to its trace.
 - Send 3 requests each from two different user IDs; all 6 traces carry the correct user ID.
 - After pressing stop, new text stops appearing within 1 second, and the trace is marked "canceled".
-- Collect ≥ 30 real conversations before moving on to S8 Eval Methodology.
+- Collect ≥ 30 real conversations before moving on to S8 Evals Methodology.
 
 With the notes assistant as the example: put the full text of the 20 most recent notes into the system prompt and ask "What did I conclude about Project X last month?" The trace shows about 30,000 input tokens per call; that's the number S9 Retrieval and RAG sets out to bring down.
 

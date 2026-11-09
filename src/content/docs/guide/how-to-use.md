@@ -95,13 +95,13 @@ S6–S19 這種寫法指一段範圍。
 | 階段 | 內容 |
 |---|---|
 | 1 | [S0 AI 系統概觀](/stages/s00-big-picture/)；模型速成；[S6 LLM API 與應用基本功](/stages/s06-llm-api/) + A6 串流聊天與 trace；[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
-| 2 | [S8 Eval 方法論](/stages/s08-evals/) + A8 錯誤分析與 golden set；[S9 檢索與 RAG](/stages/s09-rag/) + A9 附引用的 RAG |
+| 2 | [S8 Evals 方法論](/stages/s08-evals/) + A8 錯誤分析與 golden set；[S9 檢索與 RAG](/stages/s09-rag/) + A9 附引用的 RAG |
 | 3 | [S10 工具與 MCP](/stages/s10-tools-mcp/) + A10 工具組與 MCP server；[S11 Context engineering](/stages/s11-context-engineering/) + A11 context builder；[S12 Agent loop 與 harness](/stages/s12-agent-harness/) + A12 手寫 harness |
-| 4 | [S13 Memory 與個人化](/stages/s13-memory/)；[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；[S15 Multi-agent](/stages/s15-multi-agent/)；[S16 安全與治理](/stages/s16-security/) |
+| 4 | [S13 Memory 與個人化](/stages/s13-memory/)；[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)；[S15 Multi-agent](/stages/s15-multi-agent/)；[S16 安全與治理](/stages/s16-security/) |
 | 5 | [S17 產品與 AI UX](/stages/s17-ai-ux/)；[S18 部署與架構](/stages/s18-deployment/)；[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 
 - 系統專案挑四步：A6 串流聊天與 trace（第一個看得到的成果）、A8 錯誤分析與 golden set（從真實 trace 長出的 eval）、A9 附引用的 RAG、A12 手寫 harness。手寫 harness 會用到 A10 工具組與 MCP server 做出的工具，以及 A11 context builder，所以 A10、A11 也排進去。A9 附引用的 RAG 裡的 embedding 微調會用到微調的概念（模型速成；深入：S4 Post-training 與 reasoning），可以先跳過。
-- 有餘力時，下一個最值得做的是 A14 agent eval 與最佳化。先做 trajectory eval、模擬使用者、prompt 最佳化與 harness ablation；router 蒸餾是選做橋接，只有選做時才需要第 0 步的路由紀錄（← A7 structured output 與 workflow）。
+- 有餘力時，下一個最值得做的是 A14 agent evals 與最佳化。先做 trajectory eval、模擬使用者、prompt 最佳化與 harness ablation；router 蒸餾是選做橋接，只有選做時才需要第 0 步的路由紀錄（← A7 structured output 與 workflow）。
 - 做完這份計畫，你會有一個 RAG、工具、harness 都有 eval 數字佐證的系統。
 
 ## 誰適合
@@ -110,4 +110,4 @@ S6–S19 這種寫法指一段範圍。
 - 沒有機器學習背景，想看懂 AI 系統怎麼運作的人：從 S0 AI 系統概觀開始，用淺顯模式讀講義。
 - 想系統性理解 LLM 原理，而不只是追新工具的人：走完整路線，用深入模式讀 Part I。
 - 前端工程師可以從 [S6 LLM API 與應用基本功](/stages/s06-llm-api/) 或 [S17 產品與 AI UX](/stages/s17-ai-ux/) 切入，這兩章最貼近前端經驗。學完 S6 後可以提早做 S17 的必做題，但要先讀 S17 的工具狀態、核准與取消機制；它使用假後端，不需要先完成 A6–A16 系統專案。
-- 後端或資料工程師：S6 LLM API 與應用基本功、S8 Eval 方法論、S9 檢索與 RAG、S18 部署與架構最貼近你的經驗，可以走快一點。系統專案 A6–A16 都不必寫前端，介面用 Gradio、Chainlit、Streamlit 或 CLI 即可，串流、停止與回饋的驗收標準相同（做法見 [A6 串流聊天與 trace 的提示](/stages/s06-llm-api/#進階系統專案-a6開始你的系統)）。S17 產品與 AI UX 的必做題有「不寫前端的版本」，見 [S17 必做題](/stages/s17-ai-ux/#必做agent-介面的四個狀態問題)；只有 A17 完整前端要真的寫前端。數學與統計熟的話，[數學補給](/guide/math-refresher/)可以略過，S8 Eval 方法論的[統計進階](/stages/s08-evals/#-統計進階樣本數規劃多重比較標註者一致性校準指標)是寫給你的。
+- 後端或資料工程師：S6 LLM API 與應用基本功、S8 Evals 方法論、S9 檢索與 RAG、S18 部署與架構最貼近你的經驗，可以走快一點。系統專案 A6–A16 都不必寫前端，介面用 Gradio、Chainlit、Streamlit 或 CLI 即可，串流、停止與回饋的驗收標準相同（做法見 [A6 串流聊天與 trace 的提示](/stages/s06-llm-api/#進階系統專案-a6開始你的系統)）。S17 產品與 AI UX 的必做題有「不寫前端的版本」，見 [S17 必做題](/stages/s17-ai-ux/#必做agent-介面的四個狀態問題)；只有 A17 完整前端要真的寫前端。數學與統計熟的話，[數學補給](/guide/math-refresher/)可以略過，S8 Evals 方法論的[統計進階](/stages/s08-evals/#-統計進階樣本數規劃多重比較標註者一致性校準指標)是寫給你的。
