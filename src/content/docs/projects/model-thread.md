@@ -25,7 +25,7 @@ Part I 的五章各有一題**必做題**，不需要模型專案的成果也能
 
 | 步驟 | 建議硬體 | 說明 |
 |---|---|---|
-| M1–M3（micrograd 與 MLP、tiny GPT、小模型 pretraining） | 筆電 CPU 或 Apple Silicon（MPS） | 模型在百萬到千萬參數等級，一次訓練幾分鐘到一小時 |
+| M1–M3（micrograd 與 MLP、tiny GPT、小模型 pretraining） | 筆電 CPU 或 Apple Silicon（MPS） | 模型可從百萬參數等級試跑；M3 要訓練多種大小並做去重對照，完整時間取決於硬體、資料量與步數，先量每步時間再估算 |
 | M4 小模型後訓練 | 租用 NVIDIA GPU | Colab、Modal、Lambda 等。預估**數十美元等級，需實測** |
 | M5 迷你推論伺服器 | 正確性可用 CPU；效能數字需 NVIDIA GPU | 費用通常比 M4 小模型後訓練低，仍需實測 |
 

@@ -7,6 +7,7 @@ sidebar:
 
 Every course, book, article and repo this roadmap cites is listed here, each with what it is for, its slant and its date.
 
+- **Recommendation review (2026-11-09)**: course lectures, textbook chapter numbers and assignment topics were checked against original syllabi, tables of contents and assignment descriptions. This does not mean every video was watched, every external assignment completed, or examples run on every hardware setup. External resources are optional; choose the sections relevant to your goal and follow their own prerequisites.
 - **Maintenance**: this field moves fast, so the list is checked once a quarter. If a link is broken or the content is out of date, please report it or open a PR
 - **Chapters**: the Chapters column lists which chapters each resource goes with; for how to read the codes before the chapter titles, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)
 - **Language**: entries marked *(in Chinese)* are in Chinese; everything else is in English
@@ -17,9 +18,9 @@ Every course, book, article and repo this roadmap cites is listed here, each wit
 
 | Course | What it's for | Chapters |
 |---|---|---|
-| [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/) (Fall 2026) | The most complete course on agent systems, with papers for every lecture. Slides are released as the course runs (up to lecture 13 when checked); recordings are Stanford-internal only | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S9 Retrieval and RAG](/en/stages/s09-rag/) to [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
+| [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/) (Fall 2026) | Covers agent components, optimization, evaluation and safety, with readings on the syllabus. Slides appear as the course runs (checked 2026-11-09: available through the Nov 4 evaluation lecture); recordings are Stanford-internal only | [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S9 Retrieval and RAG](/en/stages/s09-rag/) to [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
 | [CMU 11-768 AI Agents](https://www.cmu-agents.com/) (Neubig, Fried, Fall 2026) | Assignments go harness → eval → training, the closest match to this roadmap | [S10 Tools and MCP](/en/stages/s10-tools-mcp/) to [S16 Security and Governance](/en/stages/s16-security/) |
-| [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | Builds a language model from scratch; the deepest treatment of theory, training and inference | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/) |
+| [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | Spring 2026: implements language models, training and inference systems from scratch; assumes Python, PyTorch, linear algebra and probability | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/) |
 | [Stanford CS224N](https://web.stanford.edu/class/cs224n/) (Winter 2026) | The classic introduction from NLP to LLMs; assignment 4 is LLM evaluation | [S1 Neural Network Basics](/en/stages/s01-neural-networks/) to [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S8 Eval Methodology](/en/stages/s08-evals/) |
 | [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/) (Welleck) | Assignment 1 is Build Your Own LLaMa; includes lectures on RL basics | [S2 Transformers and Decoding](/en/stages/s02-transformer/) to [S5 Inference and Serving](/en/stages/s05-inference/) |
 | [CMU 11-766 LLM Applications](https://cmu-llms.org/schedule/) | Application side: prompt sensitivity, deep research, attacking LLM applications | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S9 Retrieval and RAG](/en/stages/s09-rag/), [S16 Security and Governance](/en/stages/s16-security/) |

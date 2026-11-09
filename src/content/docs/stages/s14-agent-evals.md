@@ -281,7 +281,7 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 **目標**：對一個現成的 agent 做出可重跑、有變因報告的評估，並用軌跡找出它最常壞在哪一步。
 
 **步驟**
-1. 用 S12 Agent loop 與 harness 必做題的 agent 與它的 20 個 Markdown 筆記資料夾（沒做 S12 必做的話，照 S12 必做第 1 步的規格生成同一份資料夾）。直接沿用該必做題的 10 個任務與 grader，再加 5 個「不該動手」的任務，共 15 個任務。「不該動手」指資訊不足應該先問（例如「把那個檔案刪掉」沒說是哪個），或要求本身不合理（例如「把不存在的 `budget.md` 改成三段」）；這 5 個任務的 grader 檢查資料夾內容和原始版本逐位元組相同。
+1. 用 S12 Agent loop 與 harness 必做題的 agent 與它的 20 個 Markdown 筆記資料夾（若尚未完成，先做 S12 必做題的 agent、10 個任務與 grader；只重建資料夾不足以開始本題）。直接沿用該必做題的 10 個任務與 grader，再加 5 個「不該動手」的任務，共 15 個任務。「不該動手」指資訊不足應該先問（例如「把那個檔案刪掉」沒說是哪個），或要求本身不合理（例如「把不存在的 `budget.md` 改成三段」）；這 5 個任務的 grader 檢查資料夾內容和原始版本逐位元組相同。
 2. 把 agent 流程定義成 4–6 個狀態（例如：理解任務 → 找到目標 → 讀取 → 修改 → 驗證 → 回報），寫一個程式從 trace 判斷每次執行走到哪個狀態。
 3. 準備兩個版本（例如兩種系統提示詞或兩個模型），各跑 15 題 × 5 次。如果兩個版本選「有 / 沒有某個 harness 元件」（← S12 Agent loop 與 harness；例如連續失敗 3 次就停的規則），這一步同時就是一次 ablation。每次都從乾淨副本開始。
 4. 再用其中一個版本，只改一個環境設定（工具 timeout 或步數上限），重跑一輪。
@@ -312,18 +312,18 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 
 **步驟**
 
-0. **補路由紀錄**：第 5 步要用到路由決定的紀錄。目前唯一的 router 是 A7 structured output 與 workflow 做的那一個，但它不一定用強模型，系統專案 A6–A8 也只要求約 100 條 trace。先確認 trace 裡有每個請求的路由決定；不足 200 筆時，用強模型對歷史請求重新標註補足。湊滿後從全部路由決定中抽查 20 筆確認正確，抽查出錯的要修正，並報告錯誤率。
+0. **選做橋接的準備：補路由紀錄**：只有選做第 5 步時才需要；略過 router 蒸餾的人可直接從第 1 步開始。第 5 步要用到路由決定的紀錄。目前唯一的 router 是 A7 structured output 與 workflow 做的那一個，但它不一定用強模型，系統專案 A6–A8 也只要求約 100 條 trace。先確認 trace 裡有每個請求的路由決定；不足 200 筆時，用強模型對歷史請求重新標註補足。湊滿後從全部路由決定中抽查 20 筆確認正確，抽查出錯的要修正，並報告錯誤率。
 1. **Trajectory eval**：從 A8 錯誤分析與 golden set 的評估集，以及 A12 手寫 harness 的任務出發，擴充到至少 30 個 agent 任務，正負例都有。outcome grader 為主，關鍵流程（例如寄信前必須確認）加 trajectory 檢查。
 2. **模擬使用者**：寫 3–5 種使用者角色（目標、說話習慣、會不會給錯資訊），跑至少 20 段多輪對話。讀 10 段，標出模擬使用者不像真人的地方並修正角色設定。
 3. **Trace 分群**：把從 A6 串流聊天與 trace 開始累積的真實紀錄分群，從每群讀幾條，把新發現的失敗加進 eval。
 4. **Prompt 最佳化**：挑一個子任務（例如意圖分類或摘要），用 DSPy 的 MIPROv2 或 GEPA 跑一輪；資料分訓練與測試兩份。
-5. **Router 蒸餾**：用第 0 步整理好的路由決定（至少 200 筆，含抽查過的 20 筆）訓練一個小分類器取代強模型路由。先把路由紀錄分成訓練與測試兩份（例如 80/20），只用訓練資料訓練與調參數，準確率在測試資料上報告。
+5. **Router 蒸餾（選做的模型專案橋接）**：用第 0 步整理好的路由決定（至少 200 筆，含抽查過的 20 筆）訓練一個小分類器取代強模型路由。先把路由紀錄分成訓練與測試兩份（例如 80/20），只用訓練資料訓練與調參數，準確率在測試資料上報告。
 6. **Harness ablation**：從 A12 手寫 harness 挑一個元件拿掉，在 20 個任務 × 5 次上比較。
 
 **驗收**
-- 每一項改動（prompt 最佳化、router、ablation）都有前後比較與 95% 信賴區間。
+- 每一項完成的改動（prompt 最佳化、ablation，以及選做的 router 蒸餾）都有前後比較與 95% 信賴區間。
 - Prompt 最佳化的結果是在**測試資料**上報告的，並附最佳化前後各 3 個輸出範例。
-- Router：測試資料上的準確率、每次呼叫的延遲與成本，和原本的強模型路由並列；指出錯得最多的類別。
+- 若選做 router 蒸餾：測試資料上的準確率、每次呼叫的延遲與成本，和原本的強模型路由並列；指出錯得最多的類別。
 - Ablation 在不同日期跑兩次，兩次的結論方向一致；報告中寫明模型版本、資源設定、試跑次數。
 - 一份一頁的「eval 說明」：題目來源、grader 類型與校準結果、已知變因、尚未覆蓋的情況。
 
@@ -421,7 +421,7 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 ### 課程與概覽
 
 - [Stanford CS 329Z](https://cs329z.stanford.edu/) — L9（最佳化）、L10（Terminal-Bench）、L11–L12（agent 資料）、L13（評估與 benchmark 設計）、L15（judge 與評估基礎設施）、L16（SWE-bench）；L15、L16 的投影片公開後再讀。
-- [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — 第 2 份作業（agent 軌跡評估）、第 3 份作業（REINFORCE / GRPO 的 agent RL 訓練）。
+- [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — 2026 秋季第 2 份作業是資料視覺化 agent 的評估，可對照本章的 grader 與軌跡分析。第 3 份作業是 REINFORCE / GRPO 訓練，屬模型訓練的額外選讀，需 Python、強化學習基礎與 GPU 訓練後端；不是完成本章或 A14 的前置。
 - [Stanford CS329A Self-Improving AI Agents](https://cs329a.stanford.edu/) — verifier、test-time compute、self-improvement。
 - [Berkeley Advanced LLM Agents Sp25](https://rdi.berkeley.edu/adv-llm-agents/sp25) — 講座系列，錄影公開；只核對過講題與讀物清單。
 - GAIA、Terminal-Bench、TheAgentCompany 等其他 agent benchmark：讀之前先套用講義的 benchmark hygiene 三個問題。

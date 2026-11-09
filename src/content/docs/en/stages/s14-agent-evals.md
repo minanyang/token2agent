@@ -281,7 +281,7 @@ Coding uses pass@3: tests automatically pick out the correct version, the user o
 **Goal**: build a rerunnable evaluation of an existing agent, with a report of the variables, and use trajectories to find the step where it most often breaks.
 
 **Steps**
-1. Use the agent from the S12 The Agent Loop and Harness core exercise and its folder of 20 Markdown notes (if you didn't do the S12 core exercise, generate the same folder following the spec in its step 1). Reuse that exercise's 10 tasks and graders directly, and add 5 "shouldn't act" tasks for 15 tasks total. "Shouldn't act" means information is missing and it should ask first (e.g. "Delete that file" doesn't say which), or the request itself makes no sense (e.g. "Rewrite the nonexistent `budget.md` as three paragraphs"). The graders for these 5 tasks check that the folder contents are byte-for-byte identical to the original.
+1. Use the agent from the S12 The Agent Loop and Harness core exercise and its folder of 20 Markdown notes (if you have not completed it, first build the S12 core agent, its 10 tasks and graders; recreating only the folder is not enough). Reuse that exercise's 10 tasks and graders directly, and add 5 "shouldn't act" tasks for 15 tasks total. "Shouldn't act" means information is missing and it should ask first (e.g. "Delete that file" doesn't say which), or the request itself makes no sense (e.g. "Rewrite the nonexistent `budget.md` as three paragraphs"). The graders for these 5 tasks check that the folder contents are byte-for-byte identical to the original.
 2. Define the agent flow as 4–6 states (e.g. understand the task → find the target → read → modify → verify → report), and write a program that determines from a trace which state each run reached.
 3. Prepare two versions (e.g. two system prompts or two models) and run each on 15 tasks × 5 trials. If you choose "with / without a harness component" as the two versions (← S12 The Agent Loop and Harness; e.g. the rule that stops after 3 consecutive failures), this step doubles as an ablation. Start every trial from a clean copy.
 4. Take one of the versions, change just one environment setting (tool timeout or step limit), and run another round.
@@ -312,18 +312,18 @@ Coding uses pass@3: tests automatically pick out the correct version, the user o
 
 **Steps**
 
-0. **Fill in the routing records**: step 5 needs records of routing decisions. Your only router so far is the one from A7 Structured Output and Workflows, but it doesn't necessarily use a strong model, and system project steps A6–A8 only required about 100 traces. First make sure the traces contain the routing decision for every request; if you have fewer than 200, have a strong model relabel historical requests to make up the difference. Once you have enough, spot-check 20 of all the routing decisions for correctness, fix any errors the spot check finds, and report the error rate.
+0. **Prepare the optional bridge: routing records**: do this only if you choose step 5. If you skip router distillation, start at step 1. Step 5 needs records of routing decisions. Your only router so far is the one from A7 Structured Output and Workflows, but it doesn't necessarily use a strong model, and system project steps A6–A8 only required about 100 traces. First make sure the traces contain the routing decision for every request; if you have fewer than 200, have a strong model relabel historical requests to make up the difference. Once you have enough, spot-check 20 of all the routing decisions for correctness, fix any errors the spot check finds, and report the error rate.
 1. **Trajectory eval**: starting from the eval set from A8 Error Analysis and Golden Set and the tasks from A12 Hand-written Harness, expand to at least 30 agent tasks, with both positive and negative cases. Rely mainly on outcome graders, and add trajectory checks for critical flows (e.g. confirmation required before sending email).
 2. **Simulated users**: write 3–5 user personas (goal, way of talking, whether they give wrong information), and run at least 20 multi-turn conversations. Read 10 of them, mark where the simulated user doesn't act like a real person, and fix the personas.
 3. **Trace clustering**: cluster the real records you've accumulated since A6 Streaming Chat and Traces, read a few from each cluster, and add newly found failures to the eval.
 4. **Prompt optimization**: pick a subtask (e.g. intent classification or summarization) and run one round with DSPy's MIPROv2 or GEPA; split the data into training and test sets.
-5. **Router distillation**: using the routing decisions prepared in step 0 (at least 200, including the 20 spot-checked ones), train a small classifier to replace strong-model routing. First split the routing records into training and test sets (say 80/20), train and tune only on the training set, and report accuracy on the test set.
+5. **Router distillation (optional model-project bridge)**: using the routing decisions prepared in step 0 (at least 200, including the 20 spot-checked ones), train a small classifier to replace strong-model routing. First split the routing records into training and test sets (say 80/20), train and tune only on the training set, and report accuracy on the test set.
 6. **Harness ablation**: remove one component from A12 Hand-written Harness and compare on 20 tasks × 5 trials.
 
 **Acceptance criteria**
-- Every change (prompt optimization, router, ablation) has a before/after comparison with a 95% confidence interval.
+- Every completed change (prompt optimization, ablation, and optional router distillation) has a before/after comparison with a 95% confidence interval.
 - Prompt optimization results are reported on the **test data**, with 3 example outputs each from before and after optimization.
-- Router: accuracy on the test set, per-call latency and cost, side by side with the original strong-model routing; point out the category with the most errors.
+- If you choose router distillation: accuracy on the test set, per-call latency and cost, side by side with the original strong-model routing; point out the category with the most errors.
 - The ablation is run twice on different dates, and both runs point the same way; the report states the model version, resource settings and number of trials.
 - A one-page "eval README": where the tasks come from, grader types and calibration results, known variables, and what isn't covered yet.
 
@@ -421,7 +421,7 @@ The lecture already covers what this chapter needs. The material below is for re
 ### Courses and overviews
 
 - [Stanford CS 329Z](https://cs329z.stanford.edu/) — L9 (optimization), L10 (Terminal-Bench), L11–L12 (agent data), L13 (evaluation and benchmark design), L15 (judges and evaluation infrastructure), L16 (SWE-bench); read L15 and L16 once their slides are public.
-- [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — Assignment 2 (agent trajectory evaluation), assignment 3 (agent RL training with REINFORCE / GRPO).
+- [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — Fall 2026 assignment 2 evaluates a data-visualization agent and can be compared with this chapter's graders and trajectory analysis. Assignment 3 trains agents with REINFORCE / GRPO; it is extra model-training practice requiring Python, RL foundations and a GPU training backend, not a prerequisite for this chapter or A14.
 - [Stanford CS329A Self-Improving AI Agents](https://cs329a.stanford.edu/) — Verifiers, test-time compute, self-improvement.
 - [Berkeley Advanced LLM Agents Sp25](https://rdi.berkeley.edu/adv-llm-agents/sp25) — A lecture series with public recordings; only the topics and reading list have been checked.
 - GAIA, Terminal-Bench, TheAgentCompany and other agent benchmarks: before reading about them, apply the lecture's three benchmark hygiene questions.

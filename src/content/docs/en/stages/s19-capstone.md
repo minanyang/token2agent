@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: the core exercise only needs the idea of the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18
+**Prerequisites**: the lecture assumes the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the core exercise also needs repeated-trial and pass^k concepts from [S8 Eval Methodology](/en/stages/s08-evals/), basic Git and automated testing skills, and the ability to read Python if you choose mini-SWE-agent. It does not require the system project; the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18
 
 **Next**: the end of the route; afterward, go back to [S0 AI Systems Overview](/en/stages/s00-big-picture/) and pick a layer to go deeper on
 :::

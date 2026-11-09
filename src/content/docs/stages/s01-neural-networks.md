@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S0 AI 系統概觀](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)
+**前置**：[S0 AI 系統概觀](/stages/s00-big-picture/)。讀講義主線不要求程式或微積分背景；必做題需要 Python 或 TypeScript 基礎，並先讀連鎖律與 autograd 的展開說明。連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)
 
 **銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 :::
@@ -416,7 +416,7 @@ word2vec、GloVe 用「一起出現的字意思相近」的原理，為每個字
 
 ### 課程與概覽
 
-- [Stanford CS224N](https://web.stanford.edu/class/cs224n/) — 前三講：word vectors、神經網路與 backprop 的數學推導，比講義的深入區塊更完整。
+- [Stanford CS224N](https://web.stanford.edu/class/cs224n/) — 2026 冬季的 Word Vectors 與 Backpropagation and Neural Network Basics 講次；適合想補向量表示與反向傳播的人，需基本線性代數與微積分。
 
 ### 中文資源
 

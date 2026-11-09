@@ -77,7 +77,7 @@ const labels = Array.from({ length: stageCount }, (_, stage) => ({
 				</span>
 			))}
 		</p>
-		{taglineRest.length > 0 && <p class="tagline-rest">{taglineRest.join(' ')}</p>}
+		{taglineRest.length > 0 && <p class="tagline-rest">{taglineRest.map((line, index) => <>{index > 0 && <br />}{line}</>)}</p>}
 		{actions.length > 0 && (
 			<div class="actions">
 				<div class="action-buttons">

@@ -464,13 +464,13 @@ Interpretability 研究模型內部在算什麼。常見工具：看 attention �
 
 ### 跟著寫程式
 
-- [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) — 「Let's build GPT」與「Let's build the GPT Tokenizer」兩支影片，從零寫出 attention、GPT 與 BPE。做 M2 tiny GPT 時最好的參考。
+- [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) — 「Let's build GPT」與「Let's build the GPT Tokenizer」兩支影片，從零寫出 attention、GPT 與 BPE。可搭配 M2 tiny GPT；跟著寫需要 Python 與基本 PyTorch。
 - [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) — 第 2–4 章（文字資料與 tokenization、attention、GPT 模型）有逐步的程式碼與圖解；第 4 章 bonus 有 KV cache、GQA、MLA、MoE 的從零實作。
-- [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/) — 第 1 份作業「Build Your Own LLaMa」，很適合拿來對照 M2 tiny GPT。
+- [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/) — 2026 春季第 1 份作業「Build Your Own LLaMa」可對照 M2 tiny GPT 的架構實作。這是研究所課程作業，需 Python、PyTorch 與模型訓練基礎；不是讀完 S2 就必須完成的練習。
 
 ### 原始論文與綜述
 
-- [Vaswani et al. 2017, Attention Is All You Need](https://arxiv.org/abs/1706.03762) — Transformer 的原始論文。讀完講義後再讀，大部分都看得懂。
+- [Vaswani et al. 2017, Attention Is All You Need](https://arxiv.org/abs/1706.03762) — Transformer 的原始論文。可先對照第 3 節的架構與 Figure 1；原文是 encoder–decoder，和本章的 decoder-only GPT 不完全相同。讀公式需要矩陣與機率基礎，訓練細節可等 S3 再回來看。
 - [Welleck et al. 2024, From Decoding to Meta-Generation](https://arxiv.org/abs/2406.16838) — decoding 方法的完整綜述；這一章對應 token-level 的部分，其餘留到 S4 Post-training 與 reasoning、S5 推論與 serving。
 
 ### 課程與概覽

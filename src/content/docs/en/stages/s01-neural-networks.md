@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S0 AI Systems Overview](/en/stages/s00-big-picture/); you can write Python or TypeScript. The main line needs no calculus; the chain rule used in the deeper sections is in the [Math Refresher](/en/guide/math-refresher/#the-chain-rule-and-backprop)
+**Prerequisites**: [S0 AI Systems Overview](/en/stages/s00-big-picture/). The main lecture needs no programming or calculus background. The core exercise requires basic Python or TypeScript and the expandable explanations of the chain rule and autograd. For the chain rule, see the [Math Refresher](/en/guide/math-refresher/#the-chain-rule-and-backprop)
 
 **Next**: → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 :::
@@ -416,6 +416,6 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Courses and overviews
 
-- [Stanford CS224N](https://web.stanford.edu/class/cs224n/) — The first three lectures: word vectors, neural networks and the math of backprop, more complete than the deeper sections of this lecture.
+- [Stanford CS224N](https://web.stanford.edu/class/cs224n/) — The Winter 2026 Word Vectors and Backpropagation and Neural Network Basics lectures, for more on vector representations and backpropagation. They assume basic linear algebra and calculus.
 
 </section>

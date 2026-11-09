@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18
+**前置**：讀講義需理解 agent loop（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；必做題另需 [S8 Eval 方法論](/stages/s08-evals/) 的重複試跑與 pass^k 概念、基本 Git 操作與自動化測試能力；選 mini-SWE-agent 時需能閱讀 Python，但不需要系統專案的成果；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18
 
 **銜接**：路線的終點；之後回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層往深處走
 :::

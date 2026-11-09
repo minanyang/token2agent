@@ -48,7 +48,7 @@ You can get as far as A16 Security Attack, Defense and Governance without writin
 | A11 Context Builder | [S11 Context Engineering](/en/stages/s11-context-engineering/) | A context builder: budget, ordering, caching |
 | A12 Hand-written Harness | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) | A hand-written harness: permissions, hooks, pause and resume, human intervention, compaction, skills |
 | A13 Layered Memory | [S13 Memory and Personalization](/en/stages/s13-memory/) | First, a pairwise judge (← S8 Eval Methodology); layered memory and personalization; users can view and delete memories; cross-user isolation tested with the user ID carried since A6 Streaming Chat and Traces; 🔒 memory poisoning |
-| A14 Agent Evals and Optimization | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) | First, fill in routing logs; trajectory evals, simulated users, prompt optimization, router distillation, harness ablation |
+| A14 Agent Evals and Optimization | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) | Trajectory evals, simulated users, prompt optimization, harness ablation; prepare routing records only for optional router distillation |
 | A15 Multi-agent Experiment | [S15 Multi-agent Systems](/en/stages/s15-multi-agent/) | Try a multi-agent setup, and keep it only if it beats a single agent on evals |
 | A16 Security Attack, Defense and Governance | [S16 Security and Governance](/en/stages/s16-security/) | Trifecta audit, threat model, reproduce and patch one injection, guardrail false positives / false negatives, a data governance statement |
 | A17 Complete Frontend | [S17 Product and AI UX](/en/stages/s17-ai-ux/) | A complete frontend: showing tool calls, interruptible, citations, uncertainty (first, a per-answer uncertainty signal, ← S8 Eval Methodology), feedback |
@@ -58,7 +58,7 @@ You can get as far as A16 Security Attack, Defense and Governance without writin
 ## Bridges to the model project
 
 - **A9 RAG with Citations**: fine-tune an embedding model (using the fine-tuning techniques from [S4 Post-training and Reasoning](/en/stages/s04-post-training/))
-- **A14 Agent Evals and Optimization**: distill a small router or classifier from your own traces
+- **A14 Agent Evals and Optimization (optional bridge)**: distill a small router or classifier from your own traces
 - **A18 Multi-user Deployment**: compare a self-hosted model with APIs, using the measurements from [M5 KV Cache, Quantization and a Mini Inference Server](/en/projects/model-thread/)
 
 ## Cost

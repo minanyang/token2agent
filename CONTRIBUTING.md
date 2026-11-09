@@ -27,6 +27,23 @@ pnpm check:sources   # 檢查外部連結都列在 reference/sources.md
 
 送出 PR 前請確認 `pnpm build` 與 `pnpm check:sources` 都通過。
 
+## Media previews
+
+`scripts/generate-media.mjs` generates both languages' hero GIFs, roadmap GIFs and OG cards from a
+local build. Hero GIFs and OG cards share one layout without navigation buttons; GIFs animate the
+demonstration and OG cards show its completed state. Regenerate these assets after changing the hero,
+stage titles or roadmap groups, and inspect both themes and languages before committing them.
+
+Run `pnpm build`, serve `dist/` with `pnpm astro preview --host 127.0.0.1 --port 4322`, and start an
+isolated headless Chrome with remote debugging on port 9333. Then run:
+
+```sh
+node scripts/generate-media.mjs http://127.0.0.1:4322 http://127.0.0.1:9333
+```
+
+Use `--social-only` for hero GIFs and OG cards, or `--og-only` for static cards alone. The script prints
+temporary QA frame paths.
+
 ## 專案結構
 
 ```

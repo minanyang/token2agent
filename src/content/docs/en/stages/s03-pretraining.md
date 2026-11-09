@@ -411,7 +411,7 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Courses and data engineering
 
-- [Stanford CS336](https://cs336.stanford.edu/) — Lectures on data, scaling and parallelism; the deepest course on this topic.
+- [Stanford CS336](https://cs336.stanford.edu/) — Spring 2026 lectures on data, scaling and parallelism, for a deeper look at training systems. They assume Python, PyTorch, linear algebra and probability.
 - [Princeton COS 597R](https://princeton-cos597r.github.io) — A reading list on data curation, including the dataset papers for Dolma, FineWeb, DCLM and others. Read it when you want to go deeper into data engineering.
 - [mlabonne/llm-course](https://github.com/mlabonne/llm-course) — Curated links in section 2 (pretraining) of the Scientist part.
 

@@ -464,13 +464,13 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Code along
 
-- [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) — The "Let's build GPT" and "Let's build the GPT Tokenizer" videos write attention, GPT and BPE from scratch. The best reference while doing M2 tiny GPT.
+- [karpathy/nn-zero-to-hero](https://github.com/karpathy/nn-zero-to-hero) — The "Let's build GPT" and "Let's build the GPT Tokenizer" videos write attention, GPT and BPE from scratch. A code-along companion to M2 tiny GPT; following the implementation needs Python and basic PyTorch.
 - [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) — Chapters 2–4 (text data and tokenization, attention, the GPT model) have step-by-step code and diagrams; the chapter 4 bonus material has from-scratch implementations of the KV cache, GQA, MLA and MoE.
-- [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/) — Assignment 1, "Build Your Own LLaMa," is a good comparison for M2 tiny GPT.
+- [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/) — Spring 2026 assignment 1, "Build Your Own LLaMa," can be compared with M2 tiny GPT's architecture implementation. This graduate-course assignment assumes Python, PyTorch and model-training experience; it is extra practice, not a requirement after S2.
 
 ### Original papers and surveys
 
-- [Vaswani et al. 2017, Attention Is All You Need](https://arxiv.org/abs/1706.03762) — The original Transformer paper. Read it after the lecture and most of it will make sense.
+- [Vaswani et al. 2017, Attention Is All You Need](https://arxiv.org/abs/1706.03762) — The original Transformer paper. Start by comparing section 3 and Figure 1 with this chapter; its encoder–decoder differs from the decoder-only GPT here. The formulas assume matrix and probability basics; return to training details after S3.
 - [Welleck et al. 2024, From Decoding to Meta-Generation](https://arxiv.org/abs/2406.16838) — A thorough survey of decoding methods. This chapter covers the token-level part; the rest is left for S4 Post-training and Reasoning and S5 Inference and Serving.
 
 ### Courses and overviews

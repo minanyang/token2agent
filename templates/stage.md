@@ -19,6 +19,15 @@ Authoring rules (keep this comment out of published pages):
 - System-thread exercises are written for "your system" (reader picks the theme); add one line
   「以筆記助理為例：…」 as the worked example.
 - Numbers in acceptance criteria must be checkable by the reader alone.
+- Resource recommendations must name the topic they add and the intended reader. Verify specific
+  lecture/chapter/assignment numbers against the original syllabus or contents, with an edition or
+  year for courses. A reachable URL alone does not establish a recommendation's accuracy.
+- Keep optional resources out of the main route's prerequisites. Distinguish reading knowledge,
+  programming skills, earlier core-exercise artifacts, and cumulative advanced-project artifacts.
+  "No advanced project required" does not mean "no prerequisites". Optional bridges must also be
+  optional in their steps, acceptance criteria, route guides and project overviews in both languages.
+- Do not promise comprehension, runtime or cost without conditions and evidence. Label incomplete
+  external tracks, and estimate training time from a measured small run rather than model size alone.
 - Put prerequisites and next steps in separate paragraphs in the chapter note, in both editions.
 - Keep short table labels together with non-breaking spaces (e.g. `Level&nbsp;0`). Let descriptive cells
   wrap normally; do not disable wrapping for an entire table or column.

@@ -48,14 +48,14 @@ On the application route, these are the places where you first learn *how* to do
 | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) | Reward hacking, distilling a router (A14 Agent Evals and Optimization) | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) |
 | [S18 Deployment and Architecture](/en/stages/s18-deployment/) | Self-hosting vs. API cost (A18 Multi-user Deployment uses measured numbers from the M5 mini inference server) | [S5 Inference and Serving](/en/stages/s05-inference/), [model project](/en/projects/model-thread/) |
 
-If you want to fill in the gaps in your model knowledge, start with these sections, which don't need S1 Neural Network Basics first. After S8 Eval Methodology, read the tokenization and decoding sections of [S2 Transformers and Decoding](/en/stages/s02-transformer/), and the opening example and the prefill/decode section of S5 Inference and Serving (the parts most relevant to apps). After [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), read the main line of the S4 Post-training and Reasoning lecture. When you want the full picture, read from S1 in order. For the math tools (softmax, standard error, bootstrap and so on), see the [Math Refresher](/en/guide/math-refresher/).
+For application-related intuition, choose a section rather than a whole model chapter. After S8 Eval Methodology, try the tokenization and decoding sections of [S2 Transformers and Decoding](/en/stages/s02-transformer/), or the opening example and the prefill/decode section of S5 Inference and Serving. After [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), compare the [reward hacking](/en/stages/s04-post-training/#-why-do-models-game-the-reward) and [distillation](/en/stages/s04-post-training/#-how-does-a-small-model-learn-from-a-big-one) sections in S4 Post-training and Reasoning. For the full training mechanisms and derivations, follow the prerequisites through S1–S4. For softmax, standard error, bootstrap and other math tools, see the [Math Refresher](/en/guide/math-refresher/).
 
 ## Model Crash Course
 
 This section has two parts. "Four things to know now" is what you need before starting S6 LLM APIs and Application Basics. For "Look it up later", knowing the names is enough for now; come back when you need them. Each topic ends with the chapter that goes deeper (Part I, optional).
 
 :::tip[How to read this section]
-Read "Four things to know now" first; you can skim "Look it up later". If you're on a hands-on route and want to build something, do [the S2 Transformers and Decoding core exercise, "Write BPE and sampling from scratch"](/en/stages/s02-transformer/#core-write-bpe-and-sampling-from-scratch) (optional). It doesn't depend on any other chapter, and it will make your grasp of tokens and sampling much more solid.
+Read "Four things to know now" first. You can skim "Look it up later" and return when a chapter needs it. You can continue to S6 LLM APIs and Application Basics without completing the model chapters or their exercises first.
 :::
 
 ### Four things to know now
@@ -165,3 +165,11 @@ Before you start S6 LLM APIs and Application Basics, try these questions. If you
    **Key point**: use RAG for knowledge that changes; fine-tuning is for changing behavior. **Common mistake**: assuming that after fine-tuning the model will reliably recite the new specs. **Reread**: [What fine-tuning can and can't do](#what-fine-tuning-can-and-cant-do)
 
    </details>
+
+<section class="deep-section">
+
+## Optional: hands-on model practice
+
+This is extra practice for model internals, not a prerequisite for S6 LLM APIs and Application Basics. Read the tokenization and decoding sections of [S2 Transformers and Decoding](/en/stages/s02-transformer/) before attempting ["Write BPE and sampling from scratch"](/en/stages/s02-transformer/#core-write-bpe-and-sampling-from-scratch). You need basic programming, UTF-8 bytes, logits, softmax, temperature, top-k and top-p; see the [Math Refresher](/en/guide/math-refresher/#logits-softmax-and-temperature) for the math. You do not need the M1 model project, but the crash course alone does not cover everything the exercise needs. It is S2's core exercise and extra practice for the application route.
+
+</section>

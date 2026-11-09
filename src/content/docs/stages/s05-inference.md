@@ -346,7 +346,7 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 - 這一步的實測結果會在 S18 部署與架構用來和 API 比較成本。
 - 卡住時：
   - 重讀：[KV cache](#-kv-cache-存什麼佔多少)、[batching](#-怎麼同時服務很多人)、[加速方法](#-加速會改變輸出嗎)
-  - 延伸：zero-to-sglang Part II 的 KV Cache、Continuous Batching、Paged KV Cache 三章
+  - 延伸：zero-to-sglang Part II 已公開的 KV cache 實作；continuous batching 與 paged KV cache 另對照 nano-vllm 的 scheduler 與 block manager（zero-to-sglang 後續章節仍在更新）
 
 </section>
 
@@ -432,13 +432,13 @@ Decode 卡在讀權重，那就讓很多請求共用同一次讀取。這是 ser
 
 ### 課程
 
-- [CMU 15-442 ML Systems](https://mlsyscourse.org/schedule)、[CMU 11-868 LLM Systems](https://llmsystem.github.io/llmsystem2026spring/docs/Syllabus) — GPU 與 serving 系統的講次與論文清單；P/D disaggregation（DistServe、Mooncake）、KV cache 分層（Mooncake、LMCache）與非前綴 KV 重用（CacheBlend）的論文都在 11-868 的清單中。
+- [CMU 15-442 ML Systems](https://mlsyscourse.org/schedule)、[CMU 11-868 LLM Systems](https://llmsystem.github.io/llmsystem2026spring/docs/Syllabus) — GPU 與 serving 系統的講次與論文清單；P/D disaggregation（DistServe、Mooncake）、KV cache 壓縮與管理（CacheGen、Mooncake）及非前綴 KV 重用（CacheBlend）可在 2026 春季 11-868 的清單中找到。
 - [MIT 6.5940 TinyML and Efficient AI](https://hanlab.mit.edu/courses/2024-fall-65940) — 量化 lab 與「在筆電上部署 LLM」的 lab。
 - [Stanford CS25 Transformers United V6](https://web.stanford.edu/class/cs25/) — Charles Frye（Modal）談 production serving 的講座。
 
 ### 中文資源
 
-- [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) — 簡中 / 英文；Datawhale 與 RadixArk（SGLang 團隊創立的公司）合作的課程，部分章節由 SGLang 核心成員撰寫。Part I（概念，不需 GPU）與 Part II（自己寫 mini-sglang）是本章最好的中文搭配；Part III 只有部分章節完成，其餘仍在撰寫中。
+- [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) — 簡中 / 英文；Datawhale 與 RadixArk（SGLang 團隊創立的公司）合作的課程，部分章節由 SGLang 核心成員撰寫。Part I（概念，不需 GPU）與 Part II（自己寫 mini-sglang）可補充本章的概念與程式；Part II、Part III 都仍在更新，先確認目錄中的章節狀態，不要把整條實作路線視為已完成。
 - [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) — 簡中；第 6 章（GPU 與 FlashAttention）、第 7 章（GPU 程式設計與 Triton）、第 10 章（KV cache、speculative decoding、量化、continuous batching）。
 
 </section>

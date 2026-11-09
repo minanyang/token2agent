@@ -396,13 +396,13 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 4. 檢索時先依使用者過濾，只搜尋該使用者有權看的文件。使用者身分沿用從 A6 串流聊天與 trace 起、每個請求都帶的使用者 ID（系統專案之後會有 2–3 位使用者）。
 5. 建立 50 筆查詢集：從 golden set（← A8 錯誤分析與 golden set）與真實 trace 取，不夠再用合成查詢補，並標註正確段落。
 6. 評估：檢索看 Recall@10 與 MRR；生成看 faithfulness 與 citation precision（依 S8 Eval 方法論校準 judge）。
-7. 微調 embedding 模型：用合成的（查詢、段落）配對訓練，在**沒參與訓練**的查詢上比較微調前後的 Recall@10。這一步和模型專案的微調技術相通（見[模型速成〈微調能做什麼、不能做什麼〉](/guide/app-first/#微調能做什麼不能做什麼)；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）。
+7. **選做的模型專案橋接：微調 embedding 模型**。不做這一步也能完成 A9 的 RAG、隔離與安全驗收。用合成的（查詢、段落）配對訓練，在**沒參與訓練**的查詢上比較微調前後的 Recall@10。這一步和模型專案的微調技術相通（見[模型速成〈微調能做什麼、不能做什麼〉](/guide/app-first/#微調能做什麼不能做什麼)；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）。
 8. 完成上面的 🔒 間接 injection 檢查，結果寫進專案文件。
 9. ○ Text2SQL 變體（選做；熟 SQL 的讀者可以拿它取代第 7 步）：用你熟的資料庫，或 [Spider](https://yale-lily.github.io/spider) 的一個子集，做 50 題自然語言轉 SQL。用執行結果比對評分（execution accuracy：模型的 SQL 和標準 SQL 跑出相同結果才算對），附 95% 信賴區間；比較「只給 table 名稱」與「加上欄位說明與 3 個範例」兩種 prompt。查詢一律用唯讀帳號執行。
 
 **驗收**
 - 50 筆查詢集上，Recall@10 與 citation precision 各附 95% 信賴區間。
-- Embedding 微調前後的 Recall@10 比較，用配對 bootstrap 給出差異的信賴區間（沒有變好也是有效結果，寫下原因）。用 Text2SQL 變體取代第 7 步的話，這一條改為：兩種 prompt 在同一組 50 題上的 execution accuracy 各附 95% 信賴區間，並用配對 bootstrap 給出兩者差值的 95% 信賴區間。
+- 若選做第 7 步：Embedding 微調前後的 Recall@10 比較，用配對 bootstrap 給出差異的信賴區間（沒有變好也是有效結果，寫下原因）。用 Text2SQL 變體取代第 7 步的話，這一條改為：兩種 prompt 在同一組 50 題上的 execution accuracy 各附 95% 信賴區間，並用配對 bootstrap 給出兩者差值的 95% 信賴區間。
 - 至少 5 筆查詢的答案來自 PDF 表格內容，並附在查詢集裡。
 - 平均每次請求的輸入 token 數和 A6 串流聊天與 trace 的 naive 版本並列比較。
 - 🔒 injection 測試案例有文件記錄：測試文件內容、5 次結果、緩解措施、緩解後 5 次結果。
@@ -413,7 +413,7 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 **提示**
 - TypeScript：PDF 用 [unpdf](https://github.com/unjs/unpdf) 取文字；複雜版面可以呼叫 Python 的 Docling 當獨立服務；rerank 可用 API 或自架。
 - Python：PDF 用 [Docling](https://github.com/docling-project/docling)；rerank 用 Sentence Transformers 的 CrossEncoder 搭配 [bge-reranker-v2-m3](https://huggingface.co/BAAI/bge-reranker-v2-m3)；生成評估可參考 [Ragas](https://docs.ragas.io/) 的指標定義。
-- Embedding 微調：Colab 免費 GPU 或 Apple Silicon 的 MPS，對 0.6B 以下的模型、幾千筆配對通常 1 小時內可以跑完；不想微調的話，用付費 embedding API 也能完成其餘驗收。
+- Embedding 微調：選用支援該模型的 GPU 或 MPS 環境，先用少量配對量出每步時間、記憶體與完整訓練的預估成本。免費 Colab 的資源不保證；略過微調時，可用現成的本地 embedding 模型或 API 完成其餘驗收。
 - 本地模型：contextual retrieval 要讓模型讀整份文件。用 Ollama 時先調大 context（見 [S6 LLM API 與應用基本功](/stages/s06-llm-api/#ollama-的-context-長度)）。
 - 卡住時：
   - 重讀：[文件怎麼變成可搜的文字？](#-文件怎麼變成可搜的文字)、[文件要切成多大？](#-文件要切成多大)、[怎麼分開量檢索和生成？](#-怎麼分開量檢索和生成)、[Embedding 怎麼找相近段落？](#-embedding-怎麼找相近段落)（「embedding 微調」展開段）
@@ -507,7 +507,7 @@ Recall@10 = (1 + 0) ÷ 2 = 0.5，第 12 名不在前 10 名。MRR = (1/2 + 1/12)
 
 ### 中文資源
 
-- [datawhalechina/all-in-rag](https://github.com/datawhalechina/all-in-rag) — 簡中；這一章最好的中文教材，涵蓋查詢改寫、Text2SQL、RAG 評估、GraphRAG。範例偏 Milvus。
+- [datawhalechina/all-in-rag](https://github.com/datawhalechina/all-in-rag) — 簡中；可補充這一章的實作，涵蓋查詢改寫、Text2SQL、RAG 評估、GraphRAG。範例偏 Milvus。
 - [ZJU-LLMs/Foundations-of-LLMs](https://github.com/ZJU-LLMs/Foundations-of-LLMs) — 簡中；第 6 章檢索增強生成。
 - [datawhalechina/tiny-universe](https://github.com/datawhalechina/tiny-universe) — 簡中；TinyRAG 是最小的 RAG 實作，可以對照自己寫的版本。
 - [台大 陳縕儂 ADL 2026](https://www.csie.ntu.edu.tw/~miulab/f115-adl/) — 繁中講課；RAG 講次。

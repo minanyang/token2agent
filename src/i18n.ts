@@ -98,7 +98,7 @@ const en: typeof zhTW = {
 		'system + user + notes_search',
 		'', // Token IDs are generated from heroGoal in Hero.astro.
 		'KV cache ready',
-		'notes_search({query: "last week"})',
+		`notes_search({query: "last week's meetings"})`,
 		'4 notes + excerpts',
 		'messages += [tool_call, tool_result]',
 		'stream → user · trace ✓',

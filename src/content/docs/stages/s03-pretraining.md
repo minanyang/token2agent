@@ -411,7 +411,7 @@ bits-per-byte = 整段文字的總 loss（以 nats 計，也就是每 token 的�
 
 ### 課程與資料工程
 
-- [Stanford CS336](https://cs336.stanford.edu/) — 資料、scaling、平行化的講次，是這個主題最深的課。
+- [Stanford CS336](https://cs336.stanford.edu/) — 2026 春季的資料、scaling 與平行化講次；適合想深入訓練系統的人，需 Python、PyTorch、線性代數與機率。
 - [Princeton COS 597R](https://princeton-cos597r.github.io) — 資料策展（data curation）的論文清單，包含 Dolma、FineWeb、DCLM 等資料集論文，想深入資料工程時讀。
 - [mlabonne/llm-course](https://github.com/mlabonne/llm-course) — Scientist 部分第 2 節（pretraining）的連結整理。
 

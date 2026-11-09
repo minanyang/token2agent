@@ -7,6 +7,7 @@ sidebar:
 
 這份路線引用的所有課程、書、文章、repo 都列在這裡。每筆都附上定位、偏向、日期。
 
+- **推薦核對範圍（2026-11-09）**：本次核對課程講次、教材章號與作業主題時，以原始課綱、目錄及作業說明為準；不代表逐堂看完影片、完成外部作業，或在每種硬體上跑過範例。外部資源都是選讀，依推薦用途挑小節即可，仍需遵守該資源的前置要求。
 - **維護**：這個領域變化很快，每季檢查一次。連結失效或內容過時，歡迎回報或發 PR
 - **簡中資源**：內容品質好但用簡體字的，可以用 [OpenCC](https://github.com/BYVoid/OpenCC) 的 `s2twp` 設定轉成台灣用語
 - **對應章節**：表格的「對應章節」欄列出這份資源搭配哪幾章；章名前的代號怎麼讀，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)
@@ -17,9 +18,9 @@ sidebar:
 
 | 課程 | 定位 | 對應章節 |
 |---|---|---|
-| [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/)（2026 秋） | 最完整的 agent 系統課，每講都有論文。投影片隨課程陸續公開（查證時到第 13 講），錄影只在 Stanford 內部 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S9 檢索與 RAG](/stages/s09-rag/) 到 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
+| [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/)（2026 秋） | 涵蓋 agent 元件、最佳化、評估與安全的課程，課綱附讀物。投影片隨課程陸續公開（2026-11-09 核對：已有至 11/4 評估講次的投影片），錄影只在 Stanford 內部 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S9 檢索與 RAG](/stages/s09-rag/) 到 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 | [CMU 11-768 AI Agents](https://www.cmu-agents.com/)（Neubig、Fried，2026 秋） | 作業是 harness → eval → 訓練，跟本路線最接近 | [S10 工具與 MCP](/stages/s10-tools-mcp/) 到 [S16 安全與治理](/stages/s16-security/) |
-| [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | 從零做語言模型，原理、訓練、推論都講得最深 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
+| [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | 2026 春季，從零實作語言模型與訓練、推論系統；需熟悉 Python、PyTorch、線性代數與機率 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
 | [Stanford CS224N](https://web.stanford.edu/class/cs224n/)（2026 冬） | NLP 到 LLM 的經典入門；第 4 份作業是 LLM 評估 | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S8 Eval 方法論](/stages/s08-evals/) |
 | [CMU 11-711 Advanced NLP](https://cmu-l3.github.io/anlp-spring2026/)（Welleck） | 第 1 份作業是 Build Your Own LLaMa；有 RL 基礎講次 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
 | [CMU 11-766 LLM Applications](https://cmu-llms.org/schedule/) | 應用面：prompt 敏感度、deep research、攻擊 LLM 應用 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S16 安全與治理](/stages/s16-security/) |
@@ -418,13 +419,13 @@ iThome 系列是實作者的 30 天連載，品質不一。上表列的是得獎
 | 來源 | 定位 | 對應章節 |
 |---|---|---|
 | [RUC《大语言模型》](https://llmbook-zh.github.io/) | 大學教科書，免費 PDF；agent 與應用部分較舊 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/) |
-| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | CS336 中文版；Part I 模型原理（S1–S5）最好的中文搭配 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Eval 方法論](/stages/s08-evals/) |
+| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | 以 CS336 為基礎的中文教材，另有本地化補充與第 6 份評估作業；可搭配 Part I 模型原理（S1–S5） | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Eval 方法論](/stages/s08-evals/) |
 | [datawhalechina/happy-llm](https://github.com/datawhalechina/happy-llm) | 從零建 LLM；第 8 章 agentic RL 很深 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | [ZJU-LLMs/Foundations-of-LLMs](https://github.com/ZJU-LLMs/Foundations-of-LLMs) | 浙大《大模型基础》；有 model editing 專章 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S9 檢索與 RAG](/stages/s09-rag/) |
 | [Lordog/dive-into-llms](https://github.com/Lordog/dive-into-llms) | 上海交大《动手学大模型》；安全相關 lab 多 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S16 安全與治理](/stages/s16-security/) |
 | [datawhalechina/tiny-universe](https://github.com/datawhalechina/tiny-universe) | TinyTransformer / TinyEval / TinyRAG / TinyAgent 最小實作 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [datawhalechina/zero-to-sglang](https://github.com/datawhalechina/zero-to-sglang) | SGLang 官方合作課程，自己寫推論伺服器。該課程的第三部分尚未完成 | [S5 推論與 serving](/stages/s05-inference/)、[S18 部署與架構](/stages/s18-deployment/) |
-| [datawhalechina/all-in-rag](https://github.com/datawhalechina/all-in-rag) | S9 檢索與 RAG 最好的中文教材；偏 Milvus | [S9 檢索與 RAG](/stages/s09-rag/) |
+| [datawhalechina/all-in-rag](https://github.com/datawhalechina/all-in-rag) | S9 檢索與 RAG 的中文補充教材，含檢索最佳化與實作；範例偏 Milvus | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) | 從零建 agent 的完整教材；context engineering、memory、agentic RL 深。偏中國技術棧 | [S11 Context engineering](/stages/s11-context-engineering/) 到 [S15 Multi-agent](/stages/s15-multi-agent/) |
 | [datawhalechina/agentic-rl-lab](https://github.com/datawhalechina/agentic-rl-lab) | GRPO 變體、Search-R1、ReTool 可執行重現 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | [datawhalechina/base-llm](https://github.com/datawhalechina/base-llm) | 含安全與威脅建模、部署；有一章是廠商 API 教學 | [S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/) |

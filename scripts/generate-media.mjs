@@ -1,4 +1,6 @@
-// Requires a local dev server, ffmpeg, and an isolated headless Chrome with remote debugging.
+// Generates hero GIFs, roadmap GIFs and OG cards from a built site served locally.
+// Requires ffmpeg and an isolated headless Chrome with remote debugging.
+// Hero GIFs and OG cards share the same composition; only the GIFs animate.
 // Example: node scripts/generate-media.mjs http://127.0.0.1:4322 http://127.0.0.1:9333
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -7,8 +9,9 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import sharp from 'sharp';
 
-const [site = 'http://127.0.0.1:4322', chrome = 'http://127.0.0.1:9333'] = process.argv.slice(2).filter(arg => arg !== '--og-only');
+const [site = 'http://127.0.0.1:4322', chrome = 'http://127.0.0.1:9333'] = process.argv.slice(2).filter(arg => !['--og-only', '--social-only'].includes(arg));
 const ogOnly = process.argv.includes('--og-only');
+const socialOnly = process.argv.includes('--social-only');
 const run = promisify(execFile);
 const temporary = await mkdtemp(join(tmpdir(), 'token2agent-media-'));
 const root = new URL('../', import.meta.url);
@@ -56,95 +59,147 @@ async function openPage(path) {
 	};
 }
 
+async function prepareSocialCard(page, locale, theme) {
+	await page.send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
+	await page.evaluate(`(() => {
+		document.documentElement.dataset.theme = ${JSON.stringify(theme)};
+		const hero = document.querySelector('.t2a-hero');
+		hero.querySelector('.actions')?.remove();
+		const topics = document.createElement('p'); topics.className = 'social-topics';
+		const chapterCount = hero.querySelectorAll('.progress .blk').length;
+		topics.textContent = chapterCount + ${JSON.stringify(`${locale === 'en' ? ' chapters · Free' : ' 章 · 免費'} · LLM API · RAG · MCP · Eval · Guardrails`)};
+		hero.querySelector('.copy').append(topics);
+		document.body.replaceChildren(hero);
+		const brand = document.createElement('div'); brand.className = 'social-brand';
+		const icon = document.createElement('img'); icon.src = '/favicon.svg';
+		brand.append(icon, document.createTextNode('token2agent.com')); document.body.append(brand);
+		const style = document.createElement('style');
+		style.textContent = \`
+			html, body { margin:0!important; width:1200px; height:630px; overflow:hidden; }
+			*,*::before,*::after { transition:none!important; }
+			.social-brand { position:absolute; left:48px; top:42px; display:flex; align-items:center; gap:12px;
+				color:var(--sl-color-gray-2); font:18px var(--__sl-font-mono); }
+			.social-brand img { width:32px; height:32px; }
+			.t2a-hero { position:absolute; left:48px; top:142px; width:1104px; height:420px;
+				padding:0!important; display:grid; grid-template-columns:560px 516px; gap:28px; align-items:start; }
+			.copy { gap:26px; }
+			.copy h1 { font-size:74px!important; }
+			.copy .tagline { font-size:22px!important; line-height:1.9; }
+			.copy .tagline-rest { font-size:20px; line-height:1.6; max-width:27em; }
+			.social-topics { margin:0; color:var(--sl-color-gray-2); font:15px var(--__sl-font-mono); white-space:nowrap; }
+			.run { font-size:16.5px!important; line-height:1.65; }
+			.run .prompt { font-size:12.5px; }
+			.run figcaption { font-size:11px; }
+			.run li { grid-template-columns:80px minmax(0,1fr); gap:12px; white-space:normal; }
+			.run .text { min-width:0; overflow-wrap:anywhere; }
+			.run .progress-label { font-size:11px; }
+		\`;
+		document.head.append(style);
+	})()`);
+	await page.evaluate('Promise.all([document.fonts.ready, ...[...document.images].map(img => img.decode())])');
+	await assertSocialCardFits(page);
+}
+
+async function assertSocialCardFits(page) {
+	const errors = await page.evaluate(`(() => {
+		const errors = [];
+		// Include both decode states: the tool call can be wider than the final answer.
+		for (const el of document.querySelectorAll('.run .text, .decode-output > span, .run .prompt, .social-topics')) {
+			if (el.scrollWidth > el.clientWidth + 1) errors.push('Horizontal overflow: ' + el.textContent.trim());
+		}
+		for (const el of document.querySelectorAll('.copy, .run, .social-brand')) {
+			const r = el.getBoundingClientRect();
+			if (r.left < 0 || r.top < 0 || r.right > 1201 || r.bottom > 631) errors.push('Outside card: ' + el.className);
+		}
+		return errors;
+	})()`);
+	if (errors.length) throw new Error(errors.join('\n'));
+}
+
+async function encodeGif(frames, output) {
+	await run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-framerate', '10', '-i',
+		join(frames, '%03d.png'), '-filter_complex',
+		'[0:v]scale=1000:-1:flags=lanczos,split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=3',
+		'-loop', '0', output]);
+}
+
+async function heroGif(page, name) {
+	const duration = await page.evaluate(`(() => {
+		window.mediaAnimations = document.getAnimations();
+		window.mediaAnimations.forEach(a => a.pause());
+		return Math.max(...window.mediaAnimations.map(a => a.effect.getComputedTiming().endTime).filter(Number.isFinite));
+	})()`);
+	if (!(duration > 0)) throw new Error('No hero animation found');
+	const frames = join(temporary, name);
+	await mkdir(frames);
+	// A complete first frame also works when animated images are shown statically.
+	const times = [duration + 1000, ...Array.from({ length: Math.ceil(duration / 100) + 6 }, (_, i) => i * 100)];
+	for (const [index, time] of times.entries()) {
+		await page.evaluate(`window.mediaAnimations.forEach(a => a.currentTime = ${time})`);
+		await writeFile(join(frames, `${String(index).padStart(3, '0')}.png`), await page.screenshot());
+	}
+	const output = new URL(`.github/assets/${name}.gif`, root).pathname;
+	await encodeGif(frames, output);
+	for (const index of [0, 12, 31]) await sharp(output, { page: index }).png()
+		.toFile(join(temporary, `${name}-${index}.png`));
+	console.log(`Generated ${name}.gif (${times.length} frames, no actions)`);
+}
+
+async function roadmapGif(path, locale, theme) {
+	const page = await openPage(path);
+	try {
+		await page.evaluate(`(() => {
+			document.documentElement.dataset.theme = ${JSON.stringify(theme)};
+			document.documentElement.dataset.depth = 'deep';
+			document.querySelectorAll('details.deep').forEach(d => d.open = true);
+			const style = document.createElement('style');
+			style.textContent = 'astro-dev-toolbar{display:none!important} body{background-image:none!important} .roadmap{padding:16px;margin:0!important;background:var(--sl-color-bg)} .roadmap .part-body > summary{display:none!important}';
+			document.head.append(style);
+			window.mediaAnimations = document.getAnimations().filter(a => a.animationName === 'token-flow');
+			window.mediaAnimations.forEach(a => a.pause());
+		})()`);
+		const duration = await page.evaluate('window.mediaAnimations[0]?.effect.getTiming().duration');
+		if (!(duration > 0)) throw new Error('No roadmap flow animation found');
+		const bounds = await page.evaluate(`(() => {
+			const r = document.querySelector('.roadmap').getBoundingClientRect();
+			return {x:Math.floor(r.x + scrollX), y:Math.floor(r.y + scrollY), width:Math.ceil(r.width), height:Math.ceil(r.height)};
+		})()`);
+		const name = `roadmap${locale === 'en' ? '-en' : ''}-${theme}`;
+		const frames = join(temporary, name);
+		await mkdir(frames);
+		const count = Math.round(duration / 100);
+		for (let index = 0; index < count; index++) {
+			await page.evaluate(`window.mediaAnimations.forEach(a => a.currentTime = ${index * duration / count})`);
+			await writeFile(join(frames, `${String(index).padStart(3, '0')}.png`), await page.screenshot(bounds));
+		}
+		const output = new URL(`.github/assets/${name}.gif`, root).pathname;
+		await encodeGif(frames, output);
+		await sharp(output).png().toFile(join(temporary, `${name}-0.png`));
+		console.log(`Generated ${name}.gif (${count} frames)`);
+	} finally { await page.close(); }
+}
+
 try {
 	for (const [locale, path] of [['zh', '/'], ['en', '/en/']]) {
-		if (!ogOnly) {
+		for (const theme of ogOnly ? ['dark'] : ['light', 'dark']) {
 			const page = await openPage(path);
 			try {
-				await page.evaluate(`(() => {
-					const transitions = document.createElement('style');
-					transitions.textContent = '*,*::before,*::after{transition:none!important}';
-					document.head.append(transitions);
-					const style = document.createElement('style');
-					style.textContent = '*,*::before,*::after{animation:none!important}';
-					document.head.append(style); void document.body.offsetHeight;
-					style.remove(); void document.body.offsetHeight;
-					window.mediaAnimations = document.getAnimations();
-					window.mediaAnimations.forEach(a => { a.pause(); a.currentTime = 0; });
-				})()`);
-				for (const theme of ['light', 'dark']) {
-					await page.evaluate(`document.documentElement.dataset.theme = '${theme}'`);
-					const bounds = await page.evaluate(`(() => {
-						const hero = document.querySelector('.t2a-hero').getBoundingClientRect();
-						const terminal = document.querySelector('.run').getBoundingClientRect();
-						return {x: Math.floor(hero.x) - 16, y: Math.floor(hero.y + scrollY),
-							width: Math.ceil(Math.max(hero.right, terminal.right) - hero.x) + 32,
-							height: Math.ceil(hero.height) + 16};
+				await prepareSocialCard(page, locale, theme);
+				if (!ogOnly) await heroGif(page, `hero-ids-fast${locale === 'en' ? '-en' : ''}-${theme}`);
+				if (theme === 'dark') {
+					await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+					await page.evaluate(`(() => {
+						const style = document.createElement('style');
+						style.textContent = '*,*::before,*::after{animation:none!important}';
+						document.head.append(style);
 					})()`);
-					const name = `hero-ids-fast${locale === 'en' ? '-en' : ''}-${theme}`;
-					const frames = join(temporary, name);
-					await mkdir(frames);
-					// A complete first frame also works when animated images are shown statically.
-					const times = [20000, ...Array.from({ length: 81 }, (_, i) => i * 100)];
-					for (const [index, time] of times.entries()) {
-						await page.evaluate(`window.mediaAnimations.forEach(a => a.currentTime = ${time})`);
-						await writeFile(join(frames, `${String(index).padStart(3, '0')}.png`), await page.screenshot(bounds));
-					}
-					const output = new URL(`.github/assets/${name}.gif`, root).pathname;
-					await run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-framerate', '10', '-i',
-						join(frames, '%03d.png'), '-filter_complex',
-						'[0:v]scale=1000:-1:flags=lanczos,split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=3',
-						'-loop', '0', output]);
-					// Keep representative frames for visual verification during this run.
-					for (const index of [0, 4, 31]) await sharp(output, { page: index }).png()
-						.toFile(join(temporary, `${name}-${index}.png`));
-					console.log(`Generated ${name}.gif`);
+					const output = new URL(`public/og${locale === 'en' ? '-en' : ''}.png`, root).pathname;
+					await writeFile(output, await page.screenshot());
+					console.log(`Generated ${output}`);
 				}
 			} finally { await page.close(); }
 		}
-
-		const og = await openPage(path);
-		try {
-			await og.send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
-			await og.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
-			await og.evaluate(`(() => {
-				document.documentElement.dataset.theme = 'dark';
-				const hero = document.querySelector('.t2a-hero');
-				hero.querySelector('.actions').remove();
-				hero.querySelector('.tagline-rest').remove();
-				const topics = document.createElement('p'); topics.className = 'social-topics';
-				topics.textContent = '${locale === 'en' ? 'Free' : '免費'} · LLM API · RAG · MCP · Eval · Guardrails';
-				hero.querySelector('.copy').append(topics);
-				document.body.replaceChildren(hero);
-				const brand = document.createElement('div'); brand.className = 'social-brand';
-				const icon = document.createElement('img'); icon.src = '/favicon.svg';
-				brand.append(icon, document.createTextNode('token2agent.com')); document.body.append(brand);
-				const style = document.createElement('style');
-				style.textContent = \`
-					html, body { margin:0!important; width:1200px; height:630px; overflow:hidden; }
-					*,*::before,*::after { animation:none!important; transition:none!important; }
-					.social-brand { position:absolute; left:60px; top:64px; display:flex; align-items:center; gap:12px;
-						color:#a5a6a8; font:18px var(--__sl-font-mono); }
-					.social-brand img { width:32px; height:32px; }
-					.t2a-hero { position:absolute; left:60px; top:158px; width:1080px; height:360px;
-						padding:0!important; display:grid; grid-template-columns:560px 470px; gap:50px; align-items:center; }
-					.copy { gap:24px; }
-					.copy h1 { font-size:64px!important; }
-					.copy .tagline { font-size:19px!important; line-height:1.9; }
-					.social-topics { margin:0; color:#a5a6a8; font:15px var(--__sl-font-mono); white-space:nowrap; }
-					.run { font-size:14px!important; line-height:1.65; }
-					.run .prompt { font-size:12px; }
-					.run figcaption { font-size:11px; }
-					.run li { grid-template-columns:64px minmax(0,1fr); gap:12px; }
-					.run .progress-label { font-size:11px; }
-				\`;
-				document.head.append(style);
-			})()`);
-			await og.evaluate(`Promise.all([document.fonts.ready, ...[...document.images].map(img => img.decode())])`);
-			const output = new URL(`public/og${locale === 'en' ? '-en' : ''}.png`, root).pathname;
-			await writeFile(output, await og.screenshot());
-			console.log(`Generated ${output}`);
-		} finally { await og.close(); }
+		if (!ogOnly && !socialOnly) for (const theme of ['light', 'dark']) await roadmapGif(path, locale, theme);
 	}
 	console.log(`Visual QA frames: ${temporary}`);
 } catch (error) {

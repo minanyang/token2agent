@@ -346,7 +346,7 @@ The first: prefill about 0.64 seconds + decode 200 × 16 ms = 3.2 seconds, about
 - The measurements from this step are used in S18 Deployment and Architecture to compare costs against APIs.
 - If you get stuck:
   - Reread: [KV cache](#-what-does-the-kv-cache-store-and-how-big-is-it), [batching](#-how-do-you-serve-many-users-at-once), [speedups](#-does-speeding-up-change-the-output)
-  - Further: the KV Cache, Continuous Batching and Paged KV Cache chapters in Part II of zero-to-sglang
+  - Further: the published KV cache implementation in Part II of zero-to-sglang; for continuous batching and paged KV cache, compare nano-vllm's scheduler and block manager (later zero-to-sglang chapters are still being updated)
 
 </section>
 
@@ -433,7 +433,7 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Courses
 
-- [CMU 15-442 ML Systems](https://mlsyscourse.org/schedule), [CMU 11-868 LLM Systems](https://llmsystem.github.io/llmsystem2026spring/docs/Syllabus) — lectures and reading lists on GPUs and serving systems; the papers on P/D disaggregation (DistServe, Mooncake), KV cache tiering (Mooncake, LMCache) and non-prefix KV reuse (CacheBlend) are all on the 11-868 list.
+- [CMU 15-442 ML Systems](https://mlsyscourse.org/schedule), [CMU 11-868 LLM Systems](https://llmsystem.github.io/llmsystem2026spring/docs/Syllabus) — lectures and reading lists on GPUs and serving systems; the papers on P/D disaggregation (DistServe, Mooncake), KV cache compression and management (CacheGen, Mooncake), and non-prefix KV reuse (CacheBlend) are on the Spring 2026 11-868 list.
 - [MIT 6.5940 TinyML and Efficient AI](https://hanlab.mit.edu/courses/2024-fall-65940) — the quantization lab and the "deploy an LLM on your laptop" lab.
 - [Stanford CS25 Transformers United V6](https://web.stanford.edu/class/cs25/) — Charles Frye (Modal) on production serving.
 

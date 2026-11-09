@@ -128,6 +128,11 @@ Topic headings keep their markers: `### ★ …` (core topic), `### ○ …` (op
 
 ## Checks
 
+Preserve the learning contract across editions: prerequisites, optional bridges, acceptance criteria,
+resource readiness and difficulty must agree. Verify course-number recommendations against the
+specified edition's original syllabus; do not turn a checked topic match into a claim that the entire
+resource was watched, implemented or benchmarked. Follow the recommendation rules in `stage.md`.
+
 ```sh
 pnpm build && pnpm check:links && pnpm check:sources
 ```

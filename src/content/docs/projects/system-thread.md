@@ -48,7 +48,7 @@ sidebar:
 | A11 context builder | [S11 Context engineering](/stages/s11-context-engineering/) | Context builder：預算、排序、快取 |
 | A12 手寫 harness | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) | 手寫 harness：權限、hooks、可暫停恢復、人工介入、compaction、skills |
 | A13 分層記憶 | [S13 Memory 與個人化](/stages/s13-memory/) | 先備一個 pairwise judge（← S8 Eval 方法論）；分層記憶與個人化；使用者可檢視與刪除記憶；用 A6 串流聊天與 trace 以來就帶著的使用者 ID 測跨使用者隔離；🔒 memory poisoning |
-| A14 agent eval 與最佳化 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) | 先補路由紀錄；trajectory eval、模擬使用者、prompt 最佳化、router 蒸餾、harness ablation |
+| A14 agent eval 與最佳化 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) | Trajectory eval、模擬使用者、prompt 最佳化、harness ablation；選做 router 蒸餾時再補路由紀錄 |
 | A15 multi-agent 實驗 | [S15 Multi-agent](/stages/s15-multi-agent/) | 試做 multi-agent，只有在評估上勝過單一 agent 才保留 |
 | A16 安全攻防與治理 | [S16 安全與治理](/stages/s16-security/) | Trifecta 稽核、威脅模型、重現並修補一次 injection、guardrail 誤報 / 漏報、資料治理說明 |
 | A17 完整前端 | [S17 產品與 AI UX](/stages/s17-ai-ux/) | 完整前端：工具呼叫呈現、可中斷、引用、不確定性（先備逐筆回答的不確定性訊號，← S8 Eval 方法論）、回饋 |
@@ -58,7 +58,7 @@ sidebar:
 ## 與模型專案的橋接
 
 - **A9 附引用的 RAG**：微調 embedding 模型（用到 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 的微調技術）
-- **A14 agent eval 與最佳化**：從自己的 trace 蒸餾出小型 router 或分類器
+- **A14 agent eval 與最佳化（選做橋接）**：從自己的 trace 蒸餾出小型 router 或分類器
 - **A18 多使用者部署**：自架模型與 API 的比較，拿 [M5 迷你推論伺服器](/projects/model-thread/) 的實測數字來對照
 
 ## 成本

@@ -21,7 +21,7 @@ Read it at **[token2agent.com/en](https://token2agent.com/en/)**.
 <a href="https://token2agent.com/en/">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-ids-fast-en-dark.gif">
-<img alt="Token2Agent home page: token IDs appear over the title and tagline beside a seven-step request, tool-call and response demo, with S0–S19 course chapters below" src=".github/assets/hero-ids-fast-en-light.gif">
+<img alt="Token2Agent overview animation: token IDs appear over the title and tagline beside a seven-step request, tool-call and response demo, with S0–S19 course chapters below" src=".github/assets/hero-ids-fast-en-light.gif">
 </picture>
 </a>
 

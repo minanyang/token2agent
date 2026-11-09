@@ -48,14 +48,14 @@ Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tra
 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) | reward hacking、蒸餾 router（A14 agent eval 與最佳化） | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | [S18 部署與架構](/stages/s18-deployment/) | 自架與 API 的成本比較（A18 多使用者部署用 M5 迷你推論伺服器的實測數字） | [S5 推論與 serving](/stages/s05-inference/)、[模型專案](/projects/model-thread/) |
 
-如果想補，建議從這幾個不需要先讀 S1 神經網路基礎的小節開始：走完 S8 Eval 方法論之後，讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的斷詞與 decoding 兩節、S5 推論與 serving 開頭的例子與 prefill／decode 一節（和應用最相關）；走完 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)之後，讀 S4 Post-training 與 reasoning 的講義主線；想完整理解時，再從 S1 依序讀。數學工具（softmax、標準誤、bootstrap 等）見[數學補給](/guide/math-refresher/)。
+想補應用相關的原理，可以先挑小節，不必一次讀完整個模型章節：走完 S8 Eval 方法論後，讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的斷詞與 decoding 兩節，或 S5 推論與 serving 開頭的例子與 prefill／decode 一節。走完 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)後，可以對照 S4 Post-training 與 reasoning 的[獎勵漏洞](/stages/s04-post-training/#-為什麼會鑽獎勵漏洞)與[蒸餾](/stages/s04-post-training/#-小模型怎麼向大模型學)兩節；想讀懂完整的訓練機制與推導，再依 S1–S4 的前置順序讀。數學工具（softmax、標準誤、bootstrap 等）見[數學補給](/guide/math-refresher/)。
 
 ## 模型速成
 
 這一節分兩部分：「現在要懂的四件事」是走進 S6 LLM API 與應用基本功之前要先懂的；「之後用到再查」先知道名字就好，用到時再回來。每一段後面都附上深入內容所在的章（Part I，選讀）。
 
 :::tip[怎麼讀這一節]
-先讀「現在要懂的四件事」，「之後用到再查」可以先略讀。走實作路線、想動手的話，做 [S2 Transformer 與 decoding 的必做題「從零寫 BPE 與 sampling」](/stages/s02-transformer/#必做從零寫-bpe-與-sampling)（選做）：這題不依賴其他章，做完你對 token 與 sampling 的理解會紮實很多。想看別人怎麼講，[台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php)（繁中）的第 6、7、8 講（訓練的三個階段）與第 10 講（Transformer）是很好的延伸。
+先讀「現在要懂的四件事」；「之後用到再查」可以先略讀，用到時再回來。不需要先完成模型原理章節或實作題，就能繼續 S6 LLM API 與應用基本功。
 :::
 
 ### 現在要懂的四件事
@@ -166,3 +166,13 @@ LLM 的訓練大致分成幾個階段。Pretraining 用大量網路文字訓練 
 
    </details>
 
+<section class="deep-section">
+
+## 選讀：實作與影片
+
+這些是想深入模型原理時的選項，都不是進入 S6 LLM API 與應用基本功的前置。
+
+- **想實作 tokenization 與 sampling**：先讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的斷詞與 decoding 小節，再做該章的[「從零寫 BPE 與 sampling」](/stages/s02-transformer/#必做從零寫-bpe-與-sampling)。需要基本程式能力、UTF-8 byte 的概念，以及 logits、softmax、temperature、top-k 與 top-p；數學背景見[數學補給](/guide/math-refresher/#logitssoftmax-與-temperature)。不需要先完成 M1 模型專案，但不能只靠本頁速成內容直接做。這是 S2 的必做題，對只走應用路線的人是額外選讀。
+- **想用影片補模型原理**：[台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php)（繁中）第 6–8 講分別介紹預訓練、指令微調與 RLHF；第 10 講介紹 Transformer 與文字接龍。依想補的主題挑一講即可，不需要先看完這四講。
+
+</section>

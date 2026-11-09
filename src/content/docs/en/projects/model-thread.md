@@ -25,7 +25,7 @@ The model project is Python throughout, because the training and inference toolc
 
 | Step | Recommended hardware | Notes |
 |---|---|---|
-| M1–M3 (micrograd and the MLP, tiny GPT, small-model pretraining) | Laptop CPU or Apple Silicon (MPS) | Models of millions to tens of millions of parameters; one training run takes minutes to an hour |
+| M1–M3 (micrograd and the MLP, tiny GPT, small-model pretraining) | Laptop CPU or Apple Silicon (MPS) | Start with million-parameter smoke tests. M3 trains multiple sizes and deduplication comparisons; estimate the full duration from measured step time, hardware, token count and training steps |
 | M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 | Rented NVIDIA GPU | Colab, Modal, Lambda and the like. Estimated **in the tens of dollars; measure first** |
 | M5 KV Cache, Quantization and a Mini Inference Server | CPU is fine for correctness; performance numbers need an NVIDIA GPU | Usually cheaper than M4, but still measure first |
 
