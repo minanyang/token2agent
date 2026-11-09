@@ -26,7 +26,7 @@ prev:
 
 ## What this chapter covers
 
-This chapter answers one question: how do you wire a model into your code reliably? It covers the structure and cost of one API call, streaming and cancellation, errors and retries, how the SDKs differ, local models, using reasoning models from the application side, and how to log and test code whose output is different every time. This is where the application route starts, and every later chapter builds on it: error analysis in S8 Evals Methodology reads traces, the agents in S12 The Agent Loop and Harness depend on reliable retries and cancellation, and cost control in S18 Deployment and Architecture depends on the token counts you log for every call.
+This chapter covers reliable model calls: request structure and cost, streaming and cancellation, errors and retries, SDK differences, local models, reasoning models, and logging and testing variable outputs. Later chapters depend on these features. S8 Evals Methodology uses traces for error analysis, S12 The Agent Loop and Harness needs reliable retries and cancellation, and S18 Deployment and Architecture uses per-call token counts to track costs.
 
 ## After this chapter you can
 
@@ -39,7 +39,9 @@ This chapter answers one question: how do you wire a model into your code reliab
 
 ## Lecture
 
-The whole chapter follows one example: the **notes assistant**. Its user, Sam (user ID `u_017`), has about 200 Markdown notes and asks, "What did I write about Project X last week?" The first version takes the simplest approach: put the full text of the 20 most recent notes into the system prompt, about 30,000 input tokens per request (S9 Retrieval and RAG brings that down). Your code has to turn the notes and the question into one API call, stream the answer to the screen as it's generated, retry correctly on errors, and record how many tokens, how much money and how much time the call took. The sections follow that path one step at a time: building the request and doing the math, streaming and stopping, retries, switching providers and local models, reasoning models, logging and testing.
+The running example is the **notes assistant**. Sam (user ID `u_017`) has about 200 Markdown notes and asks, "What did I write about Project X last week?" The first version puts the full text of the 20 most recent notes in the system prompt, about 30,000 input tokens per request. S9 Retrieval and RAG will reduce that.
+
+Your code must assemble the request, stream the answer, retry on errors, and record tokens, cost and elapsed time. The sections below cover those steps, along with switching providers, running local models and using reasoning models.
 
 ### ★ What does one API call look like?
 
@@ -133,7 +135,7 @@ Two common pitfalls:
 - **Errors mid-stream**: once the HTTP response has returned 200, an error can still arrive as an `error` event in the middle of the stream. Your code can't rely on the status code alone.
 - **Partial JSON**: tool call arguments (→ [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/)) are a piece of JSON that arrives in fragments while streaming, and the fragments in between aren't valid JSON. Either wait until the block ends before parsing, or use a parser that handles incomplete JSON for progressive display.
 
-**Common misconception: stopping the display is the same as canceling.** If you only stop updating the screen, the model keeps generating on the server and you keep paying. Actually close the connection: in JS use `AbortController`; in Python cancel the task or close the response. Tokens already generated are usually still billed, so the earlier you cancel, the more you save.
+Stopping screen updates leaves the model generating on the server, with billing continuing. Close the connection to cancel: use `AbortController` in JS, or cancel the task or close the response in Python. Generated tokens are usually still billed, so cancel as early as possible.
 
 <details class="deep">
 <summary>Before you build: event order and browser limits</summary>
@@ -160,11 +162,13 @@ The notes assistant's call layer allows at most 3 retries with a base wait of 1 
 | Repeated 500s | Attempt 1 → wait (cap about 1 second) → attempt 2 → wait (cap about 2 seconds) → attempt 3 → wait (cap about 4 seconds) → attempt 4 | Reports an error only after all 4 fail |
 | 400 | Attempt 1 | No retry; reports the error right away |
 
-(The actual wait is a random value between 0 and the cap. That's the jitter; the formula is in the collapsible section below.) Official SDKs usually retry already; if you implement retries yourself, turn off the SDK's built-in retries first so you don't stack retries on retries.
+The actual wait is random, between 0 and the cap. This is jitter; the expandable section below gives the formula. Official SDKs usually retry automatically. Disable their retries before adding your own so the two layers do not multiply attempts.
 
 There are at least two kinds of **timeout**: the connection timeout, and the idle timeout "between two chunks" while streaming. A short total timeout on a streaming request (say 30 seconds) also kills answers that are healthy but long; an idle timeout (say 10 seconds without a new chunk) is what catches a connection that's really stuck.
 
-**Common misconception: at worst, a retry costs you one more call.** That's true for a plain LLM call, but not when the call is followed by an action with side effects. The notes assistant will later get a "create note" tool (→ S10 Tools and MCP). If the server has already created the note but the response is lost on the network, a retry creates a duplicate note. The fix is to generate an **idempotency key** for each action (for example, the conversation ID plus the tool call ID), check before executing whether that key has already run, and if it has, return the previous result. This becomes very important when you build agents in S12 The Agent Loop and Harness.
+Retrying an LLM call may just cost another call. Retrying an action can repeat a side effect. For example, the create-note tool introduced in S10 Tools and MCP may save a note before its response is lost on the network. A retry would create a duplicate.
+
+Give each action an **idempotency key**, such as the conversation ID plus tool call ID. Check whether it has already run before executing, and return the previous result if it has. Agents in S12 The Agent Loop and Harness also need this protection.
 
 <details class="deep">
 <summary>Before you build: the backoff formula, SDK defaults, and 429s that won't recover</summary>
@@ -222,7 +226,7 @@ When a prompt exceeds Ollama's default context, it may silently drop the earlier
 
 Ollama's default context depends on VRAM (GPU memory): 4K at 24 GiB or less. When a prompt exceeds it, by default the earlier content is dropped (with only a warning in the server log), and the API doesn't necessarily return an error. Set `num_ctx` or `OLLAMA_CONTEXT_LENGTH`, and check with `ollama ps`. Every later exercise that runs long prompts on Ollama needs this step first.
 
-**Common misconception: no error means the whole prompt got in.** This chapter's notes assistant puts the 20 most recent notes into the system prompt, about 30,000 tokens, far beyond 4K. Without adjusting, the beginning (often the system prompt and most of the notes) is silently dropped, the model only sees the last small piece, and the answers just look like "poor quality".
+A request can silently lose part of its prompt without raising an error. The 20 recent notes in this example total about 30,000 tokens, well beyond 4K. Without adjusting the limit, the beginning, often the system prompt and most notes, is silently dropped. The model sees only the final portion, which can look like poor answer quality.
 
 </details>
 
@@ -238,7 +242,7 @@ For what a reasoning model is, see [Model Crash Course, "Training stages"](/en/g
 - **Interleaved thinking**: the model also thinks between two tool calls, which matters a lot for agents (→ [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 - **UX**: the interface should let the user know "thinking…" is happening, and allow canceling.
 
-**Common misconception: thinking doesn't take space from the answer.** The notes assistant sets the output limit to 1,000 tokens; the model spends 900 thinking, leaving 100 tokens for the answer, which gets cut off mid-sentence with a stop reason of "hit the limit". With reasoning models, size the limit to include the thinking, and log the stop reason.
+With an output limit of 1,000 tokens, spending 900 on thinking leaves only 100 for the answer. It may stop mid-sentence with a limit stop reason. Include thinking tokens when choosing the output limit for a reasoning model, and log the stop reason.
 
 ### ★ What should you log for every call?
 
@@ -256,7 +260,7 @@ Once the system gets more complex (retrieval, several LLM calls and tool executi
 
 The smallest version of **feedback collection** starts here too: put thumbs up / thumbs down next to each answer, and when you store a vote, link it to that answer's trace ID. Later, when you see a thumbs down, you can open the full prompt and response from that moment directly.
 
-**Common misconception: add logging once the system is stable.** The error analysis in S8 Evals Methodology reads exactly these records; if you add them later, you lose the earliest and most realistic batch of data. Also, full prompts and responses may contain personal data, so decide now whether to log them and how long to keep them (→ [S16 Security and Governance](/en/stages/s16-security/)).
+Start logging now so S8 Evals Methodology can use the earliest real traces for error analysis. Full prompts and responses may contain personal data; decide whether to store them and how long to retain them (→ [S16 Security and Governance](/en/stages/s16-security/)).
 
 <details class="deep">
 <summary>Before you build: common GenAI convention fields and backends</summary>
@@ -279,7 +283,7 @@ Even with temperature set to 0, output isn't guaranteed to be identical, and som
 3. **Snapshot**: snapshot *what you send*, such as the assembled system prompt and tool definitions. That's far more stable than snapshotting model output, and it's the best way to catch an accidentally broken prompt.
 4. **Assert properties, don't compare full text**: for real output, check only properties, such as valid JSON, cited note titles that actually exist, length within range. Full quality evaluation is the job of [S8 Evals Methodology](/en/stages/s08-evals/).
 
-**Common misconception: if it fails, rerun until it's green.** That lets flaky tests quietly hide real problems. **Flaky policy**: deterministic tests (mock, replay) must pass in CI (continuous integration); tests that hit a real model run separately N times and are judged by a pass-rate threshold (for example, at least 9 out of 10), with every run's result recorded.
+Rerunning a failing test until it passes can hide a real problem. Require deterministic mock and replay tests to pass in CI (continuous integration). Run real-model tests separately N times, record every result, and apply a pass-rate threshold, such as at least 9 out of 10.
 
 #### Limits on sampling parameters
 

@@ -28,7 +28,7 @@ This chapter has no advanced exercises. The optional advanced exercises start in
 
 ## What this chapter covers
 
-There's more behind an AI product than a model. This chapter draws the whole map: what an AI system is made of, how a user's message turns into an answer step by step, how workflows differ from agents, when you shouldn't build an agent at all, and finally how a complete agent in under 200 lines (mini-SWE-agent) works. The other nineteen chapters each open up one part of this map, which is why it comes first. By the end you'll also know which route to take.
+An AI product combines a model with other components. This chapter explains what those components do, how a user's message becomes an answer, and when to use a workflow or an agent. You'll also read a complete agent in under 200 lines, mini-SWE-agent. The next nineteen chapters each cover part of this system, so start here to choose your route.
 
 ## After this chapter you can
 
@@ -46,15 +46,15 @@ Three terms first. You'll see them throughout the course:
 - **Token**: the unit a model reads and writes text in. In English a token is often a short word or part of a longer one; in Chinese it's roughly one or two characters. Pricing, speed and length limits are all counted in tokens (→ [Model Crash Course](/en/guide/app-first/#tokens-and-tokenization); deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/)).
 - **Context**: the full input sent to the model on each call. The model doesn't remember previous calls; it only sees what's in this call's context. There's a limit on how many tokens the context can hold, called the context window.
 
-The whole chapter uses one example: a **notes assistant**. It stores the user's Markdown notes and can answer questions about them, search them and create new ones. The lectures in Part II through Part VI (S6–S19) use it too, growing it from the prototype here into a complete system.
+The running example is a **notes assistant** that stores Markdown notes, answers questions about them, searches them and creates new ones. Part II through Part VI (S6–S19) develop this prototype into a complete system.
 
 ### ★ Why not just use a model?
 
 Useful AI products are rarely "one model answering directly." They're systems made of a model plus other components.
 
-**Why a model alone isn't enough.** An LLM on its own has three built-in limits. It only knows what it saw in training, so it can't see the user's notes. It can only output text, so it can't search or save anything by itself. And every call starts from zero, so it doesn't remember what the user said last week. Ask it "What did we decide in last week's meeting?" and it can only say it doesn't know, or make up a plausible answer (this is called hallucination).
+An LLM on its own knows only what it saw during training, so it can't read your notes. It can output text but can't search or save files. Each call also starts from zero, with no memory of what you said last week. Ask it what you decided in last week's meeting, and it can say it doesn't know or invent a plausible answer. The latter is called hallucination.
 
-**How to fill the gaps.** Wrap the model in code and components, each filling one gap. A post from Berkeley's BAIR calls this a **compound AI system** and points out that quality gains increasingly come from system design, not just from switching to a bigger model. Anthropic calls the most basic building block the **augmented LLM**: a model that can retrieve information, call tools and access memory.
+Code and other components can fill these gaps. Berkeley's BAIR calls this a **compound AI system** and argues that system design increasingly drives quality gains alongside larger models. Anthropic calls a model with retrieval, tools and memory an **augmented LLM**, a basic building block for these systems.
 
 Here are the notes assistant's main components (in the "Covered in" column, S plus a number is a chapter code; see [How to Use This Roadmap](/en/guide/how-to-use/#how-to-read-the-codes) for how to read the codes):
 
@@ -69,7 +69,7 @@ Here are the notes assistant's main components (in the "Covered in" column, S pl
 | Interface | Streams the answer, lets the user confirm a draft before an email goes out | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) |
 | Evals, security and shipping | Checks that answers are correct, defends against attacks, records cost and latency | [S8 Evals Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 
-**Common misconception: more components are better.** Every component you add is one more thing that can break, and one more source of latency and cost. Components exist to fill specific gaps. If the notes assistant only needs to rewrite a pasted paragraph as bullet points, one model call is enough. No retrieval, no tools.
+Each component adds a possible failure, latency and cost. Add one to address a specific need. If the notes assistant only rewrites a pasted paragraph as bullet points, one model call is enough; retrieval and tools add nothing to that task.
 
 ### ★ How does one message become an answer?
 
@@ -122,7 +122,7 @@ Why the model itself can do steps 3–4 is the subject of S1 Neural Network Basi
 - **S15 Multi-agent Systems**: the "tool" called in step 5 can be another agent, which runs its own full path and reports back.
 - **S19 Real Agent Systems and the Capstone**: assembles the whole path into a real, long-running system; it doesn't map to a single step.
 
-**Common misconception: the model searched by itself.** The model only outputs text. Searching, saving and sending email are all done by your code. So what the model can do depends on which tools the developer gives it, and the security checks live on the code side (→ [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S16 Security and Governance](/en/stages/s16-security/)).
+Your code searches, saves files and sends email; the model outputs text. The tools you provide determine what it can do, and your code must enforce the security checks (→ [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S16 Security and Governance](/en/stages/s16-security/)).
 
 ### ★ Who decides the next step?
 
@@ -140,7 +140,7 @@ Three requests to the notes assistant as examples:
 
 Both have costs. A workflow is predictable, easy to test and has a fixed cost, but it can't handle anything the flow didn't anticipate. An agent can take paths nobody planned for, at the price of higher latency and cost, less predictability, and compounding errors: if the first search uses the wrong keyword, the conclusion is wrong no matter how well the rest is summarized.
 
-**Common misconception: agents are more advanced than workflows.** It's not better versus worse; it's a tradeoff in how much control you hand to the model. Turning something a workflow does reliably into an agent usually just makes it slower, more expensive and harder to debug. Real systems often mix the two, for example a workflow where one step is handed to a small agent.
+Choose between a workflow and an agent based on how much control the model needs. If a workflow already completes a task reliably, an agent usually adds latency, cost and debugging work. You can also combine them, assigning one step of a workflow to a small agent.
 
 <details class="deep">
 <summary>Going deeper: Anthropic's five workflow patterns</summary>
@@ -185,7 +185,7 @@ Put the two together and you get this order of questions:
 
 Applied to the notes assistant: "summarize yesterday's notes every day" has fixed steps and matches none of the three situations, so it's a workflow. "Prepare for tomorrow's meeting" requires judging what's relevant across a pile of unstructured notes and deciding what to search next. It matches situations 1 and 3, so it's a good fit for an agent.
 
-**Common misconception: long flows or many rules call for an agent.** A flow with 10 steps, each clearly specified, is still a workflow. When rules are few and clear, plain code is the most reliable. What matters is whether the next step can be decided in advance, not how many steps there are.
+Ask whether you can decide the next step in advance. A flow with 10 clearly specified steps is still a workflow. When the rules are few and clear, plain code is the most reliable choice.
 
 ### ★ How small can an agent be?
 
@@ -213,7 +213,7 @@ Each round maps to steps 1–6 in the path table: the history is the context, th
 
 **Why bash alone is enough.** Bash can read files, search, edit and run tests on its own, so it works as a general-purpose tool. It costs two things: there's no persistent shell state (`cd` and environment variables don't carry over to the next step), and there are none of the view and edit commands SWE-agent designed specifically for models (→ ACI in [S10 Tools and MCP](/en/stages/s10-tools-mcp/)).
 
-**Common misconception: building an agent takes a huge framework.** The loop itself is small. The complexity of a real product comes from what sits around the loop: which commands need the user's approval first, how to resume after a crash midway, how to compress a history that's grown too long. That's what S12 The Agent Loop and Harness covers.
+The loop is small. Product complexity comes from deciding which commands need approval, how to resume after a crash, and how to compress a long history. S12 The Agent Loop and Harness covers these requirements.
 
 <details class="deep">
 <summary>Before you build: what to know before reading default.py for the optional exercise</summary>
@@ -264,7 +264,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
 
 ### Core: Map a request's path and decide whether it needs an agent
 
-**Goal**: show, with one diagram and three decisions, that you understand the big picture of an AI system and know when an agent is warranted. No reading or writing code required.
+**Goal**: draw the request path through an AI system and decide whether an agent is appropriate in three scenarios. You do not need to read or write code.
 
 **Steps**
 1. Pick a notes-assistant request (for example, "Turn this week's reading notes into a to-do list and save it as a new note") and draw its full path. Include at least the 7 steps from the table above, and label each box with its chapter code.

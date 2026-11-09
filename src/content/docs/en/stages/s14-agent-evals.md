@@ -23,7 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-S8 Evals Methodology taught evaluation of single answers, and S12 The Agent Loop and Harness used a minimal agent eval. This chapter deals with what's actually hard about evaluating agents: you have to look at the whole trajectory, not just the final answer; the same task gives different results each time; conversational agents need someone to play the user; and even environment settings like machine resources can move the score by several percentage points. Once you can build a trustworthy evaluation, the second half of the chapter covers ways to make the agent better: finding failures in traces, connecting them into a data flywheel, optimizing prompts automatically, distilling a small router, and testing harness components with ablations. In S15 Multi-agent Systems, whether to go multi-agent is decided with this chapter's evals.
+S8 Evals Methodology covers single answers, and S12 The Agent Loop and Harness introduced a minimal agent eval. Here you will evaluate whole trajectories, repeated trials, simulated users and environment settings. Even machine resources can shift scores by several percentage points.
+
+Once the eval is trustworthy, use traces to find failures, build a data flywheel, optimize prompts, distill a small router and test harness components through ablation. S15 Multi-agent Systems will use these evals to decide whether multiple agents help.
 
 ## After this chapter you can
 
@@ -43,7 +45,9 @@ First, the terms. When you evaluate an agent:
 - **Trace / transcript**: the complete record of one trial, including every tool call, its arguments and result, and the final reply (← tracing in S6 LLM APIs and Application Basics).
 - **Grader**: the code, judge or person that decides whether a trial succeeded.
 
-The whole chapter reuses the notes-folder environment from the S12 The Agent Loop and Harness core exercise: a folder of 20 Markdown notes, exactly 6 of which contain `TODO`, and an agent with five tools: `list_files`, `read_file`, `grep`, `write_file`, `delete_file`. Think of it as a simplified version of the **notes assistant** that runs through the course: only file tools, and every task's result can be checked with code, which makes it good for practicing evaluation. The TODO task above runs through the sections: first how to grade one trial, then how to grade many trials and how to keep the environment fair. In the second half, on improvements after launch (trace clustering, prompt optimization, routers), the examples return to the full notes assistant (user: Sam).
+The running environment comes from the S12 The Agent Loop and Harness core exercise: 20 Markdown notes, exactly 6 containing `TODO`, and five tools: `list_files`, `read_file`, `grep`, `write_file`, `delete_file`. This simplified **notes assistant** uses only file tools, so code can check each task's result.
+
+The TODO task illustrates grading one trial, combining repeated trials and controlling the environment. Later sections on trace clustering, prompt optimization and routers return to Sam's full notes assistant.
 
 ### ★ What does agent quality cover?
 
@@ -56,7 +60,7 @@ Looking only at success rate misses a lot. Kaggle's "Agent Quality" whitepaper d
 | **robustness** | Does it hold up when tools fail, inputs are vague or the environment changes? | Does it retry after `grep` times out once? |
 | **safety** | Did it do anything it shouldn't? | Did it also delete files that "look like duplicates" while it was at it? |
 
-An agent with a 90% success rate that costs $10 per task, or occasionally deletes the wrong file, can't ship. [Kapoor et al. 2024](https://arxiv.org/abs/2407.01502) also criticized agent research for reporting only accuracy and not cost. **Common misconception: the four dimensions should be combined into one total score.** A total makes "very cheap but occasionally deletes files" look the same as "very expensive but safe." Report them separately, then decide per product which are hard thresholds (safety usually is).
+An agent with a 90% success rate can still be unsuitable for release if each task costs $10 or it sometimes deletes the wrong file. [Kapoor et al. 2024](https://arxiv.org/abs/2407.01502) criticized agent research that reports accuracy without cost. Report the four dimensions separately, then choose hard thresholds for your product, usually including safety. A total score can make a cheap but unsafe system look equivalent to an expensive safe one.
 
 ### ★ Grade the outcome or the steps?
 
@@ -93,7 +97,7 @@ The cells sum to 4 + 1 + 10 + 1 + 4 = 20, equal to the number of failures. The b
 
 **There are three kinds of grader**: code checks (comparing file contents, querying a database), LLM judges (← judge calibration in S8 Evals Methodology) and **agent-as-a-judge** ([Zhuge et al. 2024](https://arxiv.org/abs/2410.10934)). In the last one, the evaluator is itself an agent: it can read files, run code and operate the product, then score based on evidence. It suits checking "the thing that was built," for example whether a weekly-report note written by the agent has the right format and whether its links open. Use code wherever code can check it; align judges and agent judges with human labels first.
 
-**Common misconception: the agent's reply is evidence.** Trial 1 says it wrote 6, but there are only 5. A grader that reads the reply instead of checking the environment would have marked this trial a success.
+Trial 1 claims to have written 6 entries, but only 5 exist. A grader reading only the reply would incorrectly mark it successful. Check the environment.
 
 <details class="deep">
 <summary>Before you build: determining states from a trace</summary>
@@ -151,7 +155,7 @@ Agents change their environment, so evaluation has to provide an environment you
 
 **Simulated users.** Conversational agents need user replies to move forward. In the negative case above, when the notes assistant asks "Which file should I delete?", someone has to answer "`draft-plan.md`." The approach is to have an LLM play the user according to a persona (a simulated user), e.g. "busy, speaks in half-sentences" or "gives the wrong date." [τ-bench](https://arxiv.org/abs/2406.12045) (Yao et al. 2024) uses this to evaluate retail and airline customer service; [τ²-bench](https://arxiv.org/abs/2506.07982) (Barres et al. 2025) goes further and lets the user act on the environment too (dual-control), for example the user has to change a setting on their own phone.
 
-**Common misconception: a simulated user is a neutral test tool.** It makes mistakes of its own: too cooperative, forgetting its goal, inventing information its persona doesn't have. These errors go straight into the agent's score, so read samples of the conversations to confirm it behaves like a real person.
+A simulated user can be too cooperative, forget its goal or invent facts outside its persona. Those mistakes affect the agent's score. Read sample conversations to check that the simulation behaves plausibly.
 
 ### ★ Can machine settings change the score?
 
@@ -169,7 +173,7 @@ Reward hacking is a phenomenon introduced in [S4 Post-training and Reasoning](/e
 
 **Optimization exploits holes in the grader.** The prompt optimization later in this chapter repeatedly adjusts the prompt to push up some metric. If the summary judge prefers answers with many bullet points, the optimizer quickly learns to "always list 10 points": the judge score goes up while users find it wordier.
 
-The defenses are the same: have graders check environment state rather than surface features, hold out test data that takes no part in optimization, and read outputs regularly. **Common misconception: a higher score means it got better.** You can only say that on data that took no part in optimization, and after reading the outputs.
+Have graders inspect environment state, hold out test data from optimization, and read outputs regularly. A higher score supports an improvement only when it holds on that test data and the outputs pass inspection.
 
 ### ★ What extra pitfalls do agent benchmarks have?
 
@@ -192,7 +196,7 @@ A **data flywheel** turns use of the system into fuel for improving it automatic
 
 User feedback and the traces collected since S6 LLM APIs and Application Basics → error analysis and clustering → new eval tasks and failure categories → changes to prompts, tools or harness → confirmation with evals → new traces after launch.
 
-The key is that every link has to connect: feedback must map back to traces, traces must be able to become eval tasks, and once a capability eval is stable it graduates to a regression eval (← S8 Evals Methodology). How to design the feedback interface is covered in S17 Product and AI UX. **Common misconception: the clusters are the conclusion.** Clustering only decides what to read first; the "relative dates" failure category only exists because a person read the traces (← error analysis in S8 Evals Methodology).
+Connect feedback to traces and turn trace failures into eval tasks. Once a capability eval is stable, retain it as a regression eval (← S8 Evals Methodology). S17 Product and AI UX covers the feedback interface. Clustering helps prioritize what to read; a person must still inspect traces to establish a failure category, such as "relative dates" in S8 Evals Methodology.
 
 ### ★ Can a better prompt be found automatically?
 
@@ -205,7 +209,7 @@ Prompt optimization lets a program search for better prompts automatically: you 
 
 There are two prerequisites: a reliable metric (a judge calibrated per S8 Evals Methodology, or a code check), and **separate training and test data**. An illustrative example: intent classification for the notes assistant ("search notes," "create note," "send email"), 300 labeled requests split into 200 for training and 100 for testing. Before optimization: 81% on training, 80% on test; after: 93% on training, 86% on test. The real improvement is the 6 points on test, not the 12 on training; the gap between them is the part where the optimizer fit the training data.
 
-**Common misconception: reporting scores on the data used for optimization.** That number always looks good, because the optimizer's job is to push it up (the reward hacking from the previous section). Report results only on test data, along with example outputs from before and after optimization.
+The optimizer is designed to raise scores on its optimization data, so use held-out test data to report results. Include before-and-after outputs to check for the reward hacking described above.
 
 <details class="deep">
 <summary>Before you build: preparing for a round of prompt optimization</summary>
@@ -219,13 +223,13 @@ There are two prerequisites: a reliable metric (a judge calibrated per S8 Evals 
 
 ### ★ Can routing go to a cheap small model?
 
-The first step of many agents is classification: which flow should this request take, does it need the strong model, does it need tools? Using the strong model for this at first makes sense; once you've accumulated enough traces, you can replace it with a cheap small classifier. That's router distillation.
+Agents often first classify a request to choose a flow, model or tool. You can initially use a strong model for this, then replace it with a cheaper small classifier once you have enough traces. This is router distillation.
 
 **How it works.** For every routing decision, record the request, the strong model's decision, and whether it turned out to be correct (did the user rephrase, did the task get done, or a spot check). Use these "strong model's judgment + after-the-fact confirmation" labels to train a small classifier (e.g. embeddings plus logistic regression, a simple classification method), or fine-tune a small model. This is distillation: having a small model learn a large model's outputs (← S4 Post-training and Reasoning; application-route readers see the "Training stages" and "What fine-tuning can and can't do" sections of the [Model Crash Course](/en/guide/app-first/#model-crash-course)).
 
 An illustrative example: the notes assistant records 600 routing decisions, which after spot-checking and correction are split into 480 for training and 120 for testing. On the test data, the strong model routes with 97% accuracy and the small classifier with 94%; but the small classifier takes only tens of milliseconds and costs almost nothing, while the strong model waits on an API call every time. The errors are concentrated between "send email" (`email_send`) and "create an email draft" (`email_draft`). These two have different consequences (sending is high risk, ← [S10 Tools and MCP](/en/stages/s10-tools-mcp/)), so you can hand back to the strong model only when the classifier is unsure between these two.
 
-**Common misconception: only overall accuracy matters.** Where the 3 lost points fall matters much more than the average: a mix-up between "search notes" and "create note" just means the user asks again; a mistake that becomes "send email" is not OK. The full design of model routing and cascades for deployment is in S18 Deployment and Architecture.
+Inspect which classes account for the 3-point loss in accuracy. Confusing search with note creation may lead the user to ask again; routing a request to send email has different consequences. S18 Deployment and Architecture covers model routing and cascades in deployment.
 
 ### ★ Is this harness component worth keeping?
 
@@ -242,7 +246,7 @@ Treat each version's 100 trials as two independent samples: the standard error i
 
 </details>
 
-**Model–harness fit**: the same component can be worth different amounts on different models. Anthropic's example: context resets were necessary for one model generation and dead weight for the next. **Common misconception: an ablation's conclusion holds forever.** Redo it when you switch models, especially for components originally added to cover a model weakness.
+**Model–harness fit**: a component's value depends on the model. Anthropic found context resets necessary for one generation and unnecessary overhead for the next. Repeat ablations after changing models, especially for components added to compensate for an older model's weaknesses.
 
 <section class="deep-section">
 

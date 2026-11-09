@@ -12,6 +12,10 @@ Write for an English-speaking engineer who never saw the Chinese edition.
 - **Locale-specific details.** Taiwan-specific services, currency (NT$) and places become neutral or US equivalents (USD). Prices stated in USD stay as they are.
 - **Chinese-only resources.** Drop "中文資源" subsections from Further reading and drop advice that only applies to Chinese readers (OpenCC, Simplified-Chinese reading tips). In `reference/sources.md`, keep Chinese-language entries but mark them *(in Chinese)*.
 - **Voice.** Second person, plain and direct, short sentences. American spelling. No hype words.
+- **Editing.** State the point directly instead of repeating staged openers or stock misconception
+  labels. Split overloaded sentences, vary sentence length naturally, and keep explanations a first-time
+  reader needs. Preserve facts, uncertainty, examples, prerequisites, safety limits and exercise requirements.
+  Do not add anecdotes or claims, force a shorter word count, or change code, links or heading anchors.
 - **Evaluation terminology.** Use `evals` for the topic or evaluations collectively, `eval` for one evaluation (which may contain many test cases), and singular modifiers such as `eval runner`, `eval score` and `eval harness`. Follow the fixed chapter and project names below; preserve code identifiers and external source titles.
 - **Table labels.** Keep short labels such as `Level&nbsp;0` together with a non-breaking space (`&nbsp;`) in both editions. Descriptive cells should wrap normally; do not disable wrapping for an entire table or column.
 
@@ -115,7 +119,7 @@ Fixed headings and labels:
 | :::tip[走應用路線的讀者] | :::tip[On the application route] |
 | 下一步去哪裡 | Where to go next |
 
-`Common misconception:` must be followed by the **wrong belief**, which the next sentences correct. zh often writes the correction after 容易誤會 (「token 不等於字」); turn it around in English (`Common misconception: a token is a character, or a word.`).
+You can explain a misconception directly without a stock label. If you use `Common misconception:`, follow it with the **wrong belief**, which the next sentences correct. zh sometimes writes the correction after 容易誤會 (「token 不等於字」); turn it around in English (`Common misconception: a token is a character, or a word.`).
 
 Fixed collocations: worked example (not "worked numbers"), meet the acceptance criteria (not "pass the numbers"), raw similarity score (not "absolute value" unless |x| is meant).
 

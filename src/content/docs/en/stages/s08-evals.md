@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-You changed the prompt, switched models, added retrieval. How do you know the system really got better? Going by the feel of a few examples, it's easy to be misled by a handful of memorable cases. This chapter teaches a method you can rerun: read real traces first and sort out the kinds of failure, design a grading method for each kind, check that a model grader agrees with human judgment, and finally use error margins to decide whether a difference is real.
+How do you check whether a prompt change, a new model or retrieval improves the system? A few memorable examples can distort your judgment. This chapter builds a repeatable eval process: read real traces, group failures, design graders, check that model graders agree with people, and use error margins to assess the difference.
 
 Evals come before RAG and tools because every change in the later chapters needs them to tell whether it was worth it.
 
@@ -46,13 +46,13 @@ The big picture first. An eval is a loop:
 4. **Compute scores with error margins**: a score is estimated from a limited number of cases, so you need to know how much it wobbles.
 5. **Change the system and rerun on the same cases**, using a paired comparison to decide whether it really got better.
 
-The whole chapter keeps the same example: the **notes assistant**. Sam asks "What did we decide at the last design team meeting?", and the assistant reads the notes and answers. The previous chapter made its output stable and parseable (← [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/)); this chapter answers whether its answers are actually good, and whether they get better after a change.
+Sam asks the **notes assistant**, "What did we decide at the last design team meeting?" It reads the notes and answers. After making its output stable and parseable in [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), you now need to measure answer quality and the effect of changes.
 
 ### ★ How does the system actually fail?
 
 Before designing any metric, read real traces one by one and sort the failures into categories with counts. Error analysis is where evals start, not something you add afterward.
 
-**Why not just score things.** The most intuitive approach is to have a person or a model rate each answer "helpfulness 1–5". The trouble is that an average of 3.6 doesn't tell you what's broken or what to fix. Error analysis tells you "40% of failures are miscalculated dates", a concrete problem you can check in code and fix.
+An average helpfulness rating of 3.6 on a 1–5 scale tells you little about what to fix. Error analysis might instead show that 40% of failures involve miscalculated dates, a specific problem you can check in code and correct.
 
 **How to do it.** The method is borrowed from qualitative research and has two steps:
 
@@ -73,7 +73,7 @@ Keep reading new traces until no new categories appear; this state is called **t
 
 This table directly decides what comes next: "made up" is the biggest, so build a grader for it first.
 
-**Common misconception: error analysis is a one-time job.** When the system changes or the users change, new kinds of failure appear. After every major change, read a new batch of traces and update the table.
+After a major system change, read another batch of traces and update the failure categories. New users and system behavior can introduce new failure types.
 
 <details class="deep">
 <summary>Before you build: record format and rhythm</summary>
@@ -100,7 +100,7 @@ A golden set is a fixed set of cases, each with its expected behavior, that you 
 
 **Collect successes as well as failures.** If you only collect failures, you'll only know whether you fixed them, not whether you broke something that used to work.
 
-**Common misconception: a bigger golden set is always better.** 50 cases with carefully written expected behavior are more useful than 500 with vague reference answers. The number of cases affects the error margin (see the statistics section below); the quality of the cases affects whether you're measuring the right thing.
+A golden set with 50 clear expected behaviors is more useful than 500 vague reference answers. Case count determines the error margin, as the statistics section explains. Case quality determines whether you measure the intended behavior.
 
 ### ★ Who decides pass or fail, and how?
 
@@ -123,7 +123,7 @@ A grader decides whether each case passes or fails. Use code wherever code can d
 | Got a date wrong | Code + judge | Every date in the answer appears in the cited notes |
 | Made up | Judge | Every fact in the answer can be found in the cited notes |
 
-**Common misconception: pass / fail means you can only look at one number.** Each category has its own pass rate, reported side by side; adding them into a "total score" puts you right back where you can't see what's broken.
+Report each failure category's pass rate separately. A single total can hide which behaviors need fixing.
 
 <details class="deep">
 <summary>Before you build: writing a binary judge prompt</summary>
@@ -159,7 +159,7 @@ TPR = 18 ÷ 20 = 0.9, TNR = 7 ÷ 10 = 0.7. Overall accuracy is 25 ÷ 30 ≈ 83%,
 
 **Keep dev and test separate.** Tune the judge prompt while looking at only one set of data (dev); when you're done, compute TPR and TNR on a different set it has never seen (test) and report those. If you tune until you're happy on the same data and then report on it, the numbers will be inflated, because the prompt has "memorized" that batch's quirks.
 
-**Common misconception: grading criteria can be fixed up front.** Shankar et al. 2024 describe **criteria drift**: while grading, people's definition of "good" changes. After looking at 30 answers, you might realize that "cited the right note but missed the key conclusion" should also be a fail. So write the criteria down, revise them as you see more data, and relabel the affected cases after each revision.
+Shankar et al. 2024 describe **criteria drift**: your definition of a good answer can change as you grade. After 30 answers, for example, you may decide that citing the right note but missing its main conclusion should count as a failure. Write down the criteria, revise them as needed, and relabel affected cases.
 
 <details class="deep">
 <summary>Before you build: too few fails, and the error in TPR / TNR</summary>
@@ -195,7 +195,7 @@ The 43 cases that both versions got right or both got wrong contribute nothing t
 
 **Decision rule.** A difference is significant only if the 95% confidence interval of the paired difference excludes 0: an interval entirely above 0 means better, entirely below 0 means worse, and one containing 0 means indistinguishable. When using the bootstrap for the interval of the paired difference, resample **case IDs**: each case's results from both versions are drawn together, and then you compute the difference (steps in the collapsible section below).
 
-**Common misconception: "indistinguishable" means "equally good".** It only means the current number of cases can't show a difference. In the example above, the new version actually fixed 5 cases and broke only 2; it's worth adding cases and testing again, not declaring the change useless.
+An inconclusive comparison means the current case count cannot resolve the difference. The new version fixed 5 cases and broke 2 in this example, so add cases and test again before dismissing the change.
 
 <details class="deep">
 <summary>Before you build: formulas, bootstrap steps, and cases that aren't independent</summary>
@@ -234,7 +234,7 @@ Split cases into two groups: capability evals, which measure "what it can't do y
 
 **Example.** The notes assistant's routing is 90% accurate per run, with runs independent. pass@3 = 1 − 0.1³ = 99.9%, which sounds great; but if a user uses it 8 times a day, the probability of all 8 being right is pass^8 = 0.9⁸ ≈ 43%, meaning that on more than half of days they'll hit at least one routing error.
 
-**Common misconception: a high pass@k means a good user experience.** Users see only one answer; nobody picks the right one out of k for them. Unless the system really does verify and pick automatically, look at pass^k or the single-run success rate.
+Users normally see one answer, with nobody choosing the right one from k attempts. Unless your system can verify and select an answer automatically, use pass^k or single-run success rate to assess the experience.
 
 How to evaluate an agent's multi-step tasks (trajectory evals, simulated users) is left for [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/).
 
@@ -262,7 +262,7 @@ Public benchmarks are good for narrowing down candidate models, but they don't m
 
 **Example.** A model scores 3 points higher than your current model on a general question-answering benchmark. For the notes assistant, those 3 points may come from encyclopedia-style questions in the benchmark, while the notes assistant's job is to answer from the user's notes without adding its own knowledge. Only a paired comparison of the two models on your own golden set tells you whether switching really is better.
 
-**Common misconception: a model with a high benchmark score is better at your task.** Even if the benchmark itself is well designed, its question distribution isn't your users'.
+Even a well-designed benchmark has a different question distribution from your users. Retest a high-scoring model on your own tasks.
 
 ### ★ Does the model know when it's unsure?
 
@@ -276,7 +276,7 @@ If you could tell how confident the model is in an answer, you could have it say
 
 **When you can't get logprobs.** Not every API or model provides logprobs (reasoning models usually don't). An alternative is to sample the same question several times and see whether the answers agree (self-consistency): 5 identical answers out of 5 is more trustworthy than 5 different ones. Or have the model state its own confidence, though that's usually less reliable. Whichever you use, check it with a reliability diagram.
 
-**Common misconception: when the model says "I'm certain", it's probably right.** Confidence expressed in words often doesn't match actual accuracy; always measure it on data with known answers. [S17 Product and AI UX](/en/stages/s17-ai-ux/) comes back to how to present uncertainty to users.
+A model's stated confidence often differs from its actual accuracy. Measure confidence against data with known answers. [S17 Product and AI UX](/en/stages/s17-ai-ux/) covers how to present uncertainty to users.
 
 ### ★ What does one task cost?
 
@@ -288,7 +288,7 @@ Compute cost per *completed task*, and report it together with quality; otherwis
 
 **Budgets and alerts.** Set a budget for each whole eval run and one for daily use, and raise an alert when either is exceeded. Judge calls cost money too, and count toward an eval run. The per-call cost you've been logging since [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) is the raw data for this.
 
-**Common misconception: a cheaper model always lowers cost per task.** If it fails more often and needs more retries or human handling, it can end up more expensive at the task level.
+A cheaper model can increase cost per task if failures require more retries or human handling.
 
 <section class="deep-section">
 

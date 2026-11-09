@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-This chapter opens up the inside of an LLM. The model in S1 Neural Network Basics only sees a fixed-length window of preceding text. This chapter answers: how do you let a model draw on the entire preceding text while still training in parallel on a GPU? The answer is the Transformer. The lecture follows the data as it flows: text is split into tokens by the tokenizer, passes through layer after layer of attention and MLP, becomes probabilities for the next token, and a decoding rule picks one. Finally you'll learn to estimate any model's parameter count, compute and memory.
+The model in S1 Neural Network Basics sees a fixed-length window of text. A Transformer can use the entire preceding text while training in parallel on a GPU. This chapter follows text through tokenization, attention and MLP layers to the probabilities for the next token, then shows how decoding selects one. You'll also estimate a model's parameter count, compute and memory needs.
 
 ## After this chapter you can
 
@@ -36,7 +36,7 @@ This chapter opens up the inside of an LLM. The model in S1 Neural Network Basic
 
 ## Lecture
 
-The big picture first. Here's how a GPT-style model (a decoder-only Transformer) processes text:
+A GPT-style model, or decoder-only Transformer, processes text as follows:
 
 <figure>
 <svg viewBox="0 0 360 550" width="360" style="max-width:100%;height:auto;display:block;margin:0 auto" role="img" aria-label="GPT data flow: token IDs pass through the embedding, N blocks (each with attention and an MLP, plus residual connections), a final norm, the output layer and softmax, giving the probabilities of the next token" font-size="13" fill="currentColor">
@@ -113,7 +113,7 @@ Real training keeps merging until it hits a set number of merges (i.e. the targe
 
 **Start from bytes.** Unicode has well over a hundred thousand characters, and many barely appear in training data. So most modern LLMs start merging from UTF-8 bytes: there are only 256 base units, and any text (Chinese, emoji, code) can be represented. An English letter is 1 byte, but a Chinese character usually takes 3 (你, "you," is `E4 BD A0`). This is where language starts to affect cost. If the data the tokenizer learned its merges from had plenty of Chinese, 你 is likely merged into a single token; if not, one character can take 2–3 tokens. A common English word, by contrast, is usually a single token. So on some tokenizers the same sentence takes far more tokens in Chinese (or another language underrepresented in the tokenizer's training data) than in English, which costs more and uses up more context. Newer multilingual tokenizers narrow the gap considerably.
 
-**Common misconception: a token is a character, or a word.** It's neither. Many problems that look like "the model isn't smart enough" actually come from how text is split:
+A token can span part of a character or word, so neither is a reliable counting unit. Tokenization also explains several apparent failures of model ability:
 
 - **Can't count letters**: "strawberry" might be split into 2–3 tokens. The input units don't correspond to single letters, which makes counting letter by letter harder.
 - **Shaky arithmetic**: some tokenizers, for example, split numbers into chunks of 3 digits from left to right. For `12345 + 678`, the first number becomes `123|45` and the second is `678`. The last chunk of one represents two digits and the other three, so the place values don't line up, and adding digit by digit gets harder.
@@ -172,7 +172,7 @@ For example, at the position of "love" (with the query also [1, 0]): only "I" an
 
 Remove the mask and, during training, every position can see the answer (the next token) directly. The loss drops beautifully, but the model only learns to copy the answer. At generation time the future tokens don't exist yet, and the output falls apart.
 
-With the mask, a training sequence of length L yields predictions for all L positions in one parallel pass, which is like practicing L questions at once ("I → love," "I love → cats," …). That's the key reason Transformers are easier to train than RNNs. At generation time only the last position's prediction is used, and tokens have to come one at a time (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
+The mask lets a training pass compute predictions for all L positions in parallel, practicing L questions at once, such as "I → love" and "I love → cats." This makes Transformers easier to train than RNNs. During generation, the model uses the prediction at the last position and produces tokens one at a time (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
 
 **Multi-head.** One set of q, k, v can express only one kind of "who to look at" relationship, but language has many at once: who a pronoun refers to, what a verb's subject is. So each token's q, k and v vectors are each cut into h pieces, attention runs on each piece separately, and the results are joined back and multiplied by an output matrix that mixes the heads. GPT-2 small's vectors have 768 dimensions, split into 12 heads of 64 dimensions each.
 
@@ -199,7 +199,7 @@ The model only gives scores for the next token; decoding decides which one is ac
 | 1 | 0.665 | 0.245 | 0.090 |
 | 2 | 0.506 | 0.307 | 0.186 |
 
-T below 1 makes the distribution more concentrated; T above 1 makes it flatter, with more variety; T approaching 0 is the same as greedy. **Common misconception: a lower temperature gives a more correct answer.** It only makes the output more concentrated and stable. If the model already gives the wrong answer the top score, a low temperature just makes it wrong more consistently.
+T below 1 concentrates the distribution, T above 1 flattens it for more variety, and T approaching 0 gives greedy decoding. Lower temperature makes output more stable, but not necessarily more accurate. If the wrong answer has the highest score, the model will choose it more consistently.
 
 **Top-k**: sample only among the k most likely candidates. The problem is that k is fixed. When the model is confident, k = 50 still leaves 49 candidates that shouldn't be picked; when it's unsure, k = 5 is too few. For example, with the probabilities from the top-p example below, [0.5, 0.3, 0.15, 0.05], and k = 2: keep only the first two and renormalize to [0.625, 0.375].
 
@@ -266,7 +266,7 @@ Parameter count, compute and memory can all be estimated in your head with a few
 | int8 / fp8 | 1 byte | About 7 GB | Quantized inference; fp8 is also used in some newer training |
 | int4 | 0.5 bytes | About 3.5 GB (a bit more with scale factors) | Common for running models locally |
 
-Storing weights in fewer bits is called quantization; it trades a little quality for memory and speed, with details in [S5 Inference and Serving](/en/stages/s05-inference/). **Common misconception: if you can load the weights, you can train.** Training also has to store gradients and optimizer state, so it needs several times the memory of inference (see the expandable section below).
+Quantization stores weights in fewer bits, trading some quality for memory and speed (→ [S5 Inference and Serving](/en/stages/s05-inference/)). Training needs extra memory for gradients and optimizer state, often several times the inference requirement. Being able to load the weights is not enough; see the expandable section below.
 
 <details class="deep">
 <summary>Before you build: counting parameters exactly, and how much memory training needs</summary>

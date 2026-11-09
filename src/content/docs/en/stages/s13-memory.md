@@ -23,9 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-The agent you built in S12 The Agent Loop and Harness starts from zero in every new session: the user said "answer in bullet points" last week and has to say it again this week. This chapter answers four questions: what to remember, how to write it in and read it out, when to update or forget it (including how to really delete it when the user asks), and how to show that it remembers correctly and never pulls up someone else's memories. Finally, it deals with the risk of memory being written maliciously.
+The agent from S12 The Agent Loop and Harness starts each new session without memory. If Sam asked for bullet points last week, they must ask again this week. This chapter covers what to store, how to write and retrieve it, when to update or forget it, and how to remove every copy when the user requests deletion. You will also test correctness and user isolation, then examine malicious writes to memory.
 
-It comes after S12 The Agent Loop and Harness because reading and writing memory are themselves agent tools. It comes before [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) because you can only tell how good a memory system is with agent evals.
+Memory reads and writes are agent tools, so this chapter follows S12 The Agent Loop and Harness. [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) then provides the eval methods needed to assess the memory system.
 
 ## After this chapter you can
 
@@ -37,14 +37,14 @@ It comes after S12 The Agent Loop and Harness because reading and writing memory
 
 ## Lecture
 
-Start with the big picture. The model itself doesn't remember the last conversation. What we call "memory" is data the harness stores outside the model and puts back into the context when it's needed. The whole system revolves around four actions:
+The model does not remember the last conversation. The harness stores data outside it and puts relevant entries into context when needed. Memory management has four actions:
 
 1. **Write**: pick out what's worth remembering from a conversation and store it with its source.
 2. **Read**: when answering, find the relevant memories and put them into the context.
 3. **Update**: when a new statement replaces an old one, mark the old one as invalid instead of keeping both side by side.
 4. **Forget and delete**: stale memories retire; when the user asks for deletion, every copy must be removed.
 
-Two rules wrap around these: every memory belongs to exactly one user, and reads always filter by user; anything written from an untrusted source can't be taken as what the user meant. Each section of this chapter fills in one of these pieces.
+Every entry belongs to one user, and every read must filter by user. Content from an untrusted source must not be treated as the user's intent. The following sections explain how to enforce these rules.
 
 ### ★ One example, end to end
 
@@ -68,7 +68,7 @@ After s6, the memory store should look like this:
 | m3 | On March 10, organized the weekly product meeting notes together | episodic | s3 | Valid |
 | m4 | Works in Tokyo, time zone UTC+9 | semantic | s6 turn 1, said by Sam | Valid |
 
-A few decisions worth noticing. "It's so hot today" wasn't recorded, because it won't be useful later. "I'm transferring to Tokyo next week" in s5 is only a plan, so the time zone shouldn't change right away; it's updated in s6, when Sam says "I'm in Tokyo now." m2 wasn't overwritten but marked invalid and linked to m4, so a later question like "Where did I used to work?" can still be answered.
+"It's so hot today" is omitted because it will not be useful later. In s5, the move to Tokyo is still a plan, so the time zone changes only in s6, after Sam confirms they are there. Keeping m2 as invalid and linking it to m4 preserves the answer to a later question about where Sam used to work.
 
 This update has real consequences. Sam says, "Meeting tomorrow at 10 a.m., remind me 15 minutes before." With m4, the reminder pops up at 9:45 Tokyo time. If the assistant were still using m2, it would treat the meeting as 10 a.m. Singapore time, which is 11 a.m. in Tokyo, so the reminder would appear at 10:45 Tokyo time, already 45 minutes late.
 
@@ -104,7 +104,7 @@ The higher the layer, the more condensed it is, the more often it's read, and th
 
 Mapping the previous section's four types onto this: episodic and semantic memories live mainly in the notes and representation layers, with the most frequently used few (like m1 and m4) also placed in the injected layer; procedural memory (ways of doing things) usually lives in the injected layer (rules in the system prompt), or is written as a skill and loaded only when needed (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 
-**Common misconception: one wrong injected memory is wrong once.** It gets carried into every session. If m2 had never been updated and sat in the injected layer, every meeting scheduled afterward would be off by 1 hour. A wrong note at least has to be retrieved before it can do harm.
+A wrong entry in the injected layer affects every session. If m2 stayed there without an update, each later meeting would be scheduled 1 hour off. A wrong note affects an answer only when retrieved.
 
 Your trace (← [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)) is in fact the bottom layer, the transcripts. This chapter builds the other three layers on top of it.
 
@@ -125,7 +125,7 @@ Provenance is a set of fields every memory carries: which session and turn it ca
 | Trusted source | Yes (said by the user) |
 | Confidence | High (explicit statement) |
 
-**Common misconception: what's recorded is fact.** Writing down a memory is **sometimes** the same as making a prediction: that this will be needed later and will still be true. After Sam moved to Tokyo, the prediction "works in Singapore" became wrong. So memories must be verifiable and correctable, and provenance is the trail for verifying them: when in doubt, go back to the original sentence or simply ask the user.
+Storing a memory sometimes predicts that it will be useful later and remain true. "Works in Singapore" became outdated when Sam moved to Tokyo. Keep provenance so you can verify and correct entries by checking the original statement or asking the user.
 
 <details class="deep">
 <summary>Before you build: the fields of a memory</summary>
@@ -162,7 +162,7 @@ A memory store that only grows soon fills with duplicates, contradictions and st
 
 The last row is the easiest to miss: the raw conversation is still there, so the next background consolidation re-extracts "works in Tokyo" from s6, and it's as if nothing was deleted. After deletion, if asked "Which city do I work in?", the correct answer is "I don't know."
 
-**Common misconception: the time zone is an unrelated field.** Time zone UTC+9 narrows the person's location down to a few places such as Japan and Korea, so it reveals where they are; derived data falls within the scope of the deletion too. When in doubt, asking the user "Should I delete your time zone setting too?" is better than quietly keeping it.
+UTC+9 narrows a location to places such as Japan and Korea, so a time zone can reveal location too. Include derived data in deletion scope. If unsure, ask whether to delete the time zone setting rather than silently retaining it.
 
 <details class="deep">
 <summary>Before you build: invalidation chains and tombstones</summary>
@@ -191,7 +191,7 @@ Take Sam asking "Set up a meeting next week with the client in Osaka." Automatic
 
 **When to write.** **Writing synchronously during the session** (blocking) makes new memories available immediately, but distracts the model from its main task; **writing in the background or after the session ends** doesn't interfere with the task, but new memories take a while to show up. Many systems use both: record a few key facts on the spot (Sam says "Use Tokyo time from now on": write it immediately), and leave the rest to background consolidation.
 
-**Common misconception: if retrieval doesn't find it, it wasn't remembered.** A memory that exists but isn't read out and one that was never recorded look the same to the user: "it forgot." When debugging, check them separately: first see whether the memory is in the store, then whether this request's retrieval results include it.
+A stored memory that retrieval misses looks like a forgotten fact to the user. Debug storage and retrieval separately: first check that the entry exists, then check whether the request retrieved it.
 
 <details class="deep">
 <summary>Going deeper: the idea behind MemGPT</summary>
@@ -224,7 +224,7 @@ Always include two baselines when measuring: **no memory**, and **stuffing all c
 
 This memory system gets 1 fewer question right, but uses only about one-eighth of the tokens per question. If your memory system can't beat "everything in the context," it at least has to win on token cost; if it loses on both, you don't need it yet.
 
-**Common misconception: the no-memory version can't score.** When it says "I don't know" to everything, it gets every abstention question right. So look by category, not just the total; likewise, if the memory system's total goes up while knowledge update goes down, it has started answering from stale data.
+A no-memory system that always says "I don't know" can pass every abstention question. Report scores by category. A higher total with a lower knowledge-update score can indicate answers based on stale data.
 
 <details class="deep">
 <summary>Going deeper: LongMemEval and LoCoMo</summary>
@@ -249,7 +249,7 @@ Personalization means the system adjusts its behavior to "this user": preferred 
 
 **Privacy.** The more you remember, the more harm a leak does. Basic principles: remember only what will be useful later; don't remember sensitive content like health, finances or relationships unless the user explicitly asks; make every memory visible to the user; and make the promise of "deleted" cover every copy.
 
-**Common misconception: personalization means doing whatever the user says.** If the system learns "Sam likes to hear affirming answers" and starts going along with plans that are clearly wrong, that's blindly pleasing the user (sycophancy; deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)). Preferences should shape format and style, not change factual judgments.
+Personalization should shape format and style while preserving factual judgment. If the system learns that Sam likes affirmation and agrees with a clearly flawed plan, it is showing sycophancy (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)).
 
 ### 🔒 What if memory is written maliciously?
 

@@ -5,7 +5,7 @@ sidebar:
   order: 1
 ---
 
-Every course, book, article and repo this roadmap cites is listed here, each with what it is for, its slant and its date.
+The roadmap's courses, books, articles and repos are listed here with their purpose, perspective and date.
 
 - **Recommendation review (2026-11-09)**: course lectures, textbook chapter numbers and assignment topics were checked against original syllabi, tables of contents and assignment descriptions. This does not mean every video was watched, every external assignment completed, or examples run on every hardware setup. External resources are optional; choose the sections relevant to your goal and follow their own prerequisites.
 - **Maintenance**: this field moves fast, so the list is checked once a quarter. If a link is broken or the content is out of date, please report it or open a PR
@@ -156,7 +156,7 @@ Every course, book, article and repo this roadmap cites is listed here, each wit
 
 ## Official docs and tools
 
-API docs, SDKs, libraries, model cards, datasets, and local inference and evaluation tools. Versions change fast; the current docs take precedence.
+API docs, SDKs, libraries, model cards, datasets, and local inference and evaluation tools change quickly. Check the current documentation before using them.
 
 ### Claude API
 
@@ -412,7 +412,7 @@ Every paper cited in the chapters' Further reading is listed here.
 | [iThome 2026: What to Think Through Before Shipping an AI Agent: 30 Days on Harness Design Tradeoffs](https://ithelp.ithome.com.tw/users/20150750/ironman/9868) *(in Chinese)* | Harness design tradeoffs; Day 1 published 2026-09-15 | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
 | [iThome 2026: Day 4, What Is Context Engineering](https://ithelp.ithome.com.tw/articles/10404121) *(in Chinese)* | An introduction to context engineering; a single article, 2026-08-23 | [S11 Context Engineering](/en/stages/s11-context-engineering/) |
 
-The iThome series are 30-day daily series written by practitioners, and their quality varies. The ones listed above won awards or are closely on topic; treat them as supplementary reading, not as primary material.
+The iThome series are 30-day posts by practitioners, with varying quality. Those listed above won awards or closely match the topic. Use them alongside a primary resource.
 
 ### Simplified Chinese
 

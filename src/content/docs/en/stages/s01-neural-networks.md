@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-Where does the model that answered questions in S0 AI Systems Overview come from? Part I Models (S1–S5) answers that from the bottom up, and this chapter takes the lowest-level question: why can a model learn at all? The answer is a loop. Define a loss that measures how wrong the model is, work out which direction and how far to move each parameter (the gradient), take a small step, and repeat tens of millions of times. The whole chapter uses "predict the next character of a name" as its example, because it's the same training objective as an LLM's, just small enough to run on a laptop.
+How was the model from S0 AI Systems Overview trained? Part I Models (S1–S5) starts with the training loop: measure prediction error with a loss, compute a gradient for each parameter, take a small step to reduce the loss, and repeat tens of millions of times. The running task is predicting the next character of a name. It uses the same training objective as an LLM, at a scale you can run on a laptop.
 
 ## After this chapter you can
 
@@ -35,14 +35,14 @@ Where does the model that answered questions in S0 AI Systems Overview come from
 
 ## Lecture
 
-The big picture first. Training any neural network is the same loop:
+Neural network training follows this loop:
 
 1. **Forward**: feed one example into the model and get a prediction.
 2. **Compute the loss**: one number that says how wrong the prediction was.
 3. **Backward**: compute each parameter's gradient, i.e. "if this parameter goes up a little, does the loss go up or down, and how fast?" This step is called backprop.
 4. **Update**: move each parameter a small step in the direction that lowers the loss. How it moves is up to the optimizer.
 
-Go back to step 1. Train for a fixed number of steps, and periodically check the loss on validation data that wasn't used for training (→ [early stopping](#-what-if-the-model-is-memorizing)). The sections below zoom in on each part in order: first the task and the loss, then how gradients are computed and how the optimizer uses them, and finally how to diagnose training that isn't going well.
+Return to step 1, train for a fixed number of steps, and periodically check the loss on validation data that wasn't used for training (→ [early stopping](#-what-if-the-model-is-memorizing)). The sections below explain the task and loss, gradients, optimizer updates, and how to diagnose a run that isn't learning.
 
 ### ★ What does the model learn, and how is it scored?
 
@@ -85,7 +85,7 @@ For question 3 of `emma` (`m` followed by m), the model gives only 0.05, so the 
 
 The output is [−2, 3]: each output is one weighted sum of the inputs, and each row of the matrix is one set of weights. The hidden layer in M1 makemore MLP is the same thing with 30 inputs and 200 outputs, and the output layer has 200 inputs and 27 logits (that's the advanced exercise, which is optional; see [what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)). Most of the computation in next chapter's Transformer is this kind of matrix multiplication too (→ [S2 Transformers and Decoding](/en/stages/s02-transformer/)).
 
-That's the language model you'll build in M1 makemore MLP. Every number in the model (the embeddings, each layer's weights) is a parameter. They start out random and get tuned gradually by the loop in the next few sections. Every LLM in later chapters is, at heart, a bigger and better next-token predictor.
+You'll build this language model in M1 makemore MLP. Its embeddings and layer weights are parameters, initialized randomly and adjusted by the training loop. The LLMs in later chapters are larger, more capable next-token predictors.
 
 **Common misconception: a well-trained model drives the loss to 0.** It won't, and shouldn't. Many letters can genuinely follow `m`; the data itself is uncertain. In a bigram setup that only sees one character, the best model can only reproduce the true proportions, so the loss has a floor (about 2.45 measured for the bigram). A training loss near 0 usually means the model is memorizing (see [overfitting](#-what-if-the-model-is-memorizing)).
 
@@ -124,7 +124,7 @@ Multiply the two local rates: 0.25 × (−2) = −0.5, the same as measuring dir
 
 **Why not always use the nudging method?** The model in M1 makemore MLP (10-dimensional embeddings, hidden size 200) has about 12,000 parameters. Nudging each one means 12,000 extra forward passes. Backprop gets every gradient from a single backward pass, costing about twice a forward pass. The nudging method is still useful: it's the standard way to check that your backprop is correct, called a numerical gradient check.
 
-**Common misconception: backprop computes an approximation.** It computes the exact gradient, up to floating-point error. The numerical gradient from nudging is the approximation. The two always differ by a tiny amount, so the acceptance criteria look at relative error rather than requiring exact equality. A clearly visible difference usually means the backprop is wrong.
+Backprop computes the exact gradient, up to floating-point error. Nudging a parameter gives a numerical approximation. The results differ slightly, so the acceptance criteria use relative error rather than exact equality. A large difference usually points to a backprop bug.
 
 <details class="deep">
 <summary>Going deeper: writing it with the chain rule</summary>
@@ -168,7 +168,7 @@ With learning rate 1, repeating the loop makes w settle at about 1.10. At that p
 
 **AdamW: separating out weight decay.** Weight decay pulls each parameter a little toward 0 every step (e.g. learning rate 0.001 and decay 0.1 shrink each parameter by 0.01% per step). It keeps parameters from growing too large and is a form of regularization. The original Adam added weight decay into the gradient, so it also got "divided by the gradient size": parameters with large gradients were regularized less. AdamW pulls weight decay out of the gradient update and applies it directly to the parameters, so it acts the same on every parameter. It's the current default for training LLMs.
 
-**Common misconception: with Adam you don't need to tune the learning rate.** Adam makes the learning rate easier to pick, but it's still the first hyperparameter to tune. The learning rate usually isn't fixed during training either; large-scale training ramps it up slowly, then lowers it gradually (→ [S3 Pretraining and Scaling](/en/stages/s03-pretraining/)).
+Adam makes the learning rate easier to choose, but you still need to tune it first. Large-scale training usually increases the learning rate slowly at the start, then lowers it gradually (→ [S3 Pretraining and Scaling](/en/stages/s03-pretraining/)).
 
 <details class="deep">
 <summary>Going deeper: the Adam and AdamW update rules</summary>
@@ -197,7 +197,7 @@ Why does it saturate? Each neuron in M1 makemore MLP's hidden layer adds up 30 w
 
 **Normalization layers.** Initialization only handles the first step. During training the weights keep changing, and the scale of each layer's inputs drifts with them. A normalization layer rescales each layer's input to a mean of about 0 and a spread of about 1, then multiplies by a learnable scale. BatchNorm does this across a batch for the same feature; LayerNorm does it across all the features of a single example. Transformers use the latter, and next chapter swaps it for the simpler RMSNorm (→ [S2 Transformers and Decoding](/en/stages/s02-transformer/)). M1 makemore MLP doesn't require normalization, but once a network gets deep you can't do without it.
 
-**Common misconception: an initial loss near 3.30 means everything is fine.** The output layer can be right while the hidden layer is still heavily saturated. So measure both: the initial loss, and the distribution of each layer's activations (e.g. plot a histogram and see whether a lot of it piles up at ±1).
+An initial loss near 3.30 checks the output layer, but the hidden layer may still be saturated. Measure the initial loss and each layer's activation distribution. A histogram can show whether many activations cluster at ±1.
 
 <details class="deep">
 <summary>Before you build: initialization formulas and diagnostic plots</summary>
@@ -221,7 +221,7 @@ When a model keeps getting better on the training data but worse on data it hasn
 - **Dropout**: at each training step, randomly switch off some neurons so the model can't rely on any single path.
 - **More data, or a smaller model**: if it can't memorize, it has to learn the patterns.
 
-**Common misconception: any gap between train and val loss is overfitting.** Some gap is normal. What matters is whether val loss has stopped falling or started rising. Conversely, if train and val are both high and close together, the model is too small or undertrained (underfitting), and adding regularization only makes it worse.
+A gap between train and val loss is normal. Watch for val loss that stops falling or starts rising. If both losses are high and close together, the model may be too small or undertrained (underfitting); more regularization would make that worse.
 
 <details class="deep">
 <summary>Going deeper: dropout and the rules for the test set</summary>
@@ -233,7 +233,7 @@ When a model keeps getting better on the training data but worse on data it hasn
 
 ### ★ How do you debug a training run?
 
-Training is an experimental science: the same code with a different learning rate can give wildly different results. So you need to read loss curves, and log every run so you can compare them instead of relying on memory.
+Changing only the learning rate can produce very different results. Read the loss curves and log each run so you can compare settings without relying on memory.
 
 **Common loss curve shapes.**
 
@@ -249,7 +249,7 @@ Training is an experimental science: the same code with a different learning rat
 
 **Experiment tracking.** An experiment tracker (such as [Weights & Biases](https://docs.coreweave.com/products/wandb)) records each run's hyperparameters, loss curves, code version and random seed, and lets you compare them side by side. For example, run three settings of M1 makemore MLP with learning rates 0.1, 0.03 and 0.01, everything else the same, and compare val loss at the same step count. You'll see which is best and by how much.
 
-**Common misconception: slightly lower means better.** Rerun the same settings with a different seed and val loss changes a little too. Rerun once or twice first to see how big the natural noise is; a difference smaller than that doesn't count. Also compare at the same step count, since a run that trained longer naturally has an edge.
+Repeat a run once or twice with different seeds to estimate the natural variation in val loss. A difference smaller than that variation is not evidence of improvement. Compare runs at the same step count, too, so extra training does not give one an advantage.
 
 <section class="deep-section">
 

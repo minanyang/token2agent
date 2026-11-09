@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-Splitting work among several agents sounds natural, but it multiplies token cost, adds the risk of losing information in handoffs, and makes debugging harder. This chapter answers: when is it worth splitting one agent into several, how do you split it, and what does it cost? It deliberately comes after [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), because only evals can give the answer: **keep multi-agent only if it beats a single agent on your evals**.
+Multiple agents add token cost, handoff losses and debugging work. This chapter examines when to split a task, how to divide it and how to measure the cost. First complete [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), then keep a multi-agent design only if it beats a single agent in your evals.
 
 ## After this chapter you can
 
@@ -35,7 +35,7 @@ Splitting work among several agents sounds natural, but it multiplies token cost
 
 ## Lecture
 
-Start with the big picture. Up to [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), the notes assistant was **one** agent: one loop, one context, one set of tools. Multi-agent means dividing the work among several agents, each with its own context, passing messages between them. This chapter answers five questions in order:
+Through [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), the notes assistant used one loop, context and toolset. A multi-agent system divides work among agents with separate contexts that exchange messages. Its design involves five questions:
 
 1. **Whether to split**: in most cases a single agent is enough; splitting only pays off under a few conditions.
 2. **How to split**: the manager pattern (one agent uses the others as tools) or the handoff pattern (the conversation is handed to another agent).
@@ -51,7 +51,7 @@ The whole chapter uses one task. Sam asks the notes assistant: "Pull together wh
 
 **Multi-agent version**: an **orchestrator** (the agent that splits up the work and merges the results) splits the task into three parts and hands each to a **sub-agent** (an agent called to do one small piece of work). Each sub-agent researches only one city, searching and reading in its own context, and returns only a summary under 1,000 tokens. The orchestrator takes the three summaries and writes the note.
 
-Both versions use the same model and the same tools. There's only one difference: whether the work is done in sequence in one context, or in parallel across three contexts. Every later section comes back to compare these two versions.
+Both versions use the same model and tools. The single agent works sequentially in one context; the multi-agent version works in parallel across three. The rest of the chapter compares them.
 
 ### ★ When is it worth splitting into multiple agents?
 
@@ -63,7 +63,7 @@ Anthropic's "How we built our multi-agent research system" describes the gains: 
 
 Applied to the notes assistant: each city's incentives can be researched separately, with no dependencies, and there are lots of search results, so it's a good fit for splitting. On the other hand, "make the tone of this note more formal" involves one document, with every step depending on the previous one; splitting it only adds handoffs. In between sits **sub-agent isolation** from [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/): there's still one main agent, which just hands one noisy stretch of exploration to a sub-agent and gets back a summary.
 
-**Common misconception: "the task has several steps" means "it needs several agents."** Research → writing → review is three steps, but if each step needs to see everything from the step before, one agent doing them in order is usually better. What you split is work that can run in parallel and be completed independently, not stages in a process.
+Research, writing and review are three steps, but if each needs everything from the previous step, one agent usually handles them better. Split work that agents can complete independently and in parallel.
 
 ### ★ How do multiple agents divide the work?
 
@@ -76,7 +76,7 @@ The notes assistant's research task uses the manager pattern: the user only ever
 
 How to choose: when the user needs one consistent conversation partner and results need to be merged in one place, use a manager; when different stages need entirely different expertise and tools, and the work doesn't need to come back once handed off, use handoffs.
 
-**Common misconception: a handoff means "hand the task off and wait for a report."** That's the manager pattern. After a handoff, the original agent no longer takes part, and the agent that took over is now the user's conversation partner.
+After a handoff, the original agent stops participating and the receiving agent becomes the user's conversation partner. Delegating a task and waiting for a report is the manager pattern.
 
 <details class="deep">
 <summary>Before you build: what the two patterns look like in the OpenAI Agents SDK</summary>
@@ -105,7 +105,7 @@ The brief the notes assistant hands to the Denver sub-agent should include:
 
 The return direction needs design too: the orchestrator receives only summaries, not the full web pages the sub-agents read. The three summaries add up to about 3,000 tokens, far smaller than all the search results for three cities.
 
-**Common misconception: a sub-agent "remembers" what the user just said.** If the user says at the start of the conversation "I own a single-family house, not a condo" and the orchestrator doesn't put it in the brief, the sub-agent doesn't know, and may pull together a pile of programs that only apply to condos.
+If the user says "I own a single-family house, not a condo" and the orchestrator leaves that out of the brief, the sub-agent will not know. It may return programs that apply only to condos.
 
 ### ★ Who splits the work and merges the results?
 
@@ -115,7 +115,7 @@ Anthropic's research system is a concrete example: a lead agent plans the resear
 
 Most of the difficulty in this architecture lies in the orchestrator's instructions. The article mentions that early versions of the lead agent spawned as many as 50 sub-agents for simple questions, and when task descriptions weren't specific enough, sub-agents duplicated each other's work or left gaps. Their fix was to spell out rules in the prompt for "scaling effort to the complexity of the question." Applied to the notes assistant: "What's Denver's incentive?" needs no sub-agents at all; only "compare three cities" gets split into three.
 
-**Common misconception: the more sub-agents the better.** Every extra sub-agent adds another context's worth of cost and another handoff's worth of risk; if subtasks overlap, they also search the same web pages twice. The full breakdown of deep research systems is in [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/).
+Each sub-agent adds context cost and another handoff. Overlapping assignments can also duplicate web searches. [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) covers the full design of deep research systems.
 
 <details class="deep">
 <summary>Before you build: a checklist for writing the orchestrator prompt</summary>
@@ -159,7 +159,7 @@ This table shows three things:
 
 When reporting multi-agent results, always put total tokens (including every sub-agent), cost, latency and quality in the same table (← [cost accounting in S8 Evals Methodology](/en/stages/s08-evals/)).
 
-**Common misconception: only the orchestrator's token usage counts.** In the example above, the orchestrator itself used only 7,500 tokens, while the total was 372,000. Add up every call of every sub-agent, and reconcile the numbers on 1 task per version first.
+The orchestrator used 7,500 tokens, but the whole system used 372,000. Include every sub-agent call when calculating usage. First run 1 task per version to reconcile the totals.
 
 <details class="deep">
 <summary>Going deeper: why a single agent's input tokens snowball</summary>
@@ -185,7 +185,7 @@ The paper's observation: multi-agent gains on common benchmarks are often small,
 
 In practice, use MAST as the starting categories for the error analysis from [S8 Evals Methodology](/en/stages/s08-evals/): label traces with these three categories first, then refine into subcategories for your system, count each one, and start fixing the most frequent.
 
-**Common misconception: whichever agent the failure shows up in is the one at fault.** The final note is missing the application deadline, so on the surface the orchestrator left it out; reading the trace might show the brief never asked the sub-agent to find the deadline, so the root cause is in the handoff.
+If the final note omits an application deadline, inspect the trace before blaming the orchestrator. The brief may never have asked the sub-agent to find it, making the handoff the source of the omission.
 
 ### ★ Is multi-agent worth keeping?
 
@@ -202,7 +202,7 @@ Two illustrative results for the notes assistant, each with a pre-registered cos
 - Coverage up 7 percentage points, difference interval +2 to +12, cost 1.43× → both conditions pass; keep it.
 - Coverage up 3 percentage points, interval −2 to +8, cost 1.43× → the interval contains 0, so there's no evidence it's really better; remove it.
 
-**Common misconception: removing it means the experiment failed.** The conclusion "a single agent is enough" saves cost and debugging time on every future run. It's as useful a result as "keep," and a common one.
+Finding that a single agent is sufficient saves cost and debugging time on future runs. Removing the multi-agent design is a useful, common experimental result.
 
 ### ★ How do parallel edits avoid overwriting each other?
 
@@ -214,7 +214,7 @@ A notes-assistant example: two writers edit the same note in parallel, one writi
 
 Isolation is also a security boundary: when one agent is hijacked by prompt injection, the damage is confined to its own workspace (→ [S16 Security and Governance](/en/stages/s16-security/)).
 
-**Common misconception: with isolation there are no conflicts.** Isolation only postpones conflicts to merge time; if two agents change the same section, the merge step still has to decide which to keep. So divide the work so they edit different parts.
+Isolation postpones conflicts until merge time. If two agents edit the same section, you still need to reconcile their changes. Give them different parts to edit when assigning work.
 
 <details class="deep">
 <summary>Before you build: basic git worktree operations</summary>

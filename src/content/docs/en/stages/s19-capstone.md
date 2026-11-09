@@ -23,9 +23,11 @@ sidebar:
 
 ## What this chapter covers
 
-The previous eighteen chapters took AI systems apart and studied them layer by layer. This chapter goes the other way and looks at how the three most mature kinds of agents put those layers together: coding agents, deep research, and always-on personal agents. The point isn't to copy them but to understand the tradeoffs behind any agent product: why a fixed workflow here and model decisions there, why split into multiple agents, why require human approval.
+The previous eighteen chapters examined AI systems layer by layer. Here you will study how coding agents, deep research systems and always-on personal agents combine those layers. Compare their use of fixed workflows, model decisions, multiple agents and human approval to understand the design tradeoffs.
 
-The capstone extends your system into an always-on agent and delivers five pieces of engineering evidence that it can ship (shippable), can be measured (evaluable), and has a reason behind every decision (defensible). If you're only doing the core exercises, finishing this chapter's core exercise (taking apart an open-source coding agent) completes the route; the capstone (A19) is an advanced exercise and assumes you've done system project steps A6–A18 along the way. On the concepts route, reading the lecture, Try it first and the self-check completes the chapter.
+The capstone extends your system into an always-on agent. Its five pieces of engineering evidence show that the system can ship (shippable), its performance can be measured (evaluable), and its design decisions can be justified (defensible).
+
+If you are doing only core exercises, analyzing an open-source coding agent completes the route. The A19 capstone is advanced and requires system project steps A6–A18. On the concepts route, finish the lecture, Try it first and self-check.
 
 ## After this chapter you can
 
@@ -38,13 +40,13 @@ The capstone extends your system into an always-on agent and delivers five piece
 
 ## Lecture
 
-Start with the big picture. This chapter uses one yardstick (the six-part map) to take apart three real systems, and uses the **notes assistant** example carried through every chapter as a bridge: a notes assistant that fixes its own code looks like a coding agent; one that does research for you looks like deep research; one that works even when you haven't opened it is an always-on agent. The last section covers the capstone's five pieces of evidence and the two statistical ideas for reading them.
+Use the six-part map to examine three real systems. The **notes assistant** provides a familiar comparison: fixing its own code calls for coding-agent design, researching a question calls for deep research, and working while its interface is closed calls for an always-on agent. The final section covers the capstone's five pieces of evidence and two statistical ideas for interpreting them.
 
 ### ★ How do you take apart any agent?
 
-Any agent, however it's packaged as a product, breaks down into six parts. Once you've broken it down, every part maps back to an earlier chapter, and the differences between products become "what choice each part made."
+Analyze an agent in six parts, map each to earlier chapters, and compare the choices different products make.
 
-Feature lists can't be compared with each other; describing every system with the same six parts is what lets you ask useful questions (for the codes in the table, see [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)):
+Using the same six parts makes systems easier to compare than feature lists alone. See [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes) for the chapter references:
 
 | Part | Questions to ask | In the notes assistant | Covered in |
 |---|---|---|---|
@@ -63,7 +65,7 @@ The fastest way to take an agent apart is to read a trajectory: the complete rec
 4. The model decides it has enough, answers in bullet points with links to the notes, and makes no more tool calls. → the loop's stop condition
 5. This trace gets sampled and may later become a case in the regression suite. → evals
 
-A common misconception is that the six parts are six modules in the code. One piece of code often belongs to two parts (compaction manages context and also decides what to keep), so a row listing two chapters is normal. Also, "none" is a choice too: mini-SWE-agent has no memory at all and no specialized tools, and that in itself is a design tradeoff worth writing down.
+These parts need not be separate code modules. Compaction both manages context and chooses what to keep, so one row can map to two chapters. Absence is also a design choice: mini-SWE-agent has no memory or specialized tools.
 
 ### ★ How are coding agents designed?
 
@@ -89,7 +91,7 @@ Both approaches are competitive on benchmarks like SWE-bench because of the shap
 
 A fixed workflow falls short when you can't know the next step until you see the result of the previous one: you have to run the program before you can reproduce the bug, you have to read the logs to know which module to change, a feature touches five files in an order you can't see in advance, or the issue itself is unclear and you have to ask someone first.
 
-A common misconception is that similar benchmark scores mean equally good. With similar scores, cost and run-to-run consistency (pass^k: the share of tasks that succeed all k times, ← S8 Evals Methodology) can still differ a lot, and your own tasks don't necessarily look like benchmark cases. The core exercise measures exactly these things on 5 tasks of your own.
+Similar benchmark scores can hide differences in cost and consistency. Use pass^k, the share of tasks completed successfully in all k runs (← S8 Evals Methodology), and test your own workload. The core exercise measures these properties on 5 tasks you choose.
 
 <details class="deep">
 <summary>Going deeper: spec-driven development and Claude Code's configuration points</summary>
@@ -126,7 +128,7 @@ To decide whether multi-agent is worth it, ask four questions: Is the answer wor
 
 Evaluating these systems is also hard, because research reports often have no single correct answer. BrowseComp (Wei et al. 2025) gets around this with questions that are "hard to find but easy to verify once found": the answer is a short string you can check at a glance; the hard part is the process of finding it. You can borrow this idea when designing your own evals. For example, a notes assistant question like "On what day did I first note down GraphRAG?" requires digging through lots of notes, but the answer is a date, which can be graded automatically.
 
-A common misconception is "multi-agent costs 15× more than a single agent." Both multipliers are relative to a regular chat. When deciding whether to split into multiple agents, compare against a single agent: about 15 ÷ 4 ≈ 3.75× (← [S15 Multi-agent Systems](/en/stages/s15-multi-agent/)).
+Both multipliers use regular chat as the baseline. Compare multi-agent with a single agent when choosing the architecture: about 15 ÷ 4 ≈ 3.75× (← [S15 Multi-agent Systems](/en/stages/s15-multi-agent/)).
 
 <details class="deep">
 <summary>Going deeper: how orchestrator instructions go wrong, and how to fix them</summary>
@@ -159,7 +161,7 @@ Always-on amplifies three old problems:
 - **Sending messages proactively**: every notification spends the user's attention, so you need a notification budget and a way to snooze or turn off a category of notifications (← [S17 Product and AI UX](/en/stages/s17-ai-ux/)).
 - **Hitting all three**: the lethal trifecta is an agent that can read untrusted content, access private data and send data out (← S16 Security and Governance). Once the notes assistant is connected to a chat app, a message from anyone is untrusted input; it can also read private notes and send messages, so all three come together at once.
 
-A common misconception is "heartbeats are cheap because they quietly exit when there's nothing to do." Every heartbeat is a full agent turn. Even if it ends up doing nothing, the model call has already been paid for, and the shorter the interval, the higher the cost. Other common causes of overspending: the context each run carries grows over time (← S11 Context Engineering, the example above), failed retries pile up on each other (← S6 LLM APIs and Application Basics), and a heartbeat triggers a goal loop or a chain of tool calls.
+Each heartbeat is a full agent turn and incurs a model-call cost even if it does nothing. Shorter intervals cost more. Costs can also grow through expanding context (← S11 Context Engineering, the example above), stacked retries (← S6 LLM APIs and Application Basics), or a heartbeat starting a goal loop or chain of tool calls.
 
 <details class="deep">
 <summary>Going deeper: the split between heartbeat and cron is still shifting</summary>
@@ -207,7 +209,7 @@ To show the new version "isn't worse," write down the allowed gap δ before runn
 
 Example: an ablation removes compaction, 20 tasks × 5 runs. With it, 82 of 100 runs succeed; without it, 79, a difference of −3 percentage points. Suppose bootstrapping the differences over the 20 tasks gives a 95% confidence interval of [−7, +1] for the paired difference. The interval includes 0, so you can't say compaction definitely helps; but the lower bound −7 is below −δ = −5, so you also can't say removing it has no effect. The reasonable decision here is to keep it for now and narrow the interval with more tasks or more runs, or to look at cost: if removing compaction saves a lot of money per task, it's worth another round of evals to settle the question.
 
-A common misconception is "the two versions' confidence intervals overlap, so there's no difference." Overlapping intervals don't mean the difference's interval includes 0, let alone that the gap is smaller than δ. When comparing on the same set of cases, look at the paired difference's interval.
+Overlapping confidence intervals for the individual versions do not establish that the difference includes 0 or is smaller than δ. When both versions use the same cases, inspect the paired-difference interval.
 
 <section class="deep-section">
 

@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-You learned streaming and cancellation in S6 LLM APIs and Application Basics. This chapter turns the chat interface into a product users are willing to rely on and can correct, and answers the question S16 Security and Governance left open: users approve 93% of permission prompts (approval fatigue), so how do you design a confirmation screen that actually works? It comes before S18 Deployment and Architecture because the interface determines what data you can collect and what you need to monitor in production.
+Building on streaming and cancellation from S6 LLM APIs and Application Basics, this chapter designs an interface users can understand, stop and correct. S16 Security and Governance reported that users approve 93% of permission prompts, raising a design problem: how can confirmation remain useful despite approval fatigue? The interface also determines the data you can collect and monitor in production, so it comes before S18 Deployment and Architecture.
 
 ## After this chapter you can
 
@@ -36,7 +36,7 @@ You learned streaming and cancellation in S6 LLM APIs and Application Basics. Th
 
 ## Lecture
 
-An agent interface has to answer four questions at all times: What is it doing? How sure is it? Can I stop it? How do I tell it it's wrong? The main thread is one flow: streaming → tool status → stop → confirmation → citations. The chapter ends with feedback, proactive notifications and usability testing.
+Users need to know what the agent is doing, how much to trust it, how to stop it and how to report errors. The chapter follows streaming, tool status, stopping, confirmation and citations, then covers feedback, proactive notifications and usability testing.
 
 ### ★ One example, end to end
 
@@ -76,7 +76,7 @@ Before designing the interface, ask: How often does it happen? How costly is a m
 
 The second feature is a fit for **start small**: first build "suggest → user confirms," build up a track record (say, 20 weeks of drafts that barely needed edits), then loosen the level of autonomy.
 
-**Common misconception: when users complain it's "not good," switch to a stronger model.** [applied-llms.org](https://applied-llms.org/) puts it this way: the model isn't the product; the system around it is. The problem is usually that the interface doesn't let users understand, stop or correct the AI.
+When users struggle, first check whether the interface lets them understand, stop or correct the AI. [applied-llms.org](https://applied-llms.org/) emphasizes the surrounding system as part of the product. A stronger model may not solve the interface problem.
 
 ### ★ How do you make waiting bearable?
 
@@ -84,7 +84,7 @@ Perceived wait depends on how soon you see a meaningful change. Streaming shows 
 
 Using the example above: the summary is about 600 tokens at 50 tokens per second, so writing it alone takes 12 seconds; with searching and summarizing, the total is 17.3 seconds. Without streaming or progress, the user stares at a blank screen for 17 seconds. With the table above, the screen never goes more than 3 seconds without a change. That's the principle of the **loading state**: show a placeholder before the first token, let the tool steps themselves be the progress messages, and for tasks that run several minutes, switch to a step checklist and notify on completion.
 
-**Common misconception: streaming makes the answer finish sooner.** It only makes the wait visible. For content that must pass an output guardrail first (← [S16 Security and Governance](/en/stages/s16-security/)) or structured output, show progress and present the result all at once when it's done.
+Streaming shows progress without shortening completion time. For structured output or content that must pass an output guardrail first (← [S16 Security and Governance](/en/stages/s16-security/)), show progress and display the result when complete.
 
 <details class="deep">
 <summary>Before you build: streaming display details</summary>
@@ -103,7 +103,7 @@ Using the example above: the summary is about 600 tokens at 50 tokens per second
 
 Cards are also a source of **transparency**, and that should be layered: by default show one line, "Searching notes: taxes," and reveal the full input and output only when expanded. Twelve tool calls all expanded at once is the same as no information.
 
-**Common misconception: generative UI means letting the model write arbitrary HTML.** Usually it means picking a prebuilt component and filling in props. Props are untrusted data, so validate their shape before rendering. Sanitize Markdown first (strip executable content and auto-loading links), and don't auto-load untrusted images or links (EchoLeak sent data out through exactly such an auto-loading URL; ← S16 Security and Governance).
+Generative UI usually selects a prebuilt component and supplies its props. Treat props as untrusted data and validate them before rendering. Sanitize Markdown to remove executable content and auto-loading links. Do not auto-load untrusted images or links; EchoLeak used such a URL to send data out (← S16 Security and Governance).
 
 <details class="deep">
 <summary>Going deeper: AG-UI, MCP Apps and ready-made frameworks</summary>
@@ -138,7 +138,7 @@ Treat one run as an explicit state machine; the earlier table is its spec. A run
 
 The user's own actions (for example deleting a memory) can use an **optimistic update**: change the screen first and roll back if it fails. The agent's actions can't: showing "Sent" and then taking it back hurts trust more than being a second slower.
 
-**Common misconception: stopping just means removing the spinner.** The frontend has stopped, but the backend may still be running (← S6 LLM APIs and Application Basics). Marking it "Canceled" right away may misreport an email that was actually sent.
+Stopping must reach the backend, which may still be running after the frontend stops (← S6 LLM APIs and Application Basics). Do not mark an email "Canceled" until its status is confirmed; it may already have been sent.
 
 <details class="deep">
 <summary>Before you build: implementing the state machine and cancellation</summary>
@@ -159,7 +159,7 @@ The user's own actions (for example deleting a memory) can use an **optimistic u
 - **Easy dismissal**: rejecting a suggestion should cost as little as possible, for example completions in light gray text that disappear when you keep typing.
 - **Attribution**: mark what the AI produced and which sources it's based on, for example "Created by the assistant" plus source links.
 
-**Common misconception: having a "Close" button counts as easy dismissal.** If rejecting takes three clicks and accepting takes one, users will lean toward accepting, which pushes the AI's mistakes onto them.
+A Close button is not enough if rejection takes three clicks while acceptance takes one. That friction encourages acceptance and leaves users to bear the AI's mistakes.
 
 ### ★ How much should users trust it?
 
@@ -173,7 +173,7 @@ There are three ways to present a sentence with no source: mark it sentence by s
 
 First verify that the levels actually track accuracy. For example, in a 200-question golden set, the 150 questions marked "supported by sources" got 141 right (94%), and the 50 marked "no source found" got 30 right (60%). If the two groups were about the same, showing the levels would only mislead.
 
-**Common misconception: showing "92% confident" means it's calibrated.** Users have a hard time interpreting that number, and the confidence a model reports about itself is often inaccurate (← S8 Evals Methodology).
+Showing "92% confident" does not establish calibration. Users may struggle to interpret it, and the model's self-reported confidence is often inaccurate (← S8 Evals Methodology).
 
 <details class="deep">
 <summary>Going deeper: where per-answer uncertainty signals come from</summary>
@@ -190,7 +190,7 @@ Once you've picked a signal, compute accuracy per group on the golden set, the s
 
 ### ★ When should you ask the user?
 
-Confirmation screens only work when they're rare and their content is easy to understand. That's the answer to the question S16 Security and Governance left open. Three principles for **human-in-the-loop** (HITL):
+Confirmation screens need to be infrequent and understandable to address the approval fatigue described in S16 Security and Governance. Follow these three **human-in-the-loop** (HITL) principles:
 
 1. **Only confirm high-risk actions.** Following the risk tiers from [S10 Tools and MCP](/en/stages/s10-tools-mcp/): read-only actions don't ask; reversible ones don't ask but offer "Undo" afterward; only irreversible actions or ones that affect other people ask (this is how auto mode works; ask mode still asks for medium risk, ← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 2. **Show what will actually happen.** The full recipients and body, the file diff (a side-by-side of which lines changed), not just "Are you sure?"
@@ -198,7 +198,7 @@ Confirmation screens only work when they're rare and their content is easy to un
 
 Do the math once: a run has 12 tool calls, 8 read-only, 3 reversible (creating or editing notes) and 1 email send. Asking for every one means 12 confirmations; with tiers it's just 1, and the moment users see it they know "this one matters." You can also have the action classifier from S16 Security and Governance decide which ones need a human first.
 
-**Common misconception: more confirmations are safer.** When there are so many that users approve by reflex, they work worse than a few well-chosen ones, and they add a false sense of security: "the user approved it."
+Frequent confirmations can train users to approve reflexively. Use a few targeted checks rather than treating every approval as proof that the user assessed the action.
 
 ### ★ How do you collect user feedback?
 
@@ -206,7 +206,7 @@ Feedback turns every use into data for improving the system, provided each item 
 
 An example: in one week there are 1,000 answers. Only 30 get a thumbs up or down (3%), yet 240 are copied and 90 are regenerated. A 200-word draft where 120 words get changed has an edit ratio of 60%, which you can treat as one "poor draft quality" signal.
 
-**Common misconception: implicit signals can be read directly as good or bad.** Copying might mean the answer was good, or that the user is pasting it to a coworker to complain; regenerating might mean the answer was wrong, or that they want to see another version. Sample a batch of traces and compare before you decide what a signal means.
+Copying could mean an answer was useful or that the user wants to complain about it to a coworker. Regeneration could signal an error or a request for variety. Compare these implicit signals with a sample of traces before interpreting them.
 
 Both kinds of feedback should carry the trace ID. Then build yourself a **reviewer UI**: view traces, mark pass / fail, add to the golden set in one click. It's the entry point to the data flywheel from [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/).
 
@@ -226,7 +226,7 @@ A **proactive agent** sends messages without waiting for the user to ask, and th
 
 A **personalized interface** (← [S13 Memory and Personalization](/en/stages/s13-memory/)) should let users see and edit what the agent remembers ("because you said you prefer bullet-point summaries").
 
-**Common misconception: the less noticeable the personalization, the better.** Invisible personalization easily feels like surveillance. Visible, correctable personalization is what builds trust.
+Make personalization visible and correctable. Hidden personalization can feel like surveillance and undermine trust.
 
 ### ★ How do you know the interface is usable?
 
@@ -234,7 +234,7 @@ A **personalized interface** (← [S13 Memory and Personalization](/en/stages/s1
 
 Example: the task "Organize last week's tax notes and email them to your accountant." The second participant didn't finish: the confirmation card was only visible after scrolling down, and they thought the assistant had frozen. After pinning the confirmation card above the input box, the retest took 1.5 minutes.
 
-**Common misconception: asking "Do you find it easy to use?" is enough.** What you get back is mostly politeness. Two participants are enough to find the worst problems, but comparing success rates between versions needs more people (← S8 Evals Methodology).
+Asking whether the product is easy to use often produces polite answers. Two participants can reveal the worst problems, but comparing success rates between versions requires more people (← S8 Evals Methodology).
 
 <section class="deep-section">
 

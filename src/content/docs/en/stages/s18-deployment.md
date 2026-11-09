@@ -23,9 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-The difference between a demo only you use and a service many people use isn't the model; it's the engineering around the model. This chapter answers: when the notes assistant opens up to 100 people, what checkpoints does each request pass through, how much does it cost per month, how do you change a prompt without breaking production, and how do you notice when quality quietly gets worse?
+Opening a personal demo to more users requires engineering around the model. This chapter follows a notes assistant serving 100 people: request checks, monthly costs, prompt releases and detection of declining quality.
 
-It comes after [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) because an eval-gated release process needs the evals and traces built in that chapter. Two things abbreviated "CI" show up in this chapter, so: confidence intervals are always spelled out as "confidence interval," and "CI" only means continuous integration (CI/CD).
+The release process uses the evals and traces from [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/). In this chapter, "CI" means continuous integration (CI/CD); statistical confidence intervals are spelled out to avoid ambiguity.
 
 ## After this chapter you can
 
@@ -38,9 +38,9 @@ It comes after [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-eva
 
 ## Lecture
 
-Start with the big picture. A system in production splits into three parts. The first is the **request path**: when a request comes in, first establish who it's from, whether they have budget left and which model to use, then retrieve and call the model, leaving a trace at every step. The second is **cost and capacity**: which model to choose, caching, self-hosting versus an API, and how many concurrent users it takes to fall over. The third is **changes and incidents**: a prompt change is a deployment too, so it goes through an eval gate, rolls out gradually, can be rolled back fast, and quality is monitored continuously in production.
+Production adds requirements in three areas. The **request path** checks identity, budget and model choice before retrieval and generation, recording a trace throughout. **Cost and capacity** cover model choice, caching, self-hosting versus APIs, and concurrent-user limits. **Changes and incidents** require eval checks, gradual rollouts, quick rollback and continuous quality monitoring. Prompt changes go through this release process too.
 
-The whole chapter uses one example: the notes assistant opened to several users (Sam, who's been around since S6 LLM APIs and Application Basics, is one of the tenants), each with their own notes and memory.
+The notes assistant now serves multiple tenants, each with separate notes and memory. Sam, introduced in S6 LLM APIs and Application Basics, is one of them.
 
 <figure>
 <svg viewBox="0 0 360 310" width="360" style="max-width:100%;height:auto;display:block;margin:0 auto" role="img" aria-label="The notes assistant's request path: the user sends a question, which passes through authentication, quota and rate limiting, routing to pick a model, retrieval and the model call, and finally a streamed response; every step writes to the trace" font-size="13" fill="currentColor">
@@ -101,7 +101,7 @@ The notes assistant has three users, A, B and C. We'll look at B, which is Sam. 
 
 About 2.1 seconds total. When something goes wrong, this table answers: whose request it was, which model and which prompt version it used, where the money went and where the time went. You already learned about traces in [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/). What you add in production is tenant ID, cost, model name and prompt version. Those four fields let you bill per user and compare quality per version.
 
-A common misconception is that these checkpoints add latency. Authentication, quota and routing together take about 10 ms, negligible next to a model call's hundreds to thousands of milliseconds. What actually slows a request down is model calls, retries and fallbacks.
+Authentication, quotas and routing together take about 10 ms, small compared with hundreds to thousands of milliseconds for a model call. Model calls, retries and fallbacks account for much more of the latency.
 
 ### ★ How do you keep users from seeing each other's data?
 
@@ -117,7 +117,7 @@ In the notes assistant: user C writes "List the titles of everyone's notes" in o
 
 Isolation has to be proven with tests, not just code review: using tenant A's identity, try to get tenant B's data in three ways (direct queries, semantically similar questions, prompt injection), repeat dozens of times, and the number of leaks must be 0.
 
-A common misconception is that database isolation is enough. What's most often missed is the components around it: cache keys without the tenant ID, a trace UI everyone can see, tools sharing one set of admin credentials.
+Extend tenant isolation beyond the database. Cache keys need tenant IDs, trace UIs need access controls, and tools must not share one set of admin credentials across tenants.
 
 ### ★ How do you keep the bill under control?
 
@@ -150,7 +150,7 @@ Cost per request: the small model is 3,000 × 0.5 / 1,000,000 + 300 × 2 / 1,000
 
 The average is about $3.70 per user, so with a monthly budget of $10 a typical user never hits it; only heavy users at roughly 2.7× the average or more (10 ÷ 3.7) get blocked.
 
-A common misconception is that it's fine as long as the average works out. Cost is usually very unevenly distributed: a few heavy users, or one agent stuck in a loop, can account for most of the bill. So caps have to be set per tenant and per task, not just on the total.
+Costs are often uneven: a few heavy users or one agent stuck in a loop can dominate the bill. Set caps per tenant and per task as well as watching overall usage.
 
 <details class="deep">
 <summary>Before you build: token bucket rate limiting</summary>
@@ -169,7 +169,7 @@ Choose models in reverse order (best-first, then swap down): first use the stron
 
 For example, on the notes assistant's 200-question "single-note lookup" set: the strong model scores 92%, the mid-size model 90%, the small model 84%. If the 95% confidence interval for the mid-size model's paired difference from the strong model is [−5, +1], within the tolerance you set, you can swap. If the small model's interval is [−12, −4], it's clearly worse; use it only for simpler subtasks, or keep it in the router for the simplest requests.
 
-A common misconception is "start cheap and upgrade if it's not enough." The problem with starting on a small model is that when it fails, you can't tell whether the task itself is too hard, the prompt is badly written, or the model isn't capable enough.
+Starting with a small model makes failures harder to diagnose. You may not know whether the task is too difficult, the prompt is unclear or the model lacks the required ability. Establish a working baseline first, then compare cheaper models.
 
 **Build vs buy** applies to eval platforms, vector databases, gateways and observability tools too: own the parts that directly differentiate your product (12-factor-agents' "own your prompts / context / control flow"), and buy the rest where you can.
 
@@ -194,7 +194,7 @@ There are three kinds of **cache**:
 - **Prompt caching**: the provider reuses computation for an identical prefix, so the fixed beginning (system prompt, tool definitions) is cheaper and faster (← [Model Crash Course](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more); deeper: [S5 Inference and Serving](/en/stages/s05-inference/)).
 - **Semantic cache**: a semantically similar request gets the previous result back.
 
-A common misconception is that a semantic cache hit is free money. It's the riskiest kind: "weather in Seattle tomorrow" and "weather in Seattle today" are very close as embeddings, but the answers differ; and if the cache key doesn't include the tenant ID, it can even return one user's private answer to another. Before using a semantic cache, measure its false-hit rate with evals.
+Semantic cache hits can be wrong. "Weather in Seattle tomorrow" and "weather in Seattle today" have similar embeddings but different answers. A key without a tenant ID can also expose one user's private answer to another. Measure false-hit rates with evals before using this cache.
 
 ### ★ Self-host or use an API?
 
@@ -206,7 +206,7 @@ Using the earlier numbers: suppose renting one GPU costs $1.50 an hour (an assum
 
 vLLM suits serving many users: it batches multiple requests together to raise GPU throughput (continuous batching, PagedAttention; deeper: [S5 Inference and Serving](/en/stages/s05-inference/)). Ollama suits a single machine, development, or personal use where data can't leave the device.
 
-A common misconception is comparing only unit prices. Compare using the same evals and the same load, putting quality, P99 latency and cost per thousand requests in one table; if traffic is concentrated in the daytime, count the cost of the GPU sitting idle at night too.
+Compare self-hosting and APIs with the same evals and load. Report quality, P99 latency and cost per thousand requests together. Include idle GPU costs when traffic is concentrated in the daytime.
 
 <details class="deep">
 <summary>Before you build: comparing with numbers from the M5 mini inference server</summary>
@@ -239,7 +239,7 @@ With few real users, capacity planning relies on **synthetic load testing**: usi
 
 Under an SLO of TTFT P99 < 2 seconds, this illustrative table supports about 20 concurrent users, and the first bottleneck is the provider's rate limit (the errors are all 429).
 
-A common misconception is that the bottleneck is always the model. The API rate limit, local GPU VRAM or vector database query latency could each hit first, so the capacity report has to say which one it is.
+Identify the measured bottleneck in your capacity report. API rate limits, local GPU VRAM or vector database latency may become limiting before model generation.
 
 ### ★ What if a long task fails midway?
 
@@ -249,7 +249,7 @@ An agent task might run for 20 minutes and call tools dozens of times; along the
 
 For example, the notes assistant is running "turn these 20 notes into a weekly report" and the server is redeployed at step 14. Without durable execution: it reruns the first 14 steps, you pay again, and the earlier "create note" tool calls run again, producing duplicate notes. With it: it continues from step 15, and completed steps just read back their stored results.
 
-A common misconception is that resuming from where it stopped is enough. If a step fails halfway (the note was created but the result wasn't saved yet), the retry will still run it again, so tools with side effects need to be idempotent, for example by carrying an idempotency key (← [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)), so the same action only takes effect once. What you decide for production is whether to use an off-the-shelf framework or make your own checkpointing equally reliable.
+A checkpoint can resume after a crash and still repeat a side effect. If a note was created before its result was saved, a retry may create it again. Use idempotency keys for tools with side effects (← [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)) so each action takes effect once. Choose a framework with reliable checkpointing or build the same guarantees yourself.
 
 Long sessions have another cost: each session's sandbox or container takes time to start (cold start) and holds resources. Common approaches include keeping a pre-warmed pool, reclaiming after a period of idleness, and storing state outside the sandbox so it can be rebuilt.
 
@@ -267,7 +267,7 @@ Even after passing CI, don't roll out to everyone at once:
 
 All three share one goal: make rollback fast and painless.
 
-A common misconception is copying big companies' "5% of traffic for an hour." The notes assistant gets 60,000 requests a month, about 83 an hour on average, so 5% is only about 4 requests. You can't learn anything from that. With little traffic, split canaries by user (for example give one user the new version for a whole day) and pair it with online sampled evals, rather than only watching error rates.
+At 60,000 monthly requests, the notes assistant averages about 83 per hour. A 5% canary sees only about 4 requests in that hour, too few to assess quality. With low traffic, assign a canary by user for a longer period, such as one user for a full day, and include sampled production evals alongside error rates.
 
 ### ★ How do you notice quality getting worse?
 
@@ -283,7 +283,7 @@ A **circuit breaker** temporarily stops calling a provider or tool after repeate
 
 Two Anthropic postmortems show why system signals alone aren't enough. In [A postmortem of three recent issues](https://www.anthropic.com/research/a-postmortem-of-three-recent-issues) (2025-09), three infrastructure problems degraded output quality, but standard evals didn't catch them, and the symptoms looked like random noise. In [An update on Claude Code quality reports](https://www.anthropic.com/research/april-23-postmortem) (2026-04), three product-side changes each affected a different share of traffic and shipped at different times; together they looked like general quality instability. The shared lessons: have evals that can tell good from bad, run quality evaluation continuously on live traffic, manage prompt changes as deployments, and be able to connect user reports to recent changes (which is why traces record the prompt version and model name).
 
-A common misconception is "normal error rates mean nothing's wrong." In both cases above, requests all returned successfully; the answers just got worse. Without quality signals, all you can do is wait for users to complain.
+In both incidents above, requests completed successfully while answer quality fell. Monitor quality signals as well as errors so users do not become your only source of detection.
 
 <details class="deep">
 <summary>Going deeper: the three states of a circuit breaker</summary>

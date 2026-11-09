@@ -8,11 +8,11 @@ sidebar:
   order: 2
 ---
 
-The first part is a quick reference for terms you will meet throughout the roadmap. The second part covers terms that are easy to mix up.
+Use the first section to look up terms used throughout the roadmap. The second distinguishes terms that are easy to confuse.
 
 ## Quick reference
 
-When you first run into one of these terms, start with the one-line definition here; the chapter in parentheses covers it in detail. For how to read the codes starting with S, A and M (chapters, system project, model project), see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes).
+Start with a short definition here, then follow the chapter in parentheses for details. S, A and M label chapters, system project steps and model project steps; see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes).
 
 | Term | In one line | Example |
 |---|---|---|

@@ -8,7 +8,7 @@ sidebar:
   order: 4
 ---
 
-This page isn't a math course. It's a place to come back to when you've forgotten something. Each section gives the intuition first, then a small example you can check with a calculator, and finally which chapters use it. If you can follow the example, you know enough to read those chapters.
+Return here when you need a math or statistics refresher. Each section explains the intuition, gives an example you can check with a calculator, and names the chapters that use it. The examples provide enough background to continue reading.
 
 ## The chain rule and backprop
 
@@ -61,7 +61,7 @@ An API's `temperature` parameter is this T, but some APIs no longer accept these
 
 ## Mean, variance and standard error
 
-**Intuition**: the score you measure on n questions is only an estimate; a different batch of questions would give a different number. The standard error (SE) answers "how much is this estimate likely to wobble?"
+**Intuition**: a score measured on n questions is an estimate that would change with a different sample. The standard error (SE) describes how much the estimate is likely to vary.
 
 **Formulas**:
 - Mean = sum ÷ n.
@@ -75,7 +75,7 @@ An API's `temperature` parameter is this T, but some APIs no longer accept these
 
 ## Bootstrap confidence intervals
 
-**Intuition**: when you don't want to derive a formula, have the computer simulate "if I drew a new batch of questions, how would the score change?" Treat your n questions as the whole population, resample from them repeatedly, and see how much the metric wobbles.
+**Intuition**: bootstrap simulates drawing another sample without requiring a formula for the metric. Treat the n questions you have as a population, resample them repeatedly, and measure how much the score varies.
 
 **Method**:
 1. You have n questions, each with a score (say 1 for correct, 0 for wrong).
@@ -94,7 +94,7 @@ ci = (results[0.025 * B], results[0.975 * B])
 
 **Example**: 40 of 50 questions correct (80%). The bootstrap 95% interval comes out at roughly 68%–90%, close to the formula result in the previous section. When a formula exists, the two agree; the advantage of the bootstrap is that it works just as well when the metric is median latency, F1, majority-vote accuracy or Recall@k.
 
-**To compare two versions**, use a **paired** bootstrap: run both versions on the same questions, resample *question IDs* each time, and compute the difference between their scores. Variation from question difficulty cancels out, and the interval gets much narrower. Only when the interval for the difference excludes 0 can you be confident there's a real difference.
+Use a **paired bootstrap** to compare two versions on the same questions. Resample question IDs together and calculate the score difference. This cancels variation from question difficulty and produces a much narrower interval. An interval that excludes 0 supports a real difference.
 
 **When it doesn't apply**:
 - With too few questions (say fewer than 20), the interval isn't reliable. Just say "the sample is too small" instead of reporting a number that looks precise.
@@ -115,6 +115,6 @@ ci = (results[0.025 * B], results[0.975 * B])
 - **Attention**: the dot product between a query and each key serves as the similarity score (divided by √dimension so the values don't get too large and make the softmax too sharp), and softmax turns the scores into weights.
 - **Embedding retrieval**: the query and each passage are turned into vectors and ranked by cosine similarity. If the vectors are normalized to length 1 first, cosine equals the dot product, which is why many vector databases just use the dot product.
 
-Note: raw cosine similarity scores depend on the embedding model. A threshold like "0.8 counts as similar" doesn't carry over between models; look at the distribution on your own data before you pick one.
+Raw cosine similarity depends on the embedding model. Choose a threshold from your own data distribution; a value such as 0.8 does not transfer reliably between models.
 
 **Used in**: [S2 Transformers and Decoding](/en/stages/s02-transformer/) (self-attention), [S9 Retrieval and RAG](/en/stages/s09-rag/) (dense retrieval), [S13 Memory and Personalization](/en/stages/s13-memory/) (memory retrieval).

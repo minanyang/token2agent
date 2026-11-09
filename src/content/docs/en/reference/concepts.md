@@ -5,9 +5,9 @@ sidebar:
   order: 3
 ---
 
-The rule of this roadmap: **every concept is first taught in exactly one chapter, and other chapters only deepen it**. If you take the application route and skip Part I, the related concepts are previewed first in the [Model Crash Course](/en/guide/app-first/#model-crash-course), and the table below notes this. Chapter pages mark where a concept came from with "(← S2 Transformers and Decoding)" and where it goes deeper later with "(→ S16 Security and Governance)".
+Each concept has one introductory chapter; later chapters build on it. The application route previews model concepts in the [Model Crash Course](/en/guide/app-first/#model-crash-course), so you can skip Part I. The table marks these previews. Chapter references use "(← S2 Transformers and Decoding)" for prior explanations and "(→ S16 Security and Governance)" for later detail.
 
-When you can't find a concept, check here first. The math and statistics tools (chain rule, softmax, log plots, standard error, bootstrap, cosine similarity) don't belong to any chapter; if you've forgotten them, see the [Math Refresher](/en/guide/math-refresher/). The table links the matching section on the relevant rows. For how to read the codes before the chapter titles, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes).
+Use this index to find a concept's chapter. The chain rule, softmax, log plots, standard error, bootstrap and cosine similarity are collected separately in the [Math Refresher](/en/guide/math-refresher/), with section links in the relevant rows. See [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes) for the labels before chapter titles.
 
 ## Models
 

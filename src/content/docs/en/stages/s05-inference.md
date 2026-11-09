@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-Reasoning models (← [S4 Post-training and Reasoning](/en/stages/s04-post-training/)) spend a lot of tokens thinking. This chapter explains where the cost and latency of those tokens come from: how the model runs, why it's slow, and how to make it faster and cheaper. There's only one core idea: when generating text, the bottleneck is usually not compute but how fast the weights can be moved out of memory. Start from there and it all makes sense: why APIs charge more for output than input, why a long prompt delays the first token, and why serving systems bundle many people's requests together.
+Reasoning models (← [S4 Post-training and Reasoning](/en/stages/s04-post-training/)) generate many thinking tokens. This chapter explains their cost and latency, and how to reduce both. Text generation is usually limited by the speed of reading weights from memory. That helps explain output-token prices, the wait before a long prompt produces its first token, and why serving systems batch requests.
 
 ## After this chapter you can
 
@@ -35,11 +35,11 @@ Reasoning models (← [S4 Post-training and Reasoning](/en/stages/s04-post-train
 
 ## Lecture
 
-The big picture first. When you send a request, the model's work has two phases: first it reads the whole input in one go, called **prefill**; then it writes the answer one token at a time, called **decode**. The two phases have completely different bottlenecks, and almost every "why is this so expensive, so slow" can be explained from here. The lecture first walks one request end to end, then explains the reasons behind it section by section.
+A request has two phases: **prefill** processes the input in parallel, then **decode** generates the answer one token at a time. Their bottlenecks differ. Start with a complete request, then examine what determines its cost and speed.
 
 ### ★ One example, end to end
 
-The whole chapter uses the same example. The model and GPU are made up, with numbers picked to be round and easy to work with; real models and hardware have different numbers, but the calculation is exactly the same.
+The chapter uses one fictional model and GPU, with round numbers for easier calculation. Real hardware and models have different values; the calculations work the same way.
 
 | | Setup |
 |---|---|
@@ -78,7 +78,7 @@ In time order:
 
 This 100× gap is the root of why API price lists charge several times more for output than for input. The real price gap isn't 100×, because serving systems decode many people's requests together and share the cost (see [How do you serve many users at once?](#-how-do-you-serve-many-users-at-once)). It also shows why reasoning models are slow: thinking for 5,000 tokens takes 5,000 × 16 ms = 80 seconds of decode alone.
 
-The times above are theoretical lower bounds; in practice it's somewhat slower, for reasons covered in [How do you measure latency and throughput?](#-how-do-you-measure-latency-and-throughput). First, the key question: if the GPU can do 100 trillion operations per second, why does decoding one token still take 16 ms?
+These times are theoretical lower bounds. [How do you measure latency and throughput?](#-how-do-you-measure-latency-and-throughput) explains why real runs are slower. First, why does a GPU capable of 100 trillion operations per second need 16 ms to decode one token?
 
 ### ★ What limits GPU speed?
 
@@ -97,7 +97,7 @@ A GPU has two limits: how fast it can compute (compute), and how fast it can mov
 
 Decode uses only about 1/100 of the compute limit; the rest of the time it's waiting for the weights to arrive. That's where the 16 ms comes from: the speed is set by "weight size ÷ bandwidth" and has almost nothing to do with compute.
 
-**Common misconception: the more "powerful" the GPU, the faster the generation.** Decode speed for a single request depends on memory bandwidth, not TFLOPS. Two GPUs with a 2× compute difference but the same bandwidth generate at almost the same speed for a single user chatting. The same goes for running models locally: when comparing machines, look at memory bandwidth first.
+For one request, decode speed depends on memory bandwidth rather than TFLOPS. Two GPUs with a 2× compute difference but the same bandwidth generate text at nearly the same speed for one user. When choosing a machine to run a model locally, compare memory bandwidth first.
 
 <details class="deep">
 <summary>Going deeper: the roofline formula and what this estimate ignores</summary>
@@ -190,7 +190,7 @@ Two things cap how large it can get: the KV cache filling memory (as computed in
 | SGLang | Same, especially multi-turn conversations and agents | RadixAttention reuses prefixes automatically |
 | llama.cpp, Ollama | Running models locally | Uses the GGUF quantized format; runs on Macs and ordinary computers |
 
-**Common misconception: batching makes a single request faster.** It's the opposite: batching raises the whole system's throughput, and each person's TPOT gets a bit slower. So batch size is a tradeoff between cost and latency.
+Batching raises total throughput, but each request has a slightly longer TPOT. Choose the batch size based on the cost and latency you can accept.
 
 ### ★ How do you measure latency and throughput?
 
@@ -213,7 +213,7 @@ A request's total latency ≈ TTFT + output tokens × TPOT. The example request 
 
 **P50 and P99.** P50 is the median; P99 is the value that 99% of requests are faster than. Of 100 requests, 98 have a TTFT of 0.4 seconds and 2 have 12 seconds: the average is about 0.63 seconds, which looks fine; P50 is 0.4 seconds, but P99 is 12 seconds.
 
-**Common misconception: if average latency is good, users are happy.** Users remember the slowest times, so always report latency as P50 and P99. When TTFT occasionally spikes, the cause is often not the model itself but queueing: a few very long prompts happened to be in prefill ahead of it, or the KV cache was full and new requests had to wait.
+Report P50 and P99 latency as well as the average; users notice unusually slow requests. TTFT spikes often come from queueing behind long prompts in prefill, or waiting for space in a full KV cache.
 
 ### ★ Does speeding up change the output?
 
@@ -235,7 +235,7 @@ First sort speedups into two kinds: those that guarantee the same output as befo
 - **AWQ**: uses activations to find important weight channels (a column of the weight matrix) and protects them.
 - **GGUF**: the file format llama.cpp uses, with many quantization levels; the most common format for running models locally. Most models Ollama downloads by default are 4-bit.
 
-**Common misconception: quantization is "close enough," so it doesn't need checking.** After quantizing, always retest quality on your own eval data; don't assume it's about the same. Different tasks are affected to different degrees. Also, the 4× from 4-bit is only an upper bound; measurements come in lower.
+After quantization, retest quality on your own eval data because the effect varies by task. The 4× speedup from 4-bit is an upper bound; measured gains are lower.
 
 <details class="deep">
 <summary>Going deeper: the speculative decoding acceptance rule and how FlashAttention works</summary>
@@ -258,7 +258,7 @@ The cache only matches identical prefixes: change one character at the beginning
 
 **Constrained decoding.** At each decode step, work out from the JSON schema or grammar "which tokens are allowed right now," set every other token's probability to 0, and choose from the remaining candidates. For example, if the output so far is `{"title": ` and the schema says title is a string, this step can't pick a number or `{`, only a token that can start a string. So as long as generation ends normally, the output follows the grammar. The cost is a bit more computation per step, and it can push the model toward tokens it wouldn't otherwise choose (in practice → [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/)).
 
-**Common misconception: constrained decoding guarantees complete JSON.** If the output is cut off by `max_tokens`, or the model refuses, the result can still be incomplete; your code still has to check it.
+Your code must still check for complete JSON. Even with constrained decoding, `max_tokens` can cut off the output, or the model can refuse.
 
 <section class="deep-section">
 

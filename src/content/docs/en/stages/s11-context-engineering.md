@@ -23,9 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-By now, the system prompt, tool definitions, retrieval results, tool output and conversation history all want a place in the context. Context engineering decides "for this call, what goes in, how much of each, and in what order." This chapter covers how to allocate a token budget, why more can make things worse, how to truncate and summarize when over budget, and how to order the context to get the prompt caching discount.
+A model call may include system instructions, tool definitions, retrieved passages, tool output and conversation history. Context engineering decides which material to include, how much space to give it and how to order it. This chapter covers token budgets, the effects of long context, truncation and summaries, and ordering for prompt caching.
 
-This chapter only deals with assembling the context for a *single call*. What to do when an agent runs many rounds and the context keeps growing (compaction, reset, sub-agent isolation) is in S12 The Agent Loop and Harness.
+This chapter covers context assembly for one call. S12 The Agent Loop and Harness handles growth across agent turns with compaction, resets and sub-agent isolation.
 
 ## After this chapter you can
 
@@ -37,7 +37,7 @@ This chapter only deals with assembling the context for a *single call*. What to
 
 ## Lecture
 
-The big picture first. Before every model call, your code has a **context builder**: it gathers the material available for this call, measures each part's token count, truncates or summarizes whatever is over budget, puts everything in a fixed order and sends it. The sections of this chapter answer its decisions in order:
+Before each call, a **context builder** collects available material, measures its token count, truncates or summarizes parts that exceed their budgets, and assembles the request in a fixed order. It must decide:
 
 1. Which parts there are and how much budget each gets.
 2. Why you can't put everything in (degradation in long contexts).
@@ -45,17 +45,17 @@ The big picture first. Before every model call, your code has a **context builde
 4. What to cut when over budget.
 5. How to order the context so prompt caching kicks in.
 
-The whole chapter uses one example: a single request to the notes assistant.
+The running example follows one request to the notes assistant.
 
 ### ★ How do you budget the context?
 
-Context isn't "put in everything you can get." You budget each part separately. Every part costs money and latency (← [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)) and takes a share of the model's attention.
+Budget each part of the context separately. Every part adds cost and latency (← [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)) and uses some of the model's attention.
 
 One call's context usually includes: **tool definitions** (each tool's name, description and parameter schema, ← S10 Tools and MCP), the **system prompt**, **retrieval results** (← S9 Retrieval and RAG), **tool results** (what came back from the model's previous tool call), **conversation history**, **memory** (user preferences remembered across conversations, → S13 Memory and Personalization), and the user's input for this turn. The context window limit counts the output too, so you also have to leave room for the answer.
 
-Anthropic calls this the "attention budget": a model reading its context has a limited amount of "attention" to spread around, and every extra token slightly dilutes the influence of the others. So the goal is **the smallest set of high-signal tokens that makes the desired outcome most likely**.
+Anthropic describes this limit as an attention budget. Each extra token slightly dilutes the influence of the others. Aim to give the model as few tokens as possible while retaining the information most likely to produce the desired result.
 
-**Example.** Sam tells the notes assistant: "What budget did we settle on in the last meeting with the design team? Create a to-do reminding me to follow up next week." This turn goes like this:
+Sam asks the notes assistant: "What budget did we settle on in the last meeting with the design team? Create a to-do reminding me to follow up next week." The request proceeds as follows:
 
 1. The context builder first retrieves notes using the question (← S9 Retrieval and RAG) and gets the 8 most relevant chunks, about 700 tokens each.
 2. First call: after reading them, the model decides it also needs the quotes, so it calls `notes_search("quote")`. The tool returns 20 results, about 400 tokens each.
@@ -81,7 +81,7 @@ Two parts are over budget, and each is cut down to fit (how to cut is in [What d
 
 Result: each call's input drops from 26,000 to 13,650 tokens, roughly half, and everything the answer needs is still there. Separately, `max_tokens` reserves about 1,000 tokens for the answer.
 
-**Common misconception: only the total matters.** Budgets have to be set per part; otherwise the parts that swell the most (usually tool results and history) crowd out the retrieval results that actually help. In practice, measure first: log each part's token count in the trace. Many systems find on their first measurement that tool definitions or overlong history take up more than half, while the useful retrieval results are only a small slice.
+A total budget alone lets growing tool results and history crowd out useful retrieval results. Log each part's token count in the trace, then assign budgets. Many systems find that tool definitions or long history occupy more than half the context, while the useful retrieved passages take only a small portion.
 
 <details class="deep">
 <summary>Before you build: how to measure each part's token count</summary>
@@ -97,9 +97,11 @@ Result: each call's input drops from 26,000 to 13,650 tokens, roughly half, and 
 
 Fitting in the context window doesn't mean the model uses it well. The longer the input, the more likely the model misses things, gets distracted, or gets led astray by wrong information, usually without raising any error.
 
-**Length by itself hurts performance.** Chroma tested 18 models and found that the longer the input, the less stable the performance, even on simple retrieval and copying tasks; this has been called **context rot**. They also found that distractor passages that are related to the answer but wrong make accuracy worse, and that the less the question's wording resembles the answer passage, the faster performance falls. Two results you met in [S9 Retrieval and RAG](/en/stages/s09-rag/) point the same way: the length a model can actually use is often shorter than advertised (RULER), and the same information is more likely to be ignored in the middle of a long context than at the start or end (Lost in the Middle, Liu et al. 2023).
+Chroma tested 18 models and found less stable performance as input grew, even on simple retrieval and copying tasks. It called this **context rot**. Incorrect distractor passages related to the answer reduced accuracy further, as did less overlap between the question's wording and the answer passage.
 
-**Four common failure modes.** Beyond plain length, Drew Breunig groups the ways context goes wrong into four types. With notes-assistant examples:
+Two studies introduced in [S9 Retrieval and RAG](/en/stages/s09-rag/) found related limits. RULER showed that usable context can be shorter than advertised. Lost in the Middle (Liu et al. 2023) found that the same information is more likely to be missed in the middle of a long context than at either end.
+
+Drew Breunig groups context failures into four types beyond input length. Here is how they can affect the notes assistant:
 
 | Type | What it is | Notes-assistant example | Common fix |
 |---|---|---|---|
@@ -108,9 +110,9 @@ Fitting in the context window doesn't mean the model uses it well. The longer th
 | Confusion | Content irrelevant to this task is included and throws off the model's judgment | 40 unneeded tools are connected, and the model picks the wrong one | Include only the tools this task might use (tool search, ← S10 Tools and MCP) |
 | Clash | The history contains statements that contradict each other, and the model doesn't know which to trust | Early on the user says "My time zone is Chicago," later "I moved to Tokyo," and both are in the history | Overwrite with the newest information instead of keeping both |
 
-So budgets aren't just about saving money: the 13,650-token version in the table may well answer more accurately than the 26,000-token version, because the full text of those 17 quotes and the 11 old turns are mostly distraction.
+The 13,650-token version may answer more accurately than the 26,000-token version, because the 17 full quotes and 11 old turns removed from it are mostly distraction. Removing them also reduces cost.
 
-**Common misconception: "the model supports 200K, so 100K is fine."** The context window is a limit, not a recommended amount. Measure the effective length on your own data (that's what the core exercise does), and measure at different positions, because information in the middle is the easiest to miss.
+A 200K context window does not establish that 100K will work well. Measure usable length on your own data, as in the core exercise, and test information at different positions, especially in the middle.
 
 <details class="deep">
 <summary>Going deeper: Chroma's experimental design and the source's limits</summary>
@@ -123,15 +125,17 @@ So budgets aren't just about saving money: the 13,650-token version in the table
 
 ### ★ How detailed should the system prompt be?
 
-Write the system prompt at the right "altitude" (Anthropic's term): don't turn every situation into a rule, and don't give just one vague expectation either. Anthropic recommends starting with the leanest version and adding only when you see failures.
+Start with a concise system prompt that states the principles and required format. Add instructions when you observe failures. Anthropic calls this level of detail the right "altitude."
 
-**Too low** means hard-coding a pile of if-else rules ("if... then... otherwise...") into the prompt, which is brittle and hard to maintain. For example: "If the user asks about the budget, first search notes containing 'budget'; if nothing turns up, search for 'quote' instead; if there's still nothing..." **Too high** is an instruction like "You are a helpful notes assistant," which gives the model nothing to follow. The right altitude states the principles and the necessary format clearly: "Check the retrieved notes before answering; cite the note's title and date in your answer; if you can't find it, say so instead of guessing; confirm the content before creating or editing a note."
+Hard-coded if-else rules make a prompt brittle and hard to maintain: "If the user asks about the budget, first search notes containing 'budget'; if nothing turns up, search for 'quote' instead; if there's still nothing..." At the other extreme, "You are a helpful notes assistant" gives little guidance. Use principles the model can follow: "Check the retrieved notes before answering. Cite the note's title and date. If you can't find the information, say so rather than guess. Confirm the content before creating or editing a note."
 
-This ties directly into the error analysis from [S8 Evals Methodology](/en/stages/s08-evals/): every instruction you add should map to an observed failure category.
+Use the error analysis from [S8 Evals Methodology](/en/stages/s08-evals/) to decide what to add. Each instruction should address an observed failure category.
 
-**Common misconception: more rules are safer.** With many rules, they tend to conflict (the clash in the previous section) and each one's influence gets diluted. A system prompt with 60 rules can usually be boiled down to a dozen or so principles plus a few examples.
+Rules can conflict, as in the previous section's clash, and dilute each other's influence. A prompt with 60 rules can usually be reduced to a dozen or so principles and a few examples.
 
-**Custom context formats.** Factor 3 of 12-factor-agents (a set of agent engineering principles compiled by HumanLayer, 12 factors plus an appendix), "Own your context window," goes further: you don't have to use the standard messages list. You can serialize events, tool results and state (turn data into a piece of text that can be stored or sent) into a compact format of your own design and put it in a single message. The upside is fewer tokens and full control over what the model sees; the cost is losing the provider's support for the standard format (such as native tool-call parsing), and you have to prove with evals that it's better.
+**Custom context formats.** HumanLayer's 12-factor-agents lists 12 agent engineering principles plus an appendix. Factor 3, "Own your context window," suggests serializing events, tool results and state into your own compact text format within one message. Serialization turns data into text that can be stored or sent.
+
+This gives you control over what the model sees and can reduce tokens, but sacrifices provider support for standard messages, such as native tool-call parsing. Compare the formats with evals before adopting it.
 
 <details class="deep">
 <summary>Before you build: what a custom format looks like</summary>
@@ -145,21 +149,21 @@ Write what happened in this notes-assistant turn as a single message, for exampl
 <question>What budget did we settle on?</question>
 ```
 
-Compared with several messages in the standard format, this drops each message's role markers and JSON wrapper, and compresses "what was searched, how many came back, how many are shown" into one line. Whether it's worth it is decided by comparing the two formats' quality and token counts with an eval (← S8 Evals Methodology).
+This format removes each message's role markers and JSON wrapper, and puts the search query, result count and displayed count on one line. Compare quality and token use with an eval before choosing it (← S8 Evals Methodology).
 
 </details>
 
 ### ★ Load data up front or fetch it when needed?
 
-Data can go into the context before the call, or you can give the model only pointers and tools and let it fetch data when needed. Each has costs, and real systems often mix the two.
+You can load data before a call or give the model references and tools to fetch it as needed. Systems often combine the two approaches based on usage and latency.
 
-**Pre-loading** puts the data that might be needed into the context before the call; that's what S9 Retrieval and RAG does. **Just-in-time** gives the model only lightweight references (file names, queries, links) plus tools, and lets it fetch things when needed; Claude Code exploring a codebase with `grep` (find keywords in file contents) and `glob` (find files by name pattern) works this way. The former is fast and predictable; the latter saves context and handles needs nobody could predict, but it's slower and needs good tools and guidance.
+**Pre-loading** puts potentially relevant data into context before the call, as in S9 Retrieval and RAG. **Just-in-time** loading gives the model references such as file names, queries and links, plus tools to retrieve the content. Claude Code uses `grep` to search file contents and `glob` to find files by name pattern this way. Pre-loading is fast and predictable. Just-in-time loading saves context and handles unanticipated needs, but adds latency and requires well-designed tools and guidance.
 
 Run the numbers for the notes assistant. Pre-loading 8 note chunks every time adds 5,600 tokens to every call, even when the user just says "create a to-do for me" and needs no notes at all. Switch everything to just-in-time, and asking about the budget takes an extra round: the model calls `notes_search` first, and the model is called again once the results come back, adding a round trip of latency, and the second call resends the whole context. So the common compromise: retrieve up front when the question clearly needs notes, and otherwise only provide the tools. Factor 13 in the 12-factor-agents appendix also points out: if you **know** the model will need some data, fetch it up front instead of spending a round letting the model get it.
 
 **Progressive disclosure** is a just-in-time design: give a summary or index first, and expand the details when the model needs them. For example, the notes assistant first provides a list of 200 note titles (about 30 tokens each, 6,000 in total), and the model reads the full text of the ones it picks; including every full note would be 200 × 1,500 = 300,000 tokens. Tool lists work the same way: give a one-line description first and load the full schema only once a tool is picked (tool search, ← S10 Tools and MCP). The skills in [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) are built on this idea.
 
-**Common misconception: just-in-time always saves tokens.** Every extra round of tool calls resends the context before it. When the data is needed almost every time, pre-loading actually uses fewer tokens and is faster.
+Every extra tool round resends the preceding context. If data is needed on almost every request, pre-loading uses fewer tokens and is faster than fetching it just in time.
 
 ### ★ What do you cut when over budget?
 
@@ -176,7 +180,7 @@ Tool results and conversation history are the two fastest-growing parts of the c
 
 **Example: the truncation note.** The table's tool results include only the first 3 in full. If you include just those 3, the model will think there are only 3 quotes. So add one line: "20 results in total. Below are the first 3 in full and the titles of the other 17; to see the full text of one, call `notes_search` with its title."
 
-**Common misconception: truncating is fine, the model will figure it out.** The model only sees what's in the context. Unless you state clearly "truncated, N in total, here's how to get more," it assumes what it sees is everything, and gives a confident but incomplete answer based on that.
+The model can only see the context you provide. State that results were truncated, give the total count, and explain how to fetch more. Otherwise it may treat a partial result as complete and answer confidently from incomplete information.
 
 <details class="deep">
 <summary>Before you build: setting truncation rules</summary>
@@ -190,7 +194,7 @@ Tool results and conversation history are the two fastest-growing parts of the c
 
 ### ★ How do you order the context to hit the cache?
 
-Put what doesn't change first and what changes last, so the repeated beginning can be cached, which is much cheaper and somewhat faster. With Claude, caching only turns on when you mark it yourself.
+Put stable content before changing content so repeated prefixes can be cached, reducing cost and latency. Claude requires an explicit cache marker.
 
 **Why there's a discount.** As the model processes input, it stores each token's intermediate results as the KV cache (← "[KV cache](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more)" in the Model Crash Course; deeper: [S5 Inference and Serving](/en/stages/s05-inference/)). Prompt caching reuses the KV cache of an identical prefix on the server side: as long as the beginning of this request is **exactly the same** as some recent request's, that portion doesn't have to be recomputed.
 
@@ -216,9 +220,9 @@ Parts 1 and 2 are shared by all users; part 4 grows turn by turn within a conver
 
 **With Claude, you turn caching on yourself.** Claude's prompt caching is opt-in: you mark the last block of the prefix you want cached with `cache_control`, and without it there are no cache reads at all. In the ordering above, mark the last block of part 2 (the system prompt) (another way to mark it is in the expandable section below). OpenAI and Gemini cache sufficiently long prefixes automatically, no setup needed. Whichever vendor you use, confirm hits with the usage field in the response (e.g. Claude's `cache_read_input_tokens`).
 
-**Common cache breakers.** A timestamp at the start of the system prompt; a tool list in a different order each time (e.g. when loading from several MCP servers in no fixed order); rewriting earlier history (e.g. rewriting the summary every turn). Any one of these invalidates the cache for everything after it.
+Timestamps at the start of the system prompt, tool lists in changing order, and rewritten history invalidate all cache entries after the change. Loading tools from multiple MCP servers without a fixed order, or rewriting a summary each turn, can cause this.
 
-**Common misconception: OpenAI caches automatically, so Claude does too.** Move the same code to Claude without adding `cache_control` and cache reads stay at 0 forever, with no discount on the bill. When you switch providers, check again how caching is enabled and what the usage field is called.
+When moving code from OpenAI to Claude, add `cache_control`; otherwise cache reads remain at 0 and there is no discount. Check the cache setup and usage-field names whenever you change providers.
 
 <details class="deep">
 <summary>Before you build: caching details by vendor</summary>

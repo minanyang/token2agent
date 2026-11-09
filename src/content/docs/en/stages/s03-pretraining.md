@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-S2 Transformers and Decoding took apart the model's structure. This chapter asks: how are the parameters in that structure learned? The answer is pretraining: having the model practice "predict the next token" on huge amounts of text. The lecture follows a pretraining run in order: prepare the data, run the training loop, use scaling laws to decide how big the model and data should be, split the work across GPUs when the model is too big, and finally evaluate the result. By the end you'll see that much of a base model's abilities and flaws are decided at the data stage.
+S2 Transformers and Decoding explained the model structure. Pretraining learns its parameters by predicting the next token across large amounts of text. This chapter follows a training run through data preparation, the training loop, scaling-law estimates, multi-GPU execution and evaluation. Much of the resulting base model's ability and its flaws can be traced to the data.
 
 ## After this chapter you can
 
@@ -35,18 +35,18 @@ S2 Transformers and Decoding took apart the model's structure. This chapter asks
 
 ## Lecture
 
-The big picture first. The training objective of pretraining is exactly the same as the small model in [S1 Neural Network Basics](/en/stages/s01-neural-networks/): given the preceding text, predict the next token, with cross-entropy as the loss. What's different is scale: parameters go from tens of thousands to billions, and data goes from one book to trillions of tokens. At that scale, four things become important:
+Pretraining uses the same objective as the small model in [S1 Neural Network Basics](/en/stages/s01-neural-networks/): predict the next token from preceding text, using cross-entropy loss. Parameters increase from tens of thousands to billions, and data from one book to trillions of tokens. At that scale, you need to address four issues:
 
 1. **Data**: the model can only learn what's in the data, and it learns the junk and duplicates too.
 2. **The training loop**: it runs tens of thousands of steps over several days and mustn't blow up partway.
 3. **Allocation**: with fixed compute, do you want a big model on less data, or a small model on more?
 4. **Parallelism**: how to split the work when one GPU can't hold it or is too slow.
 
-What you get out is a base model: it's very good at "continuing the text," but it can't yet answer questions well. That's for the next chapter (S4 Post-training and Reasoning).
+The result is a base model that can continue text but cannot yet answer questions well. S4 Post-training and Reasoning covers that next stage.
 
 ### ★ One budget, end to end
 
-One concrete example runs through the whole chapter: **you have 1.2 × 10²⁰ FLOPs of compute and want to train a base model from web data.** Apart from what the formulas compute, the numbers below are illustrative.
+Suppose you have 1.2 × 10²⁰ FLOPs of compute to train a base model on web data. This example runs through the chapter. Apart from calculated results, the numbers are illustrative.
 
 1. **Choose the size**: as you learned last chapter, training compute is about 6·N·D (N is the parameter count, D the number of training tokens; ← [S2 Transformers and Decoding](/en/stages/s02-transformer/#-how-much-compute-and-memory-does-a-model-need)). Using the rule of thumb from this chapter's scaling section, "about 20 tokens per parameter," substitute D = 20N: 6·N·20N = 120N² = C, so N = √(C ÷ 120) = √(10¹⁸) = 1 billion and D = 20N = 20 billion. Check: 6 × 10⁹ × 2 × 10¹⁰ = 1.2 × 10²⁰.
 2. **Prepare the data**: you need 20 billion clean, non-duplicated tokens. After filtering and deduplication, raw web pages often keep only a small fraction, so you start from several times that much raw data.
@@ -91,7 +91,7 @@ Jaccard similarity = shared shingles ÷ all distinct shingles = 3 ÷ 7 ≈ 0.43.
 
 **PII and the mix.** PII is usually handled with rules (regular expressions catching email and phone formats) plus a detection model, replacing matches with placeholders like `<EMAIL>`. The mix has a big effect on what the model is good at. Continuing the example, if the 20 billion tokens are split into 70% web, 15% code, 10% books and papers and 5% math, math is 1 billion tokens. If you only have 500 million distinct math tokens, the model has to see them twice (2 epochs). High-quality but scarce data is often upweighted like this, but repeat it too many times and memorization sets in.
 
-**Common misconception: more data is always better.** For the same compute, replacing half the junk with clean data usually works better than scraping twice as much junk. Many of a base model's flaws (bias, factual errors, memorized personal data) trace back to the data.
+For the same compute budget, replacing half the junk with clean data usually helps more than scraping twice as much junk. Many base-model flaws, including bias, factual errors and memorized personal data, trace back to training data.
 
 <details class="deep">
 <summary>Before you build: why MinHash works, how big the error is, and LSH probabilities</summary>
@@ -129,9 +129,9 @@ For the 40,000-step example: over the first 2,000 steps, rise from 0 to 3 × 10�
 
 **Mixed precision.** bf16 takes only 2 bytes per number (← [S2 Transformers and Decoding](/en/stages/s02-transformer/#-how-much-compute-and-memory-does-a-model-need)), computes fast and saves memory, so most of the forward and backward passes use bf16. But bf16's precision is coarse: near 1.0, adjacent representable numbers are about 0.0078 apart. If a weight is 1.0 and this step adds 0.0001, storing the result in bf16 still gives 1.0; the update simply disappears. So a separate fp32 copy of the weights (master weights) is kept, updates are applied to the fp32 copy, and it's converted to bf16 when needed for computation.
 
-**Loss spikes.** One of the most common headaches in large-scale training is the loss suddenly shooting up. Common responses are rolling back to the latest checkpoint, skipping the offending batch, or lowering the learning rate and continuing. That's why you save checkpoints regularly during training.
+**Loss spikes.** If the loss suddenly rises, you may need to return to a recent checkpoint, skip the offending batch or lower the learning rate. Save checkpoints regularly so you can recover.
 
-**Common misconception: once training finishes, you can just keep going if you want a bit more.** The shape of a cosine schedule is computed in advance from the total step count, and by the end the learning rate is already very low. If you simply continue, either the learning rate is too low to learn anything, or you raise it again and the loss gets pushed up first. So the total token count has to be decided before you start. This also affected the conclusions of the scaling laws (see the next section).
+A cosine schedule uses the planned total step count, so its learning rate is already very low when training ends. Continuing at that rate may teach the model little; raising it again can first push the loss up. Decide the total token count before starting. This choice also affected scaling-law conclusions, as the next section explains.
 
 <details class="deep">
 <summary>Before you build: formulas and training details</summary>
@@ -179,7 +179,7 @@ Per-step accuracy improves steadily, but exact match is nearly 0 in the first ha
 
 Both sides have a point, and the question is still debated. Schaeffer et al. also state explicitly that they aren't claiming models can't have emergent abilities, only that previously claimed examples may be artifacts of the analysis. On the other hand, some tasks really are only useful when fully correct (e.g. the final answer of a multi-step calculation). There, even if the underlying progress is smooth, what users see is still "suddenly got it."
 
-**Common misconception: a chart showing a sudden jump means the model crossed some threshold.** First ask what the scoring method is, then ask whether the jump is still sudden on a continuous metric (such as the probability of the correct answer).
+Before treating a sudden jump in a chart as a capability threshold, check how it was scored. Does the jump remain when you use a continuous metric, such as the probability assigned to the correct answer?
 
 <details class="deep">
 <summary>Going deeper: scaling law formulas and fitting</summary>
@@ -214,7 +214,7 @@ When a model is too big for one GPU, or training is too slow, you split the work
 
 Large training runs usually combine several of these: tensor parallel within a machine, pipeline and data parallel (plus ZeRO) across machines.
 
-**Common misconception: double the GPUs, double the speed.** Every way of splitting needs to move data between GPUs, and the more GPUs, the larger the share of time spent communicating. ZeRO saves memory, but the computation per step stays the same; the saved memory can go to a larger batch, which may raise throughput, while Stage 3 adds communication. These tradeoffs come back on the inference side too (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
+Adding GPUs also adds communication. ZeRO reduces memory use without reducing computation per step, which can let you increase the batch size and throughput. Stage 3 adds communication, however, so twice the GPUs need not give twice the speed. Similar tradeoffs appear during inference (→ [S5 Inference and Serving](/en/stages/s05-inference/)).
 
 <details class="deep">
 <summary>Going deeper: communication, the three ZeRO stages, and pipeline idle time</summary>
@@ -230,7 +230,7 @@ Large training runs usually combine several of these: tensor parallel within a m
 
 ### ★ How do you know if training went well?
 
-After training, you need to judge whether the model is any good. This chapter uses only the two most basic metrics (perplexity and held-out exact match); the full eval methodology is in [S8 Evals Methodology](/en/stages/s08-evals/).
+Start by measuring perplexity and held-out exact match after training. [S8 Evals Methodology](/en/stages/s08-evals/) covers evaluation methods in more detail.
 
 **Perplexity.** Compute perplexity on held-out data the model hasn't seen (← [S1 Neural Network Basics](/en/stages/s01-neural-networks/)). Intuitively it's "how many options the model is torn between on average," and lower is better. The validation set has to be split off before training and deduplicated together with the training data; otherwise it's like testing on questions the model has already seen.
 

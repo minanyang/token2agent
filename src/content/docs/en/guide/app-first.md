@@ -21,7 +21,7 @@ If you want to build AI apps or agents, this route is all you need:
 2. **Model Crash Course** (the second half of this page): the least model knowledge you need to build apps. Ten topics, a few paragraphs each.
 3. **Part II to Part VI** (S6–S19): start at [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) and work through in order to S19 Real Agent Systems and the Capstone.
 
-Part I Models (S1–S5) covers how models work inside: neural networks, Transformers, pretraining, post-training and inference. It's lower-level, uses more math, and is the **optional deep route**. You can finish Part II to Part VI (S6–S19) without it. From S6 LLM APIs and Application Basics on, when a page needs model knowledge it first points back to the crash course sections on this page, then marks the matching Part I chapter with "Deeper:", as in "Deeper: S2 Transformers and Decoding".
+Part I Models (S1–S5) covers neural networks, Transformers, pretraining, post-training and inference. This **optional deep route** uses more math and examines model internals. You can complete Part II to Part VI (S6–S19) without it. Later chapters link to this crash course for the model knowledge they need, then offer a Part I reference such as "Deeper: S2 Transformers and Decoding".
 
 ## Who this is for
 
@@ -32,11 +32,11 @@ Part I Models (S1–S5) covers how models work inside: neural networks, Transfor
 
 If you want to research or train models, or build inference infrastructure, take Part I as well (go from S0 AI Systems Overview through S19 Real Agent Systems and the Capstone in order).
 
-Each chapter's **core exercise** is the main line. **Advanced exercises** are optional long-running projects, split in two: the system project (A6–A19, one step per chapter toward your own AI app) and the model project (M1–M5, training small models in Part I). Advanced exercises are collapsed in Simple mode.
+Core exercises form the main route. Advanced exercises are optional projects that build over several chapters: the system project (A6–A19) develops your AI application, while the model project (M1–M5) trains small models in Part I. Advanced exercises are collapsed in Simple mode.
 
 ## When Part I is worth reading
 
-On the application route, these are the places where you first learn *how* to do something. When you want to know *why*, read the matching chapter (for what the codes mean, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)):
+Learn the application methods first, then use these references when you want the underlying model explanation. See [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes) for chapter labels:
 
 | Where you are | Model knowledge you'll use | Deeper reading |
 |---|---|---|
@@ -52,7 +52,7 @@ For application-related intuition, choose a section rather than a whole model ch
 
 ## Model Crash Course
 
-This section has two parts. "Four things to know now" is what you need before starting S6 LLM APIs and Application Basics. For "Look it up later", knowing the names is enough for now; come back when you need them. Each topic ends with the chapter that goes deeper (Part I, optional).
+Read "Four things to know now" before S6 LLM APIs and Application Basics. The topics in "Look it up later" can wait until you need them. Each topic links to an optional Part I chapter for more detail.
 
 :::tip[How to read this section]
 Read "Four things to know now" first. You can skim "Look it up later" and return when a chapter needs it. You can continue to S6 LLM APIs and Application Basics without completing the model chapters or their exercises first.
@@ -60,19 +60,23 @@ Read "Four things to know now" first. You can skim "Look it up later" and return
 
 ### Four things to know now
 
-Before you start S6 LLM APIs and Application Basics, make sure you understand these four things: the unit a model reads and writes (tokens), how it produces text (covered below in two parts, next-token prediction and sampling), how much it can see at once (context), and what it costs in money and time.
+Before S6 LLM APIs and Application Basics, understand tokens, text generation, context limits, and cost and latency. Text generation is split into next-token prediction and sampling below.
 
 #### Tokens and tokenization
 
-A model doesn't see characters; it sees tokens. A tokenizer uses an algorithm such as BPE to merge character sequences that often appear together into single units, then maps them to integers. An English word is usually one or two tokens; in Chinese, one or two characters often make a token. Whether the same meaning costs more tokens in Chinese than in English (and so costs more and takes more context) depends on the tokenizer: the gap is large for tokenizers with a small vocabulary or an English-heavy one, and much smaller for newer multilingual tokenizers. This matters whenever your users write in a language other than English. API pricing, context limits and speed are all counted in tokens, not words. Many "weird LLM habits", such as miscounting the letters in a word or unreliable arithmetic, come from how text is split into tokens. → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
+A tokenizer uses an algorithm such as BPE to merge frequent character sequences into tokens and map them to integers. An English word is usually one or two tokens; one or two Chinese characters often form a token.
+
+Equivalent text can use more tokens in Chinese than in English, especially with a small or English-heavy vocabulary. Newer multilingual tokenizers narrow that gap. Check this for any languages your users write: API pricing, context limits and speed depend on tokens, not word counts. Tokenization also contributes to letter-counting errors and unreliable arithmetic. → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 
 #### Next-token prediction
 
-An LLM does exactly one thing: given all the tokens so far, it outputs a probability distribution over the next token. Generating an answer means repeating "predict → pick a token → append it → predict again" until done. Conversations, tool calls and JSON output are all text produced by this mechanism, just in different formats. The model itself is billions of numbers called parameters (or weights); training adjusts these numbers so the predictions get better. This also means the model never "looks things up in a database". The facts it states come from statistical patterns learned in training, so it can produce content that sounds plausible but is wrong (hallucination). → [S1 Neural Network Basics](/en/stages/s01-neural-networks/), [S2 Transformers and Decoding](/en/stages/s02-transformer/)
+An LLM predicts a probability distribution for the next token from all preceding tokens. To generate an answer, it repeatedly predicts, picks a token and appends it until completion. Conversation, tool calls and JSON all use this process with different formats.
+
+The model contains billions of parameters, also called weights. Training adjusts them to improve predictions. Generating text does not itself query a database: factual statements come from learned statistical patterns, which can produce plausible but false content, or hallucination. → [S1 Neural Network Basics](/en/stages/s01-neural-networks/), [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 
 #### Sampling and temperature
 
-Once the model outputs a probability distribution at each step, the sampling settings decide which token gets picked. Temperature controls how sharp the distribution is: at low temperature (say 0–0.3) it almost always picks the most likely token and the output is stable; at high temperature unlikely tokens get a chance too, and the output is more varied and more error-prone. Note that a temperature of 0 still doesn't guarantee identical output every time, so when you test LLM code, use the methods from S6 LLM APIs and Application Basics for handling output that may differ from run to run. → [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)
+Sampling settings determine which token to pick from the predicted distribution. A low temperature, such as 0–0.3, concentrates probability on the most likely tokens and makes output more stable. Higher temperature gives less likely tokens more chances, increasing variety and errors. Even 0 does not guarantee identical output. Use the testing methods in S6 LLM APIs and Application Basics to handle variation between runs. → [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)
 
 <details class="deep">
 <summary>Going deeper: top-p, and APIs that don't accept these parameters</summary>
@@ -85,11 +89,13 @@ Once the model outputs a probability distribution at each step, the sampling set
 
 #### Context window
 
-The context window is the most tokens a model can handle at once, counting both the input (system prompt, conversation history, retrieval results, tool output) and the output. A large limit doesn't mean you should fill it: the more you put in, the higher the cost and latency, and the worse the model gets at finding the key information in a long context. Deciding what goes into the context on each call is the subject of S11 Context Engineering; RAG, taught in S9 Retrieval and RAG, is the way to include only the relevant parts. → [S9 Retrieval and RAG](/en/stages/s09-rag/), [S11 Context Engineering](/en/stages/s11-context-engineering/)
+The context window limits the total tokens in a call, including the system prompt, conversation history, retrieved passages, tool results and output. More input costs more, adds latency and can make important information harder to find. S11 Context Engineering covers choosing what to include; S9 Retrieval and RAG retrieves only relevant passages. → [S9 Retrieval and RAG](/en/stages/s09-rag/), [S11 Context Engineering](/en/stages/s11-context-engineering/)
 
 #### Cost and latency basics
 
-API cost is roughly "input tokens × input price + output tokens × output price", and the output price is usually several times the input price. Cached input is usually cheaper (see "KV cache" below for why). Reasoning models write out a thinking process before they answer; these thinking tokens are generally billed as output and often outnumber the final answer. Latency is roughly TTFT (the time before the first token appears, which grows with input length) plus "output tokens × time per token", so shortening the output usually cuts latency more than shortening the input. Common ways to save money and time: switch to a smaller model, cap the output length, keep the start of the prompt fixed to raise the cache hit rate, and stream so users see content sooner. From S6 LLM APIs and Application Basics on, log the token counts, cost and latency of every call; every later optimization is based on them. → [S5 Inference and Serving](/en/stages/s05-inference/), [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)
+API cost is roughly "input tokens × input price + output tokens × output price". Output usually costs several times more per token, and cached input usually costs less; see "KV cache" below. A reasoning model's thinking tokens are generally billed as output and often outnumber its answer tokens.
+
+Latency is roughly TTFT, the wait for the first token, plus "output tokens × time per token". TTFT grows with input length, but shortening output usually reduces total latency more. Smaller models, output limits and stable prompt prefixes can reduce cost or latency; streaming lets users see content sooner. Starting in S6 LLM APIs and Application Basics, log tokens, cost and latency for each call so you can measure later optimizations. → [S5 Inference and Serving](/en/stages/s05-inference/), [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)
 
 ### Look it up later
 
@@ -97,7 +103,7 @@ Pages from S6 LLM APIs and Application Basics on link back to these five topics 
 
 #### Logits and softmax
 
-Here's what "outputs a probability distribution" means concretely: the model's last layer outputs one score for each token in the vocabulary, called a logit. Softmax turns these scores into probabilities that sum to 1; a higher score means a higher probability. Temperature is just dividing the logits by T before the softmax. Some APIs return logprobs, the logarithms of these probabilities, and S8 Evals Methodology uses them to see how "sure" the model is. For a worked example by hand, see the [Math Refresher](/en/guide/math-refresher/#logits-softmax-and-temperature). → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
+The final model layer assigns each vocabulary token a score called a logit. Softmax converts the scores to probabilities summing to 1, with higher scores producing higher probabilities. Temperature divides logits by T before softmax. Some APIs return the logarithms of these probabilities, or logprobs, which S8 Evals Methodology uses to assess confidence. For a calculation, see the [Math Refresher](/en/guide/math-refresher/#logits-softmax-and-temperature). → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 
 **When to come back**: when S8 Evals Methodology uses logprobs to judge how sure the model is.
 
@@ -121,7 +127,9 @@ The messages you send to an API (system, user, assistant, tool calls and tool re
 
 #### What fine-tuning can and can't do
 
-Fine-tuning is good for changing a model's **behavior**: a fixed output format, a particular tone or style, performance on one narrow task, or distilling a large model's abilities into a smaller, cheaper one. It's not good for adding **knowledge** that changes: teaching new facts by fine-tuning is usually less reliable than RAG, you have to retrain whenever the data changes, and it can't cite its sources. Ordinary SFT on a small dataset also can't really teach reasoning the model couldn't already do (reasoning ability mostly comes from large-scale RL, or from SFT on many solutions written by a strong model, which is distillation; see S4 Post-training and Reasoning), and it can make other abilities worse. In practice the order is: get the prompt right first, use RAG for knowledge problems, and consider fine-tuning last. And you need eval data first, or you can't tell whether fine-tuning helped. → [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S9 Retrieval and RAG](/en/stages/s09-rag/)
+Fine-tuning adjusts **behavior**, such as output format, tone, style or performance on a narrow task. It can also distill a large model into a smaller, cheaper one. For changing **knowledge**, RAG is usually more reliable: updating facts through fine-tuning requires retraining, and the model cannot cite the source of its answer.
+
+SFT on a small dataset generally cannot teach reasoning the model could not already do. That usually requires large-scale RL or SFT on many solutions from a strong model, known as distillation; see S4 Post-training and Reasoning. Fine-tuning may also degrade other abilities. Improve the prompt first, use RAG for knowledge needs, and consider fine-tuning last. Prepare eval data before starting so you can check the result. → [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S9 Retrieval and RAG](/en/stages/s09-rag/)
 
 **When to come back**: when S9 Retrieval and RAG has you decide between prompting, RAG and fine-tuning.
 

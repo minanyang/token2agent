@@ -23,9 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-S6 LLM APIs and Application Basics got you *connected* to the model; this chapter makes its output *usable*. Your code needs results that are stable, parseable and verifiable, not a block of text that looks different every time. The lecture covers four things in order: how to write prompts, how to get output in a fixed format, how to manage prompts like code, and five workflow patterns that don't need an agent.
+After connecting to a model in S6 LLM APIs and Application Basics, your code needs output it can parse and verify reliably. This chapter covers prompt writing, fixed output formats, managing prompts as code, and five workflow patterns that do not need an agent.
 
-For many needs, this chapter is as far as you have to go. First learn to make things reliable with fixed flows, then decide whether to hand control to the model (→ [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
+A fixed workflow is enough for many applications. Make it reliable before deciding whether the model needs control over the next step (→ [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 
 ## After this chapter you can
 
@@ -37,7 +37,7 @@ For many needs, this chapter is as far as you have to go. First learn to make th
 
 ## Lecture
 
-The big picture first. This chapter uses the **notes assistant** example that runs through the course. When its user, Sam, types a message, the system handles it like this:
+When Sam sends the **notes assistant** a message, it follows these steps:
 
 1. **Classify**: decide whether the message is "ask a question", "add a note" or "retag notes" (routing, the last section).
 2. **Apply the matching prompt**: each route has its own prompt file with a name and version number (prompt as code).
@@ -46,7 +46,7 @@ The big picture first. This chapter uses the **notes assistant** example that ru
 
 If you're not writing code, you can skip the Python / TypeScript snippets; do read the prompt, note and JSON examples.
 
-The order of these four steps is decided entirely by your code; the model only supplies the content of each step, so this is a workflow, not an agent (← [S0 AI Systems Overview](/en/stages/s00-big-picture/)). Each section below zooms in on one piece. Sam's tag vocabulary is fixed at 5 tags: `design`, `marketing`, `budget`, `book-notes`, `project-a`. Every later chapter that mentions note tags uses this set. The raw note for this chapter is this one from the 10/14 design team meeting (today is 2026-11-07):
+Your code fixes the order of these four steps, while the model supplies their content. This makes it a workflow (← [S0 AI Systems Overview](/en/stages/s00-big-picture/)). Sam uses 5 tags: `design`, `marketing`, `budget`, `book-notes`, `project-a`. Later chapters use the same set. Here is the note from the 10/14 design team meeting used in this chapter; today is 2026-11-07:
 
 ```text
 10/14 design team meeting. Sam, Amy, Ben attended. Q4 redesign budget capped at $48,000; Sam owns tracking it. Next meeting 10/28.
@@ -91,7 +91,7 @@ The rewritten prompt has the five ingredients common to good prompts: the task, 
 
 **Assistant prefill** is another old trick: you write the beginning of the assistant's reply yourself (for example a `{`) and let the model continue from there, forcing JSON out of it. It has nothing to do with prefill in inference (the step where the model processes the whole input at once). Some newer models no longer support assistant prefill; old prompts that depend on it should switch to the structured output described below.
 
-**Common misconception: longer prompts are better.** The more rules you add, the more likely they conflict, and the one that matters gets diluted. Every rule you add should correspond to a failure you've actually seen.
+Adding rules can create conflicts and dilute important instructions. Each new prompt rule should address a failure you have observed.
 
 <details class="deep">
 <summary>Going deeper: three sources of few-shot bias, and calibration</summary>
@@ -114,7 +114,7 @@ What this means in practice:
 - **Change one word in a prompt, run the regression again.** The next chapter shows how to turn that into an eval (→ [S8 Evals Methodology](/en/stages/s08-evals/)).
 - **Sampling randomness gets mixed into the results too.** Use the default sampling and average several runs per condition (for why, see [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/#limits-on-sampling-parameters)).
 
-**Common misconception: once you find the best format, you're done.** The best format is the best for *this model and this data*. Switch models or let the data distribution shift, and the ranking may reshuffle completely.
+A format that works best for one model and dataset may rank differently after a model change or a shift in the data distribution. Retest it when either changes.
 
 ### ★ How do you get output in a fixed format?
 
@@ -199,7 +199,7 @@ Step 1 is structured output, just with the tool's parameter format as the schema
 
 **To the model, it's all text.** Tool definitions and tool calls are turned by the chat template into text or special tokens the model can see: the server joins the messages into one long text and marks roles and boundaries with special markers (← [Model Crash Course, "Chat template"](/en/guide/app-first/#chat-templates); deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)). Tool definitions usually go into the system prompt, so how well a tool description is written affects whether the model picks the right tool (→ [S10 Tools and MCP](/en/stages/s10-tools-mcp/)).
 
-**Common misconception: the model executed something.** It can't touch your database, and it doesn't know whether the search succeeded unless you put the result back. Conversely, the arguments the model outputs may be wrong or malicious, so your code must validate them before executing (→ [S16 Security and Governance](/en/stages/s16-security/)).
+The model cannot access your database directly or know whether a search succeeded unless you return its result. Its tool arguments may be wrong or malicious, so validate them in code before execution (→ [S16 Security and Governance](/en/stages/s16-security/)).
 
 <details class="deep">
 <summary>Before you build: tools as another way to get structured output</summary>
@@ -227,7 +227,7 @@ Write the name and version into the trace on every call (← [S6 LLM APIs and Ap
 
 **Migrating between models is routine.** Models get retired, and cheaper new versions come out. Before switching, use the record / replay fixtures from S6 LLM APIs and Application Basics to rerun the same inputs on the new model and compare them one by one. Say 7 of 60 inputs produce different output: 4 better, 2 worse, 1 just worded differently. What kind of cases the 2 worse ones are decides whether you fix the prompt before switching.
 
-**Common misconception: the new model is stronger, so just switch.** A higher average score doesn't mean every one of your prompts gets better; the format sensitivity from the earlier section flares up when you switch models too.
+Retest your prompts when switching models. A higher average score does not guarantee each prompt will improve, and format sensitivity may change too.
 
 ### ★ What if one call isn't enough?
 
@@ -251,7 +251,7 @@ A small model is usually enough for classification. Routing lets each route's pr
 
 **How to choose.** Start with the simplest thing: if one call does the job well, don't split it. When you do split, first ask "can the steps be written down in advance?" If yes, use chaining or routing; if the subtasks are unrelated, run them in parallel; only when even the number of steps can't be known in advance do you use orchestrator-workers.
 
-**Common misconception: orchestrator-workers is the same thing as an agent.** It's still a workflow: the model does the breaking down, but the "break down → assign → combine" flow is fixed in code and runs only once. In an agent, the model decides what to do next, step by step, in a loop (→ [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
+Orchestrator-workers is a workflow: the model splits the task, but code fixes the sequence of splitting, assignment and combination to one round. An agent uses a loop in which the model chooses each next step (→ [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 
 Evaluator-optimizer appears here for the first time; LLM-as-judge in [S8 Evals Methodology](/en/stages/s08-evals/) and optimization in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) take it further. Orchestrator-workers becomes the basis of multi-agent systems in [S15 Multi-agent Systems](/en/stages/s15-multi-agent/).
 

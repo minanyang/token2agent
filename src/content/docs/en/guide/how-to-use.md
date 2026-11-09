@@ -8,7 +8,7 @@ sidebar:
   order: 1
 ---
 
-Every chapter of this roadmap has its own lecture: you can learn the chapter from the page without opening an outside link. Each chapter ends with Further reading, drawn from 30+ sources (university courses, textbooks, industry guides) for when you want to go deeper; the full list is in [Sources](/en/reference/sources/).
+Each chapter has a lecture you can read without opening external resources. Further reading offers optional material from 30+ university courses, textbooks and industry guides. The complete list is in [Sources](/en/reference/sources/).
 
 ## Choose a route
 
@@ -18,11 +18,11 @@ Every chapter of this roadmap has its own lecture: you can learn the chapter fro
 | Also understand how models work inside, or train models or build inference infrastructure | Full route: from S0 AI Systems Overview through S19 Real Agent Systems and the Capstone, in order |
 | Understand what AI systems do before writing any code | **Concepts route**: [S0 AI Systems Overview](/en/stages/s00-big-picture/) → [Model Crash Course: Four things to know now](/en/guide/app-first/#four-things-to-know-now) → Part II to Part VI (S6–S19), reading the lectures in Simple mode and doing Try it first and the self-checks |
 
-The application route matches what the industry calls an AI engineer: building products on existing models rather than training them from scratch. The full route extends toward ML engineering and research, where you train and modify models yourself.
+The application route prepares you to build products with existing models, often called AI engineering. The full route adds model training and modification for ML engineering and research.
 
-The first two are **hands-on routes** and involve code: you need the basics of one programming language (variables, functions, loops), and should be able to call an HTTP API and read JSON. The third, the **concepts route**, needs no programming: read the lectures and do Try it first and the self-checks, and you will understand how AI systems work. When you want to build, pick up the core exercises. Look up unfamiliar words in the [glossary's quick reference](/en/reference/glossary/#quick-reference).
+The two **hands-on routes** require basic programming: variables, functions and loops, plus HTTP API calls and JSON. The **concepts route** requires no programming. Read the lectures, Try it first and self-check sections, then return to core exercises when you want to build. Look up unfamiliar terms in the [glossary's quick reference](/en/reference/glossary/#quick-reference).
 
-Part I Models (S1–S5) is lower-level, uses more math, and is the optional deep route. You can finish Part II to Part VI (S6–S19) without it. From S6 LLM APIs and Application Basics on, when a page needs model knowledge it first points back to the [Model Crash Course](/en/guide/app-first/#model-crash-course), then marks the matching Part I chapter with "Deeper:", as in "Deeper: S2 Transformers and Decoding". If you're unsure, start with the application route and come back to Part I when you find yourself asking why.
+Part I Models (S1–S5) is optional and uses more math. You can complete Part II to Part VI (S6–S19) without it. Later chapters first link to the [Model Crash Course](/en/guide/app-first/#model-crash-course) for required background, then offer Part I references such as "Deeper: S2 Transformers and Decoding". If unsure, start with the application route and return to model internals as needed.
 
 ## How to read the codes
 
@@ -37,7 +37,7 @@ Chapters and advanced exercises are labeled with a letter and a number:
 
 S6–S19 means a range.
 
-Exercises come in two kinds: **core exercises** are the main line and check only the chapter's central idea; **advanced exercises** are an optional long-running project, one step of the system project or the model project. See [Chapter structure](#chapter-structure).
+**Core exercises** check each chapter's central concept and form the main route. **Advanced exercises** build optional system or model projects across chapters. See [Chapter structure](#chapter-structure).
 
 The text names a single chapter or step by code and title, like "S6 LLM APIs and Application Basics" or "A10 Toolset and MCP Server". A range names its part or project, like "Part I Models (S1–S5)" or "system project A6–A18".
 
@@ -48,7 +48,7 @@ The switch at the top of the page sets the reading mode. Your choice is remember
 - **Simple** (default): the main line only. Every chapter starts from why you need the idea, then walks one example through step by step (from S6 LLM APIs and Application Basics on, it is always the same notes assistant), with small worked examples and common misconceptions. If this is your first time and you have no background, the main line is enough.
 - **Deep**: also opens Before you build (implementation details), Going deeper (derivations and more on the underlying mechanisms), optional topics (○), advanced exercises and Further reading. Use it when you know the basics and want more.
 
-In Simple mode you can still open any collapsed block on its own: click the title of a Before you build or Going deeper block, or press Show this section on an optional topic or advanced exercise. Only that block opens; the site's mode stays as it is.
+In Simple mode, click a Before you build or Going deeper title to open that block. For optional topics or advanced exercises, press Show this section. These controls expand one block without changing the site's reading mode.
 
 ## Chapter structure
 
@@ -86,11 +86,11 @@ In Simple mode you can still open any collapsed block on its own: click the titl
 - **[System project A6–A19](/en/projects/system-thread/)**: pick an application you care about; each chapter grows one capability, and you finish it in S19 Real Agent Systems and the Capstone. This is the one for the application route.
 - **[Model project M1–M5](/en/projects/model-thread/)**: Python, from autograd to post-training a small model and an inference server. It goes with Part I Models (S1–S5), for those on the full route.
 
-Core exercises do not require the advanced projects, but their chapter prerequisites still apply. For example, the S14 core exercise reuses the agent, tasks and graders from the S12 core exercise. Doing only the core exercises still takes you through the whole roadmap, and the last one is the core exercise of S19 Real Agent Systems and the Capstone. That chapter's advanced exercise is the A19 capstone, which needs the system built up through system project A6–A18.
+Core exercises do not depend on advanced-project artifacts, but chapter prerequisites still apply. For example, S14 reuses the agent, tasks and graders from S12's core exercise. You can finish the roadmap through the core exercise in S19 Real Agent Systems and the Capstone. Its advanced A19 capstone requires the system built in A6–A18.
 
 ## Sample study plan: the application route plus key system project steps
 
-For people whose goal is to build and evaluate AI apps and agents. On top of the application route's lectures and core exercises, pick the most important system project steps. For chapters you already know, just do the self-check; if you can answer it, move on.
+To build and evaluate AI apps and agents, combine the application route's lectures and core exercises with selected system project steps. For familiar chapters, answer the self-check first and move on if you can.
 
 | Stage | Contents |
 |---|---|

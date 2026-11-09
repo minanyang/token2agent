@@ -23,7 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-S10 Tools and MCP let the model call tools, but each call is a single step. This chapter answers: how do you let the model work through a multi-step task one step after another, safely, with a reliable way to stop and without spiraling when something goes wrong? The core of an agent is just a loop: the model decides the next step, your code executes it, the result goes back into the context, and this repeats until the model says it's done (mini-SWE-agent from S0 AI Systems Overview is exactly this loop). The code wrapped around the loop that makes it reliable is called the harness: permissions, stop conditions, error handling, state, long-horizon context management, skills. Every harness component encodes an assumption about "what the model can't do on its own," so this chapter also uses a minimal agent eval from the start to judge whether a change helps.
+An agent repeats the tool-calling process from S10 Tools and MCP: the model chooses a step, your code executes it, and the result returns to context until the model declares completion. This is the loop you saw in mini-SWE-agent in S0 AI Systems Overview.
+
+The **harness** adds permissions, stopping conditions, error handling, state, long-running context management and skills. Each component addresses a limitation of the model. Use a minimal agent eval from the start to check whether these choices make the agent safer and more reliable, including when it fails.
 
 ## After this chapter you can
 
@@ -36,7 +38,7 @@ S10 Tools and MCP let the model call tools, but each call is a single step. This
 
 ## Lecture
 
-Start with the big picture. An agent has two parts. The **model** decides the next step (which tool to call with what arguments, or declaring it's done). The **harness** is all the rest of the code: it actually runs tools, checks permissions, records every step and decides when to stop (see the [Glossary](/en/reference/glossary/)). The whole loop has just four steps:
+The **model** chooses a tool and arguments or declares completion. The **harness** is the surrounding code that runs tools, checks permissions, records steps and decides when to stop (see the [Glossary](/en/reference/glossary/)). The loop has four steps:
 
 1. Send the current messages (system prompt, tool definitions, user request, and every tool call and result so far) to the model.
 2. The model replies. If the reply contains tool calls, the harness runs a permission check first, then executes them.
@@ -68,7 +70,7 @@ A few things stand out in this table:
 
 This way of interleaving "think a step, take a step, look at the result" is called **ReAct** (Yao et al. 2023). Two other common variations: **plan-and-execute** has the model write out a full plan first and then carry it out step by step, which suits tasks whose steps are clear up front; **reflection** (e.g. Reflexion, Shinn et al. 2023) has the model write a critique after a failure and retry with that critique in hand. All three run on the same loop underneath.
 
-**Common misconception: an agent is a special kind of model.** The model in the table above is an ordinary API called over and over; the ability to do multi-step work comes from the loop and the harness. Frameworks (LangGraph, the OpenAI Agents SDK and others) just wrap this loop, and in doing so decide for you how state is stored, whether you can pause between choosing a tool and running it, where hooks and permissions go, what a trace looks like, and how easy it is to switch models. Write it yourself once, and afterwards you'll know what any framework is doing underneath.
+The model is an ordinary API called repeatedly. The loop and harness let it perform a multi-step task. Frameworks such as LangGraph and the OpenAI Agents SDK package this loop with choices about state storage, pausing before tool execution, hooks, permissions, traces and model switching. Implementing it once helps you assess those choices.
 
 This is the code version of the four steps above; skip it if you're not writing code. The skeleton is about a dozen lines (pseudocode):
 
@@ -131,7 +133,7 @@ The tool has to write its result and this key in the same transaction (or pass t
 
 **Where tools run.** Tools that execute code or commands should be locked in a sandbox (← [S10 Tools and MCP](/en/stages/s10-tools-mcp/): a container, only the working directory mounted, no network by default). With an agent, the model takes many steps in a row, and one manipulated step can be amplified by the next, so the sandbox has to cover everything the whole agent can touch, not just a single tool. In the core exercise, each run starts from a clean copy of the original folder. That's the simplest data isolation: however badly the agent mangles things, the original data is untouched. But it doesn't limit what the agent can read, the network or command execution, so it's no substitute for a sandbox, and the tools also have to keep paths inside the copy.
 
-**Common misconception: a harness is just a longer prompt.** Every component above is code behavior the model can't see and can't get around. The system prompt can tell the model what the rules are, but the harness has to enforce them.
+The system prompt can explain a rule, but the harness must enforce it. These components operate in code outside the model's view and control.
 
 <details class="deep">
 <summary>Going deeper: separating the brain from the hands, stateless reducers</summary>
@@ -166,7 +168,7 @@ The last row is this chapter's security checkpoint: in every mode, actions that 
 
 When you ask, the confirmation screen has to show what will actually happen: who it goes to, the subject and body, whether it can be recalled; for a deletion, which files (list and count) and whether it can be undone. Asking only "Are you sure?" is the same as not asking (confirmation UI design → S17 Product and AI UX). Add one more rule for batch actions: when one action affects more than N items (say 10), ask first in every mode.
 
-**Common misconception: writing "ask me before sending email" in the system prompt is a permission.** That's a request. The model may forget it or have it overridden by prompt injection (← S9 Retrieval and RAG). Only a check in code, at a layer the model can't get around, counts as a restriction. The fuller threat model and the classifier design for auto mode are in S16 Security and Governance.
+A prompt asking for approval before sending email can be ignored or overridden by prompt injection (← S9 Retrieval and RAG). Enforce permissions in code the model cannot bypass. S16 Security and Governance covers the fuller threat model and auto-mode classifier.
 
 ### ★ When should the loop stop?
 
@@ -189,7 +191,7 @@ Factors #5–#9 of [12-factor-agents](https://github.com/humanlayer/12-factor-ag
 - **#8 Own your control flow**: some tool calls (asking for clarification, deploying) should break out of the loop and wait, not execute directly.
 - **#9 Compact errors into the context window**: include only a concise error message, not a whole stack trace, and pair it with the failure counter above.
 
-**Common misconception: hitting the step limit counts as done.** A run that stops at the limit must be recorded as a failure, with the reason. Many agents seem to "have answered" when they've actually produced a half-finished result cut off by the limit.
+Record a run stopped by the step limit as a failure, with its reason. A response produced at that point may be an unfinished result.
 
 ### ★ What if the context won't fit?
 
@@ -200,7 +202,7 @@ The example above has only 6 rounds. If Sam asks to "organize all of my roughly 
 - **Compaction**: when the context is nearly full, shorten the earlier conversation and continue with the shortened version. The lightest form is tool-result clearing: clear out tool output from long ago and keep only "what was called." The article calls it the safest, lightest-touch form of compaction. If that's not enough, have the model summarize the earlier conversation. The hard part is deciding what to keep.
 - **Sub-agent isolation**: hand a stretch of exploration to a **sub-agent**. A sub-agent is another agent loop that the main agent starts through a tool call, with its own clean context; when it's done, it returns only a summary of about 1,000–2,000 tokens. For example, the main agent starts 4 sub-agents, each reads 50 notes (about 75,000 tokens) and returns 1,500 tokens of key points; the main agent's context grows by only about 6,000 tokens instead of 300,000.
 
-**Common misconception: sub-agents are free parallel speedups.** Each sub-agent has to read its material itself, so total tokens are usually higher. What sub-agents save is **the main agent's context**, not cost. Dividing and coordinating work among multiple agents is covered in S15 Multi-agent Systems.
+Each sub-agent reads its own material, so total token use is usually higher. Sub-agents reduce the main agent's context, but do not necessarily reduce cost. S15 Multi-agent Systems covers how to divide and coordinate the work.
 
 <details class="deep">
 <summary>Going deeper: structured notes and context resets</summary>
@@ -229,7 +231,7 @@ For the notes assistant: write "weekly report format" as a skill whose descripti
 
 A skill can also include executable scripts, so deterministic work (like converting a date into the range for "last week") is done by code instead of generated token by token by the model.
 
-**Common misconception: a skill is just documentation.** It carries both instructions and code, which makes it a supply-chain risk too: install skills only from trusted sources, and read third-party skills before using them (→ S16 Security and Governance).
+Skills can include instructions and code, so they carry supply-chain risk. Install them only from trusted sources, and read third-party skills before using them (→ S16 Security and Governance).
 
 ### ★ Can you find data without an index?
 
@@ -239,11 +241,11 @@ You give the agent tools like `glob` (find file names), `grep` (find keywords) a
 
 It suits **corpora that are small or have clear identifiers**, like a code repo (function names and error messages can be matched exactly) or a project's notes folder. The cost is more tool calls, more latency and more tokens.
 
-**Common misconception: agentic search replaces vector RAG.** When the corpus is large and users phrase things differently from the source (synonyms, paraphrases), grep misses: searching "budget" won't find a note that only says "funding." That's when the embeddings and hybrid retrieval from S9 Retrieval and RAG are still necessary. In practice the two are often used together.
+Agentic search can miss relevant text when the corpus is large or users use different wording. A grep search for "budget" misses a note that says only "funding." Embeddings and hybrid retrieval from S9 Retrieval and RAG remain useful, and systems often combine these methods.
 
 ### ★ How do you pick up work across sessions?
 
-For tasks that take several sessions to finish, the key is to keep progress **outside** the context so every new session can pick up the work. Two Anthropic articles describe several patterns:
+Store progress outside the context so a new session can resume a long task. Two Anthropic articles describe several ways to do this:
 
 - **Initializer / worker** ("Effective harnesses for long-running agents"): the first session only does setup: it writes a startup script `init.sh` (a script that brings up the development environment when run), a progress file and a feature list, and makes the first git commit (a commit is a saved version of the code). Every later session first reads the progress file and the git log (the history of commits), runs a basic test, builds just **one** feature, then commits and updates the progress file.
 - **The feature list as external state**: the feature list is JSON rather than Markdown (the model is less likely to tamper with it). Each item has a `passes` field, all failing at first, and the prompt tells the worker to change only this field. This guards against "declaring it done when it's half-finished."
@@ -256,7 +258,7 @@ For tasks that take several sessions to finish, the key is to keep progress **ou
 
 Every component assumes "the model can't do this on its own," and that assumption may stop holding as models improve. So adding or removing a component needs numbers.
 
-One line from "Harness design for long-running apps" is worth remembering: every component in a harness encodes an assumption about what the model can't do on its own. In the article, the context reset (clearing the context and handing off to a new agent through a handoff document), added because the model rushed to wrap up, was removed once models improved; the sprint structure was removed for the next model generation too, while the planner and evaluator stayed.
+"Harness design for long-running apps" describes how harness requirements change with model ability. Its context reset cleared context and passed a handoff document to a new agent to address premature completion. The authors removed it when models improved, then removed the sprint structure in the next generation. The planner and evaluator remained.
 
 A minimal agent eval needs just three things (← [S8 Evals Methodology](/en/stages/s08-evals/)):
 

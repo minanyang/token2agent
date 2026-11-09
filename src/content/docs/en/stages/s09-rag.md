@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-In S6 LLM APIs and Application Basics, the notes assistant stuffed the 20 most recent notes into the system prompt (about 30,000 tokens), and every request paid for those input tokens. S8 Evals Methodology gave you a way to measure quality. This chapter answers: how do you put only "the few passages relevant to this question" into the context, have the model answer from them with sources, and use those eval methods to show quality didn't drop? That's retrieval-augmented generation (RAG).
+In S6 LLM APIs and Application Basics, each request included the 20 most recent notes, about 30,000 input tokens. Retrieval-augmented generation (RAG) instead retrieves passages relevant to the question and asks the model to answer from them with sources. Use the eval methods from S8 Evals Methodology to check that this smaller input preserves quality.
 
 This chapter is also the first 🔒 security checkpoint: once your system reads documents someone else wrote, the text in those documents can try to manipulate your model.
 
@@ -45,7 +45,7 @@ The big picture first. RAG has two phases:
 | Indexing | Ahead of time, whenever documents are added or changed | Parse documents → split into small passages (chunks) → compute an embedding for each chunk and build a keyword index |
 | Answering | Every time the user asks something | (Rewrite the query) → retrieve the most relevant chunks → (rerank: reorder with a more accurate model) → assemble the prompt → generate an answer with citations |
 
-The model itself doesn't change; only what goes into the context on each call does. So RAG quality comes down to two things: **whether the retrieved passages are the right ones**, and **whether the model answers faithfully from them**. This chapter evaluates those two things separately.
+RAG changes the context sent on each call, leaving the model unchanged. Evaluate retrieval and generation separately: did you retrieve the right passages, and did the model answer faithfully from them?
 
 ### ★ One question, end to end
 
@@ -79,7 +79,7 @@ If you don't write code, you can skip the Python/TypeScript code; do read the pr
 
 7. **Generate**: the model answers "In the 10/14 meeting with the design team, the Q4 redesign budget was capped at $48,000 [1]", and your code turns [1] into a clickable source.
 
-The input drops from about 30,000 tokens to about 800 (2 chunks × 300 plus about 200 for the rules and question), under 3% of the original. c07 got included even though it's irrelevant, and that's normal: retrieval would rather fetch a bit too much and let the model and rerank filter. **Common misconception: high similarity means the answer is in there.** c07 and the question both talk about "budget", so its score of 0.8 isn't low, but it can't answer the question. That's why retrieval quality needs its own measurement.
+Input falls from about 30,000 tokens to about 800 (2 chunks × 300 plus about 200 for rules and the question), under 3% of the original. Retrieval can fetch extra passages for the model and rerank to filter. Here, c07 is irrelevant despite its similarity score of 0.8: it shares the word "budget" with the question but cannot answer it. Measure retrieval quality separately to catch this.
 
 ### ★ How do documents become searchable text?
 
@@ -117,7 +117,7 @@ If the last sentence is its own chunk, there's no telling what "it" refers to or
 
 **Contextual retrieval** (proposed by Anthropic) targets exactly this loss of context: at indexing time, have an LLM read the whole document and write a sentence or two of context for each chunk, prepend it to the chunk, and then compute the embedding and build the keyword index. The last sentence above would become "This passage is from the Q4 redesign note, about the budget from the 10/14 design team meeting. It's 20% more than Q3." The cost is one LLM call per chunk at indexing time (prompt caching brings it down, → [S11 Context Engineering](/en/stages/s11-context-engineering/)).
 
-**Common misconception: there's a "best chunk size."** It depends on what your documents and queries look like. Compare with evals; don't copy someone else's number.
+Choose chunk size by comparing eval results on your documents and queries. A size that works for another dataset may not work for yours.
 
 <details class="deep">
 <summary>Going deeper: contextual retrieval numbers and limits</summary>
@@ -192,7 +192,7 @@ c12 is only 2nd in BM25, but it's near the top on both sides, so it comes first 
 
 **Rerank** is a second stage: fetch the top 50 with a cheap method, then reorder them with a more expensive, more accurate model and keep only the top few. The common choice is a **cross-encoder** ("cross" because the query and passage are read together): it reads the query and passage into the model as one input and outputs a relevance score directly. It can see word-by-word correspondences between the two, so it's more accurate than "embed each separately, then compare," but it runs the model once per pair, so 50 candidates means 50 runs. That's why it's only used on a small candidate set.
 
-**Common misconception: hybrid always beats a single method.** If one side does badly on your data, merging just pulls its bad results in. Always measure all three.
+Compare hybrid retrieval with each single method. If one method performs poorly on your data, combining results may simply add its errors.
 
 <details class="deep">
 <summary>Going deeper: the BM25 formula and ColBERT</summary>
@@ -219,7 +219,7 @@ In a multi-turn conversation, the user asks "Which projects went over budget rec
 
 **Routing** decides which index to search, and whether to search at all: "thanks" needs no retrieval; "How many notes did I write this month?" should query structured data, not run a vector search.
 
-**Common misconception: the more rewriting steps, the better.** Each extra step adds an LLM call's latency and cost, and one more place to fail. Keep it only after an eval confirms it actually improves retrieval quality.
+Each rewriting step adds a model call, latency, cost and a possible failure. Keep a step only if evals show that it improves retrieval.
 
 ### ★ When an answer is wrong, which stage broke?
 
@@ -235,7 +235,7 @@ Every stage of the pipeline (the chain of steps from parsing through retrieval t
 
 Looking only at a wrong final answer, you can't tell which of these happened. So log the inputs and outputs of every stage in the trace (← [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)): which chunks were retrieved, each one's score and rank, and which ones finally went into the prompt.
 
-**Citations** work as in the end-to-end example: give each passage an ID, require the model to tag each claim with an ID, and have your code turn IDs into clickable sources (file name, page number). Some providers offer built-in citations that return the quoted source text directly. **Common misconception: if the model cited something, the citation is correct.** It might tag [2] when [2] says nothing about the claim. Citation correctness needs its own evaluation; see the next section.
+**Citations** use the passage IDs from the running example. Ask the model to attach an ID to each claim, then convert IDs into clickable sources, such as a file name and page number. Some providers return quoted source text through built-in citation features. Still evaluate whether each citation supports its claim: a model can cite [2] even when [2] says nothing about it. The next section covers that check.
 
 ### ★ How do you measure retrieval and generation separately?
 
@@ -264,7 +264,7 @@ Recall@5 = (1 + 0.5 + 0) / 3 = 0.5; Recall@10 = 1; MRR = (1 + 0.333 + 0.143) / 3
 
 For example, an answer makes 3 claims. Claim 1 is tagged [1], and [1] does support it. Claim 2 is tagged [2], but neither [2] nor any other passage mentions it. Claim 3 has no citation, but [1] actually supports it. Faithfulness = 2/3 (claims 1 and 3 are supported); citation precision = 1/2 (of two citations, only one is right); citation recall = 1/3 (of three claims, only claim 1 is correctly cited). These are usually scored by a judge calibrated as in S8 Evals Methodology.
 
-**Synthetic queries**: labeling takes a lot of time, so a common approach is to have an LLM read a passage and write a question that passage answers, giving you one (query, correct passage) pair. **Common misconception: scores on synthetic queries reflect real performance.** Synthetic questions often copy the passage's wording, which makes BM25 look especially strong. Always mix in queries phrased the way real users talk, and report the two sets of scores separately.
+**Synthetic queries** reduce labeling work: an LLM reads a passage and writes a question it can answer, producing a query paired with the correct passage. These questions often reuse the passage's wording, which can inflate BM25 scores. Include queries phrased by real users and report scores on the two sets separately.
 
 <details class="deep">
 <summary>Before you build: evaluation details</summary>
@@ -304,7 +304,7 @@ The three approaches solve different problems, and you usually try them in the o
 | RAG | Knowledge the model doesn't have or that changes, with sources | Answering "What was the budget last time?" |
 | Fine-tuning | Stable behavior, format and style, or "baking" the effect of a big prompt into a smaller model to save cost | Making a small model reliably produce a fixed summary format |
 
-Prompting is fastest and cheapest; always try it first. Each step further down needs an eval (← S8 Evals Methodology) to prove it's worth it. **Common misconception: fine-tuning is a way to add new knowledge.** It's not reliable for that: the model may still answer wrong after fine-tuning, you have to retrain whenever the data changes, and it can't tell you which document an answer came from.
+Try prompting first because it is fastest and cheapest. Use evals (← S8 Evals Methodology) to justify adding another method. Fine-tuning is unreliable for new knowledge: answers may still be wrong, updated data requires retraining, and the model cannot identify the source document.
 
 ### 🔒 What if a document hides instructions?
 

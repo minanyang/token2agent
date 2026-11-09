@@ -8,13 +8,13 @@ sidebar:
   order: 2
 ---
 
-The system project is **cumulative hands-on work spanning Part II to Part VI (S6–S19)**: every chapter adds a new capability to **the same application**, instead of each chapter being an unrelated exercise (for the codes, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)). This way you see how the layers stack up. For example, when the retrieval you build in S9 Retrieval and RAG gives a wrong answer, the eval set you built in S8 Evals Methodology catches it; the tools you add in S10 Tools and MCP get attacked in S16 Security and Governance.
+The system project spans Part II to Part VI (S6–S19), adding capabilities to the same application in each chapter (see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)). You can test the interactions between layers: the S8 Evals Methodology eval set can catch retrieval errors from S9 Retrieval and RAG, while S16 Security and Governance attacks the tools built in S10 Tools and MCP.
 
-The system project is the **advanced exercise**. Doing only each chapter's core exercise still takes you through the whole roadmap, ending with the core exercise of S19 Real Agent Systems and the Capstone; that chapter's A19 Capstone is also an advanced exercise and needs the system built up through A6–A18.
+The system project consists of **advanced exercises**. Core exercises alone complete the roadmap through S19 Real Agent Systems and the Capstone. The advanced A19 Capstone requires the system developed in A6–A18.
 
 ## Pick a topic
 
-You choose the topic, and you settle it in A6 Streaming Chat and Traces in [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/). A good topic should meet these conditions, so that every later chapter has something to practice on:
+Choose a topic in A6 Streaming Chat and Traces in [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/). To practice the later chapters, look for a topic with these properties:
 
 - **It has its own documents or data**, not something freely available on the public web (→ S9 Retrieval and RAG, 🔒 indirect injection)
 - **It has some actions that "do things,"** such as creating, editing or sending (→ S10 Tools and MCP, S12 The Agent Loop and Harness, S16 Security and Governance)
@@ -32,7 +32,7 @@ Every exercise is written in terms of "your system," with one line of "For the n
 
 ## Tech stack
 
-Any language works. Frontend engineers can write the application itself in TypeScript (for example with the Vercel AI SDK) and do eval and RAG experiments in Python (which has more tools); using just one of them throughout is fine too. Each exercise's hints list reference tools for both languages.
+You can use TypeScript, for example with the Vercel AI SDK, for the application and Python for eval and RAG experiments, where it has more tools. Using either language throughout also works. Each exercise lists tools for both.
 
 You can get as far as A16 Security Attack, Defense and Governance without writing a frontend: the interface from A6 Streaming Chat and Traces through A16 can be Gradio, Chainlit, Streamlit or a CLI, with the same acceptance criteria for streaming, stopping and feedback (see [the hints for A6 Streaming Chat and Traces](/en/stages/s06-llm-api/#advanced-system-project-a6-start-your-system)). The core exercise of S17 Product and AI UX also has a version without a frontend; only A17 Complete Frontend needs a real one, and its hints include getting-started advice. Backend and data engineers can start with the suggestions in [How to Use This Roadmap](/en/guide/how-to-use/#who-this-is-for).
 

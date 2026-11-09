@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-The base model that comes out of pretraining can only "keep writing." It doesn't answer questions properly. This chapter asks: with relatively little data and compute, how do you turn it into an assistant that follows instructions, and then into a reasoning model that works through problems step by step? The main line is three training signals: examples of ideal answers (SFT), comparisons between two answers (preference learning), and a program that checks the answer automatically (RL with verifiable rewards), plus spending more compute at inference time to buy quality. The side effects matter just as much: reward hacking, sycophancy, forgetting, and how to tell whether "the model got better" is actually true.
+Pretraining produces a base model that continues text but does not yet answer questions well. Post-training uses relatively little data and compute to teach instruction following and, later, step-by-step reasoning. This chapter covers ideal-answer examples (SFT), answer comparisons (preference learning), programmatically checked answers (RL with verifiable rewards), and extra inference compute. It also examines reward hacking, sycophancy and forgetting, and how to check whether the model has improved.
 
 ## After this chapter you can
 
@@ -34,7 +34,7 @@ The base model that comes out of pretraining can only "keep writing." It doesn't
 
 ## Lecture
 
-The big picture first. Post-training is all the training that happens after pretraining. It falls roughly into three kinds of signal:
+Post-training includes all training after pretraining. It uses three broad kinds of signal:
 
 | Stage | Training signal | What it teaches the model | Result |
 |---|---|---|---|
@@ -56,7 +56,7 @@ The whole chapter uses one task: teach a small model (say Qwen3-0.6B-Base) to so
 4. **After RLVR**: it answers the same problem 8 times, a program checks whether the number after "Answer:" is 29, and the correct attempts are reinforced. After practicing on a large number of problems, it starts writing a long stretch of thinking first, checks itself, and then gives the answer.
 5. **At inference time**: without changing the model, you can also have it answer 8 times and take a majority vote. Accuracy often goes up a bit more, at the cost of 8 times the tokens.
 
-Every step faces the same question: on problems it has never seen, is it really better than the step before? That's the subject of the last section, "[How do you know fine-tuning worked?](#-how-do-you-know-fine-tuning-worked)".
+After each stage, test whether the model improves on unseen problems. The final section, "[How do you know fine-tuning worked?](#-how-do-you-know-fine-tuning-worked)", explains how.
 
 ### ★ How do you teach a model to answer?
 
@@ -97,7 +97,7 @@ LoRA leaves the original weights alone and adds a pair of very small matrices al
 
 **Example.** A 4096 × 4096 matrix has 16,777,216 parameters. With r = 8, A is 8 × 4096 and B is 4096 × 8 (B·A is (4096 × 8) times (8 × 4096), giving 4096 × 4096, the same size as W), for 65,536 parameters in total, about 0.39% of the original. Only these parameters need gradients and optimizer state, so memory drops sharply. After training you can add B·A straight back into W, with no extra cost at inference; or keep it as a small separate file and switch between different LoRAs on the same base model.
 
-**Common misconception: LoRA is "weaker fine-tuning," only good for saving money.** For common goals such as changing format, style or a narrow task, LoRA often matches full fine-tuning; the gap shows up mainly when the model has to learn a lot of new content. Conversely, LoRA isn't free: an r that's too small, or applying it to only a few matrices, can both keep it from learning.
+LoRA often matches full fine-tuning for format, style and narrow tasks. The gap tends to grow when the model needs to learn substantial new content. A rank r that is too small, or applying LoRA to too few matrices, can also prevent it from learning.
 
 <details class="deep">
 <summary>Before you build: LoRA details</summary>
@@ -149,7 +149,7 @@ Much of what makes an answer good has no single right answer, but people are goo
 
 **DPO** (Direct Preference Optimization) showed that under the same objective as RLHF (maximize reward with a KL constraint), you can skip the reward model and the RL loop and train the model directly on preference pairs. The intuition: for each pair, raise the model's probability of writing the "chosen" answer and lower its probability of the "rejected" one, both measured relative to the reference model. The whole process looks like ordinary supervised training, with no sampling and no value model, so it's simple and stable, and it became one of the most popular methods in the open-model community.
 
-**Common misconception: DPO is a free simplification of RLHF.** It pays a price. DPO is offline: it learns only from a fixed set of preference pairs, and the model doesn't generate new answers to be scored the way it does in RL (no exploration). It works worse when the preference data is far from the current model's output distribution (for example, when the pairs were written by a different model). And it overfits those pairs more easily.
+DPO learns offline from a fixed set of preference pairs. It does not explore by generating new answers for scoring, as RL does. It can overfit the pairs more easily, and performs worse when they differ substantially from the current output distribution, for example when another model wrote them.
 
 <details class="deep">
 <summary>Going deeper: the reward model and DPO losses</summary>
@@ -188,7 +188,7 @@ The standard deviation is the population standard deviation. When rewards are on
 
 **How reasoning models emerged.** DeepSeek-R1-Zero was trained with GRPO directly on a base model, with a reward that looked only at whether the answer was correct and well formatted. During training, answers grew longer and longer, and the model learned on its own to lay out steps, check them, and start over when it found a mistake. Nobody taught it to write this way; writing this way simply made it more likely to be right. A model that "thinks at length before answering" like this is a reasoning model. But this doesn't come automatically with RLVR: you need a strong enough base model, lots of problems at the right difficulty, and a reliable verifier. For small models, distilling from a strong model often works better (see later).
 
-**Common misconception: a reasoning model's thinking is a free quality boost.** The thinking tokens still have to be generated, so inference cost and latency go up with them (inference cost → [S5 Inference and Serving](/en/stages/s05-inference/); how to use them in an app → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)). And it gets stronger mainly on verifiable tasks; there's no guarantee it's better at writing or conversation.
+Reasoning tokens must be generated, so they add inference cost and latency (cost → [S5 Inference and Serving](/en/stages/s05-inference/); application use → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/)). The gains are mainly on verifiable tasks; writing and conversation may not improve.
 
 <details class="deep">
 <summary>Going deeper: the GRPO objective and its variants</summary>
@@ -205,13 +205,13 @@ The standard deviation is the population standard deviation. When rewards are on
 
 ### ★ Can you get more accuracy without changing the model?
 
-Yes: spend more compute at inference time (test-time compute) to buy quality. The key is to measure clearly "how many times more tokens buys how much accuracy."
+You can spend more compute at inference time (test-time compute) to improve quality. Measure both the extra tokens and the accuracy gain.
 
 **Self-consistency**: sample the same problem several times with temperature above 0 (temperature ← [S2 Transformers and Decoding](/en/stages/s02-transformer/#-how-is-the-next-token-picked)) and take the most frequent answer. Sample the example problem 8 times and you get 29 four times, 31 twice and 24 twice; the majority vote picks 29. Even if a single attempt is right only half the time, wrong answers tend to scatter across different numbers, so the right one is more likely to end up the most common.
 
 **Best-of-N and verifiers**: sample N times and use a verifier (a rule-based checker or a reward model) to pick the highest-scoring answer. With a reliable verifier (for example, code that can run tests), this works better than a majority vote.
 
-**Common misconception: the more samples, the better.** Cost grows roughly linearly with the number of samples, but the gains diminish: going from 1 to 8 may help a lot, while going from 8 to 64 usually helps little. And when the model is systematically wrong on a problem, a majority vote just picks the wrong answer more consistently. The core exercise measures the first two points of this curve.
+Sampling costs grow roughly linearly, but accuracy gains diminish. Going from 1 to 8 samples may help substantially; 8 to 64 usually helps less. If the model is systematically wrong, majority voting can make it wrong more consistently. The core exercise measures the first two points on this curve.
 
 <details class="deep">
 <summary>Going deeper: scoring each step and search</summary>
@@ -238,7 +238,7 @@ Using a strong model to generate training data and then training a smaller model
 
 A common way to do **distillation**: have a strong teacher model write worked solutions for a large number of problems, filter out the wrong ones with a verifier, and use what's left as SFT data for the student model. For example, the teacher solves each of 5,000 word problems once, and the 4,000 correct solutions are used to train the student. DeepSeek-R1 did exactly this to distill reasoning ability into smaller Qwen and Llama models; they also found that for small models, distillation often works better than doing RL directly.
 
-**Common misconception: synthetic data is cheap and plentiful, so more is better.** Synthetic data inherits the teacher's mistakes and preferences, and heavy use can reduce the diversity of the output. Before using it, also check whether the license allows training other models on a given model's output (→ [S16 Security and Governance](/en/stages/s16-security/)).
+Synthetic data inherits the teacher's mistakes and preferences. Using it heavily may also reduce output diversity. Before using a model's output to train another model, check that its license permits it (→ [S16 Security and Governance](/en/stages/s16-security/)).
 
 <details class="deep">
 <summary>Going deeper: on-policy distillation</summary>
@@ -257,7 +257,7 @@ Every fine-tuning step has to answer "Is it better than the base? By how much?",
 
 **Check the abilities you didn't train.** Math got better, but did chat and writing get worse? When fine-tuning on a new task makes old abilities regress, that's called catastrophic forgetting.
 
-**Common misconception: the test set is a public benchmark, so the score is trustworthy.** Public problems have very likely already appeared in the pretraining data (data contamination, ← [S3 Pretraining and Scaling](/en/stages/s03-pretraining/)), so the score is only good for relative comparison. A small set of problems you pick or write yourself, on the other hand, can easily end up unconsciously favorable.
+Public benchmark problems have very likely appeared in the pretraining data (data contamination, ← [S3 Pretraining and Scaling](/en/stages/s03-pretraining/)), so their scores are useful only for relative comparison. Small test sets you choose or write yourself can also favor the model unintentionally.
 
 <section class="deep-section">
 

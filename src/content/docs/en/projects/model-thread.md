@@ -8,13 +8,13 @@ sidebar:
   order: 1
 ---
 
-The model project is the advanced hands-on work for Part I Models (S1–S5). Its five steps go all the way from "hand-written gradients" to "your own inference server." The goal isn't to train a useful model; it's to have built every part of an LLM yourself, so that later, when you see API prices, latency, fine-tuning results or quantization quality on the application side, you can judge whether the numbers make sense.
+The model project is the advanced work for Part I Models (S1–S5). Its five steps take you from hand-written gradients to an inference server. You are practicing each part of an LLM, without needing to produce a useful model. That experience helps you assess API prices, latency, fine-tuning results and quantization quality later.
 
-Each of the five chapters in Part I has a **core exercise** you can complete without anything from the model project. The model project is the **advanced exercise**, and its steps reuse code from one another. The cloud GPU cost of the five model project steps (M1–M5) is concentrated in M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 and M5 KV Cache, Quantization and a Mini Inference Server, together on the order of tens of dollars. It varies a lot with your setup, so measure first.
+Each Part I chapter has a **core exercise** independent of the model project. The **advanced exercises** form M1–M5 and reuse code from earlier steps. Most cloud GPU costs come from M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 and M5 KV Cache, Quantization and a Mini Inference Server. Together they cost on the order of tens of dollars, but settings vary widely; measure a small run first.
 
 ## Environment
 
-The model project is Python throughout, because the training and inference toolchains (PyTorch, Hugging Face) are Python-first. The system project (starting with S6 LLM APIs and Application Basics) lets you choose TypeScript or Python freely.
+Use Python for the model project to work with the Python-first PyTorch and Hugging Face toolchains. The system project, starting at S6 LLM APIs and Application Basics, supports either TypeScript or Python.
 
 - **Python** 3.11 or later; create a separate environment for the model project with `uv` or `venv`.
 - **Core packages**: PyTorch; for M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 and M5 KV Cache, Quantization and a Mini Inference Server, add `transformers`, [TRL](https://huggingface.co/docs/trl) and [PEFT](https://huggingface.co/docs/peft).
@@ -43,7 +43,7 @@ Start from the scalar autograd in the core exercise, switch to PyTorch tensors, 
 
 ### M2: Tiny GPT, Upgraded to Llama Components ([S2](/en/stages/s02-transformer/))
 
-Write a GPT from scratch, train it on tiny Shakespeare, swap in a BPE tokenizer you trained yourself, then replace components one by one with RMSNorm, RoPE, SwiGLU and GQA. Along the way, count parameters by hand and check them against the code's count, and generate text with different sampling settings. Afterwards you can read the `config.json` of most Llama/Qwen-style dense models (for MoE, MLA and similar fields, refer back to S2 Transformers and Decoding).
+Write a GPT, train it on tiny Shakespeare, add your own BPE tokenizer, then replace components with RMSNorm, RoPE, SwiGLU and GQA one at a time. Check hand-counted parameters against the code and try different sampling settings. This helps you read most Llama/Qwen-style dense-model `config.json` files; refer to S2 Transformers and Decoding for MoE, MLA and similar fields.
 
 ### M3: Small-model Pretraining and a Mini Scaling Experiment ([S3](/en/stages/s03-pretraining/))
 
