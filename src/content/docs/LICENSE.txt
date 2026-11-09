@@ -4,4 +4,4 @@ Everything in this directory is licensed under the Creative Commons
 Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0):
 https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-See LICENSE at the repository root for the full notice and its exceptions.
+See LICENSE at the repository root for the full notice, its exceptions and additional permissions.

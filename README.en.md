@@ -78,6 +78,8 @@ Setup, authoring rules and the submission steps are in [CONTRIBUTING.md](CONTRIB
 ## License
 
 - **Content** (everything under `src/content/docs/`) is released under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/); see [LICENSE](LICENSE). Contributions to the content are released under the same license.
+  - **Additional permissions**: with credit and a link back to the original page, the following are allowed even when commercial: quoting in articles, blogs, newsletters, talks and videos (including ad-supported or monetized ones); study or internal training inside a company or organization, as long as no one is charged for it; assigning the site as reading in any course, free or paid, by linking to it; search engines and AI tools retrieving and quoting the content to answer questions.
+  - **Still needs permission**: selling the content or adaptations of it (paid courses, books, e-books, paywalled sites, products built mainly on it). Open an issue to ask.
 - **Code** (the site's source outside `src/content/docs/` and `src/data/showcase/`) is released under the [MIT License](LICENSE-code).
 - **Showcase entries** (`src/data/showcase/`) are submitted by their authors, who grant this site the right to display them; each project keeps its own license.
 - Third-party material quoted or referenced on the site belongs to its respective owners.
