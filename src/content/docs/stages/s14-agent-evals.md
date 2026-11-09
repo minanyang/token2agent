@@ -23,7 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-S8 Evals 方法論教的是單次回答的評估，S12 Agent loop 與 harness 用了最小的 agent eval。這一章處理 agent 評估真正難的地方：要看整條軌跡而不只最後答案、同一題每次結果都不同、對話型 agent 需要有人扮演使用者、連機器資源這類環境設定都能讓分數差好幾個百分點。學會做出可信的評估之後，本章後半學讓 agent 變好的方法：從 trace 找失敗、接成 data flywheel、自動最佳化 prompt、蒸餾小型 router，以及用 ablation 檢驗 harness 元件。到了 S15 Multi-agent，要不要用 multi-agent，就靠這一章的 eval 決定。
+S8 Evals 方法論介紹單次回答的評估，S12 Agent loop 與 harness 則做過最小的 agent eval。這一章進一步檢查整條執行軌跡、同題多次執行的差異，以及模擬使用者和機器資源等環境設定。這些設定可能讓分數差好幾個百分點。
+
+評估可信之後，再從 trace 找失敗、建立 data flywheel、自動最佳化 prompt、蒸餾小型 router，並用 ablation 檢查 harness 元件的作用。S15 Multi-agent 也會用這套 eval 決定是否保留多 agent 設計。
 
 ## 學完能
 
@@ -43,7 +45,9 @@ S8 Evals 方法論教的是單次回答的評估，S12 Agent loop 與 harness �
 - **Trace / transcript**：一次試跑的完整紀錄，包括每次工具呼叫、參數、結果與最後的回覆（← S6 LLM API 與應用基本功的 tracing）。
 - **Grader**：判斷一次試跑成不成功的程式、judge 或人。
 
-整章沿用 S12 Agent loop 與 harness 必做題的筆記資料夾環境：一個有 20 個 Markdown 筆記的資料夾，其中剛好 6 個含 `TODO`，agent 有 `list_files`、`read_file`、`grep`、`write_file`、`delete_file` 五個工具。可以把它看成貫穿各章的**筆記助理**的簡化版：只有檔案工具，每個任務的結果都能用程式檢查，適合拿來練評估。上面那個 TODO 任務會貫穿各節：先看怎麼評一次試跑，再看怎麼評多次試跑、怎麼讓環境公平。後半講上線後的改進（trace 分群、prompt 最佳化、router）時，例子回到完整的筆記助理（使用者小林）。
+整章沿用 S12 Agent loop 與 harness 必做題的資料夾，裡面有 20 個 Markdown 筆記，剛好 6 個含 `TODO`。Agent 有 `list_files`、`read_file`、`grep`、`write_file`、`delete_file` 五個工具。這是只有檔案工具的簡化版**筆記助理**，任務結果都能用程式檢查，適合練習評估。
+
+下面先用 TODO 任務評一次試跑，再看多次試跑與環境公平性。後半介紹上線後的 trace 分群、prompt 最佳化和 router 時，會回到小林使用的完整筆記助理。
 
 ### ★ Agent 品質要看哪幾面？
 
@@ -56,7 +60,7 @@ S8 Evals 方法論教的是單次回答的評估，S12 Agent loop 與 harness �
 | **robustness** | 工具出錯、輸入模糊、環境改變時撐不撐得住 | `grep` 逾時一次後會不會重試 |
 | **safety** | 有沒有做不該做的事 | 有沒有順手刪掉「看起來像重複」的檔案 |
 
-一個成功率 90% 但每題花 10 美元、或偶爾刪錯檔案的 agent 不能上線。[Kapoor et al. 2024](https://arxiv.org/abs/2407.01502) 也批評過 agent 研究只報準確率、不報成本。**容易誤會：四個面向不是要合成一個總分。** 合成總分會讓「很便宜但偶爾刪檔」和「很貴但安全」看起來一樣；分開報告，再依產品決定哪個是硬門檻（safety 通常是）。
+成功率 90%，卻每題花 10 美元，或偶爾刪錯檔案的 agent，仍不適合上線。[Kapoor et al. 2024](https://arxiv.org/abs/2407.01502) 也批評 agent 研究只報準確率、不報成本。四個面向應分開報告，再依產品決定硬門檻，safety 通常就是其中一項。合成總分，會讓便宜但偶爾刪檔的系統，和昂貴但安全的系統看起來一樣。
 
 ### ★ 該看結果還是看步驟？
 
@@ -93,7 +97,7 @@ S8 Evals 方法論教的是單次回答的評估，S12 Agent loop 與 harness �
 
 **Grader 有三種**：程式檢查（比對檔案內容、查資料庫）、LLM judge（← S8 Evals 方法論的 judge 校準），以及 **agent-as-a-judge**（[Zhuge et al. 2024](https://arxiv.org/abs/2410.10934)）。最後一種讓評估者本身也是 agent：它能讀檔、跑程式、操作成品，再根據證據打分，適合檢查「做出來的東西」，例如 agent 寫的一份週報筆記格式對不對、連結點不點得開。能寫程式檢查的就用程式；judge 與 agent judge 都要先和人工標註對齊。
 
-**容易誤會：agent 的回覆不是證據。** 試跑 1 說寫了 6 個、實際只有 5 個。grader 讀回覆而不查環境，這次就會被判成功。
+試跑 1 的回覆說已寫入 6 個，實際只有 5 個。Grader 如果只讀回覆，沒有檢查環境，就會把這次誤判為成功。
 
 <details class="deep">
 <summary>準備動手做：從 trace 判斷狀態</summary>
@@ -151,7 +155,7 @@ agent 會改變環境，所以評估要提供一個可以重來的環境，並�
 
 **模擬使用者。** 對話型 agent 需要使用者回應才能往下走。上面的負例中，筆記助理問「要刪哪一個檔案？」，總要有人回答「`draft-plan.md`」。做法是讓一個 LLM 依角色設定扮演使用者（simulated user），例如「很忙、只講半句話」「會給錯日期」。[τ-bench](https://arxiv.org/abs/2406.12045)（Yao et al. 2024）用這種方式評估零售與航空客服；[τ²-bench](https://arxiv.org/abs/2506.07982)（Barres et al. 2025）進一步讓使用者也能操作環境（dual-control），例如使用者要自己在手機上改設定。
 
-**容易誤會：模擬使用者不是中立的測試工具。** 它本身會出錯：太配合、忘了目標、自己編出角色設定沒有的資訊。這些錯會直接變成 agent 的分數，所以要抽讀對話，確認它像真人。
+模擬使用者也會出錯，例如過度配合、忘記目標，或編出角色設定裡沒有的資訊。這些問題會直接影響 agent 的分數，因此要抽讀對話，確認模擬的行為是否接近真人。
 
 ### ★ 機器設定也會改變分數？
 
@@ -169,7 +173,7 @@ Reward hacking 是 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 
 
 **最佳化鑽 grader 的漏洞。** 後面的 prompt 最佳化會反覆調整 prompt，讓某個 metric 變高。如果摘要 judge 偏好條列多的回答，optimizer 很快就會學到「永遠列 10 點」：judge 分數上升，使用者卻覺得變囉嗦。
 
-防法相同：grader 盡量檢查環境狀態而不是表面特徵、留一份不參與最佳化的測試資料、定期抽讀輸出。**容易誤會：分數上升就代表變好。** 只有在沒參與最佳化的資料上、並且讀過輸出之後，才能這樣說。
+Grader 應盡量檢查環境狀態，並保留一份不參與最佳化的測試資料，定期抽讀輸出。只有在測試資料上也有進步，且看過輸出確認品質，才能判定最佳化有效。
 
 ### ★ Agent benchmark 多了哪些坑？
 
@@ -178,7 +182,7 @@ Reward hacking 是 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 
 - **SWE-bench Verified**：OpenAI 在 2024 年和 SWE-bench 作者一起整理出這個人工確認過的子集。2026-02 OpenAI 發文宣布不再用它評估，理由是汙染（題目來自公開 repo，部分題目的原始修正，模型能憑記憶重現）與題目瑕疵：他們找出 o3 跑 64 次都無法穩定解出的 138 題，請工程師逐題檢查，其中 59.4% 的測試或題目描述有實質問題。OpenAI 改為建議使用 SWE-bench Pro。
 - **τ-bench**：[SABER](https://arxiv.org/abs/2512.07850)（Cuadron et al. 2025）指出 τ-bench 的航空與零售題目有標註錯誤與規格不清，壓低了分數上限，並釋出修正後的 τ-Bench Verified。
 
-所以看到任何 agent benchmark 分數，先問三件事（benchmark hygiene）：題目有人稽核過嗎？有沒有外洩？infra 設定是什麼？兩個 agent 差 2 個百分點，已經小於上面量到的 infra 差距。
+讀 agent benchmark 分數時，要確認題目是否經過稽核、有沒有外洩，以及 infra 設定。兩個 agent 如果只差 2 個百分點，甚至比上面量到的 infra 差距還小。
 
 **METR time horizon**（[Kwa et al. 2025](https://arxiv.org/abs/2503.14499)）換一種方式描述能力：模型有 50% 機率完成的任務，人類專家通常要花多久。論文發現這個時間長度自 2019 年起大約每 7 個月翻倍。它比單一 benchmark 分數好解讀，但任務集中在軟體與研究類工作，作者也說明了外部效度的限制。**容易誤會：benchmark 分數高不代表你的產品會好。** 它只說明在那組題目、那個設定下的表現；你的筆記助理要靠自己的 eval。
 
@@ -192,7 +196,7 @@ Reward hacking 是 [S4 Post-training 與 reasoning](/stages/s04-post-training/) 
 
 使用者回饋與從 S6 LLM API 與應用基本功開始收集的 trace → 錯誤分析與分群 → 新的 eval 題目與失敗分類 → 改 prompt、工具或 harness → 用 eval 確認 → 上線後再收新的 trace。
 
-關鍵是每一環都要接得上：回饋要能對回 trace、trace 要能變成 eval 題目、capability eval 穩定之後畢業成 regression eval（← S8 Evals 方法論）。回饋介面怎麼設計在 S17 產品與 AI UX。**容易誤會：分群結果就是結論。** 分群只決定先讀哪些；「相對日期」這個失敗類別是人讀過 trace 之後才成立的（← S8 Evals 方法論的錯誤分析）。
+回饋要能對回 trace，再做成 eval 題目；capability eval 穩定後，轉成 regression eval（← S8 Evals 方法論）。回饋介面會在 S17 產品與 AI UX 說明。分群只能幫忙決定先讀哪些 trace，失敗類別仍要由人讀過後歸納。例如「相對日期」這一類，就來自 S8 Evals 方法論的錯誤分析。
 
 ### ★ 能自動找出更好的 prompt 嗎？
 
@@ -205,7 +209,7 @@ Prompt 最佳化是讓程式自動搜尋更好的 prompt：你提供 metric 和�
 
 使用前提有兩個：可靠的 metric（S8 Evals 方法論校準過的 judge 或程式檢查），以及**分開的訓練與測試資料**。示意的例子：筆記助理的意圖分類（「搜尋筆記」「建立筆記」「寄信」），300 筆有標籤的請求，分成 200 筆訓練、100 筆測試。最佳化前，訓練 81%、測試 80%；最佳化後，訓練 93%、測試 86%。真正的進步是測試上的 6 個百分點，不是訓練上的 12 個；兩者的落差就是 optimizer 貼合訓練資料的部分。
 
-**容易誤會：在最佳化用的資料上報告分數。** 那個數字一定好看，因為 optimizer 就是在讓它變高（上一節的 reward hacking）。結果只能在測試資料上報告，並附上最佳化前後的輸出範例。
+Optimizer 會直接提高最佳化資料上的分數，這個數字不能拿來當成果。要在測試資料上報告結果，並附上最佳化前後的輸出範例，避免上一節的 reward hacking 問題。
 
 <details class="deep">
 <summary>準備動手做：跑一輪 prompt 最佳化前的準備</summary>
@@ -219,13 +223,13 @@ Prompt 最佳化是讓程式自動搜尋更好的 prompt：你提供 metric 和�
 
 ### ★ 路由能交給便宜的小模型嗎？
 
-很多 agent 的第一步是分類：這個請求要走哪個流程、要不要用強模型、需不需要工具。一開始用強模型做這件事很合理；累積足夠的 trace 之後，可以用一個便宜的小分類器取代它，這就是 router 蒸餾。
+Agent 常先分類請求，決定走哪個流程、用不用強模型，以及是否需要工具。起初可以用強模型分類，累積足夠的 trace 後，再用便宜的小分類器取代，這叫 router 蒸餾。
 
 **怎麼做。** 每次路由都記下請求、強模型的決定，以及事後是否正確（使用者有沒有改口、任務有沒有完成，或抽查確認）。用這些「強模型的判斷 + 事後確認」當標籤，訓練一個小分類器（例如 embedding 加 logistic regression（一種簡單的分類方法）），或微調一個小模型。這是蒸餾：讓小模型學大模型的輸出（← S4 Post-training 與 reasoning；走應用路線的讀者見[模型速成](/guide/app-first/#模型速成)的「訓練階段」與「微調能做什麼、不能做什麼」兩節）。
 
 示意的例子：筆記助理記下 600 筆路由決定，抽查修正後切成 480 筆訓練、120 筆測試。在測試資料上，強模型路由準確率 97%、小分類器 94%；但小分類器每次只要幾十毫秒、幾乎不花錢，強模型每次要等一次 API 呼叫。錯誤集中在「寄信」（`email_send`）與「建立信件草稿」（`email_draft`）之間，這兩類的後果不同（寄出是高風險，← [S10 工具與 MCP](/stages/s10-tools-mcp/)），所以可以只在分類器對這兩類沒把握時交回強模型。
 
-**容易誤會：只看整體準確率。** 掉 3 個百分點在哪幾類比平均重要得多：錯在「搜尋筆記」和「建立筆記」之間，使用者重問一次就好；錯成「寄信」就不行。模型路由與 cascade 在部署時的完整設計在 S18 部署與架構。
+整體準確率掉 3 個百分點，還要看錯在哪幾類。把搜尋筆記分成建立筆記，使用者可以重問；錯成寄信，後果就不同。模型路由與 cascade 的部署設計會在 S18 部署與架構 說明。
 
 ### ★ 這個 harness 元件值得留嗎？
 
@@ -242,7 +246,7 @@ Ablation 是一次拿掉一個 harness 元件，用同一組任務、相同試�
 
 </details>
 
-**Model–harness fit**：同一個元件在不同模型上的價值可能不同。Anthropic 的例子是 context reset 對某一代模型必要，對下一代則是多餘的負擔。**容易誤會：ablation 的結論可以一直沿用。** 換模型時要重做，特別是那些當初為了補模型弱點而加的元件。
+**Model–harness fit**：同一元件在不同模型上的作用可能不同。Anthropic 的 context reset 對某代模型有必要，換到下一代卻成了負擔。換模型時要重做 ablation，尤其是為了彌補舊模型弱點而加入的元件。
 
 <section class="deep-section">
 

@@ -23,9 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-S6 LLM API 與應用基本功讓你「接得上」模型，這一章讓模型的輸出「用得上」：程式要的是穩定、可解析、可驗證的結果，而不是每次長得不一樣的一段文字。講義依序處理四件事：怎麼寫 prompt、怎麼讓輸出符合固定格式、怎麼把 prompt 當程式碼管理，以及五種不需要 agent 的 workflow 模式。
+在 S6 LLM API 與應用基本功接上模型之後，程式還需要穩定、可解析、可驗證的輸出。這一章會說明怎麼寫 prompt、讓輸出符合固定格式、把 prompt 當程式碼管理，以及五種不需要 agent 的 workflow 模式。
 
-很多需求做到這一章就夠了。先學會用固定流程把事情做穩，再決定要不要把控制權交給模型（→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。
+很多需求做到這一章就能完成。先用固定流程把事情做穩，再決定是否需要讓模型選擇下一步（→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。
 
 ## 學完能
 
@@ -46,7 +46,7 @@ S6 LLM API 與應用基本功讓你「接得上」模型，這一章讓模型的
 
 不寫程式的讀者可以略過 Python／TypeScript 程式碼；prompt、筆記與 JSON 範例請照常讀。
 
-這四步全由程式決定順序，模型只負責每一步的內容，所以是 workflow，不是 agent（← [S0 AI 系統概觀](/stages/s00-big-picture/)）。下面每一節放大其中一塊。小林的標籤詞表固定是 5 個：設計、行銷、預算、讀書心得、專案A；之後各章提到筆記標籤，都用這一組。本章用的原始筆記是 10/14 設計團隊會議的這一則（今天是 2026-11-07）：
+這四步的順序由程式決定，模型只負責每一步的內容，因此屬於 workflow（← [S0 AI 系統概觀](/stages/s00-big-picture/)）。下面會分別說明。小林的標籤詞表固定為 5 個：設計、行銷、預算、讀書心得、專案A。之後各章提到筆記標籤，都沿用這一組。本章使用以下這則 10/14 設計團隊會議筆記，今天是 2026-11-07：
 
 ```text
 10/14 設計團隊開會，小林、Amy、Ben 出席。Q4 改版預算上限 48 萬，小林負責追蹤。下次 10/28 再開。
@@ -91,7 +91,7 @@ Prompt 寫得清楚，模型才知道任務、限制和輸出長什麼樣子；�
 
 **預填助理回覆**（assistant prefill）是另一個舊技巧：由你先寫好助理回覆的開頭（例如一個 `{`），讓模型接著寫，藉此逼出 JSON。它和推論階段的 prefill（模型一次處理整段輸入的那一步）是兩回事。部分新模型已不支援預填助理回覆，依賴它的舊 prompt 要改用下面的 structured output。
 
-**容易誤會：prompt 不是越長越好。** 規則一多，彼此可能衝突，重要的那條反而被稀釋。每加一條規則，都應該對應一個你真的看過的失敗。
+Prompt 的規則太多，容易彼此衝突，也會稀釋重要指示的影響力。每加一條規則，都應該對應已經觀察到的失敗。
 
 <details class="deep">
 <summary>深入一點：few-shot 偏誤的三種來源與校準</summary>
@@ -195,11 +195,11 @@ Function calling（也叫 tool use）看起來像模型「呼叫了函式」，�
 3. 程式把搜尋結果當成一則「工具結果」訊息放回 context，再呼叫一次模型。
 4. 模型讀到結果，寫出最後的回答。
 
-第 1 步就是 structured output，只是 schema 換成工具的參數格式，所以上一節的驗證、repair 全部適用。12-factor-agents（HumanLayer 整理的開源指南，列出 12 條讓 LLM 應用能上線的原則）的第 4 條就叫「Tools are just structured outputs」。
+第 1 步就是 structured output，schema 定義的是工具參數，上一節的驗證與 repair 都適用。HumanLayer 的開源指南 12-factor-agents 列出 12 條讓 LLM 應用能上線的原則，第 4 條就叫「Tools are just structured outputs」。
 
 **在模型眼裡，這些都是文字。** 工具定義和工具呼叫會被 chat template 轉成模型看得到的文字或特殊 token：伺服器把 messages 串成一整段文字，用特殊標記標出角色與邊界（← [模型速成〈Chat template〉](/guide/app-first/#chat-template)；深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）。工具定義通常被塞進系統提示詞，所以工具描述寫得好不好，會影響模型選不選對工具（→ [S10 工具與 MCP](/stages/s10-tools-mcp/)）。
 
-**容易誤會：模型沒有執行任何東西。** 它碰不到你的資料庫，也不知道搜尋成功沒有，除非你把結果放回去。反過來說，模型輸出的參數可能是錯的或惡意的，執行前一定要由程式驗證（→ [S16 安全與治理](/stages/s16-security/)）。
+模型碰不到你的資料庫。除非程式把搜尋結果放回 context，否則它也不知道搜尋是否成功。模型輸出的參數還可能有誤或帶有惡意，執行前一定要由程式驗證（→ [S16 安全與治理](/stages/s16-security/)）。
 
 <details class="deep">
 <summary>準備動手做：把工具當成取得 structured output 的另一條路</summary>
@@ -227,7 +227,7 @@ prompts/
 
 **跨模型遷移是常態。** 模型會被下架，也會出更便宜的新版。換之前用 S6 LLM API 與應用基本功的 record / replay fixtures，把同一批輸入在新模型上重跑一次，逐筆比對。例如 60 筆輸入裡有 7 筆輸出不同：4 筆變好、2 筆變差、1 筆只是措辭不同。變差的 2 筆是什麼類型，決定你要不要先改 prompt 再切換。
 
-**容易誤會：新模型比較強，直接換就好。** 平均分數高，不代表你的每個 prompt 都會變好；上一節的格式敏感度在換模型時一樣會發作。
+換成平均分數更高的模型，也要重新測試自己的 prompt。不同 prompt 不一定都會改善，格式敏感度也可能隨模型改變。
 
 ### ★ 一次呼叫不夠時怎麼拆？
 
@@ -247,11 +247,11 @@ prompts/
 2. 程式依 `route` 選擇 `retag_notes` 的 prompt，交給它處理。
 3. 兩次呼叫各寫一個 span，trace 上看得到分類結果和用了哪個 prompt 版本。
 
-分類通常用小模型就夠；它讓每條路的 prompt 都能寫得短而專一，比一個什麼都要處理的大 prompt 好維護。代價是多一次呼叫的延遲（假設約 0.5 秒），以及分類錯了後面全錯，所以 routing 準確率要單獨量（A7 structured output 與 workflow 這道進階題會量它）。
+分類通常用小模型就夠。各條路徑的 prompt 可以寫得短而專一，比一個什麼都處理的大 prompt 更好維護。但分類會增加一次呼叫的延遲，假設約 0.5 秒，而且分錯路會讓後續處理全部出錯。因此要單獨測量 routing 準確率，A7 structured output 與 workflow 的進階題會做這件事。
 
 **怎麼選。** 從最簡單的開始：一次呼叫做得好就不要拆。拆的時候先想「步驟能不能事先寫死」：能，就用 chaining 或 routing；子任務彼此無關就平行；只有連步驟數都無法預先知道時，才用 orchestrator-workers。
 
-**容易誤會：orchestrator-workers 和 agent 是同一件事。** 前者仍是 workflow：拆解是模型做的，但「拆解 → 分派 → 彙整」這個流程是程式寫死的，只跑一輪。Agent 則是模型在迴圈裡一步一步決定下一步做什麼（→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。
+Orchestrator-workers 仍屬於 workflow。雖然模型負責拆解任務，但程式預先寫好了拆解、分派、彙整的流程，只跑一輪。Agent 則在迴圈中由模型逐步決定下一步（→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。
 
 Evaluator-optimizer 在這裡第一次出現，[S8 Evals 方法論](/stages/s08-evals/) 的 LLM-as-judge、[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 的最佳化會再深化；orchestrator-workers 在 [S15 Multi-agent](/stages/s15-multi-agent/) 會變成 multi-agent 的基礎。
 

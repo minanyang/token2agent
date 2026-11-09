@@ -12,6 +12,12 @@ Authoring rules (keep this comment out of published pages):
   such as eval runner, eval score and eval harness. Preserve code identifiers and external source titles.
 - Language: Traditional Chinese (Taiwan) with English technical terms. Follow /reference/glossary/.
   First mention: 中文（English）. 推論 = inference, 推理 = reasoning. No Simplified-Chinese vocabulary.
+- Prose: use natural, direct explanations for the chapter's intended reader. State the point before introducing
+  a metaphor; split long sentences and move essential parenthetical details into the paragraph.
+  Avoid repeated narrator transitions, stock misconception labels, inflated claims and decorative bold.
+  Keep contrasts that clarify a real misconception, useful examples and necessary technical terms.
+  Style edits must preserve facts, uncertainty, prerequisites, safety limits and exercise requirements;
+  do not invent details, force a shorter word count or change code, links, formulas or heading anchors.
 - Every link to an external source must come from /reference/sources/ (same URL). If a needed source is
   not there, add it to sources.md with a status mark, do not invent URLs.
 - Markers: ★ core, ○ optional, 🔒 security checkpoint. Optional items never become prerequisites of core items.

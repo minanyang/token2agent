@@ -21,7 +21,7 @@ next:
 2. **模型速成**（本頁下半部）：做應用最少要知道的模型知識，十個主題，每個幾段話。
 3. **Part II 到 Part VI**（S6–S19）：從 [S6 LLM API 與應用基本功](/stages/s06-llm-api/)開始，按順序走到 S19 真實 agent 系統與畢業專題。
 
-Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Transformer、預訓練、後訓練、推論。它比較底層、用到較多數學，是**選修的深入路線**。不讀它也能走完 Part II 到 Part VI（S6–S19）；S6 LLM API 與應用基本功之後的頁面用到模型知識時，會先指回本頁的速成段落，再標出「深入：」與 Part I 的對應章節，例如「深入：S2 Transformer 與 decoding」。
+Part I 模型原理（S1–S5）介紹神經網路、Transformer、預訓練、後訓練與推論，用到較多數學，屬於**選修的深入路線**。應用路線可以直接完成 Part II 到 Part VI（S6–S19）。後面的章節用到模型知識時，會先連回本頁的速成段落，再以「深入：S2 Transformer 與 decoding」這類標記，指出 Part I 的對應章節。
 
 ## 適合誰
 
@@ -32,11 +32,11 @@ Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tra
 
 想研究或訓練模型、做推論基礎設施的人，請把 Part I 也走完（從 S0 AI 系統概觀依序走到 S19 真實 agent 系統與畢業專題）。
 
-每一章的**必做題**是主線；**進階題**是選做的長期專案，分成兩個：系統專案（A6–A19，每章一步做出你自己的 AI 應用）和模型專案（M1–M5，在 Part I 訓練小模型）。進階題在淺顯模式下收合。
+每章的**必做題**構成主線。**進階題**則是選做的長期專案，在淺顯模式下收合，分為系統專案（A6–A19，每章在自己的 AI 應用上增加能力）與模型專案（M1–M5，在 Part I 訓練小模型）。
 
 ## 什麼時候值得讀 Part I
 
-走應用路線時，下面這些地方你會先「知道怎麼做」，想知道「為什麼」時再去讀對應的章（代號的意思見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）：
+走應用路線時，可以先學做法，需要理解原理時再讀對應章節。各主題的對照如下，代號讀法見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)：
 
 | 你在哪一章 | 會用到的模型知識 | 深入閱讀 |
 |---|---|---|
@@ -52,7 +52,7 @@ Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tra
 
 ## 模型速成
 
-這一節分兩部分：「現在要懂的四件事」是走進 S6 LLM API 與應用基本功之前要先懂的；「之後用到再查」先知道名字就好，用到時再回來。每一段後面都附上深入內容所在的章（Part I，選讀）。
+先讀「現在要懂的四件事」，再進入 S6 LLM API 與應用基本功。「之後用到再查」可以先記住名稱，用到時回來讀。每段都附上 Part I 的深入章節，作為選讀。
 
 :::tip[怎麼讀這一節]
 先讀「現在要懂的四件事」；「之後用到再查」可以先略讀，用到時再回來。不需要先完成模型原理章節或實作題，就能繼續 S6 LLM API 與應用基本功。
@@ -60,19 +60,23 @@ Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tra
 
 ### 現在要懂的四件事
 
-走進 S6 LLM API 與應用基本功之前，先確定這四件事都懂：模型讀寫的單位（token）、它怎麼產生文字（下面分 Next-token 與 Sampling 兩段講）、一次能看多少（context）、要花多少錢與時間。
+開始 S6 LLM API 與應用基本功前，要先懂 token、文字生成、context，以及成本與延遲。文字生成會分成 Next-token 與 Sampling 兩段說明。
 
 #### Token 與斷詞
 
-模型看到的不是字元，而是 token：tokenizer 用 BPE 之類的演算法，把常一起出現的字元組合併成一個單位，再轉成整數。一個英文單字通常是一到兩個 token，中文常常一到兩個字就是一個 token。同樣的意思，中文是否比英文花更多 token（也就更貴、更佔 context）要看 tokenizer：詞彙表小或以英文為主的 tokenizer 差很多，新一代多語 tokenizer 差距小得多。API 的計價、context 的上限、速度，全部以 token 計算，不是以字數。很多「LLM 的怪毛病」，例如數不清單字裡的字母、算術不穩，都和 token 的切法有關。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
+Tokenizer 會用 BPE 等演算法，把常一起出現的字元合併成 token，再轉成整數供模型處理。一個英文單字通常是一到兩個 token，中文常是一到兩個字一個 token。
+
+同樣意思的中文會不會比英文花更多 token，要看 tokenizer。詞彙表小或以英文為主時，差距較大；新一代多語 tokenizer 的差距小得多。API 計價、context 上限與速度都以 token 計算，所以 token 較多也會更貴、更佔 context。數不清單字字母、算術不穩等問題，也和這種切法有關。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 
 #### Next-token prediction
 
-LLM 只做一件事：給定前面所有的 token，輸出下一個 token 的機率分布。生成一段回答，就是重複「預測 → 挑一個 token → 接到後面 → 再預測」直到結束。對話、工具呼叫、JSON 輸出，最後都是這個機制產生的文字，只是格式不同。模型本身是數十億個數字，叫參數（也叫權重）；訓練就是調整這些數字，讓預測越來越準。這也代表模型沒有「查資料庫」的動作，它說的事實來自訓練時學到的統計規律，所以會產生看似合理但錯誤的內容（幻覺）。→ [S1 神經網路基礎](/stages/s01-neural-networks/)、[S2 Transformer 與 decoding](/stages/s02-transformer/)
+LLM 根據前面的所有 token，預測下一個 token 的機率。生成回答時，會反覆預測、挑選一個 token、接到後面，再繼續預測，直到結束。對話、工具呼叫和 JSON 輸出，都由這個機制產生，只是格式不同。
+
+模型由數十億個稱為參數或權重的數字組成，訓練會調整這些數字，讓預測更準。生成時沒有查資料庫的動作，事實來自訓練學到的統計規律，因此可能產生看似合理卻錯誤的內容，也就是幻覺。→ [S1 神經網路基礎](/stages/s01-neural-networks/)、[S2 Transformer 與 decoding](/stages/s02-transformer/)
 
 #### Sampling 與 temperature
 
-模型每一步給出機率分布之後，由 sampling 設定決定挑哪個 token。Temperature 調整分布的尖銳程度：低溫（例如 0–0.3）幾乎都挑最可能的，輸出穩定；高溫讓不太可能的 token 也有機會，輸出更多樣也更容易出錯。要注意：temperature 設成 0 也不保證每次輸出完全相同，所以測試 LLM 程式時要用 S6 LLM API 與應用基本功教的方法處理「每次輸出可能不同」。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S6 LLM API 與應用基本功](/stages/s06-llm-api/)
+模型每一步給出機率後，由 sampling 決定挑哪個 token。Temperature 調整機率分布的集中程度。低溫，例如 0–0.3，幾乎都挑最可能的 token，輸出較穩定；高溫則讓較不可能的 token 也有機會被選中，輸出更多樣，也更容易出錯。即使 temperature 設為 0，也不保證每次輸出完全相同。測試時要用 S6 LLM API 與應用基本功的方法，處理這種變動。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S6 LLM API 與應用基本功](/stages/s06-llm-api/)
 
 <details class="deep">
 <summary>深入一點：top-p，以及不接受這些參數的 API</summary>
@@ -85,11 +89,13 @@ LLM 只做一件事：給定前面所有的 token，輸出下一個 token 的機
 
 #### Context window
 
-Context window 是模型一次能處理的 token 上限，輸入（系統提示詞、對話歷史、檢索結果、工具輸出）和輸出加起來都要算進去。上限很大不代表都該塞滿：放進去的內容越多，成本與延遲越高，而且模型在長 context 中找出關鍵資訊的能力會下降。決定「這次放什麼進 context」是 S11 Context engineering 的主題；S9 檢索與 RAG 教的 RAG 則是只放相關部分的方法。→ [S9 檢索與 RAG](/stages/s09-rag/)、[S11 Context engineering](/stages/s11-context-engineering/)
+Context window 是模型單次處理的 token 上限，系統提示詞、對話歷史、檢索結果、工具輸出，加上模型的輸出，都算在內。內容越多，成本與延遲越高，模型在長 context 裡找出關鍵資訊的能力也會下降。因此要選擇放哪些內容，這會在 S11 Context engineering 說明。S9 檢索與 RAG 則介紹只放相關段落的方法。→ [S9 檢索與 RAG](/stages/s09-rag/)、[S11 Context engineering](/stages/s11-context-engineering/)
 
 #### 成本與延遲的基本功
 
-API 費用約等於「輸入 token 數 × 輸入單價 + 輸出 token 數 × 輸出單價」，輸出單價通常是輸入的好幾倍；有快取的輸入通常更便宜（原理見下方〈KV cache〉）。推理模型（reasoning model）會先寫出一段思考過程再回答，這些思考 token 一般按輸出計價，常常比最後的回答還多。延遲大致是 TTFT（第一個 token 出現前的時間，隨輸入長度增加）加上「輸出 token 數 × 每個 token 的時間」，所以縮短輸出通常比縮短輸入更能降低延遲。常見的省錢與加速手段：換小模型、限制輸出長度、讓 prompt 開頭固定以提高快取命中、用串流讓使用者更早看到內容。從 S6 LLM API 與應用基本功開始，每次呼叫都要記錄 token 數、成本、延遲，這是之後所有最佳化的依據。→ [S5 推論與 serving](/stages/s05-inference/)、[S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S18 部署與架構](/stages/s18-deployment/)
+API 費用約為「輸入 token 數 × 輸入單價 + 輸出 token 數 × 輸出單價」。輸出單價通常是輸入的好幾倍，命中快取的輸入則通常更便宜，原理見下方〈KV cache〉。推理模型（reasoning model）在回答前產生的思考 token，一般也按輸出計價，而且常比最後的回答還多。
+
+延遲大致是 TTFT，也就是第一個 token 出現前的時間，再加上「輸出 token 數 × 每個 token 的時間」。TTFT 隨輸入長度增加，但縮短輸出通常更能降低總延遲。常見做法包括換小模型、限制輸出長度，以及固定 prompt 開頭來提高快取命中率；串流則讓使用者更早看到內容。從 S6 LLM API 與應用基本功起，每次呼叫都要記錄 token 數、成本與延遲，才能據此最佳化。→ [S5 推論與 serving](/stages/s05-inference/)、[S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S18 部署與架構](/stages/s18-deployment/)
 
 ### 之後用到再查
 
@@ -97,7 +103,7 @@ API 費用約等於「輸入 token 數 × 輸入單價 + 輸出 token 數 × 輸
 
 #### Logits 與 softmax
 
-「輸出機率分布」具體是這樣：模型最後一層為詞彙表裡的每個 token 各輸出一個分數，叫 logit；softmax 把這些分數轉成加總為 1 的機率，分數高的機率就高。Temperature 就是在 softmax 之前先把 logits 除以 T。有些 API 會回傳 logprobs，也就是這些機率取對數，S8 Evals 方法論會用它看模型有多「確定」。手算例子見[數學補給](/guide/math-refresher/#logitssoftmax-與-temperature)。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
+模型最後一層會替詞彙表裡的每個 token 打分，這個分數叫 logit。Softmax 把分數轉成加總為 1 的機率，分數越高，機率越大。Temperature 則是在 softmax 前，把 logits 除以 T。有些 API 會回傳機率的對數，也就是 logprobs，S8 Evals 方法論會用它衡量模型的把握程度。手算例子見[數學補給](/guide/math-refresher/#logitssoftmax-與-temperature)。→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 
 **什麼時候回來讀**：S8 Evals 方法論用 logprobs 判斷模型有多確定時。
 
@@ -121,7 +127,9 @@ LLM 的訓練大致分成幾個階段。Pretraining 用大量網路文字訓練 
 
 #### 微調能做什麼、不能做什麼
 
-微調（fine-tuning）適合改變模型的**行為**：固定的輸出格式、特定的語氣或風格、某個窄任務的表現，或把大型模型的能力蒸餾到更小、更便宜的模型。它不適合用來加入會變動的**知識**：用微調灌輸新事實通常不如 RAG 可靠，資料一改就要重新訓練，也無法提供引用來源。一般用少量資料做的 SFT 微調，也不太能讓模型學會本來就做不到的推理能力（推理能力主要來自大規模 RL，或用大量強模型解題範例做 SFT，也就是蒸餾；見 S4 Post-training 與 reasoning），而且可能讓其他能力退步。實務上的順序是：先把 prompt 做好，知識問題用 RAG，最後才考慮微調，而且要先有評估資料才能判斷微調有沒有用。→ [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S9 檢索與 RAG](/stages/s09-rag/)
+微調（fine-tuning）適合調整模型的**行為**，例如輸出格式、語氣、風格、窄任務的表現，或把大模型的能力蒸餾到更小、更便宜的模型。會變動的**知識**則通常用 RAG 更可靠，因為資料更新後不必重新訓練，也能提供引用來源。
+
+少量資料的 SFT 微調，通常也無法教會模型原本做不到的推理能力。這類能力主要來自大規模 RL，或大量強模型解題範例的 SFT，也就是蒸餾，詳見 S4 Post-training 與 reasoning。微調還可能讓其他能力退步。因此先改善 prompt，知識問題先用 RAG，最後才考慮微調，並先準備評估資料來檢查效果。→ [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S9 檢索與 RAG](/stages/s09-rag/)
 
 **什麼時候回來讀**：S9 檢索與 RAG 決定該用 prompt、RAG 還是微調時。
 

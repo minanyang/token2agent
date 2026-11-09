@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-這一章打開 LLM 的內部。S1 神經網路基礎的模型只看固定長度的前文，這一章要回答：怎麼讓模型同時參考整段前文、又能在 GPU 上平行訓練？答案是 Transformer。講義依資料流動的順序走一遍：文字先被 tokenizer 切成 token，經過一層層 attention 與 MLP，變成下一個 token 的機率，再由 decoding 規則挑出一個。最後學會估算任何模型的參數量、計算量與記憶體。
+S1 神經網路基礎的模型只看固定長度的前文。要讓模型同時參考整段前文，又能在 GPU 上平行訓練，可以用 Transformer。這一章會沿著模型處理文字的順序說明：tokenizer 把文字切成 token，經過一層層 attention 與 MLP，得到下一個 token 的機率，再由 decoding 規則挑出一個。最後練習估算模型的參數量、計算量與記憶體需求。
 
 ## 學完能
 
@@ -36,7 +36,7 @@ sidebar:
 
 ## 講義
 
-先看全貌。GPT 類模型（decoder-only Transformer）處理文字的流程如下：
+GPT 類模型（decoder-only Transformer）處理文字的流程如下：
 
 <figure>
 <svg viewBox="0 0 360 550" width="360" style="max-width:100%;height:auto;display:block;margin:0 auto" role="img" aria-label="GPT 的資料流：token ID 經過 embedding、N 個 block（各含 attention 與 MLP，外加 residual）、最後的 norm、輸出層與 softmax，得到下一個 token 的機率" font-size="13" fill="currentColor">
@@ -172,7 +172,7 @@ Tokenizer 決定模型的輸入單位。切法會直接影響成本，也是很�
 
 如果拿掉 mask，訓練時每個位置都能直接看到答案（下一個 token），loss 降得很漂亮，模型卻只學會抄答案；到了生成時未來的 token 還不存在，輸出就會亂掉。
 
-有了 mask，訓練時一段長度 L 的序列可以一次平行算出 L 個位置的預測，等於同時練習 L 題（「我 → 愛」、「我 愛 → 貓」……），這是 Transformer 比 RNN 好訓練的關鍵。生成時則只用最後一個位置的預測，而且要一個 token 一個 token 來（→ [S5 推論與 serving](/stages/s05-inference/)）。
+有了 mask，訓練時就能把長度 L 的序列一次平行算完，得到 L 個位置的預測，相當於同時練習 L 題，例如「我 → 愛」、「我 愛 → 貓」。這讓 Transformer 比 RNN 更容易訓練。生成時則只用最後一個位置的預測，要逐個 token 產生（→ [S5 推論與 serving](/stages/s05-inference/)）。
 
 **Multi-head。** 一組 q、k、v 只能表達一種「該看誰」的關係，但語言裡同時有很多種：代名詞指誰、動詞的主詞是誰。所以把每個 token 的 q、k、v 向量各切成 h 段，各做一次 attention，接回來後再乘一個輸出矩陣，把各 head 的結果混合。GPT-2 small 的向量是 768 維，切成 12 個 head，每個 64 維。
 
@@ -199,7 +199,7 @@ Tokenizer 決定模型的輸入單位。切法會直接影響成本，也是很�
 | 1 | 0.665 | 0.245 | 0.090 |
 | 2 | 0.506 | 0.307 | 0.186 |
 
-T 小於 1 讓分布更集中；T 大於 1 讓分布更平均、更多變化；T 趨近 0 就等於 greedy。**容易誤會：降低 temperature 只是讓輸出更集中、更穩定，不代表答案更正確。** 模型本來就給錯答案最高分時，低溫只會更穩定地答錯。
+T 小於 1 會讓分布更集中，T 大於 1 會讓分布更平均、增加變化，T 趨近 0 就等於 greedy。降低 temperature 能讓輸出更集中、更穩定，但無法保證正確。模型本來就給錯答案最高分時，低溫只會讓它更穩定地答錯。
 
 **Top-k**：只在機率最高的 k 個候選裡抽。問題是 k 固定：模型很有把握時，k = 50 仍留下 49 個不該選的候選；模型沒把握時，k = 5 又太少。例如沿用下面 top-p 例子的機率 [0.5, 0.3, 0.15, 0.05]、k = 2：只留前兩個，重新換算成 [0.625, 0.375]。
 
@@ -230,7 +230,7 @@ T 小於 1 讓分布更集中；T 大於 1 讓分布更平均、更多變化；T
 | GQA / MLA | 生成時每個 token 的 k、v 會存起來重複用，叫 KV cache；GQA 讓多個 head 共用一組 k、v，MLA 把 k、v 壓縮 | 減少 KV cache 的記憶體 | GQA：`num_key_value_heads` 小於 `num_attention_heads`；MLA：有 `kv_lora_rank` |
 | MoE | 把 MLP 換成很多個平行的小 MLP（專家），每個 token 只挑其中幾個來算 | 增加容量，同時控制計算量 | 專家數（各家名稱不同，例如 `num_experts`、`num_local_experts`）與 `num_experts_per_tok` |
 
-MoE 要特別注意：它有兩個參數量。**總參數**是全部專家加起來，**啟用參數**是每個 token 實際用到的。每個 token 的計算量看啟用參數，像小模型；但全部專家都要放在記憶體裡，所以記憶體看總參數。
+MoE 有兩種參數量。**總參數**是全部專家的參數，**啟用參數**是每個 token 實際用到的部分。計算量取決於啟用參數，所以可以像小模型一樣省計算；記憶體卻要放得下全部專家，需求仍取決於總參數。
 
 <details class="deep">
 <summary>深入一點：各元件怎麼運作</summary>
@@ -266,7 +266,7 @@ MoE 要特別注意：它有兩個參數量。**總參數**是全部專家加起
 | int8 / fp8 | 1 byte | 約 7 GB | 量化推論；fp8 也用在部分新式訓練 |
 | int4 | 0.5 byte | 約 3.5 GB（加上縮放係數會再多一點） | 本機跑模型常見 |
 
-用更少的 bit 存權重叫量化（quantization），以一點品質換記憶體與速度，細節在 [S5 推論與 serving](/stages/s05-inference/)。**容易誤會：能載入權重不代表能訓練。** 訓練要另外存梯度與 optimizer 狀態，記憶體是推論的好幾倍（見下方展開）。
+用更少的 bit 存權重叫量化（quantization），以一點品質換記憶體與速度，細節在 [S5 推論與 serving](/stages/s05-inference/)。載入權重所需的記憶體，只是訓練需求的一部分。訓練還要存梯度與 optimizer 狀態，記憶體需求是推論的好幾倍，詳見下方展開說明。
 
 <details class="deep">
 <summary>準備動手做：精確計算參數，以及訓練要多少記憶體</summary>

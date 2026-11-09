@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-多個 agent 分工聽起來很自然，但它會讓 token 成本倍增、多出交接時遺失資訊的風險，也更難除錯。這一章回答：什麼時候值得把一個 agent 拆成好幾個、怎麼拆、要付出多少代價。它刻意排在 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 之後，因為答案只能由 eval 給：**只有在 eval 上勝過單一 agent，才保留 multi-agent**。
+多個 agent 分工會增加 token 成本、交接時遺失資訊的風險，也更難除錯。這一章會說明什麼任務適合拆、怎麼分工，以及成本怎麼算。先讀 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)，才能用 eval 比較多 agent 與單一 agent；只有多 agent 勝出時，才保留這個設計。
 
 ## 學完能
 
@@ -35,7 +35,7 @@ sidebar:
 
 ## 講義
 
-先看全貌。到 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 為止，筆記助理是**一個** agent：一個 loop、一份 context、一組工具。Multi-agent 是把工作分給好幾個 agent，各自有自己的 context，彼此之間靠訊息交接。這一章依序回答五件事：
+到 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 為止，筆記助理只有一個 loop、一份 context 和一組工具。Multi-agent 把工作分給多個 agent，各自持有 context，靠訊息交接。設計時要考慮：
 
 1. **要不要拆**：多數情況單一 agent 就夠，只有少數條件下拆開才有好處。
 2. **怎麼拆**：manager 模式（一個 agent 把其他 agent 當工具）或 handoff 模式（把對話交給另一個 agent）。
@@ -51,7 +51,7 @@ sidebar:
 
 **Multi-agent 版**：一個 **orchestrator**（負責拆工作、彙整結果的 agent）把任務拆成三份，各交給一個 **sub-agent**（被呼叫去做一小段工作的 agent），每個 sub-agent 只查一個城市，在自己的 context 裡搜尋、閱讀，最後只回傳 1,000 token 以內的摘要。orchestrator 拿到三份摘要後寫成筆記。
 
-兩個版本用同一個模型、同一組工具。差別只有一個：工作是放在一份 context 裡依序做，還是分到三份 context 裡平行做。後面每一節都回到這兩個版本比較。
+兩版使用相同模型與工具。單一 agent 在一份 context 裡依序處理，multi-agent 則在三份 context 裡平行處理。後面各節會比較這兩種做法。
 
 ### ★ 什麼時候值得拆成多個 agent？
 
@@ -63,7 +63,7 @@ Anthropic〈How we built our multi-agent research system〉則說明了收益：
 
 套到筆記助理：三個城市的補助可以各查各的，互不依賴，搜尋結果又多，適合拆。反過來，「把這篇筆記的語氣改得正式一點」只有一份文件、每一步都依賴前一步，拆開只會增加交接。介於兩者之間還有 [S12 Agent loop 與 harness](/stages/s12-agent-harness/) 學過的 **sub-agent 隔離**：主 agent 仍是一個，只把某段很吵的探索丟給 sub-agent，換回一份摘要。
 
-**容易誤會：「任務有好幾個步驟」不等於「需要好幾個 agent」。** 研究 → 寫作 → 審查是三個步驟，但如果每一步都要看到前一步的全部內容，一個 agent 依序做通常更好。要拆的是能平行、能各自完成的工作，不是流程上的階段。
+研究、寫作、審查雖然是三個步驟，但每步都要看前一步的全部內容時，一個 agent 依序做通常更好。適合拆開的是能平行、各自完成的子任務。
 
 ### ★ 多個 agent 怎麼分工？
 
@@ -76,7 +76,7 @@ OpenAI〈A Practical Guide to Building Agents〉把多 agent 分成兩種，差�
 
 怎麼選：使用者需要一個固定的對話對象、結果要統一彙整時，用 manager；不同階段需要完全不同的專業與工具、而且交出去之後不必再回來時，用 handoff。
 
-**容易誤會：handoff 不是「把任務交出去、等它回報」。** 那是 manager 模式。handoff 之後，原本的 agent 不再參與，接手的 agent 就是使用者現在的對話對象。
+Handoff 後，原 agent 不再參與，接手的 agent 成為使用者的對話對象。如果只是交付子任務，等待對方回報，則是 manager 模式。
 
 <details class="deep">
 <summary>準備動手做：在 OpenAI Agents SDK 裡兩種模式長什麼樣</summary>
@@ -89,7 +89,7 @@ OpenAI〈A Practical Guide to Building Agents〉把多 agent 分成兩種，差�
 
 ### ★ 交接時要傳什麼？
 
-Sub-agent 的 context 是全新的。它看不到使用者的原始對話、看不到 orchestrator 想過什麼，只看得到交接時傳給它的那段文字。所以交接內容決定了 sub-agent 能做多好。
+Sub-agent 的 context 從零開始，看不到使用者的原始對話，也看不到 orchestrator 的思考。它能用的資訊，都要在交接時傳過去。
 
 這是 [S11 Context engineering](/stages/s11-context-engineering/) 的 context 預算問題在多 agent 上的版本：**傳太少**，sub-agent 不知道重點，做出用不到的東西；**傳太多**，把無關內容、甚至不可信的內容（例如網頁裡藏的指令）一起帶過去。好處也在這裡：每個 sub-agent 只處理自己那一份資料，不會被其他城市的搜尋結果干擾，這就是 **context 隔離**。
 
@@ -105,7 +105,7 @@ Sub-agent 的 context 是全新的。它看不到使用者的原始對話、看�
 
 回傳的方向同樣要設計：orchestrator 只收摘要，不收 sub-agent 讀過的整頁網頁。三份摘要加起來約 3,000 token，比三個城市的全部搜尋結果小得多。
 
-**容易誤會：sub-agent 不會「記得」使用者剛才說過的話。** 使用者在對話開頭說「我住透天，不是公寓」，orchestrator 沒寫進 brief，sub-agent 就不知道，可能整理了一堆公寓適用的方案。
+使用者在對話開頭說「我住透天，不是公寓」，如果 orchestrator 沒寫進 brief，sub-agent 就不知道，可能整理出一堆適用公寓的方案。
 
 ### ★ 誰來拆工作、彙整結果？
 
@@ -115,7 +115,7 @@ Anthropic 的研究系統是一個具體例子：lead agent 規劃研究方向�
 
 這個架構的難處多在 orchestrator 的指示。文章提到早期版本的 lead agent 會為簡單問題產生多達 50 個 sub-agent；任務描述不夠具體時，sub-agent 會重複彼此的工作或留下缺口。他們的解法是在 prompt 裡寫明「依問題複雜度決定投入多少」的規則。套到筆記助理：「台中的補助是多少」一個 sub-agent 都不需要；「比較三個市」才拆成三份。
 
-**容易誤會：sub-agent 越多越好。** 每多一個 sub-agent，就多一份 context 的成本、多一次交接的風險；子任務切得重疊，還會重複搜尋同樣的網頁。Deep research 系統的完整拆解在 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)。
+每多一個 sub-agent，就增加一份 context 的成本與一次交接風險。子任務若重疊，還會重複搜尋相同網頁。Deep research 系統的完整設計會在 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) 說明。
 
 <details class="deep">
 <summary>準備動手做：寫 orchestrator prompt 的檢查清單</summary>
@@ -129,7 +129,7 @@ Anthropic 的研究系統是一個具體例子：lead agent 規劃研究方向�
 
 ### ★ 多 agent 要多花多少錢？
 
-多 agent 平行花更多 token，品質可能更好，帳單通常更高，多半是因為搜得更多（見下面的例子）。所以每次都要兩個數字一起看：品質提升多少、成本放大多少。
+多 agent 平行處理通常會搜更多資料，因此可能提高品質，也會多花 token。評估時要同時列出品質提升幅度，以及成本增加多少。
 
 Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 token，multi-agent 系統約 15 倍。兩個數字的基準都是聊天；換算成「多 agent 相對單一 agent」，大約是 15 ÷ 4 ≈ 3.75 倍。同一篇文章報告，Opus 4 當 lead、Sonnet 4 當 sub-agent 的多 agent 系統，在他們內部的研究 eval 上比單一 Opus 4 agent 高 90.2%；但這是在特別適合平行的研究任務上、用他們自己的 eval 量到的結果。
 
@@ -159,7 +159,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 報告多 agent 結果時，一定要把總 token（包含所有 sub-agent）、成本、延遲和品質放在同一張表（← [S8 Evals 方法論的成本會計](/stages/s08-evals/)）。
 
-**容易誤會：只看 orchestrator 的 token 用量。** 上面的例子裡 orchestrator 自己只用了 7,500 token，總和卻是 372,000。每個 sub-agent 的每次呼叫都要加總，先各跑 1 題對帳。
+上例 orchestrator 自己用了 7,500 token，但整個系統用了 372,000。要加總所有 sub-agent 的每次呼叫，並先各跑 1 題確認帳目。
 
 <details class="deep">
 <summary>深入一點：為什麼單一 agent 的輸入 token 會越滾越多</summary>
@@ -185,7 +185,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 做法上，把 MAST 當成 [S8 Evals 方法論](/stages/s08-evals/) 錯誤分析的起始分類：讀 trace 時先用這三大類標記，再依你的系統細分子類，數出每類的次數，從最多的那類開始修。
 
-**容易誤會：失敗出現在哪個 agent，就是哪個 agent 的錯。** 最後的筆記漏了申請期限，表面上是 orchestrator 寫漏了；讀 trace 可能發現是 brief 沒要求 sub-agent 找期限，根源在交接。
+筆記漏掉申請期限，表面上是 orchestrator 寫漏了，讀 trace 卻可能發現 brief 根本沒要求 sub-agent 找期限。要沿著交接紀錄查原因。
 
 ### ★ 多 agent 值得保留嗎？
 
@@ -202,7 +202,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 - 涵蓋率多 7 個百分點，差值的信賴區間 +2 到 +12，成本 1.43 倍 → 兩個條件都過，保留。
 - 涵蓋率多 3 個百分點，信賴區間 −2 到 +8，成本 1.43 倍 → 信賴區間包含 0，看不出真的比較好，移除。
 
-**容易誤會：移除代表實驗失敗。** 結論是「單一 agent 就夠」，省下的是之後每一次執行的成本與除錯時間，這和「保留」一樣是有用的結果，也很常見。
+如果實驗顯示單一 agent 已經足夠，移除 multi-agent 就能省下之後每次執行的成本與除錯時間。這也是有用而且常見的實驗結果。
 
 ### ★ 平行修改怎麼不互相覆蓋？
 
@@ -214,7 +214,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 隔離也是安全邊界：一個 agent 被 prompt injection 劫持時，損害限制在它自己的工作區（→ [S16 安全與治理](/stages/s16-security/)）。
 
-**容易誤會：有了隔離就不會衝突。** 隔離只是把衝突延到合併時；兩個 agent 改了同一段，合併步驟仍要決定留哪一個。所以分工時就要讓它們改不同的部分。
+隔離會把衝突延到合併時。兩個 agent 改同一段，合併時仍要決定保留哪個版本，因此分工時就要盡量讓它們修改不同部分。
 
 <details class="deep">
 <summary>準備動手做：git worktree 的基本操作</summary>

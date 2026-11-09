@@ -8,13 +8,13 @@ sidebar:
   order: 1
 ---
 
-模型專案是 Part I 模型原理（S1–S5）的進階實作，五個步驟一路從「手寫梯度」做到「自己的推論伺服器」。目的不是訓練出有用的模型，而是讓你對 LLM 的每個環節都有親手做過的經驗：之後在應用端看到 API 價格、延遲、微調效果、量化品質時，能判斷這些數字合不合理。
+模型專案是 Part I 模型原理（S1–S5）的進階實作，分五步，從手寫梯度做到自己的推論伺服器。重點是親手做過 LLM 的各個環節，不要求訓練出實用模型。之後遇到 API 價格、延遲、微調效果與量化品質的數字，就有依據判斷是否合理。
 
-Part I 的五章各有一題**必做題**，不需要模型專案的成果也能完成。模型專案是**進階題**，步驟之間會互相沿用程式碼。模型專案五步（M1–M5）的雲端 GPU 費用集中在 M4 小模型後訓練與 M5 迷你推論伺服器，合計約數十美元等級，依設定差異很大，請先實測。
+Part I 五章各有一題**必做題**，可以獨立於模型專案完成。模型專案屬於**進階題**，各步會沿用前面的程式碼。M1–M5 的雲端 GPU 費用主要在 M4 小模型後訓練與 M5 迷你推論伺服器，合計約數十美元，仍會隨設定大幅變動，要先實測。
 
 ## 環境
 
-模型專案全程使用 Python，因為訓練與推論的工具鏈（PyTorch、Hugging Face）都以 Python 為主。系統專案（從 S6 LLM API 與應用基本功開始）可以自由選 TypeScript 或 Python。
+模型專案使用 Python，配合以 Python 為主的 PyTorch、Hugging Face 訓練與推論工具鏈。從 S6 LLM API 與應用基本功開始的系統專案，則可選 TypeScript 或 Python。
 
 - **Python** 3.11 以上，用 `uv` 或 `venv` 為模型專案建一個獨立環境。
 - **核心套件**：PyTorch；M4 小模型後訓練與 M5 迷你推論伺服器再加上 `transformers`、[TRL](https://huggingface.co/docs/trl)、[PEFT](https://huggingface.co/docs/peft)。
@@ -43,7 +43,7 @@ Part I 的五章各有一題**必做題**，不需要模型專案的成果也能
 
 ### M2：tiny GPT，升級成 Llama 元件（[S2](/stages/s02-transformer/)）
 
-從零寫一個 GPT，在 tiny Shakespeare 上訓練，換上自己訓練的 BPE tokenizer，再逐一換成 RMSNorm、RoPE、SwiGLU、GQA。過程中手算參數量並和程式統計對照，也用不同的 sampling 設定生成文字。做完之後，大部分 Llama / Qwen 類 dense 模型的 `config.json` 你都看得懂（MoE、MLA 等欄位要再對照 S2 Transformer 與 decoding 的說明）。
+從零寫 GPT，在 tiny Shakespeare 上訓練，換上自己訓練的 BPE tokenizer，再逐一換成 RMSNorm、RoPE、SwiGLU、GQA。過程中手算參數量，與程式統計對照，並用不同 sampling 設定生成文字。這些練習能幫助你讀懂大部分 Llama / Qwen 類 dense 模型的 `config.json`；MoE、MLA 等欄位則要再對照 S2 Transformer 與 decoding。
 
 ### M3：小模型 pretraining 與迷你 scaling 實驗（[S3](/stages/s03-pretraining/)）
 
