@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (optional); if you only want intuition for cost and latency, the [Model Crash Course](/en/guide/app-first/) is enough for the main line　**Next**: → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); prompt caching → [S11 Context Engineering](/en/stages/s11-context-engineering/); constrained decoding → [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/); self-hosting vs APIs → [S18 Deployment and Architecture](/en/stages/s18-deployment/)
+**Prerequisites**: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S4 Post-training and Reasoning](/en/stages/s04-post-training/) (optional); if you only want intuition for cost and latency, the [Model Crash Course](/en/guide/app-first/) is enough for the main line
+
+**Next**: → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); prompt caching → [S11 Context Engineering](/en/stages/s11-context-engineering/); constrained decoding → [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/); self-hosting vs APIs → [S18 Deployment and Architecture](/en/stages/s18-deployment/)
 :::
 
 :::tip[Concepts route: key points]

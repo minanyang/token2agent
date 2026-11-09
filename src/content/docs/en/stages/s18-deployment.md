@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (evals and traces); uses the threat model from [S16 Security and Governance](/en/stages/s16-security/) and the interface states and feedback from [S17 Product and AI UX](/en/stages/s17-ai-ux/) (you don't need to have done the advanced exercise A17 Complete Frontend; [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)); for the model background on inference, see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (deeper: [S5 Inference and Serving](/en/stages/s05-inference/))　**Next**: → [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
+**Prerequisites**: [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (evals and traces); uses the threat model from [S16 Security and Governance](/en/stages/s16-security/) and the interface states and feedback from [S17 Product and AI UX](/en/stages/s17-ai-ux/) (you don't need to have done the advanced exercise A17 Complete Frontend; [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)); for the model background on inference, see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (deeper: [S5 Inference and Serving](/en/stages/s05-inference/))
+
+**Next**: → [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
 :::
 
 :::tip[Concepts route: key points]

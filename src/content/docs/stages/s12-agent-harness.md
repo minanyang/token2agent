@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)；模型知識見 [模型速成](/guide/app-first/#模型速成)　**銜接**：→ [S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)
+**前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)；模型知識見 [模型速成](/guide/app-first/#模型速成)
+
+**銜接**：→ [S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)
 :::
 
 :::tip[理解路線重點]

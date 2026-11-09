@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/); for model background see the [Model Crash Course](/en/guide/app-first/)　**Next**: → [S16 Security and Governance](/en/stages/s16-security/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
+**Prerequisites**: [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/); for model background see the [Model Crash Course](/en/guide/app-first/)
+
+**Next**: → [S16 Security and Governance](/en/stages/s16-security/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
 :::
 
 :::tip[Concepts route: key points]

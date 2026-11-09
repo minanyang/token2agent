@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）　**銜接**：→ [S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)
+**前置**：[S8 Eval 方法論](/stages/s08-evals/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S13 Memory 與個人化](/stages/s13-memory/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)）
+
+**銜接**：→ [S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/)、[S18 部署與架構](/stages/s18-deployment/)
 :::
 
 :::tip[理解路線重點]

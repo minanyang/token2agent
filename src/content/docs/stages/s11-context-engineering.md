@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)；prompt caching 的原理見模型速成的〈[KV cache](/guide/app-first/#kv-cache以及為什麼輸出-token-比較貴)〉（深入：[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)（長時間運作的 context 管理）、[S13 Memory 與個人化](/stages/s13-memory/)
+**前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)；prompt caching 的原理見模型速成的〈[KV cache](/guide/app-first/#kv-cache以及為什麼輸出-token-比較貴)〉（深入：[S5 推論與 serving](/stages/s05-inference/)）
+
+**銜接**：→ [S12 Agent loop 與 harness](/stages/s12-agent-harness/)（長時間運作的 context 管理）、[S13 Memory 與個人化](/stages/s13-memory/)
 :::
 
 :::tip[理解路線重點]

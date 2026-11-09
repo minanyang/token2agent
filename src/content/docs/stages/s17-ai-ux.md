@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)（必做題只需要 S6 的串流概念，S6 之後就能做）；進階題會用到 [S8 Eval 方法論](/stages/s08-evals/)、[S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)的成果；講義會引用後兩章的幾個例子，未讀可略過　**銜接**：→ [S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
+**前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)（必做題只需要 S6 的串流概念，S6 之後就能做）；進階題會用到 [S8 Eval 方法論](/stages/s08-evals/)、[S13 Memory 與個人化](/stages/s13-memory/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S16 安全與治理](/stages/s16-security/)的成果；講義會引用後兩章的幾個例子，未讀可略過
+
+**銜接**：→ [S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
 :::tip[理解路線重點]

@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)（選讀）；只想要成本與延遲的直覺，讀過 [模型速成](/guide/app-first/)就能讀主線　**銜接**：→ [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；prompt caching → [S11 Context engineering](/stages/s11-context-engineering/)；constrained decoding → [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)；自架與 API 的比較 → [S18 部署與架構](/stages/s18-deployment/)
+**前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)（選讀）；只想要成本與延遲的直覺，讀過 [模型速成](/guide/app-first/)就能讀主線
+
+**銜接**：→ [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；prompt caching → [S11 Context engineering](/stages/s11-context-engineering/)；constrained decoding → [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)；自架與 API 的比較 → [S18 部署與架構](/stages/s18-deployment/)
 :::
 
 :::tip[理解路線重點]

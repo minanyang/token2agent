@@ -13,7 +13,9 @@ next:
 ---
 
 :::note[這一章]
-**前置**：無　**銜接**：多數人 → [模型速成](/guide/app-first/#模型速成) → [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；想懂模型內部 → [S1 神經網路基礎](/stages/s01-neural-networks/)（Part I 模型原理，選修的深入路線）
+**前置**：無
+
+**銜接**：多數人 → [模型速成](/guide/app-first/#模型速成) → [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；想懂模型內部 → [S1 神經網路基礎](/stages/s01-neural-networks/)（Part I 模型原理，選修的深入路線）
 
 這一章沒有進階題；選做的進階題從 S1 神經網路基礎、S6 LLM API 與應用基本功開始，見〈接下來怎麼走〉。
 :::

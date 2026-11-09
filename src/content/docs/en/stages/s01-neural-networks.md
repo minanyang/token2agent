@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S0 AI Systems Overview](/en/stages/s00-big-picture/); you can write Python or TypeScript. The main line needs no calculus; the chain rule used in the deeper sections is in the [Math Refresher](/en/guide/math-refresher/#the-chain-rule-and-backprop)　**Next**: → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
+**Prerequisites**: [S0 AI Systems Overview](/en/stages/s00-big-picture/); you can write Python or TypeScript. The main line needs no calculus; the chain rule used in the deeper sections is in the [Math Refresher](/en/guide/math-refresher/#the-chain-rule-and-backprop)
+
+**Next**: → [S2 Transformers and Decoding](/en/stages/s02-transformer/)
 :::
 
 :::tip[Concepts route: key points]

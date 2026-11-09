@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S0 AI 系統概觀](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)　**銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
+**前置**：[S0 AI 系統概觀](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)
+
+**銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 :::
 
 :::tip[理解路線重點]

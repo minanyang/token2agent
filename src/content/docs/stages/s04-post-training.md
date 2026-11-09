@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S3 Pretraining 與 scaling](/stages/s03-pretraining/)（也會用到 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的 sampling）　**銜接**：→ [S5 推論與 serving](/stages/s05-inference/)；agentic RL 在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)接續
+**前置**：[S3 Pretraining 與 scaling](/stages/s03-pretraining/)（也會用到 [S2 Transformer 與 decoding](/stages/s02-transformer/) 的 sampling）
+
+**銜接**：→ [S5 推論與 serving](/stages/s05-inference/)；agentic RL 在 [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)接續
 :::
 
 :::tip[理解路線重點]

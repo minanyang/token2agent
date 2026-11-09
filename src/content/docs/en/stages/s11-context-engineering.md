@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S9 Retrieval and RAG](/en/stages/s09-rag/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/); for how prompt caching works, see "[KV cache](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more)" in the Model Crash Course (deeper: [S5 Inference and Serving](/en/stages/s05-inference/))　**Next**: → [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) (managing context over long runs), [S13 Memory and Personalization](/en/stages/s13-memory/)
+**Prerequisites**: [S9 Retrieval and RAG](/en/stages/s09-rag/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/); for how prompt caching works, see "[KV cache](/en/guide/app-first/#kv-cache-and-why-output-tokens-cost-more)" in the Model Crash Course (deeper: [S5 Inference and Serving](/en/stages/s05-inference/))
+
+**Next**: → [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) (managing context over long runs), [S13 Memory and Personalization](/en/stages/s13-memory/)
 :::
 
 :::tip[Concepts route: key points]

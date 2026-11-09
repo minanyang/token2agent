@@ -13,7 +13,9 @@ next:
 ---
 
 :::note[This chapter]
-**Prerequisites**: none　**Next**: most readers → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); to understand model internals → [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (Part I Models, the optional deep route)
+**Prerequisites**: none
+
+**Next**: most readers → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); to understand model internals → [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (Part I Models, the optional deep route)
 
 This chapter has no advanced exercises. The optional advanced exercises start in S1 Neural Network Basics and S6 LLM APIs and Application Basics; see "Where to go next".
 :::

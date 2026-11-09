@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層往深處走
+**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18
+
+**銜接**：路線的終點；之後回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層往深處走
 :::
 
 :::tip[理解路線重點]

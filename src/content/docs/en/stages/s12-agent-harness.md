@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course)　**Next**: → [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)
+**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course)
+
+**Next**: → [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)
 :::
 
 :::tip[Concepts route: key points]

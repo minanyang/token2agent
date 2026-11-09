@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（function calling）、[S9 檢索與 RAG](/stages/s09-rag/)（間接 prompt injection）　**銜接**：→ [S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S16 安全與治理](/stages/s16-security/)
+**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（function calling）、[S9 檢索與 RAG](/stages/s09-rag/)（間接 prompt injection）
+
+**銜接**：→ [S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S16 安全與治理](/stages/s16-security/)
 :::
 
 :::tip[理解路線重點]

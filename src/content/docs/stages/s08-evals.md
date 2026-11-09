@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（進階題需要 A6 串流聊天與 trace、A7 structured output 與 workflow 累積的 trace；[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）；logprobs 的背景見 [模型速成](/guide/app-first/#logits-與-softmax)（深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)）　**銜接**：→ [S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（agent eval）
+**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)（進階題需要 A6 串流聊天與 trace、A7 structured output 與 workflow 累積的 trace；[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）；logprobs 的背景見 [模型速成](/guide/app-first/#logits-與-softmax)（深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)）
+
+**銜接**：→ [S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（agent eval）
 :::
 
 :::tip[理解路線重點]

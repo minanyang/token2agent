@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)；模型知識見 [模型速成](/guide/app-first/)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/) 的 chat template、[S5 推論與 serving](/stages/s05-inference/) 的 constrained decoding）　**銜接**：→ [S8 Eval 方法論](/stages/s08-evals/)
+**前置**：[S6 LLM API 與應用基本功](/stages/s06-llm-api/)；模型知識見 [模型速成](/guide/app-first/)（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/) 的 chat template、[S5 推論與 serving](/stages/s05-inference/) 的 constrained decoding）
+
+**銜接**：→ [S8 Eval 方法論](/stages/s08-evals/)
 :::
 
 :::tip[理解路線重點]

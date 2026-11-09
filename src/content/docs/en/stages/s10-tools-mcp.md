@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) (function calling), [S9 Retrieval and RAG](/en/stages/s09-rag/) (indirect prompt injection)　**Next**: → [S11 Context Engineering](/en/stages/s11-context-engineering/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S16 Security and Governance](/en/stages/s16-security/)
+**Prerequisites**: [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) (function calling), [S9 Retrieval and RAG](/en/stages/s09-rag/) (indirect prompt injection)
+
+**Next**: → [S11 Context Engineering](/en/stages/s11-context-engineering/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S16 Security and Governance](/en/stages/s16-security/)
 :::
 
 :::tip[Concepts route: key points]

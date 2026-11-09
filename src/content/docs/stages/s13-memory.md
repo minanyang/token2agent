@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)　**銜接**：→ [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（個人化介面）
+**前置**：[S9 檢索與 RAG](/stages/s09-rag/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)
+
+**銜接**：→ [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（個人化介面）
 :::
 
 :::tip[理解路線重點]

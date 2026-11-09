@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S13 Memory and Personalization](/en/stages/s13-memory/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/))　**Next**: → [S15 Multi-agent Systems](/en/stages/s15-multi-agent/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)
+**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S13 Memory and Personalization](/en/stages/s13-memory/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/))
+
+**Next**: → [S15 Multi-agent Systems](/en/stages/s15-multi-agent/), [S16 Security and Governance](/en/stages/s16-security/), [S18 Deployment and Architecture](/en/stages/s18-deployment/)
 :::
 
 :::tip[Concepts route: key points]

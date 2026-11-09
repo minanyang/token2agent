@@ -19,6 +19,7 @@ Authoring rules (keep this comment out of published pages):
 - System-thread exercises are written for "your system" (reader picks the theme); add one line
   「以筆記助理為例：…」 as the worked example.
 - Numbers in acceptance criteria must be checkable by the reader alone.
+- Put prerequisites and next steps in separate paragraphs in the chapter note, in both editions.
 - Keep short table labels together with non-breaking spaces (e.g. `Level&nbsp;0`). Let descriptive cells
   wrap normally; do not disable wrapping for an entire table or column.
 - Do not overclaim; keep sources' caveats (dates, vendor bias, unread content).
@@ -47,7 +48,9 @@ Authoring rules (keep this comment out of published pages):
 -->
 
 :::note[這一章]
-**前置**：S{a}、S{b}　**銜接**：→ S{c}
+**前置**：S{a}、S{b}
+
+**銜接**：→ S{c}
 :::
 
 :::tip[理解路線重點]

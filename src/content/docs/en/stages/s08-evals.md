@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) (the advanced exercise needs the traces collected in A6 Streaming Chat and Traces and A7 Structured Output and Workflows; [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)); for background on logprobs see the [Model Crash Course](/en/guide/app-first/#logits-and-softmax) (deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/))　**Next**: → [S9 Retrieval and RAG](/en/stages/s09-rag/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (agent evals)
+**Prerequisites**: [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/) (the advanced exercise needs the traces collected in A6 Streaming Chat and Traces and A7 Structured Output and Workflows; [how to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)); for background on logprobs see the [Model Crash Course](/en/guide/app-first/#logits-and-softmax) (deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/))
+
+**Next**: → [S9 Retrieval and RAG](/en/stages/s09-rag/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (agent evals)
 :::
 
 :::tip[Concepts route: key points]

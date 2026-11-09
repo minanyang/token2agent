@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)（也會用到 [S1 神經網路基礎](/stages/s01-neural-networks/) 的 AdamW 與 perplexity）　**銜接**：→ [S4 Post-training 與 reasoning](/stages/s04-post-training/)
+**前置**：[S2 Transformer 與 decoding](/stages/s02-transformer/)（也會用到 [S1 神經網路基礎](/stages/s01-neural-networks/) 的 AdamW 與 perplexity）
+
+**銜接**：→ [S4 Post-training 與 reasoning](/stages/s04-post-training/)
 :::
 
 :::tip[理解路線重點]

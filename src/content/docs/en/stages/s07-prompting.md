@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); for model background see the [Model Crash Course](/en/guide/app-first/) (deeper: chat templates in [S4 Post-training and Reasoning](/en/stages/s04-post-training/), constrained decoding in [S5 Inference and Serving](/en/stages/s05-inference/))　**Next**: → [S8 Eval Methodology](/en/stages/s08-evals/)
+**Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); for model background see the [Model Crash Course](/en/guide/app-first/) (deeper: chat templates in [S4 Post-training and Reasoning](/en/stages/s04-post-training/), constrained decoding in [S5 Inference and Serving](/en/stages/s05-inference/))
+
+**Next**: → [S8 Eval Methodology](/en/stages/s08-evals/)
 :::
 
 :::tip[Concepts route: key points]

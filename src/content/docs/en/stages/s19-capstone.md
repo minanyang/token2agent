@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: the core exercise only needs the idea of the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18　**Next**: the end of the route; afterward, go back to [S0 AI Systems Overview](/en/stages/s00-big-picture/) and pick a layer to go deeper on
+**Prerequisites**: the core exercise only needs the idea of the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18
+
+**Next**: the end of the route; afterward, go back to [S0 AI Systems Overview](/en/stages/s00-big-picture/) and pick a layer to go deeper on
 :::
 
 :::tip[Concepts route: key points]

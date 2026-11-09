@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (the core exercise only needs streaming from S6, so you can do it right after S6); the advanced exercise builds on your work from [S8 Eval Methodology](/en/stages/s08-evals/), [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) and [S16 Security and Governance](/en/stages/s16-security/); the lecture cites a few examples from the last two, which you can skip if you haven't read them　**Next**: → [S18 Deployment and Architecture](/en/stages/s18-deployment/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
+**Prerequisites**: [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (the core exercise only needs streaming from S6, so you can do it right after S6); the advanced exercise builds on your work from [S8 Eval Methodology](/en/stages/s08-evals/), [S13 Memory and Personalization](/en/stages/s13-memory/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) and [S16 Security and Governance](/en/stages/s16-security/); the lecture cites a few examples from the last two, which you can skip if you haven't read them
+
+**Next**: → [S18 Deployment and Architecture](/en/stages/s18-deployment/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
 :::
 
 :::tip[Concepts route: key points]

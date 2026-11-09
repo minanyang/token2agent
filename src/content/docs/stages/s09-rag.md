@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S8 Eval 方法論](/stages/s08-evals/)；A9 附引用的 RAG（[代號說明](/guide/how-to-use/#代號怎麼讀)）裡的 embedding 微調會用到微調的概念，見模型速成〈[微調能做什麼、不能做什麼](/guide/app-first/#微調能做什麼不能做什麼)〉（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)），沒讀可先跳過該步。　**銜接**：→ [S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)
+**前置**：[S8 Eval 方法論](/stages/s08-evals/)；A9 附引用的 RAG（[代號說明](/guide/how-to-use/#代號怎麼讀)）裡的 embedding 微調會用到微調的概念，見模型速成〈[微調能做什麼、不能做什麼](/guide/app-first/#微調能做什麼不能做什麼)〉（深入：[S4 Post-training 與 reasoning](/stages/s04-post-training/)），沒讀可先跳過該步。
+
+**銜接**：→ [S10 工具與 MCP](/stages/s10-tools-mcp/)、[S11 Context engineering](/stages/s11-context-engineering/)
 :::
 
 :::tip[理解路線重點]

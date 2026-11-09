@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S9 Retrieval and RAG](/en/stages/s09-rag/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)　**Next**: → [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) (personalized interfaces)
+**Prerequisites**: [S9 Retrieval and RAG](/en/stages/s09-rag/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)
+
+**Next**: → [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) (personalized interfaces)
 :::
 
 :::tip[Concepts route: key points]

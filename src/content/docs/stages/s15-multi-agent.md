@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；模型知識見 [模型速成](/guide/app-first/)　**銜接**：→ [S16 安全與治理](/stages/s16-security/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
+**前置**：[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；模型知識見 [模型速成](/guide/app-first/)
+
+**銜接**：→ [S16 安全與治理](/stages/s16-security/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
 :::tip[理解路線重點]

@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（eval 與 trace）；會用到 [S16 安全與治理](/stages/s16-security/)的威脅模型與 [S17 產品與 AI UX](/stages/s17-ai-ux/) 講的介面狀態與回饋（不必先做進階題 A17 完整前端；[代號說明](/guide/how-to-use/#代號怎麼讀)）；推論相關的模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
+**前置**：[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（eval 與 trace）；會用到 [S16 安全與治理](/stages/s16-security/)的威脅模型與 [S17 產品與 AI UX](/stages/s17-ai-ux/) 講的介面狀態與回饋（不必先做進階題 A17 完整前端；[代號說明](/guide/how-to-use/#代號怎麼讀)）；推論相關的模型知識見 [模型速成](/guide/app-first/#模型速成)（深入：[S5 推論與 serving](/stages/s05-inference/)）
+
+**銜接**：→ [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
 :::tip[理解路線重點]

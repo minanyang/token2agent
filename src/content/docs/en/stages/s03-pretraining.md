@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S2 Transformers and Decoding](/en/stages/s02-transformer/) (also uses AdamW and perplexity from [S1 Neural Network Basics](/en/stages/s01-neural-networks/))　**Next**: → [S4 Post-training and Reasoning](/en/stages/s04-post-training/)
+**Prerequisites**: [S2 Transformers and Decoding](/en/stages/s02-transformer/) (also uses AdamW and perplexity from [S1 Neural Network Basics](/en/stages/s01-neural-networks/))
+
+**Next**: → [S4 Post-training and Reasoning](/en/stages/s04-post-training/)
 :::
 
 :::tip[Concepts route: key points]

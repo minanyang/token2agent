@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S3 Pretraining and Scaling](/en/stages/s03-pretraining/) (also uses sampling from [S2 Transformers and Decoding](/en/stages/s02-transformer/))　**Next**: → [S5 Inference and Serving](/en/stages/s05-inference/); agentic RL continues in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)
+**Prerequisites**: [S3 Pretraining and Scaling](/en/stages/s03-pretraining/) (also uses sampling from [S2 Transformers and Decoding](/en/stages/s02-transformer/))
+
+**Next**: → [S5 Inference and Serving](/en/stages/s05-inference/); agentic RL continues in [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/)
 :::
 
 :::tip[Concepts route: key points]

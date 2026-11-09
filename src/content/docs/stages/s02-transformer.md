@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S1 神經網路基礎](/stages/s01-neural-networks/)　**銜接**：→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)。本章屬於選修的深入路線；走[應用路線](/guide/app-first/)的人，模型速成已涵蓋 S6 LLM API 與應用基本功需要的 token 與 sampling 概念
+**前置**：[S1 神經網路基礎](/stages/s01-neural-networks/)
+
+**銜接**：→ [S3 Pretraining 與 scaling](/stages/s03-pretraining/)。本章屬於選修的深入路線；走[應用路線](/guide/app-first/)的人，模型速成已涵蓋 S6 LLM API 與應用基本功需要的 token 與 sampling 概念
 :::
 
 :::tip[理解路線重點]

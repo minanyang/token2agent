@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/). The embedding fine-tuning step in A9 RAG with Citations ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) uses fine-tuning concepts; see the Model Crash Course topic "[What fine-tuning can and can't do](/en/guide/app-first/#what-fine-tuning-can-and-cant-do)" (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)). If you haven't read it, skip that step for now.　**Next**: → [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/)
+**Prerequisites**: [S8 Eval Methodology](/en/stages/s08-evals/). The embedding fine-tuning step in A9 RAG with Citations ([what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) uses fine-tuning concepts; see the Model Crash Course topic "[What fine-tuning can and can't do](/en/guide/app-first/#what-fine-tuning-can-and-cant-do)" (deeper: [S4 Post-training and Reasoning](/en/stages/s04-post-training/)). If you haven't read it, skip that step for now.
+
+**Next**: → [S10 Tools and MCP](/en/stages/s10-tools-mcp/), [S11 Context Engineering](/en/stages/s11-context-engineering/)
 :::
 
 :::tip[Concepts route: key points]

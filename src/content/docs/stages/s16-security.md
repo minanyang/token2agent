@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；會用到 [S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S13 Memory 與個人化](/stages/s13-memory/) 的 🔒 檢查點（講義開頭複習）　**銜接**：→ [S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
+**前置**：[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；會用到 [S9 檢索與 RAG](/stages/s09-rag/)、[S10 工具與 MCP](/stages/s10-tools-mcp/)、[S13 Memory 與個人化](/stages/s13-memory/) 的 🔒 檢查點（講義開頭複習）
+
+**銜接**：→ [S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/)
 :::
 
 :::tip[理解路線重點]

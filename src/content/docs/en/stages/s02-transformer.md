@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S1 Neural Network Basics](/en/stages/s01-neural-networks/)　**Next**: → [S3 Pretraining and Scaling](/en/stages/s03-pretraining/). This chapter is part of the optional deep route. If you're on the [application route](/en/guide/app-first/), the Model Crash Course already covers the token and sampling concepts S6 LLM APIs and Application Basics needs
+**Prerequisites**: [S1 Neural Network Basics](/en/stages/s01-neural-networks/)
+
+**Next**: → [S3 Pretraining and Scaling](/en/stages/s03-pretraining/). This chapter is part of the optional deep route. If you're on the [application route](/en/guide/app-first/), the Model Crash Course already covers the token and sampling concepts S6 LLM APIs and Application Basics needs
 :::
 
 :::tip[Concepts route: key points]

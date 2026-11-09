@@ -10,7 +10,9 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/); uses the 🔒 checkpoints from [S9 Retrieval and RAG](/en/stages/s09-rag/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/) and [S13 Memory and Personalization](/en/stages/s13-memory/) (reviewed at the start of the lecture)　**Next**: → [S17 Product and AI UX](/en/stages/s17-ai-ux/), [S18 Deployment and Architecture](/en/stages/s18-deployment/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
+**Prerequisites**: [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/); uses the 🔒 checkpoints from [S9 Retrieval and RAG](/en/stages/s09-rag/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/) and [S13 Memory and Personalization](/en/stages/s13-memory/) (reviewed at the start of the lecture)
+
+**Next**: → [S17 Product and AI UX](/en/stages/s17-ai-ux/), [S18 Deployment and Architecture](/en/stages/s18-deployment/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/)
 :::
 
 :::tip[Concepts route: key points]
