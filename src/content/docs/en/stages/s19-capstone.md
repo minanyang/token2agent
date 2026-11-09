@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[This chapter]
-**Prerequisites**: the core exercise only needs the idea of the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18　**Next**: the end of the route; afterward, go back to [S0 The Big Picture](/en/stages/s00-big-picture/) and pick a layer to go deeper on
+**Prerequisites**: the core exercise only needs the idea of the agent loop (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)); the capstone requires finishing [system project](/en/projects/system-thread/) steps A6–A18　**Next**: the end of the route; afterward, go back to [S0 AI Systems Overview](/en/stages/s00-big-picture/) and pick a layer to go deeper on
 :::
 
 :::tip[Concepts route: key points]
@@ -69,7 +69,7 @@ Coding agents are the most mature kind of agent today. Four representative syste
 
 They're mature because the task conditions are unusually good: the goal is clear (make the tests pass), feedback is immediate (the compiler and tests point out errors right away), and the environment can be put in a sandbox and thrown away if something goes wrong. What the four systems each demonstrate:
 
-- **SWE-agent** (Yang et al. 2024) pushes the tools part. It introduced the agent-computer interface (ACI) (← [S10 Tools and MCP](/en/stages/s10-tools-mcp/)): commands for a model should be designed like a UI for people. For example, the file viewer shows only 100 lines at a time with line numbers, search results are capped, and every edit gets a syntax check right away, rejecting the edit if it fails. This works better than handing the model a raw shell. [mini-SWE-agent](https://github.com/SWE-agent/mini-swe-agent), which you read in S0 The Big Picture, is the other extreme: about 100 lines, bash only.
+- **SWE-agent** (Yang et al. 2024) pushes the tools part. It introduced the agent-computer interface (ACI) (← [S10 Tools and MCP](/en/stages/s10-tools-mcp/)): commands for a model should be designed like a UI for people. For example, the file viewer shows only 100 lines at a time with line numbers, search results are capped, and every edit gets a syntax check right away, rejecting the edit if it fails. This works better than handing the model a raw shell. [mini-SWE-agent](https://github.com/SWE-agent/mini-swe-agent), which you read in S0 AI Systems Overview, is the other extreme: about 100 lines, bash only.
 - **Agentless** (Xia et al. 2024) pushes the loop part, by removing it: the model never decides the flow. Instead there's a fixed three-phase workflow: localize the problem, generate patches, validate and pick a patch. The model only works within each phase, and it reaches competitive results at very low cost.
 - **OpenHands** (Wang et al. 2024) is an open platform focused on the execution environment and security: the agent acts by writing code inside a sandbox, and every action and result is recorded as an event stream for replay and debugging.
 - **Claude Code** turns harness components (← [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)) into user-configurable interfaces: `CLAUDE.md` (project memory), hooks (code that runs before and after tool calls), skills, sub-agents and permission modes.
@@ -83,7 +83,7 @@ Compare SWE-agent and Agentless on the same issue. Suppose the notes assistant's
 | Validate | The model decides to run the tests, reads the results, edits again if needed | Phase 3: code runs the existing tests and a reproduction test; 4 become 2, and one is picked |
 | Steps | Depends; could be 6 steps or 30 | Always 3 phases |
 
-Both approaches are competitive on benchmarks like SWE-bench because of the shape of the task: every case is "one issue, one repo, tests decide pass or fail." When the structure is known in advance, a fixed flow covers it, and it's cheaper, more predictable, and when it breaks it's easy to see which phase went wrong. This is the best real-world example of workflow vs agent (← [S0 The Big Picture](/en/stages/s00-big-picture/), [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/)): start with a workflow, and only hand decisions to the model when the task really needs it.
+Both approaches are competitive on benchmarks like SWE-bench because of the shape of the task: every case is "one issue, one repo, tests decide pass or fail." When the structure is known in advance, a fixed flow covers it, and it's cheaper, more predictable, and when it breaks it's easy to see which phase went wrong. This is the best real-world example of workflow vs agent (← [S0 AI Systems Overview](/en/stages/s00-big-picture/), [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/)): start with a workflow, and only hand decisions to the model when the task really needs it.
 
 A fixed workflow falls short when you can't know the next step until you see the result of the previous one: you have to run the program before you can reproduce the bug, you have to read the logs to know which module to change, a feature touches five files in an order you can't see in advance, or the issue itself is unclear and you have to ask someone first.
 
@@ -418,6 +418,6 @@ The lecture already covers what this chapter needs. The material below is for re
 
 - Science agents, theorem proving, embodied agents: each field's specialized benchmarks and environments.
 - Agentic RL (← the optional section of S14 Agent Evals, Data and Optimization): use the traces and regression suite you built up in the capstone as a training environment, and go back to the [model project](/en/projects/model-thread/) to train a small model into a dedicated agent for your system.
-- Go back to [S0 The Big Picture](/en/stages/s00-big-picture/) and pick the layer you feel weakest in to go deeper on.
+- Go back to [S0 AI Systems Overview](/en/stages/s00-big-picture/) and pick the layer you feel weakest in to go deeper on.
 
 </section>

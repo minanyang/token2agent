@@ -3,13 +3,13 @@ title: 應用路線與模型速成
 head:
   - tag: title
     content: LLM 應用開發入門路線與模型速成｜Token2Agent
-description: 想做 LLM 應用的推薦路線：讀完 S0 全局地圖後，用模型速成補齊 token、sampling、context window 與成本等必要概念，接著直接進入 S6–S19 的應用與 agent 實作。
+description: 想做 LLM 應用的推薦路線：讀完 S0 AI 系統概觀後，用模型速成補齊 token、sampling、context window 與成本等必要概念，接著直接進入 S6–S19 的應用與 agent 實作。
 sidebar:
   order: 3
   label: 應用路線與模型速成
 prev:
   link: /stages/s00-big-picture/
-  label: S0 全局地圖
+  label: S0 AI 系統概觀
 next:
   link: /stages/s06-llm-api/
   label: S6 LLM API 與應用基本功
@@ -17,11 +17,11 @@ next:
 
 想做出 AI 應用或 agent 的人，走這條路線就夠了：
 
-1. **[S0 全局地圖](/stages/s00-big-picture/)**：先看懂一個 AI 系統由哪些部分組成。
+1. **[S0 AI 系統概觀](/stages/s00-big-picture/)**：先看懂一個 AI 系統由哪些部分組成。
 2. **模型速成**（本頁下半部）：做應用最少要知道的模型知識，十個主題，每個幾段話。
-3. **Part III 到 Part VII**（S6–S19）：從 [S6 LLM API 與應用基本功](/stages/s06-llm-api/)開始，按順序走到 S19 真實 agent 系統與畢業專題。
+3. **Part II 到 Part VI**（S6–S19）：從 [S6 LLM API 與應用基本功](/stages/s06-llm-api/)開始，按順序走到 S19 真實 agent 系統與畢業專題。
 
-Part II 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Transformer、預訓練、後訓練、推論。它比較底層、用到較多數學，是**選修的深入路線**。不讀它也能走完 Part III 到 Part VII（S6–S19）；S6 LLM API 與應用基本功之後的頁面用到模型知識時，會先指回本頁的速成段落，再標出「深入：」與 Part II 的對應章節，例如「深入：S2 Transformer 與 decoding」。
+Part I 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Transformer、預訓練、後訓練、推論。它比較底層、用到較多數學，是**選修的深入路線**。不讀它也能走完 Part II 到 Part VI（S6–S19）；S6 LLM API 與應用基本功之後的頁面用到模型知識時，會先指回本頁的速成段落，再標出「深入：」與 Part I 的對應章節，例如「深入：S2 Transformer 與 decoding」。
 
 ## 適合誰
 
@@ -30,11 +30,11 @@ Part II 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tr
 - 不寫程式、只想看懂的人（理解路線）：讀完下面「現在要懂的四件事」就直接進 S6 LLM API 與應用基本功，各章只讀主線、做「先試一下」與自我檢查。
 - 時間有限，希望早點交出看得到的成果（實作路線）。第一個成果是 S6 LLM API 與應用基本功的系統專案進階題 A6 串流聊天與 trace：一個能串流的聊天介面，介面可以用 Gradio、Chainlit 或 CLI，不必寫前端。
 
-想研究或訓練模型、做推論基礎設施的人，請把 Part II 也走完（從 S0 全局地圖依序走到 S19 真實 agent 系統與畢業專題）。
+想研究或訓練模型、做推論基礎設施的人，請把 Part I 也走完（從 S0 AI 系統概觀依序走到 S19 真實 agent 系統與畢業專題）。
 
-每一章的**必做題**是主線；**進階題**是選做的長期專案，分成兩個：系統專案（A6–A19，每章一步做出你自己的 AI 應用）和模型專案（M1–M5，在 Part II 訓練小模型）。進階題在淺顯模式下收合。
+每一章的**必做題**是主線；**進階題**是選做的長期專案，分成兩個：系統專案（A6–A19，每章一步做出你自己的 AI 應用）和模型專案（M1–M5，在 Part I 訓練小模型）。進階題在淺顯模式下收合。
 
-## 什麼時候值得讀 Part II
+## 什麼時候值得讀 Part I
 
 走應用路線時，下面這些地方你會先「知道怎麼做」，想知道「為什麼」時再去讀對應的章（代號的意思見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)）：
 
@@ -52,7 +52,7 @@ Part II 模型原理（S1–S5）講模型內部怎麼運作：神經網路、Tr
 
 ## 模型速成
 
-這一節分兩部分：「現在要懂的四件事」是走進 S6 LLM API 與應用基本功之前要先懂的；「之後用到再查」先知道名字就好，用到時再回來。每一段後面都附上深入內容所在的章（Part II，選讀）。
+這一節分兩部分：「現在要懂的四件事」是走進 S6 LLM API 與應用基本功之前要先懂的；「之後用到再查」先知道名字就好，用到時再回來。每一段後面都附上深入內容所在的章（Part I，選讀）。
 
 :::tip[怎麼讀這一節]
 先讀「現在要懂的四件事」，「之後用到再查」可以先略讀。走實作路線、想動手的話，做 [S2 Transformer 與 decoding 的必做題「從零寫 BPE 與 sampling」](/stages/s02-transformer/#必做從零寫-bpe-與-sampling)（選做）：這題不依賴其他章，做完你對 token 與 sampling 的理解會紮實很多。想看別人怎麼講，[台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php)（繁中）的第 6、7、8 講（訓練的三個階段）與第 10 講（Transformer）是很好的延伸。

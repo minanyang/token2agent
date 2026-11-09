@@ -1,6 +1,6 @@
 ---
 // Page title. On stage pages (S0–S19) it is preceded by a trace-style step line and a progress strip:
-// one block per stage, filled up to this one, Part II (optional) dashed.
+// one block per stage, filled up to this one, Part I (optional) dashed.
 import { parts, stageCount } from '../data/parts';
 import { t, toLang } from '../i18n';
 
@@ -93,7 +93,7 @@ const pad = (i: number) => String(i).padStart(2, '0');
 		background: color-mix(in srgb, var(--sl-color-accent) 45%, transparent);
 		outline: none;
 	}
-	/* Part II stays dashed when passed: readers on the application route skip it. */
+	/* Part I stays dashed when passed: readers on the application route skip it. */
 	.strip li.optional.done {
 		background: transparent;
 		outline: 1px dashed color-mix(in srgb, var(--sl-color-accent) 60%, transparent);

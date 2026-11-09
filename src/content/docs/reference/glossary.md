@@ -25,14 +25,14 @@ sidebar:
 | Markdown | 用 `#`、`**`、`-` 等符號標出標題、粗體、清單的純文字格式，模型常用它排版回答 | `**重點**` 會顯示成粗體 |
 | Schema | 事先規定資料長什麼樣：有哪些欄位、各是什麼型別 | 規定輸出必須有 `title`（字串）和 `tags`（字串陣列）（S7 Prompt、structured output 與 workflows） |
 | Structured output | 要求模型照指定的 schema 輸出，程式可以直接讀取 | 一定回 `{"title": …, "tags": […]}`，不會多出閒聊文字（S7 Prompt、structured output 與 workflows） |
-| Token | 模型讀寫文字的單位，計價與長度上限都以它計算 | 一兩個中文字常是 1 個 token，依 tokenizer 而定（S0 全局地圖、模型速成） |
+| Token | 模型讀寫文字的單位，計價與長度上限都以它計算 | 一兩個中文字常是 1 個 token，依 tokenizer 而定（S0 AI 系統概觀、模型速成） |
 | Context window | 模型一次能看的 token 上限，輸入和輸出都要算進去 | 塞進 20 篇筆記約 3 萬 token，就佔掉一大塊（S6 LLM API 與應用基本功、S11 Context engineering） |
 | Prompt / 系統提示詞 | 送給模型的指示；系統提示詞是每次都放在最前面的固定指示 | 「你是小林的筆記助理，只根據筆記回答」（S7 Prompt、structured output 與 workflows） |
 | Embedding | 把一段文字變成一串數字（向量），意思相近的文字向量也相近 | 用來找出和問題最相關的筆記段落（S9 檢索與 RAG） |
 | RAG | 先檢索相關資料、再交給模型回答，並附上出處 | 只把最相關的 3 段筆記放進 prompt（S9 檢索與 RAG） |
 | Tool / 工具呼叫 | 模型不直接做事，而是輸出「我要呼叫哪個工具、參數是什麼」，由你的程式執行 | 模型要求 `notes_search("預算")`，程式查完把結果交回（S10 工具與 MCP） |
-| Workflow | 步驟由程式事先決定的流程 | 固定「分類 → 抽欄位 → 存檔」三步（S0 全局地圖；S7 Prompt、structured output 與 workflows） |
-| Agent | 下一步由模型自己決定、可以多次使用工具的系統 | 自己決定先搜尋、再建立筆記、最後停下（S0 全局地圖、S12 Agent loop 與 harness） |
+| Workflow | 步驟由程式事先決定的流程 | 固定「分類 → 抽欄位 → 存檔」三步（S0 AI 系統概觀；S7 Prompt、structured output 與 workflows） |
+| Agent | 下一步由模型自己決定、可以多次使用工具的系統 | 自己決定先搜尋、再建立筆記、最後停下（S0 AI 系統概觀、S12 Agent loop 與 harness） |
 | Harness | 包住模型的控制程式，負責工具執行、權限、停止與恢復 | 限制最多 15 步、寄信前先問使用者（S12 Agent loop 與 harness） |
 | Hook | 在固定時機（例如工具執行前後）自動執行的一段檢查程式 | 寄信前先檢查收件人（S12 Agent loop 與 harness） |
 | Sandbox | 隔離的執行環境，程式在裡面出錯或被劫持也碰不到外面的檔案與網路 | 讓 agent 在容器裡跑指令（S10 工具與 MCP、S16 安全與治理） |
@@ -107,7 +107,7 @@ sidebar:
 - **embedding 的三種意思**：S1 神經網路基礎的 word embedding（word2vec）、S2 Transformer 與 decoding 講的模型內部 token embedding、S9 檢索與 RAG 用的 sentence / document embedding，是相關但不同的東西。
 - **eval harness vs agent harness**：前者是跑評估的框架，後者是包住模型、讓 agent 可靠運作的那層程式。這份路線單獨說「harness」時指後者。
 - **workflow vs agent**：workflow 的步驟由程式決定；agent 的下一步由模型決定。
-- **預填助理回覆 vs prefill**：「預填助理回覆」（assistant prefill）是 API 用法：你先寫好助理回覆的開頭，讓模型接著寫（S7 Prompt、structured output 與 workflows）。「prefill」是推論階段：模型一次處理整段輸入、建立 KV cache 的那一步（S0 全局地圖、S5 推論與 serving）。兩者無關，這份路線單獨說 prefill 時指後者。
+- **預填助理回覆 vs prefill**：「預填助理回覆」（assistant prefill）是 API 用法：你先寫好助理回覆的開頭，讓模型接著寫（S7 Prompt、structured output 與 workflows）。「prefill」是推論階段：模型一次處理整段輸入、建立 KV cache 的那一步（S0 AI 系統概觀、S5 推論與 serving）。兩者無關，這份路線單獨說 prefill 時指後者。
 
 ## 簡中資源閱讀建議
 

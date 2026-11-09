@@ -13,7 +13,7 @@ prev:
 ---
 
 :::note[This chapter]
-**Prerequisites**: [S0 The Big Picture](/en/stages/s00-big-picture/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (tokens, next-token prediction and sampling, the context window, cost and latency; deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S5 Inference and Serving](/en/stages/s05-inference/))　**Next**: → [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) (the complete frontend)
+**Prerequisites**: [S0 AI Systems Overview](/en/stages/s00-big-picture/); for model background see the [Model Crash Course](/en/guide/app-first/#model-crash-course) (tokens, next-token prediction and sampling, the context window, cost and latency; deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S4 Post-training and Reasoning](/en/stages/s04-post-training/), [S5 Inference and Serving](/en/stages/s05-inference/))　**Next**: → [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S17 Product and AI UX](/en/stages/s17-ai-ux/) (the complete frontend)
 :::
 
 :::tip[Concepts route: key points]

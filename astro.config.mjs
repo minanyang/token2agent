@@ -49,18 +49,18 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: '開始',
+					label: '從這裡開始',
 					translations: { en: 'Start here' },
 					items: [
+						stage(0, 'big-picture'),
 						{ slug: 'guide/how-to-use' },
 						{ slug: 'guide/app-first' },
 						{ slug: 'guide/math-refresher' },
 					],
 				},
-				{ label: 'Part I 全貌', translations: { en: 'Part I The Big Picture' }, items: [stage(0, 'big-picture')] },
 				{
-					label: 'Part II 模型原理（選修）',
-					translations: { en: 'Part II How Models Work (optional)' },
+					label: 'Part I 模型原理',
+					translations: { en: 'Part I Models' },
 					items: [
 						stage(1, 'neural-networks'),
 						stage(2, 'transformer'),
@@ -70,18 +70,18 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Part III 應用基礎',
-					translations: { en: 'Part III Application Foundations' },
+					label: 'Part II 應用基礎',
+					translations: { en: 'Part II Applications' },
 					items: [stage(6, 'llm-api'), stage(7, 'prompting'), stage(8, 'evals')],
 				},
 				{
-					label: 'Part IV 知識與行動',
-					translations: { en: 'Part IV Knowledge and Action' },
+					label: 'Part III 知識與工具',
+					translations: { en: 'Part III Knowledge & Tools' },
 					items: [stage(9, 'rag'), stage(10, 'tools-mcp'), stage(11, 'context-engineering')],
 				},
 				{
-					label: 'Part V Agent 系統',
-					translations: { en: 'Part V Agent Systems' },
+					label: 'Part IV Agent 系統',
+					translations: { en: 'Part IV Agents' },
 					items: [
 						stage(12, 'agent-harness'),
 						stage(13, 'memory'),
@@ -90,11 +90,11 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Part VI 可信、產品、上線',
-					translations: { en: 'Part VI Trust, Product, Shipping' },
+					label: 'Part V 產品上線',
+					translations: { en: 'Part V Production' },
 					items: [stage(16, 'security'), stage(17, 'ai-ux'), stage(18, 'deployment')],
 				},
-				{ label: 'Part VII 綜合實戰', translations: { en: 'Part VII Capstone' }, items: [stage(19, 'capstone')] },
+				{ label: 'Part VI 綜合實戰', translations: { en: 'Part VI Capstone' }, items: [stage(19, 'capstone')] },
 				{
 					label: '實作專案',
 					translations: { en: 'Hands-on projects' },

@@ -21,7 +21,7 @@ sidebar:
 
 ## What this chapter covers
 
-S10 Tools and MCP let the model call tools, but each call is a single step. This chapter answers: how do you let the model work through a multi-step task one step after another, safely, with a reliable way to stop and without spiraling when something goes wrong? The core of an agent is just a loop: the model decides the next step, your code executes it, the result goes back into the context, and this repeats until the model says it's done (mini-SWE-agent from S0 The Big Picture is exactly this loop). The code wrapped around the loop that makes it reliable is called the harness: permissions, stop conditions, error handling, state, long-horizon context management, skills. Every harness component encodes an assumption about "what the model can't do on its own," so this chapter also uses a minimal agent eval from the start to judge whether a change helps.
+S10 Tools and MCP let the model call tools, but each call is a single step. This chapter answers: how do you let the model work through a multi-step task one step after another, safely, with a reliable way to stop and without spiraling when something goes wrong? The core of an agent is just a loop: the model decides the next step, your code executes it, the result goes back into the context, and this repeats until the model says it's done (mini-SWE-agent from S0 AI Systems Overview is exactly this loop). The code wrapped around the loop that makes it reliable is called the harness: permissions, stop conditions, error handling, state, long-horizon context management, skills. Every harness component encodes an assumption about "what the model can't do on its own," so this chapter also uses a minimal agent eval from the start to judge whether a change helps.
 
 ## After this chapter you can
 
@@ -455,7 +455,7 @@ The lecture already covers what this chapter needs. The material below is for re
 ### Code along
 
 - [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) — The hands-on material this roadmap recommends; every chapter is short and comes with a runnable `code.py`. Start with the new s01–s04 at the repo root (loop, tools, permissions, hooks) alongside the core exercise; then s05–s08 (todos, sub-agents, skills, compaction), s10 (task system), s15 (integrated harness) and s16 (workflows and journal-based resume) alongside the advanced exercise. Chapters are in English by default. Note that the old `docs/` chapter numbers differ from the new ones, so don't mix them. s11 (background tasks), s12 (scheduling) and s17 (goal loop) are used by the long-running agent in S19 Real Agent Systems and the Capstone; you can skim them now.
-- [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) — Read in S0 The Big Picture; when hand-writing your loop, compare how it handles stop conditions and errors.
+- [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) — Read in S0 AI Systems Overview; when hand-writing your loop, compare how it handles stop conditions and errors.
 - [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — Assignment 1: write a harness on an open model; compare it with this chapter's A12 Hand-written Harness.
 
 ### Design principles and engineering articles
@@ -466,7 +466,7 @@ The lecture already covers what this chapter needs. The material below is for re
 - [Anthropic: Effective context engineering for AI agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents) (2025-09-29) — You read the first half in S11 Context Engineering; here, read the section on long-horizon tasks and just-in-time retrieval.
 - [Anthropic: Equipping agents with Agent Skills](https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills) (2025-10-16) — The official explanation of SKILL.md's structure and the three loading layers.
 - [Anthropic: Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/research/managed-agents) (2026-04-08) — Separating session / harness / sandbox; the harness's assumptions go stale.
-- [Anthropic: Building effective AI agents](https://www.anthropic.com/research/building-effective-agents) (2024-12-19) — You read it in [S0 The Big Picture](/en/stages/s00-big-picture/) and [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/); reread the agents section after hand-writing a loop and it will read differently.
+- [Anthropic: Building effective AI agents](https://www.anthropic.com/research/building-effective-agents) (2024-12-19) — You read it in [S0 AI Systems Overview](/en/stages/s00-big-picture/) and [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/); reread the agents section after hand-writing a loop and it will read differently.
 - [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) — The sections on the run loop and guardrails; save the multi-agent section for S15 Multi-agent Systems.
 
 ### Original papers

@@ -8,7 +8,7 @@ sidebar:
   order: 2
 ---
 
-The system project is **cumulative hands-on work spanning Part III to Part VII (S6–S19)**: every chapter adds a new capability to **the same application**, instead of each chapter being an unrelated exercise (for the codes, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)). This way you see how the layers stack up. For example, when the retrieval you build in S9 Retrieval and RAG gives a wrong answer, the eval set you built in S8 Eval Methodology catches it; the tools you add in S10 Tools and MCP get attacked in S16 Security and Governance.
+The system project is **cumulative hands-on work spanning Part II to Part VI (S6–S19)**: every chapter adds a new capability to **the same application**, instead of each chapter being an unrelated exercise (for the codes, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)). This way you see how the layers stack up. For example, when the retrieval you build in S9 Retrieval and RAG gives a wrong answer, the eval set you built in S8 Eval Methodology catches it; the tools you add in S10 Tools and MCP get attacked in S16 Security and Governance.
 
 The system project is the **advanced exercise**. Doing only each chapter's core exercise still takes you through the whole roadmap, ending with the core exercise of S19 Real Agent Systems and the Capstone; that chapter's A19 Capstone is also an advanced exercise and needs the system built up through A6–A18.
 

@@ -12,6 +12,7 @@ Write for an English-speaking engineer who never saw the Chinese edition.
 - **Locale-specific details.** Taiwan-specific services, currency (NT$) and places become neutral or US equivalents (USD). Prices stated in USD stay as they are.
 - **Chinese-only resources.** Drop "中文資源" subsections from Further reading and drop advice that only applies to Chinese readers (OpenCC, Simplified-Chinese reading tips). In `reference/sources.md`, keep Chinese-language entries but mark them *(in Chinese)*.
 - **Voice.** Second person, plain and direct, short sentences. American spelling. No hype words.
+- **Table labels.** Keep short labels such as `Level&nbsp;0` together with a non-breaking space (`&nbsp;`) in both editions. Descriptive cells should wrap normally; do not disable wrapping for an entire table or column.
 
 ## Fixed names
 
@@ -19,7 +20,7 @@ Chapter titles (frontmatter `title` and every in-text reference use exactly thes
 
 | | English title |
 |---|---|
-| S0 | The Big Picture |
+| S0 | AI Systems Overview |
 | S1 | Neural Network Basics |
 | S2 | Transformers and Decoding |
 | S3 | Pretraining and Scaling |
@@ -42,7 +43,7 @@ Chapter titles (frontmatter `title` and every in-text reference use exactly thes
 
 Other pages: How to Use This Roadmap · The Application Route and Model Crash Course · Math Refresher · Model Project (M1–M5) · System Project (A6–A19) · Concept Index · Glossary · Sources · Showcase.
 
-Parts: Part I The Big Picture · Part II How Models Work (optional) · Part III Application Foundations · Part IV Knowledge and Action · Part V Agent Systems · Part VI Trust, Product, Shipping · Part VII Capstone. These also live in `src/data/parts.ts` and the sidebar `translations` in `astro.config.mjs`.
+Entry group: Start here (S0). Parts: Part I Models (optional; omit the optional marker from sidebar headings) · Part II Applications · Part III Knowledge & Tools · Part IV Agents · Part V Production · Part VI Capstone. These also live in `src/data/parts.ts` and the sidebar `translations` in `astro.config.mjs`.
 
 Project steps (use these after the code in running text and on the project pages; a chapter's own `### Advanced:` heading translates that chapter's zh subtitle instead):
 

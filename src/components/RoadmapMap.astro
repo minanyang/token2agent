@@ -55,7 +55,7 @@ const stages = new Map(
 			return (
 				<section class:list={['part', { optional: part.optional }]}>
 					<h3 class="part-title">
-						<span>{part.label}</span> {part.title[lang]}
+						{part.label && <span>{part.label}</span>} {part.title[lang]}
 						{part.optional && <span class="optional-tag">{strings.optionalTag}</span>}
 					</h3>
 					{part.optional && (

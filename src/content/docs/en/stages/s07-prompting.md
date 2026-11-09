@@ -44,7 +44,7 @@ The big picture first. This chapter uses the **notes assistant** example that ru
 
 If you're not writing code, you can skip the Python / TypeScript snippets; do read the prompt, note and JSON examples.
 
-The order of these four steps is decided entirely by your code; the model only supplies the content of each step, so this is a workflow, not an agent (← [S0 The Big Picture](/en/stages/s00-big-picture/)). Each section below zooms in on one piece. Sam's tag vocabulary is fixed at 5 tags: `design`, `marketing`, `budget`, `book-notes`, `project-a`. Every later chapter that mentions note tags uses this set. The raw note for this chapter is this one from the 10/14 design team meeting (today is 2026-11-07):
+The order of these four steps is decided entirely by your code; the model only supplies the content of each step, so this is a workflow, not an agent (← [S0 AI Systems Overview](/en/stages/s00-big-picture/)). Each section below zooms in on one piece. Sam's tag vocabulary is fixed at 5 tags: `design`, `marketing`, `budget`, `book-notes`, `project-a`. Every later chapter that mentions note tags uses this set. The raw note for this chapter is this one from the 10/14 design team meeting (today is 2026-11-07):
 
 ```text
 10/14 design team meeting. Sam, Amy, Ben attended. Q4 redesign budget capped at $48,000; Sam owns tracking it. Next meeting 10/28.
@@ -229,7 +229,7 @@ Write the name and version into the trace on every call (← [S6 LLM APIs and Ap
 
 ### ★ What if one call isn't enough?
 
-What one call does badly, a few fixed calls often do well. In a workflow, your code decides the steps (← [S0 The Big Picture](/en/stages/s00-big-picture/)); Anthropic's "Building effective AI agents" describes five common patterns:
+What one call does badly, a few fixed calls often do well. In a workflow, your code decides the steps (← [S0 AI Systems Overview](/en/stages/s00-big-picture/)); Anthropic's "Building effective AI agents" describes five common patterns:
 
 | Pattern | How it works | Good for | Notes-assistant example |
 |---|---|---|---|

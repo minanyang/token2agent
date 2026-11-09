@@ -1,19 +1,19 @@
 ---
-title: S0 The Big Picture
+title: S0 AI Systems Overview
 head:
   - tag: title
-    content: How Do AI Systems Work? The AI/LLM Big Picture (S0) | Token2Agent
+    content: How Do AI Systems Work? AI Systems Overview (S0) | Token2Agent
 description: Learn what an AI system is made of, how a user's message passes through the model and your code to become an answer, how a minimal agent loop works, and when to use a single call, a workflow or an agent.
 sidebar:
   order: 0
-  label: S0 The Big Picture
+  label: S0 AI Systems Overview
 next:
   link: /en/guide/app-first/
   label: The Application Route and Model Crash Course
 ---
 
 :::note[This chapter]
-**Prerequisites**: none　**Next**: most readers → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); to understand model internals → [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (Part II How Models Work, the optional deep route)
+**Prerequisites**: none　**Next**: most readers → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/); to understand model internals → [S1 Neural Network Basics](/en/stages/s01-neural-networks/) (Part I Models, the optional deep route)
 
 This chapter has no advanced exercises. The optional advanced exercises start in S1 Neural Network Basics and S6 LLM APIs and Application Basics; see "Where to go next".
 :::
@@ -44,7 +44,7 @@ Three terms first. You'll see them throughout the course:
 - **Token**: the unit a model reads and writes text in. In English a token is often a short word or part of a longer one; in Chinese it's roughly one or two characters. Pricing, speed and length limits are all counted in tokens (→ [Model Crash Course](/en/guide/app-first/#tokens-and-tokenization); deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/)).
 - **Context**: the full input sent to the model on each call. The model doesn't remember previous calls; it only sees what's in this call's context. There's a limit on how many tokens the context can hold, called the context window.
 
-The whole chapter uses one example: a **notes assistant**. It stores the user's Markdown notes and can answer questions about them, search them and create new ones. The lectures in Part III through Part VII (S6–S19) use it too, growing it from the prototype here into a complete system.
+The whole chapter uses one example: a **notes assistant**. It stores the user's Markdown notes and can answer questions about them, search them and create new ones. The lectures in Part II through Part VI (S6–S19) use it too, growing it from the prototype here into a complete system.
 
 ### ★ Why not just use a model?
 
@@ -58,7 +58,7 @@ Here are the notes assistant's main components (in the "Covered in" column, S pl
 
 | Component | What it does in the notes assistant | Covered in |
 |---|---|---|
-| Model | Understands the question, decides what to do, writes the answer | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (how to call it); model internals are Part II How Models Work (S1–S5) |
+| Model | Understands the question, decides what to do, writes the answer | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (how to call it); model internals are Part I Models (S1–S5) |
 | Prompt and context | Tells the model its role and rules, and supplies the data for this call | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S11 Context Engineering](/en/stages/s11-context-engineering/) |
 | Retrieval | Finds the few notes relevant to the question among about 200 | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | Tools | Actions the model can ask to run, such as `notes_search` and `notes_create` | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/) |
@@ -161,11 +161,11 @@ Google/Kaggle's "Introduction to Agents" whitepaper sorts agent systems into fiv
 
 | Level | Whitepaper description | What the notes assistant looks like |
 |---|---|---|
-| Level 0 | A reasoning system with a model and no tools | Can only answer from training data; can't see the user's notes |
-| Level 1 | Connected to tools, can look up live information | Can call `notes_search` to look up notes before answering |
-| Level 2 | Plans multi-step tasks and actively manages context | Can handle multi-step tasks like "turn last week's meetings into a weekly report", choosing which notes go into the context |
-| Level 3 | Multiple agents dividing the work | One searches, one drafts, one checks citations (→ [S15 Multi-agent Systems](/en/stages/s15-multi-agent/)) |
-| Level 4 | Can create missing tools or agents on its own | Notices there's no "export to PDF" tool and builds one itself |
+| Level&nbsp;0 | A reasoning system with a model and no tools | Can only answer from training data; can't see the user's notes |
+| Level&nbsp;1 | Connected to tools, can look up live information | Can call `notes_search` to look up notes before answering |
+| Level&nbsp;2 | Plans multi-step tasks and actively manages context | Can handle multi-step tasks like "turn last week's meetings into a weekly report", choosing which notes go into the context |
+| Level&nbsp;3 | Multiple agents dividing the work | One searches, one drafts, one checks citations (→ [S15 Multi-agent Systems](/en/stages/s15-multi-agent/)) |
+| Level&nbsp;4 | Can create missing tools or agents on its own | Notices there's no "export to PDF" tool and builds one itself |
 
 **When an agent is worth it.** OpenAI's "A Practical Guide to Building Agents" lists three situations:
 
@@ -228,13 +228,13 @@ After this chapter, pick a route based on your goal:
 
 | Your goal | Route | Notes |
 |---|---|---|
-| Put LLMs into a product and build AI applications or agents (most readers) | S0 The Big Picture → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) → … → [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) | The Model Crash Course covers the minimum model knowledge for building applications in ten short topics. The 14 application chapters (S6–S19) don't require Part II How Models Work (S1–S5); when they use a model concept, they link back to the Model Crash Course first and then mark "Deeper: Sn chapter title" |
-| Understand how models work inside, or do research, train models, or build inference infrastructure | S0 The Big Picture → [Part II How Models Work (S1–S5)](/en/stages/s01-neural-networks/) → the 14 application chapters (S6–S19) | Part II How Models Work (S1–S5) builds up from the bottom: neural networks, Transformers, pretraining, post-training, inference. It's lower level and uses more math; it's the optional deep route |
+| Put LLMs into a product and build AI applications or agents (most readers) | S0 AI Systems Overview → [Model Crash Course](/en/guide/app-first/#model-crash-course) → [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) → … → [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) | The Model Crash Course covers the minimum model knowledge for building applications in ten short topics. The 14 application chapters (S6–S19) don't require Part I Models (S1–S5); when they use a model concept, they link back to the Model Crash Course first and then mark "Deeper: Sn chapter title" |
+| Understand how models work inside, or do research, train models, or build inference infrastructure | S0 AI Systems Overview → [Part I Models (S1–S5)](/en/stages/s01-neural-networks/) → the 14 application chapters (S6–S19) | Part I Models (S1–S5) builds up from the bottom: neural networks, Transformers, pretraining, post-training, inference. It's lower level and uses more math; it's the optional deep route |
 | Understand what AI systems do without writing code for now | Concepts route: same order as the first route | In each chapter, read the lecture, do "Try it first" and the self-check, and skip the exercises that need code; see [How to Use This Roadmap](/en/guide/how-to-use/#choose-a-route) |
 
-If you're not sure, take the first route. When you want to know "why" partway through, go back and read the matching chapter of Part II How Models Work; the [application route page](/en/guide/app-first/) explains when each chapter is worth reading.
+If you're not sure, take the first route. When you want to know "why" partway through, go back and read the matching chapter of Part I Models; the [application route page](/en/guide/app-first/) explains when each chapter is worth reading.
 
-Each chapter has two kinds of exercises. **Core exercises** are the main line and can be done with the lecture alone. **Advanced exercises** are optional and are collapsed in Simple mode. Small tasks marked "optional" (like this chapter's source reading) can be skipped too. The advanced exercises form two projects: the **system project** (A6–A19, [what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) starts in S6 LLM APIs and Application Basics and builds your own AI application chapter by chapter; the **model project** (M1–M5) has you train small models by hand in Part II How Models Work (S1–S5).
+Each chapter has two kinds of exercises. **Core exercises** are the main line and can be done with the lecture alone. **Advanced exercises** are optional and are collapsed in Simple mode. Small tasks marked "optional" (like this chapter's source reading) can be skipped too. The advanced exercises form two projects: the **system project** (A6–A19, [what the codes mean](/en/guide/how-to-use/#how-to-read-the-codes)) starts in S6 LLM APIs and Application Basics and builds your own AI application chapter by chapter; the **model project** (M1–M5) has you train small models by hand in Part I Models (S1–S5).
 
 ## Exercises
 

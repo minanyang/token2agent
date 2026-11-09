@@ -8,9 +8,9 @@ sidebar:
   order: 1
 ---
 
-The model project is the advanced hands-on work for Part II How Models Work (S1–S5). Its five steps go all the way from "hand-written gradients" to "your own inference server." The goal isn't to train a useful model; it's to have built every part of an LLM yourself, so that later, when you see API prices, latency, fine-tuning results or quantization quality on the application side, you can judge whether the numbers make sense.
+The model project is the advanced hands-on work for Part I Models (S1–S5). Its five steps go all the way from "hand-written gradients" to "your own inference server." The goal isn't to train a useful model; it's to have built every part of an LLM yourself, so that later, when you see API prices, latency, fine-tuning results or quantization quality on the application side, you can judge whether the numbers make sense.
 
-Each of the five chapters in Part II has a **core exercise** you can complete without anything from the model project. The model project is the **advanced exercise**, and its steps reuse code from one another. The cloud GPU cost of the five model project steps (M1–M5) is concentrated in M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 and M5 KV Cache, Quantization and a Mini Inference Server, together on the order of tens of dollars. It varies a lot with your setup, so measure first.
+Each of the five chapters in Part I has a **core exercise** you can complete without anything from the model project. The model project is the **advanced exercise**, and its steps reuse code from one another. The cloud GPU cost of the five model project steps (M1–M5) is concentrated in M4 SFT → LoRA → DPO → GRPO on a Small Qwen3 and M5 KV Cache, Quantization and a Mini Inference Server, together on the order of tens of dollars. It varies a lot with your setup, so measure first.
 
 ## Environment
 
@@ -65,4 +65,4 @@ The model project's techniques come back in three places in the system project (
 - **Distilling a router from traces** ([A14 Agent Evals and Optimization](/en/stages/s14-agent-evals/)): use the traces your system has accumulated as training data to train a small classifier or router that decides which model or flow a request should go to. The data preparation and the "before/after comparison with confidence intervals" both carry over from M4.
 - **Self-hosting vs APIs** ([A18 Multi-user Deployment](/en/stages/s18-deployment/)): use the TTFT, TPOT, throughput and GPU hourly rate measured in M5 KV Cache, Quantization and a Mini Inference Server to estimate your self-hosted cost per million tokens, and compare it side by side with API prices.
 
-If you're only on the [application route](/en/guide/app-first/), you can skip these three bridges for now and come back to them when you read Part II How Models Work (S1–S5).
+If you're only on the [application route](/en/guide/app-first/), you can skip these three bridges for now and come back to them when you read Part I Models (S1–S5).

@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-The rule of this roadmap: **every concept is first taught in exactly one chapter, and other chapters only deepen it**. If you take the application route and skip Part II, the related concepts are previewed first in the [Model Crash Course](/en/guide/app-first/#model-crash-course), and the table below notes this. Chapter pages mark where a concept came from with "(← S2 Transformers and Decoding)" and where it goes deeper later with "(→ S16 Security and Governance)".
+The rule of this roadmap: **every concept is first taught in exactly one chapter, and other chapters only deepen it**. If you take the application route and skip Part I, the related concepts are previewed first in the [Model Crash Course](/en/guide/app-first/#model-crash-course), and the table below notes this. Chapter pages mark where a concept came from with "(← S2 Transformers and Decoding)" and where it goes deeper later with "(→ S16 Security and Governance)".
 
 When you can't find a concept, check here first. The math and statistics tools (chain rule, softmax, log plots, standard error, bootstrap, cosine similarity) don't belong to any chapter; if you've forgotten them, see the [Math Refresher](/en/guide/math-refresher/). The table links the matching section on the relevant rows. For how to read the codes before the chapter titles, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes).
 
@@ -38,7 +38,7 @@ When you can't find a concept, check here first. The math and statistics tools (
 | Reward hacking, sycophancy | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S13 Memory and Personalization](/en/stages/s13-memory/) (personalization that panders), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (optimization that games the metric) |
 | Synthetic data and distillation | [S4 Post-training and Reasoning](/en/stages/s04-post-training/) | [S8 Eval Methodology](/en/stages/s08-evals/), [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (router distillation) |
 | A mental model of the GPU | [S5 Inference and Serving](/en/stages/s05-inference/) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
-| Prefill / decode, KV cache | [S5 Inference and Serving](/en/stages/s05-inference/) ([S0 The Big Picture](/en/stages/s00-big-picture/) and the Model Crash Course preview it) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S11 Context Engineering](/en/stages/s11-context-engineering/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
+| Prefill / decode, KV cache | [S5 Inference and Serving](/en/stages/s05-inference/) ([S0 AI Systems Overview](/en/stages/s00-big-picture/) and the Model Crash Course preview it) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), [S11 Context Engineering](/en/stages/s11-context-engineering/), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | Continuous batching, PagedAttention | [S5 Inference and Serving](/en/stages/s05-inference/) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | TTFT / TPOT / goodput | [S5 Inference and Serving](/en/stages/s05-inference/) | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (measuring TTFT), [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
 | Prompt caching (KV prefix reuse) | [S5 Inference and Serving](/en/stages/s05-inference/) (application route: previewed in the Model Crash Course, taught mainly in [S11 Context Engineering](/en/stages/s11-context-engineering/)) | [S18 Deployment and Architecture](/en/stages/s18-deployment/) |
@@ -97,9 +97,9 @@ When you can't find a concept, check here first. The math and statistics tools (
 
 | Concept | First taught | Deepened in |
 |---|---|---|
-| Compound AI, the augmented LLM, workflow vs agent | [S0 The Big Picture](/en/stages/s00-big-picture/) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
-| Agent levels 0–4 | [S0 The Big Picture](/en/stages/s00-big-picture/) | — |
-| The agent loop, ReAct (S0 The Big Picture previews it with mini-SWE-agent) | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) | [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
+| Compound AI, the augmented LLM, workflow vs agent | [S0 AI Systems Overview](/en/stages/s00-big-picture/) | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
+| Agent levels 0–4 | [S0 AI Systems Overview](/en/stages/s00-big-picture/) | — |
+| The agent loop, ReAct (S0 AI Systems Overview previews it with mini-SWE-agent) | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) | [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
 | Harness components | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) | [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) (ablation), [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |
 | Permission modes, hooks 🔒 | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) | [S16 Security and Governance](/en/stages/s16-security/) |
 | Stop conditions, escalating to a human, HITL | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) | [S19 Real Agent Systems and the Capstone](/en/stages/s19-capstone/) |

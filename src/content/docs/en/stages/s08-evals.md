@@ -481,7 +481,7 @@ With the notes assistant as the example: common failure categories might be "ans
 
 
 :::tip[On the application route]
-You can keep going without reading Part II How Models Work. If you want to go deeper, now is a good time to read [S2 Transformers and Decoding](/en/stages/s02-transformer/) and [S5 Inference and Serving](/en/stages/s05-inference/), the two chapters most relevant to applications (see [the application route](/en/guide/app-first/#when-part-ii-is-worth-reading)).
+You can keep going without reading Part I Models. If you want to go deeper, now is a good time to read [S2 Transformers and Decoding](/en/stages/s02-transformer/) and [S5 Inference and Serving](/en/stages/s05-inference/), the two chapters most relevant to applications (see [the application route](/en/guide/app-first/#when-part-i-is-worth-reading)).
 :::
 
 <section class="deep-section">

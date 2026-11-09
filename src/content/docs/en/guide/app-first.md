@@ -3,13 +3,13 @@ title: The Application Route and Model Crash Course
 head:
   - tag: title
     content: LLM App Development Route and Model Crash Course | Token2Agent
-description: The recommended route for building LLM apps. After S0 The Big Picture, a model crash course covers tokens, sampling, context windows and cost, then you go straight to apps and agents in S6–S19.
+description: The recommended route for building LLM apps. After S0 AI Systems Overview, a model crash course covers tokens, sampling, context windows and cost, then you go straight to apps and agents in S6–S19.
 sidebar:
   order: 3
   label: The Application Route and Model Crash Course
 prev:
   link: /en/stages/s00-big-picture/
-  label: S0 The Big Picture
+  label: S0 AI Systems Overview
 next:
   link: /en/stages/s06-llm-api/
   label: S6 LLM APIs and Application Basics
@@ -17,11 +17,11 @@ next:
 
 If you want to build AI apps or agents, this route is all you need:
 
-1. **[S0 The Big Picture](/en/stages/s00-big-picture/)**: see what parts an AI system is made of.
+1. **[S0 AI Systems Overview](/en/stages/s00-big-picture/)**: see what parts an AI system is made of.
 2. **Model Crash Course** (the second half of this page): the least model knowledge you need to build apps. Ten topics, a few paragraphs each.
-3. **Part III to Part VII** (S6–S19): start at [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) and work through in order to S19 Real Agent Systems and the Capstone.
+3. **Part II to Part VI** (S6–S19): start at [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) and work through in order to S19 Real Agent Systems and the Capstone.
 
-Part II How Models Work (S1–S5) covers how models work inside: neural networks, Transformers, pretraining, post-training and inference. It's lower-level, uses more math, and is the **optional deep route**. You can finish Part III to Part VII (S6–S19) without it. From S6 LLM APIs and Application Basics on, when a page needs model knowledge it first points back to the crash course sections on this page, then marks the matching Part II chapter with "Deeper:", as in "Deeper: S2 Transformers and Decoding".
+Part I Models (S1–S5) covers how models work inside: neural networks, Transformers, pretraining, post-training and inference. It's lower-level, uses more math, and is the **optional deep route**. You can finish Part II to Part VI (S6–S19) without it. From S6 LLM APIs and Application Basics on, when a page needs model knowledge it first points back to the crash course sections on this page, then marks the matching Part I chapter with "Deeper:", as in "Deeper: S2 Transformers and Decoding".
 
 ## Who this is for
 
@@ -30,11 +30,11 @@ Part II How Models Work (S1–S5) covers how models work inside: neural networks
 - People who don't code and just want to understand (the concepts route): read "Four things to know now" below, then go straight to S6 LLM APIs and Application Basics. In each chapter, read only the main line and do Try it first and the self-check.
 - People short on time who want something visible to show early (the hands-on routes). The first result is A6 Streaming Chat and Traces, the system project's advanced exercise in S6 LLM APIs and Application Basics: a chat interface that streams. Gradio, Chainlit or a CLI will do; no frontend required.
 
-If you want to research or train models, or build inference infrastructure, take Part II as well (go from S0 The Big Picture through S19 Real Agent Systems and the Capstone in order).
+If you want to research or train models, or build inference infrastructure, take Part I as well (go from S0 AI Systems Overview through S19 Real Agent Systems and the Capstone in order).
 
-Each chapter's **core exercise** is the main line. **Advanced exercises** are optional long-running projects, split in two: the system project (A6–A19, one step per chapter toward your own AI app) and the model project (M1–M5, training small models in Part II). Advanced exercises are collapsed in Simple mode.
+Each chapter's **core exercise** is the main line. **Advanced exercises** are optional long-running projects, split in two: the system project (A6–A19, one step per chapter toward your own AI app) and the model project (M1–M5, training small models in Part I). Advanced exercises are collapsed in Simple mode.
 
-## When Part II is worth reading
+## When Part I is worth reading
 
 On the application route, these are the places where you first learn *how* to do something. When you want to know *why*, read the matching chapter (for what the codes mean, see [How to read the codes](/en/guide/how-to-use/#how-to-read-the-codes)):
 
@@ -52,7 +52,7 @@ If you want to fill in the gaps in your model knowledge, start with these sectio
 
 ## Model Crash Course
 
-This section has two parts. "Four things to know now" is what you need before starting S6 LLM APIs and Application Basics. For "Look it up later", knowing the names is enough for now; come back when you need them. Each topic ends with the chapter that goes deeper (Part II, optional).
+This section has two parts. "Four things to know now" is what you need before starting S6 LLM APIs and Application Basics. For "Look it up later", knowing the names is enough for now; come back when you need them. Each topic ends with the chapter that goes deeper (Part I, optional).
 
 :::tip[How to read this section]
 Read "Four things to know now" first; you can skim "Look it up later". If you're on a hands-on route and want to build something, do [the S2 Transformers and Decoding core exercise, "Write BPE and sampling from scratch"](/en/stages/s02-transformer/#core-write-bpe-and-sampling-from-scratch) (optional). It doesn't depend on any other chapter, and it will make your grasp of tokens and sampling much more solid.

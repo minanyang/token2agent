@@ -14,15 +14,15 @@ sidebar:
 
 | 你的目標 | 路線 |
 |---|---|
-| 把 LLM 接進產品、做出 AI 應用或 agent（**多數人**） | [應用路線](/guide/app-first/)：S0 全局地圖 → 模型速成 → Part III 到 Part VII（S6–S19） |
-| 也想懂模型內部怎麼運作，或要訓練模型、做推論基礎設施 | 完整路線：從 S0 全局地圖依序走到 S19 真實 agent 系統與畢業專題 |
-| 先看懂 AI 系統在做什麼，暫時不寫程式 | **理解路線**：[S0 全局地圖](/stages/s00-big-picture/) → [模型速成的「現在要懂的四件事」](/guide/app-first/#現在要懂的四件事) → Part III 到 Part VII（S6–S19），用淺顯模式讀講義，做「先試一下」與自我檢查 |
+| 把 LLM 接進產品、做出 AI 應用或 agent（**多數人**） | [應用路線](/guide/app-first/)：S0 AI 系統概觀 → 模型速成 → Part II 到 Part VI（S6–S19） |
+| 也想懂模型內部怎麼運作，或要訓練模型、做推論基礎設施 | 完整路線：從 S0 AI 系統概觀依序走到 S19 真實 agent 系統與畢業專題 |
+| 先看懂 AI 系統在做什麼，暫時不寫程式 | **理解路線**：[S0 AI 系統概觀](/stages/s00-big-picture/) → [模型速成的「現在要懂的四件事」](/guide/app-first/#現在要懂的四件事) → Part II 到 Part VI（S6–S19），用淺顯模式讀講義，做「先試一下」與自我檢查 |
 
 應用路線對應業界說的 AI 工程師：用現成的模型做產品，不從頭訓練模型；完整路線再往 ML 工程師、研究者的方向延伸，自己訓練與改造模型。
 
 前兩條是**實作路線**，要寫程式：需要會一門程式語言的基礎（變數、函式、迴圈）、會呼叫 HTTP API、看得懂 JSON。第三條**理解路線**不需要程式背景：讀講義、做「先試一下」和自我檢查，就能看懂 AI 系統怎麼運作；之後想動手，再接著做必做題。不熟的詞先查[術語表的常用詞速查](/reference/glossary/#常用詞速查)。
 
-Part II 模型原理（S1–S5）比較底層、用到較多數學，是選修的深入路線。不讀它也能走完 Part III 到 Part VII（S6–S19）；S6 LLM API 與應用基本功之後的頁面用到模型知識時，會先指回[模型速成](/guide/app-first/#模型速成)，再標出「深入：」與 Part II 的對應章節，例如「深入：S2 Transformer 與 decoding」。不確定就先走應用路線，走到一半想知道「為什麼」時，再回頭讀 Part II 的對應章節。
+Part I 模型原理（S1–S5）比較底層、用到較多數學，是選修的深入路線。不讀它也能走完 Part II 到 Part VI（S6–S19）；S6 LLM API 與應用基本功之後的頁面用到模型知識時，會先指回[模型速成](/guide/app-first/#模型速成)，再標出「深入：」與 Part I 的對應章節，例如「深入：S2 Transformer 與 decoding」。不確定就先走應用路線，走到一半想知道「為什麼」時，再回頭讀 Part I 的對應章節。
 
 ## 代號怎麼讀
 
@@ -33,13 +33,13 @@ Part II 模型原理（S1–S5）比較底層、用到較多數學，是選修�
 | S | 第幾章（S0–S19，共 20 章） |
 | A | 系統專案的一步，數字等於章號，A6 是 S6 的進階題；系統專案從 S6 才開始，所以沒有 A1–A5 |
 | M | 模型專案的一步，M1 是 S1 的進階題，依此類推（M1–M5） |
-| Part | 由幾章組成的一大段，例如 Part II 是 S1–S5（選修的模型原理） |
+| Part | 由幾章組成的一大段，例如 Part I 是 S1–S5（選修的模型原理） |
 
 S6–S19 這種寫法指一段範圍。
 
 實作題分兩種：**必做題**是主線，只驗證該章最核心的概念；**進階題**是選做的長期專案，也就是系統專案或模型專案的一步。詳見[每一章的結構](#每一章的結構)。
 
-內文提到單一章或單一步時，寫成「代號＋名稱」，例如「S6 LLM API 與應用基本功」「A10 工具組與 MCP server」；一段範圍會寫出 Part 名稱或線名，例如「Part II 模型原理（S1–S5）」「系統專案 A6–A18」。
+內文提到單一章或單一步時，寫成「代號＋名稱」，例如「S6 LLM API 與應用基本功」「A10 工具組與 MCP server」；一段範圍會寫出 Part 名稱或線名，例如「Part I 模型原理（S1–S5）」「系統專案 A6–A18」。
 
 ## 兩種讀法
 
@@ -63,7 +63,7 @@ S6–S19 這種寫法指一段範圍。
 
 ## 設計原則
 
-1. **先看全貌，再分流。** 先在 S0 全局地圖看懂整體，再依目標選路線：應用路線直接從 S6 LLM API 與應用基本功往上蓋應用、agent、安全與上線；完整路線先走 Part II 模型原理（S1–S5）。
+1. **先看全貌，再分流。** 先在 S0 AI 系統概觀看懂整體，再依目標選路線：應用路線直接從 S6 LLM API 與應用基本功往上蓋應用、agent、安全與上線；完整路線先走 Part I 模型原理（S1–S5）。
 2. **每個概念只「首次教」一次。** 之後的章只會「深化」它，並用「（← S2 Transformer 與 decoding）」標出來源章。完整對照見[概念索引](/reference/concepts/)。
 3. **先有系統，才有評估。** 先讓應用跑起來、留下 trace，再從真實的失敗整理出測試集；不先憑空寫測試題。
 4. **先手寫，框架最後。** agent loop 和 harness 先自己寫，理解框架替你做了什麼，再比較框架。
@@ -84,7 +84,7 @@ S6–S19 這種寫法指一段範圍。
 ### 兩個實作專案
 
 - **[系統專案 A6–A19](/projects/system-thread/)**：選一個你在意的應用，每章幫它長出一種能力，最後在 S19 真實 agent 系統與畢業專題把它完成。應用路線的人做這條。
-- **[模型專案 M1–M5](/projects/model-thread/)**：Python，從 autograd 到小模型後訓練與推論伺服器。對應 Part II 模型原理（S1–S5），走完整路線的人再做。
+- **[模型專案 M1–M5](/projects/model-thread/)**：Python，從 autograd 到小模型後訓練與推論伺服器。對應 Part I 模型原理（S1–S5），走完整路線的人再做。
 
 必做題和進階題可以分開：只做必做題也能走完整條路線，最後一題是 S19 真實 agent 系統與畢業專題的必做題；這一章的進階題是 A19 畢業專題，需要系統專案 A6–A18 累積的系統。
 
@@ -94,7 +94,7 @@ S6–S19 這種寫法指一段範圍。
 
 | 階段 | 內容 |
 |---|---|
-| 1 | [S0 全局地圖](/stages/s00-big-picture/)；模型速成；[S6 LLM API 與應用基本功](/stages/s06-llm-api/) + A6 串流聊天與 trace；[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
+| 1 | [S0 AI 系統概觀](/stages/s00-big-picture/)；模型速成；[S6 LLM API 與應用基本功](/stages/s06-llm-api/) + A6 串流聊天與 trace；[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | 2 | [S8 Eval 方法論](/stages/s08-evals/) + A8 錯誤分析與 golden set；[S9 檢索與 RAG](/stages/s09-rag/) + A9 附引用的 RAG |
 | 3 | [S10 工具與 MCP](/stages/s10-tools-mcp/) + A10 工具組與 MCP server；[S11 Context engineering](/stages/s11-context-engineering/) + A11 context builder；[S12 Agent loop 與 harness](/stages/s12-agent-harness/) + A12 手寫 harness |
 | 4 | [S13 Memory 與個人化](/stages/s13-memory/)；[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)；[S15 Multi-agent](/stages/s15-multi-agent/)；[S16 安全與治理](/stages/s16-security/) |
@@ -107,7 +107,7 @@ S6–S19 這種寫法指一段範圍。
 ## 誰適合
 
 - 想從「會呼叫 API」走到「能設計、評估、上線 agent 系統」的工程師。
-- 沒有機器學習背景，想看懂 AI 系統怎麼運作的人：從 S0 全局地圖開始，用淺顯模式讀講義。
-- 想系統性理解 LLM 原理，而不只是追新工具的人：走完整路線，用深入模式讀 Part II。
+- 沒有機器學習背景，想看懂 AI 系統怎麼運作的人：從 S0 AI 系統概觀開始，用淺顯模式讀講義。
+- 想系統性理解 LLM 原理，而不只是追新工具的人：走完整路線，用深入模式讀 Part I。
 - 前端工程師可以從 [S6 LLM API 與應用基本功](/stages/s06-llm-api/) 或 [S17 產品與 AI UX](/stages/s17-ai-ux/) 切入，這兩章最貼近前端經驗。S17 產品與 AI UX 的必做題只需要 S6 LLM API 與應用基本功的串流概念，學完 S6 就能做。
 - 後端或資料工程師：S6 LLM API 與應用基本功、S8 Eval 方法論、S9 檢索與 RAG、S18 部署與架構最貼近你的經驗，可以走快一點。系統專案 A6–A16 都不必寫前端，介面用 Gradio、Chainlit、Streamlit 或 CLI 即可，串流、停止與回饋的驗收標準相同（做法見 [A6 串流聊天與 trace 的提示](/stages/s06-llm-api/#進階系統專案-a6開始你的系統)）。S17 產品與 AI UX 的必做題有「不寫前端的版本」，見 [S17 必做題](/stages/s17-ai-ux/#必做agent-介面的四個狀態問題)；只有 A17 完整前端要真的寫前端。數學與統計熟的話，[數學補給](/guide/math-refresher/)可以略過，S8 Eval 方法論的[統計進階](/stages/s08-evals/#-統計進階樣本數規劃多重比較標註者一致性校準指標)是寫給你的。

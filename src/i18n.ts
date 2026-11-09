@@ -69,7 +69,7 @@ const zhTW = {
 	showcaseName: '專案分享',
 	showcaseSub: '大家用 LLM 做出來的應用與 agent，任何人都可以開 PR 分享自己的專案',
 	appRouteName: '應用路線（多數人從這裡走）',
-	appRouteSub: 'S0 全局地圖 → 模型速成 → 直接跳到 S6 LLM API 與應用基本功；Part II 想深入再回來讀',
+	appRouteSub: 'S0 AI 系統概觀 → 模型速成 → 直接跳到 S6 LLM API 與應用基本功；Part I 想深入再回來讀',
 	showcaseEmpty: '還沒有專案。歡迎成為第一個分享的人，做法見下方。',
 	showcaseUses: '用到：',
 };
@@ -117,7 +117,7 @@ const en: typeof zhTW = {
 	showcaseName: 'Showcase',
 	showcaseSub: 'Apps and agents people built with LLMs. Anyone can open a PR to share theirs.',
 	appRouteName: 'Application route (where most people start)',
-	appRouteSub: 'S0 The Big Picture → Model Crash Course → straight to S6 LLM APIs and Application Basics; come back to Part II when you want depth',
+	appRouteSub: 'S0 AI Systems Overview → Model Crash Course → straight to S6 LLM APIs and Application Basics; come back to Part I when you want depth',
 	showcaseEmpty: 'No projects yet. Be the first to share one; see how below.',
 	showcaseUses: 'Uses:',
 };

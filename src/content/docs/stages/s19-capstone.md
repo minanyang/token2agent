@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層往深處走
+**前置**：必做題只需要 agent loop 的概念（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）；畢業專題需要做完[系統專案](/projects/system-thread/) A6–A18　**銜接**：路線的終點；之後回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層往深處走
 :::
 
 :::tip[理解路線重點]
@@ -69,7 +69,7 @@ Coding agent 是目前最成熟的 agent 類型。四個代表系統各自把六
 
 它成熟是因為任務條件特別好：目標清楚（讓測試通過）、回饋即時（編譯器與測試馬上指出錯誤），環境可以放進 sandbox，做錯了丟掉重來。四個系統分別示範：
 
-- **SWE-agent**（Yang et al. 2024）推的是工具這一塊。它提出 agent-computer interface（ACI）（← [S10 工具與 MCP](/stages/s10-tools-mcp/)）：給模型用的指令要像給人用的 UI 一樣設計。例如檔案檢視器一次只顯示 100 行並標行號、搜尋結果限制筆數、編輯後立刻做語法檢查，出錯就拒絕這次編輯。這樣比直接給模型一個 shell 效果好。你在 S0 全局地圖讀過的 [mini-SWE-agent](https://github.com/SWE-agent/mini-swe-agent) 是另一個極端：約 100 行，只給 bash。
+- **SWE-agent**（Yang et al. 2024）推的是工具這一塊。它提出 agent-computer interface（ACI）（← [S10 工具與 MCP](/stages/s10-tools-mcp/)）：給模型用的指令要像給人用的 UI 一樣設計。例如檔案檢視器一次只顯示 100 行並標行號、搜尋結果限制筆數、編輯後立刻做語法檢查，出錯就拒絕這次編輯。這樣比直接給模型一個 shell 效果好。你在 S0 AI 系統概觀讀過的 [mini-SWE-agent](https://github.com/SWE-agent/mini-swe-agent) 是另一個極端：約 100 行，只給 bash。
 - **Agentless**（Xia et al. 2024）推的是 loop 這一塊，而且是把它拿掉：完全不讓模型決定流程，改用固定的三階段 workflow：定位問題、產生修補、驗證並挑選修補。模型只在每個階段內做事，以很低的成本達到有競爭力的結果。
 - **OpenHands**（Wang et al. 2024）是開放平台，重點在執行環境與安全：agent 在 sandbox 裡用寫程式的方式行動，每個動作與結果都記錄成事件串流，方便重播與除錯。
 - **Claude Code** 把 harness 元件（← [S12 Agent loop 與 harness](/stages/s12-agent-harness/)）做成使用者可以設定的介面：`CLAUDE.md`（專案記憶）、hooks（在工具呼叫前後執行的程式）、skills、sub-agent、權限模式。
@@ -83,7 +83,7 @@ Coding agent 是目前最成熟的 agent 類型。四個代表系統各自把六
 | 驗證 | 模型決定跑測試，看結果，必要時再改 | 第 3 階段：程式跑原有測試與重現測試，4 個剩 2 個，再挑一個 |
 | 步數 | 看情況，可能 6 步也可能 30 步 | 固定 3 階段 |
 
-兩種做法在 SWE-bench 這類 benchmark 上都有競爭力，原因在任務的形狀：每題都是「一個 issue、一個 repo、測試決定成敗」。結構事先知道，固定流程就涵蓋得了，而且更便宜、更可預測、壞了也容易查是哪一階段出錯。這是 workflow vs agent（← [S0 全局地圖](/stages/s00-big-picture/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)）最好的實例：先用 workflow，任務真的需要時才把決定權交給模型。
+兩種做法在 SWE-bench 這類 benchmark 上都有競爭力，原因在任務的形狀：每題都是「一個 issue、一個 repo、測試決定成敗」。結構事先知道，固定流程就涵蓋得了，而且更便宜、更可預測、壞了也容易查是哪一階段出錯。這是 workflow vs agent（← [S0 AI 系統概觀](/stages/s00-big-picture/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)）最好的實例：先用 workflow，任務真的需要時才把決定權交給模型。
 
 固定 workflow 不夠用的情況，是下一步要看前一步的結果才知道：要先把程式跑起來才能重現 bug、要讀 log 才知道該改哪個模組、一個功能要改五個檔案而順序事先看不出來，或是 issue 本身寫得不清楚、得先問人。
 
@@ -422,6 +422,6 @@ Science agents、theorem proving、embodied agents 把 agent 用在科學發現�
 
 - Science agents、theorem proving、embodied agents：各領域的專門 benchmark 與環境。
 - Agentic RL（← S14 Agent eval、資料與最佳化的選修）：用你在畢業專題累積的 trace 與 regression suite 當訓練環境，回到[模型專案](/projects/model-thread/)把小模型訓練成你系統的專用 agent。
-- 回到 [S0 全局地圖](/stages/s00-big-picture/)，挑一層你覺得最薄弱的往深處走。
+- 回到 [S0 AI 系統概觀](/stages/s00-big-picture/)，挑一層你覺得最薄弱的往深處走。
 
 </section>

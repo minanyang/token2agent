@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-這份路線的規則是：**每個概念只在一章「首次教」，其他章只「深化」**。走應用路線的人不讀 Part II，相關概念會先在[模型速成](/guide/app-first/#模型速成)概覽，下表也會註明。各章頁面用「（← S2 Transformer 與 decoding）」標出概念來源，用「（→ S16 安全與治理）」標出之後會深入的地方。
+這份路線的規則是：**每個概念只在一章「首次教」，其他章只「深化」**。走應用路線的人不讀 Part I，相關概念會先在[模型速成](/guide/app-first/#模型速成)概覽，下表也會註明。各章頁面用「（← S2 Transformer 與 decoding）」標出概念來源，用「（→ S16 安全與治理）」標出之後會深入的地方。
 
 找不到某個概念時，先查這裡。數學與統計工具（連鎖律、softmax、對數圖、標準誤、bootstrap、cosine 相似度）不屬於任何一章，忘了時翻[數學補給](/guide/math-refresher/)；下表在相關的列附上對應小節。表中章名前的代號怎麼讀，見[代號怎麼讀](/guide/how-to-use/#代號怎麼讀)。
 
@@ -38,7 +38,7 @@ sidebar:
 | Reward hacking、sycophancy | [S4 Post-training 與 reasoning](/stages/s04-post-training/) | [S13 Memory 與個人化](/stages/s13-memory/)（個人化迎合）、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（最佳化鑽漏洞） |
 | 合成資料與蒸餾 | [S4 Post-training 與 reasoning](/stages/s04-post-training/) | [S8 Eval 方法論](/stages/s08-evals/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（router 蒸餾） |
 | GPU 心智模型 | [S5 推論與 serving](/stages/s05-inference/) | [S18 部署與架構](/stages/s18-deployment/) |
-| Prefill / decode、KV cache | [S5 推論與 serving](/stages/s05-inference/)（[S0 全局地圖](/stages/s00-big-picture/)、模型速成先概覽） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S11 Context engineering](/stages/s11-context-engineering/)、[S18 部署與架構](/stages/s18-deployment/) |
+| Prefill / decode、KV cache | [S5 推論與 serving](/stages/s05-inference/)（[S0 AI 系統概觀](/stages/s00-big-picture/)、模型速成先概覽） | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)、[S11 Context engineering](/stages/s11-context-engineering/)、[S18 部署與架構](/stages/s18-deployment/) |
 | Continuous batching、PagedAttention | [S5 推論與 serving](/stages/s05-inference/) | [S18 部署與架構](/stages/s18-deployment/) |
 | TTFT / TPOT / goodput | [S5 推論與 serving](/stages/s05-inference/) | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)（量 TTFT）、[S18 部署與架構](/stages/s18-deployment/) |
 | Prompt caching（KV prefix 重用） | [S5 推論與 serving](/stages/s05-inference/)（應用路線：模型速成概覽，[S11 Context engineering](/stages/s11-context-engineering/) 主教） | [S18 部署與架構](/stages/s18-deployment/) |
@@ -97,9 +97,9 @@ sidebar:
 
 | 概念 | 首次教 | 深化 |
 |---|---|---|
-| Compound AI、augmented LLM、workflow vs agent | [S0 全局地圖](/stages/s00-big-picture/) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
-| Agent 分級 Level 0–4 | [S0 全局地圖](/stages/s00-big-picture/) | — |
-| Agent loop、ReAct（S0 全局地圖先以 mini-SWE-agent 概覽） | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) | [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
+| Compound AI、augmented LLM、workflow vs agent | [S0 AI 系統概觀](/stages/s00-big-picture/) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
+| Agent 分級 Level 0–4 | [S0 AI 系統概觀](/stages/s00-big-picture/) | — |
+| Agent loop、ReAct（S0 AI 系統概觀先以 mini-SWE-agent 概覽） | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) | [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 | Harness 元件 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)（ablation）、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 | 權限模式、hooks 🔒 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) | [S16 安全與治理](/stages/s16-security/) |
 | 停止條件、升級給人、HITL | [S12 Agent loop 與 harness](/stages/s12-agent-harness/) | [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |

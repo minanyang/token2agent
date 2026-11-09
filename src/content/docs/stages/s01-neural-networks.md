@@ -10,7 +10,7 @@ sidebar:
 ---
 
 :::note[這一章]
-**前置**：[S0 全局地圖](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)　**銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
+**前置**：[S0 AI 系統概觀](/stages/s00-big-picture/)；會寫 Python 或 TypeScript。主線不需要微積分，深入內容用到的連鎖律見[數學補給](/guide/math-refresher/#連鎖律與-backprop)　**銜接**：→ [S2 Transformer 與 decoding](/stages/s02-transformer/)
 :::
 
 :::tip[理解路線重點]
@@ -21,7 +21,7 @@ sidebar:
 
 ## 在做什麼
 
-S0 全局地圖裡回答問題的模型是怎麼來的？Part II 模型原理（S1–S5）由下往上回答，這一章先回答最底層的問題：模型為什麼能「學」。答案是一個迴圈：定義一個衡量「錯多少」的 loss，算出每個參數該往哪個方向調、調多少（梯度），調一小步，重複幾千萬次。整章用「預測名字的下一個字元」當例子，因為這和 LLM 的訓練目標是同一件事，只是規模小到能在筆電上跑。
+S0 AI 系統概觀裡回答問題的模型是怎麼來的？Part I 模型原理（S1–S5）由下往上回答，這一章先回答最底層的問題：模型為什麼能「學」。答案是一個迴圈：定義一個衡量「錯多少」的 loss，算出每個參數該往哪個方向調、調多少（梯度），調一小步，重複幾千萬次。整章用「預測名字的下一個字元」當例子，因為這和 LLM 的訓練目標是同一件事，只是規模小到能在筆電上跑。
 
 ## 學完能
 

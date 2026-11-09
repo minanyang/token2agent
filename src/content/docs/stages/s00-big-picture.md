@@ -1,19 +1,19 @@
 ---
-title: S0 全局地圖
+title: S0 AI 系統概觀
 head:
   - tag: title
-    content: AI 系統怎麼運作？AI/LLM 全局地圖（S0）｜Token2Agent
+    content: AI 系統怎麼運作？AI 系統概觀（S0）｜Token2Agent
 description: 看懂一個 AI 系統由哪些元件組成：使用者的一句話怎麼經過模型與程式變成答案、最小的 agent 迴圈怎麼運作，以及什麼時候該用單次呼叫、workflow 或 agent。
 sidebar:
   order: 0
-  label: S0 全局地圖
+  label: S0 AI 系統概觀
 next:
   link: /guide/app-first/
   label: 應用路線與模型速成
 ---
 
 :::note[這一章]
-**前置**：無　**銜接**：多數人 → [模型速成](/guide/app-first/#模型速成) → [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；想懂模型內部 → [S1 神經網路基礎](/stages/s01-neural-networks/)（Part II 模型原理，選修的深入路線）
+**前置**：無　**銜接**：多數人 → [模型速成](/guide/app-first/#模型速成) → [S6 LLM API 與應用基本功](/stages/s06-llm-api/)；想懂模型內部 → [S1 神經網路基礎](/stages/s01-neural-networks/)（Part I 模型原理，選修的深入路線）
 
 這一章沒有進階題；選做的進階題從 S1 神經網路基礎、S6 LLM API 與應用基本功開始，見〈接下來怎麼走〉。
 :::
@@ -44,7 +44,7 @@ next:
 - **Token**：模型讀寫文字的單位，大約是英文單字的一部分，或一兩個中文字。計價、速度、長度上限都以 token 計算（→ [模型速成](/guide/app-first/#token-與斷詞)，深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)）。
 - **Context**：每次送進模型的整段輸入。模型不會記得上一次呼叫，它只看得到這次 context 裡的內容；context 能放的 token 數有上限，叫上下文視窗（context window）。
 
-整章用同一個例子：**筆記助理**。它保存使用者的 Markdown 筆記，能回答關於筆記的問題、搜尋筆記、建立新筆記。Part III 到 Part VII（S6–S19）的講義也用它當範例，一路從這裡的雛形長成完整系統。
+整章用同一個例子：**筆記助理**。它保存使用者的 Markdown 筆記，能回答關於筆記的問題、搜尋筆記、建立新筆記。Part II 到 Part VI（S6–S19）的講義也用它當範例，一路從這裡的雛形長成完整系統。
 
 ### ★ 為什麼不只用模型？
 
@@ -58,7 +58,7 @@ next:
 
 | 元件 | 在筆記助理裡做什麼 | 深入章節 |
 |---|---|---|
-| 模型 | 理解問題、決定要做什麼、寫出回答 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)（怎麼呼叫）；模型內部是 Part II 模型原理（S1–S5） |
+| 模型 | 理解問題、決定要做什麼、寫出回答 | [S6 LLM API 與應用基本功](/stages/s06-llm-api/)（怎麼呼叫）；模型內部是 Part I 模型原理（S1–S5） |
 | 提示詞與 context | 告訴模型它的角色和規則，並放進這次要用的資料 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S11 Context engineering](/stages/s11-context-engineering/) |
 | 檢索 | 從約 200 篇筆記裡找出和問題相關的幾篇 | [S9 檢索與 RAG](/stages/s09-rag/) |
 | 工具 | `notes_search`、`notes_create` 這類模型可以要求執行的動作 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S10 工具與 MCP](/stages/s10-tools-mcp/) |
@@ -161,11 +161,11 @@ Google / Kaggle 的〈Introduction to Agents〉白皮書把 agent 系統分成�
 
 | 等級 | 白皮書的描述 | 筆記助理的樣子 |
 |---|---|---|
-| Level 0 | 只有模型、沒有工具的推理系統 | 只能憑訓練資料回答，看不到使用者的筆記 |
-| Level 1 | 接上工具，能查即時資訊 | 能呼叫 `notes_search` 查筆記再回答 |
-| Level 2 | 能為多步驟任務做規劃、主動管理 context | 能完成「把上週的會議整理成週報」這類多步驟任務，並挑出該放進 context 的筆記 |
-| Level 3 | 多個 agent 分工合作 | 一個負責搜尋、一個寫草稿、一個檢查引用（→ [S15 Multi-agent](/stages/s15-multi-agent/)） |
-| Level 4 | 能自己補上缺少的工具或 agent | 發現沒有「匯出 PDF」的工具時，自己做一個加進來 |
+| Level&nbsp;0 | 只有模型、沒有工具的推理系統 | 只能憑訓練資料回答，看不到使用者的筆記 |
+| Level&nbsp;1 | 接上工具，能查即時資訊 | 能呼叫 `notes_search` 查筆記再回答 |
+| Level&nbsp;2 | 能為多步驟任務做規劃、主動管理 context | 能完成「把上週的會議整理成週報」這類多步驟任務，並挑出該放進 context 的筆記 |
+| Level&nbsp;3 | 多個 agent 分工合作 | 一個負責搜尋、一個寫草稿、一個檢查引用（→ [S15 Multi-agent](/stages/s15-multi-agent/)） |
+| Level&nbsp;4 | 能自己補上缺少的工具或 agent | 發現沒有「匯出 PDF」的工具時，自己做一個加進來 |
 
 **什麼時候值得做 agent。** OpenAI〈A Practical Guide to Building Agents〉列了三種情況：
 
@@ -228,13 +228,13 @@ Anthropic〈Building effective AI agents〉的建議更直接：先找最簡單�
 
 | 你的目標 | 路線 | 說明 |
 |---|---|---|
-| 把 LLM 接進產品、做出 AI 應用或 agent（多數人） | S0 全局地圖 → [模型速成](/guide/app-first/#模型速成) → [S6 LLM API 與應用基本功](/stages/s06-llm-api/) → … → [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) | 模型速成用十個短主題講完做應用最少要知道的模型知識。應用的 14 章（S6–S19）不需要 Part II 模型原理（S1–S5）；用到模型概念時，會先連回模型速成，再標出「深入：Sn 章名」 |
-| 想懂模型內部怎麼運作，或要研究、訓練模型、做推論基礎設施 | S0 全局地圖 → [Part II 模型原理（S1–S5）](/stages/s01-neural-networks/) → 應用的 14 章（S6–S19） | Part II 模型原理（S1–S5）由下往上講神經網路、Transformer、預訓練、後訓練、推論，比較底層、用到較多數學，是選修的深入路線 |
+| 把 LLM 接進產品、做出 AI 應用或 agent（多數人） | S0 AI 系統概觀 → [模型速成](/guide/app-first/#模型速成) → [S6 LLM API 與應用基本功](/stages/s06-llm-api/) → … → [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) | 模型速成用十個短主題講完做應用最少要知道的模型知識。應用的 14 章（S6–S19）不需要 Part I 模型原理（S1–S5）；用到模型概念時，會先連回模型速成，再標出「深入：Sn 章名」 |
+| 想懂模型內部怎麼運作，或要研究、訓練模型、做推論基礎設施 | S0 AI 系統概觀 → [Part I 模型原理（S1–S5）](/stages/s01-neural-networks/) → 應用的 14 章（S6–S19） | Part I 模型原理（S1–S5）由下往上講神經網路、Transformer、預訓練、後訓練、推論，比較底層、用到較多數學，是選修的深入路線 |
 | 先看懂 AI 系統在做什麼，暫時不寫程式 | 理解路線：和第一條同樣的順序 | 每章讀講義、做「先試一下」與自我檢查，跳過要寫程式的題目；見[怎麼使用這份路線](/guide/how-to-use/#先選路線) |
 
-不確定就走第一條。走到一半想知道「為什麼」時，再回頭讀 Part II 模型原理的對應章節；[應用路線頁](/guide/app-first/)說明什麼時候值得讀哪一章。
+不確定就走第一條。走到一半想知道「為什麼」時，再回頭讀 Part I 模型原理的對應章節；[應用路線頁](/guide/app-first/)說明什麼時候值得讀哪一章。
 
-每一章的實作分兩種。**必做題**是主線，搭配講義就能完成；**進階題**可以不做，在淺顯模式下收合起來。標成「選做」的小題（例如本章的原始碼閱讀）同樣可以跳過。進階題串成兩個專案：**系統專案**（A6–A19，[代號說明](/guide/how-to-use/#代號怎麼讀)）從 S6 LLM API 與應用基本功開始，一章一章做出你自己的 AI 應用；**模型專案**（M1–M5）在 Part II 模型原理（S1–S5）親手訓練小模型。
+每一章的實作分兩種。**必做題**是主線，搭配講義就能完成；**進階題**可以不做，在淺顯模式下收合起來。標成「選做」的小題（例如本章的原始碼閱讀）同樣可以跳過。進階題串成兩個專案：**系統專案**（A6–A19，[代號說明](/guide/how-to-use/#代號怎麼讀)）從 S6 LLM API 與應用基本功開始，一章一章做出你自己的 AI 應用；**模型專案**（M1–M5）在 Part I 模型原理（S1–S5）親手訓練小模型。
 
 ## 實作
 
@@ -385,7 +385,7 @@ Anthropic〈Building effective AI agents〉的建議更直接：先找最簡單�
 ### 中文資源
 
 - [台大 李宏毅 Introduction to GenAI and ML 2025 秋](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php) — 繁中；第一講的整體介紹。
-- [台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php) — 繁中；由上而下講生成式 AI 的原理，適合當整條 Part II 模型原理的預習。
+- [台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php) — 繁中；由上而下講生成式 AI 的原理，適合當整條 Part I 模型原理的預習。
 - [RUC《大语言模型》](https://llmbook-zh.github.io/) — 簡中；第 1–2 章的發展脈絡與概覽。
 
 </section>

@@ -481,7 +481,7 @@ Agent 的多步驟任務怎麼評估（trajectory eval、模擬使用者）留�
 
 
 :::tip[走應用路線的讀者]
-不讀 Part II 模型原理也能繼續往下走。想深入的話，現在是選讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 與 [S5 推論與 serving](/stages/s05-inference/) 的好時機，這兩章和應用最相關（見[應用路線](/guide/app-first/#什麼時候值得讀-part-ii)）。
+不讀 Part I 模型原理也能繼續往下走。想深入的話，現在是選讀 [S2 Transformer 與 decoding](/stages/s02-transformer/) 與 [S5 推論與 serving](/stages/s05-inference/) 的好時機，這兩章和應用最相關（見[應用路線](/guide/app-first/#什麼時候值得讀-part-i)）。
 :::
 
 <section class="deep-section">

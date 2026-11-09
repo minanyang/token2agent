@@ -9,7 +9,7 @@ hero:
   title: Token2Agent
   tagline: 從 token 到 agent 的 AI/LLM 學習路線。<br>不需要背景知識就能開始；想深入時，每一章都有更進一步的內容。
   actions:
-    - text: 從 S0 全局地圖開始
+    - text: 開始學習
       link: /stages/s00-big-picture/
       icon: right-arrow
     - text: 選一條路線
@@ -32,7 +32,7 @@ import RoadmapMap from '../../components/RoadmapMap.astro';
 <CardGrid>
 	<LinkCard
 		title="應用路線（推薦給多數人）"
-		description="想做出 AI 應用或 agent：S0 全局地圖 → 模型速成 → Part III 到 Part VII（S6–S19）。不需要機器學習背景。"
+		description="想做出 AI 應用或 agent：S0 AI 系統概觀 → 模型速成 → Part II 到 Part VI（S6–S19）。不需要機器學習背景。"
 		href="/guide/app-first/"
 	/>
 	<LinkCard
@@ -42,7 +42,7 @@ import RoadmapMap from '../../components/RoadmapMap.astro';
 	/>
 	<LinkCard
 		title="完整路線（含模型原理）"
-		description="也想懂模型內部怎麼運作：從 S0 全局地圖依序走到 S19 真實 agent 系統與畢業專題。Part II 模型原理（S1–S5）比較底層、用到較多數學。"
+		description="也想懂模型內部怎麼運作：從 S0 AI 系統概觀依序走到 S19 真實 agent 系統與畢業專題。Part I 模型原理（S1–S5）比較底層、用到較多數學。"
 		href="/stages/s00-big-picture/"
 	/>
 </CardGrid>
@@ -57,11 +57,11 @@ import RoadmapMap from '../../components/RoadmapMap.astro';
 
 | 階段 | 你的系統長出什麼 |
 |---|---|
-| Part III 應用基礎（A6–A8） | 串流聊天介面（Gradio、Chainlit 或 CLI 也可以）與 trace、穩定的 structured output 與 workflow、從真實 trace 長出的 golden set 與 judge |
-| Part IV 知識與行動（A9–A11） | 附引用的 RAG、帶風險分級的工具與 MCP server、有預算與快取的 context builder |
-| Part V Agent 系統（A12–A15） | 手寫 harness、分層記憶、trajectory eval 與 prompt 最佳化，multi-agent 只在評估勝出時保留 |
-| Part VI 可信、產品、上線（A16–A18） | 安全稽核與修補、完整前端、多使用者部署與 eval 把關的發布流程 |
-| Part VII 綜合實戰（A19） | 畢業專題：延伸成常駐 agent |
+| Part II 應用基礎（A6–A8） | 串流聊天介面（Gradio、Chainlit 或 CLI 也可以）與 trace、穩定的 structured output 與 workflow、從真實 trace 長出的 golden set 與 judge |
+| Part III 知識與工具（A9–A11） | 附引用的 RAG、帶風險分級的工具與 MCP server、有預算與快取的 context builder |
+| Part IV Agent 系統（A12–A15） | 手寫 harness、分層記憶、trajectory eval 與 prompt 最佳化，multi-agent 只在評估勝出時保留 |
+| Part V 產品上線（A16–A18） | 安全稽核與修補、完整前端、多使用者部署與 eval 把關的發布流程 |
+| Part VI 綜合實戰（A19） | 畢業專題：延伸成常駐 agent |
 
 完整對照見[系統專案 A6–A19](/projects/system-thread/#每一章長出什麼)。
 

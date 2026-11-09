@@ -30,7 +30,7 @@ Read it at **[token2agent.com/en](https://token2agent.com/en/)**.
 <a href="https://token2agent.com/en/">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-en-dark.gif">
-<img alt="Token2Agent roadmap: 20 chapters in seven parts, each with its core topics" src=".github/assets/roadmap-en-light.gif">
+<img alt="Token2Agent roadmap: an introduction and six parts covering 20 chapters, each with its core topics" src=".github/assets/roadmap-en-light.gif">
 </picture>
 </a>
 
@@ -38,17 +38,17 @@ Click the diagram for the interactive roadmap, where every chapter and topic lin
 
 | Part | Chapters |
 |---|---|
-| Part I The Big Picture | [S0 The Big Picture](https://token2agent.com/en/stages/s00-big-picture/) |
-| Part II How Models Work (optional) | [S1 Neural Network Basics](https://token2agent.com/en/stages/s01-neural-networks/)<br>[S2 Transformers and Decoding](https://token2agent.com/en/stages/s02-transformer/)<br>[S3 Pretraining and Scaling](https://token2agent.com/en/stages/s03-pretraining/)<br>[S4 Post-training and Reasoning](https://token2agent.com/en/stages/s04-post-training/)<br>[S5 Inference and Serving](https://token2agent.com/en/stages/s05-inference/) |
-| Part III Application Foundations | [S6 LLM APIs and Application Basics](https://token2agent.com/en/stages/s06-llm-api/)<br>[S7 Prompts, Structured Output and Workflows](https://token2agent.com/en/stages/s07-prompting/)<br>[S8 Eval Methodology](https://token2agent.com/en/stages/s08-evals/) |
-| Part IV Knowledge and Action | [S9 Retrieval and RAG](https://token2agent.com/en/stages/s09-rag/)<br>[S10 Tools and MCP](https://token2agent.com/en/stages/s10-tools-mcp/)<br>[S11 Context Engineering](https://token2agent.com/en/stages/s11-context-engineering/) |
-| Part V Agent Systems | [S12 The Agent Loop and Harness](https://token2agent.com/en/stages/s12-agent-harness/)<br>[S13 Memory and Personalization](https://token2agent.com/en/stages/s13-memory/)<br>[S14 Agent Evals, Data and Optimization](https://token2agent.com/en/stages/s14-agent-evals/)<br>[S15 Multi-agent Systems](https://token2agent.com/en/stages/s15-multi-agent/) |
-| Part VI Trust, Product, Shipping | [S16 Security and Governance](https://token2agent.com/en/stages/s16-security/)<br>[S17 Product and AI UX](https://token2agent.com/en/stages/s17-ai-ux/)<br>[S18 Deployment and Architecture](https://token2agent.com/en/stages/s18-deployment/) |
-| Part VII Capstone | [S19 Real Agent Systems and the Capstone](https://token2agent.com/en/stages/s19-capstone/) |
+| Start here | [S0 AI Systems Overview](https://token2agent.com/en/stages/s00-big-picture/) |
+| Part I Models (optional) | [S1 Neural Network Basics](https://token2agent.com/en/stages/s01-neural-networks/)<br>[S2 Transformers and Decoding](https://token2agent.com/en/stages/s02-transformer/)<br>[S3 Pretraining and Scaling](https://token2agent.com/en/stages/s03-pretraining/)<br>[S4 Post-training and Reasoning](https://token2agent.com/en/stages/s04-post-training/)<br>[S5 Inference and Serving](https://token2agent.com/en/stages/s05-inference/) |
+| Part II Applications | [S6 LLM APIs and Application Basics](https://token2agent.com/en/stages/s06-llm-api/)<br>[S7 Prompts, Structured Output and Workflows](https://token2agent.com/en/stages/s07-prompting/)<br>[S8 Eval Methodology](https://token2agent.com/en/stages/s08-evals/) |
+| Part III Knowledge & Tools | [S9 Retrieval and RAG](https://token2agent.com/en/stages/s09-rag/)<br>[S10 Tools and MCP](https://token2agent.com/en/stages/s10-tools-mcp/)<br>[S11 Context Engineering](https://token2agent.com/en/stages/s11-context-engineering/) |
+| Part IV Agents | [S12 The Agent Loop and Harness](https://token2agent.com/en/stages/s12-agent-harness/)<br>[S13 Memory and Personalization](https://token2agent.com/en/stages/s13-memory/)<br>[S14 Agent Evals, Data and Optimization](https://token2agent.com/en/stages/s14-agent-evals/)<br>[S15 Multi-agent Systems](https://token2agent.com/en/stages/s15-multi-agent/) |
+| Part V Production | [S16 Security and Governance](https://token2agent.com/en/stages/s16-security/)<br>[S17 Product and AI UX](https://token2agent.com/en/stages/s17-ai-ux/)<br>[S18 Deployment and Architecture](https://token2agent.com/en/stages/s18-deployment/) |
+| Part VI Capstone | [S19 Real Agent Systems and the Capstone](https://token2agent.com/en/stages/s19-capstone/) |
 
 ## What's inside
 
-- **20 chapters** in seven parts: the big picture, how models work (optional), application foundations, knowledge and action, agent systems, trust/product/shipping, and the capstone.
+- **20 chapters** with an introduction and six parts: models (optional), applications, knowledge and tools, agents, production, and the capstone.
 - **Three routes**: the application route for most readers (no machine-learning background needed), the full route that includes how models work, and a concepts route with no programming.
 - **Two reading modes** on every page: Simple shows the main line; Deep opens derivations, implementation details, optional topics and advanced exercises.
 - **Exercises as specs**: goal, steps and numeric acceptance criteria, never solutions. Two hands-on projects build up over the chapters: the system project (A6–A19, your own AI application) and the model project (M1–M5, training small models).
@@ -64,7 +64,7 @@ There are many excellent resources for learning AI/LLM engineering, but they are
 
 Not sure where to begin? Read [how to use this roadmap](https://token2agent.com/en/guide/how-to-use/) and pick a route:
 
-- **Application route** (recommended for most readers): build AI applications and agents. Start with [S0 The Big Picture](https://token2agent.com/en/stages/s00-big-picture/), read the [Model Crash Course](https://token2agent.com/en/guide/app-first/), then go from S6 LLM APIs and Application Basics to S19 Real Agent Systems and the Capstone.
+- **Application route** (recommended for most readers): build AI applications and agents. Start with [S0 AI Systems Overview](https://token2agent.com/en/stages/s00-big-picture/), read the [Model Crash Course](https://token2agent.com/en/guide/app-first/), then go from S6 LLM APIs and Application Basics to S19 Real Agent Systems and the Capstone.
 - **Full route**: also learn how models work inside, S0 to S19 in order.
 - **Concepts route**: understand how AI systems work without programming.
 

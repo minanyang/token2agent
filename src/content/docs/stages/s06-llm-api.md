@@ -13,7 +13,7 @@ prev:
 ---
 
 :::note[這一章]
-**前置**：[S0 全局地圖](/stages/s00-big-picture/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（token、next-token 與 sampling、context window、成本與延遲；深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（完整前端）
+**前置**：[S0 AI 系統概觀](/stages/s00-big-picture/)；模型知識見 [模型速成](/guide/app-first/#模型速成)（token、next-token 與 sampling、context window、成本與延遲；深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S5 推論與 serving](/stages/s05-inference/)）　**銜接**：→ [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)（完整前端）
 :::
 
 :::tip[理解路線重點]

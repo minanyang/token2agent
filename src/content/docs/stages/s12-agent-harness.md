@@ -21,7 +21,7 @@ sidebar:
 
 ## 在做什麼
 
-S10 工具與 MCP 讓模型能呼叫工具，但一次呼叫只走一步。這一章回答：怎麼讓模型自己一步接一步做完一件多步驟的事，而且做得安全、停得下來、出錯時不失控？Agent 的核心只是一個迴圈：模型決定下一步，程式執行，再把結果放回 context，直到模型說完成（S0 全局地圖讀過的 mini-SWE-agent 就是這個迴圈）。包在迴圈外面、讓它可靠運作的那層程式叫 harness：權限、停止條件、錯誤處理、狀態、長時程的 context 管理、skills。每個 harness 元件都代表一個「模型自己做不到什麼」的假設，所以這一章也從頭用最小的 agent eval 判斷改動有沒有用。
+S10 工具與 MCP 讓模型能呼叫工具，但一次呼叫只走一步。這一章回答：怎麼讓模型自己一步接一步做完一件多步驟的事，而且做得安全、停得下來、出錯時不失控？Agent 的核心只是一個迴圈：模型決定下一步，程式執行，再把結果放回 context，直到模型說完成（S0 AI 系統概觀讀過的 mini-SWE-agent 就是這個迴圈）。包在迴圈外面、讓它可靠運作的那層程式叫 harness：權限、停止條件、錯誤處理、狀態、長時程的 context 管理、skills。每個 harness 元件都代表一個「模型自己做不到什麼」的假設，所以這一章也從頭用最小的 agent eval 判斷改動有沒有用。
 
 ## 學完能
 
@@ -455,7 +455,7 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 ### 跟著寫程式
 
 - [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) — 這份路線推薦的實作教材，每章都短、附可執行的 `code.py`。先讀根目錄新版的 s01–s04（loop、工具、權限、hooks），對照必做題；接著 s05–s08（todo、sub-agent、skills、compaction）、s10（任務系統）、s15（整合 harness）、s16（workflow 與 journal 續跑），對照進階題。章節預設英文，附簡中翻譯（簡中可用[術語表](/reference/glossary/)提到的 OpenCC 轉換）。注意舊版 `docs/` 的章節號和新版不同，不要混用。s11（背景任務）、s12（排程）、s17（goal loop）在 S19 真實 agent 系統與畢業專題的常駐 agent 會用到，現在可以先瀏覽。
-- [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) — S0 全局地圖讀過；手寫 loop 時對照它怎麼處理停止條件與錯誤。
+- [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) — S0 AI 系統概觀讀過；手寫 loop 時對照它怎麼處理停止條件與錯誤。
 - [CMU 11-768 AI Agents](https://www.cmu-agents.com/) — 第 1 份作業：在開放模型上寫 harness，可以和本章的 A12 手寫 harness 對照。
 
 ### 設計原則與工程文章
@@ -466,7 +466,7 @@ Agentic search 是讓 agent 自己用工具一步步找資料，而不是事先�
 - [Anthropic: Effective context engineering for AI agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents)（2025-09-29）— S11 Context engineering 讀過前半，這裡讀長時程任務（long-horizon）那一段與 just-in-time 檢索。
 - [Anthropic: Equipping agents with Agent Skills](https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills)（2025-10-16）— SKILL.md 的結構與三層載入的官方說明。
 - [Anthropic: Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/research/managed-agents)（2026-04-08）— session / harness / sandbox 分離；harness 的假設會過期。
-- [Anthropic: Building effective AI agents](https://www.anthropic.com/research/building-effective-agents)（2024-12-19）— [S0 全局地圖](/stages/s00-big-picture/)與[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)都讀過；手寫 loop 後再讀一次 agent 段，感受會不一樣。
+- [Anthropic: Building effective AI agents](https://www.anthropic.com/research/building-effective-agents)（2024-12-19）— [S0 AI 系統概觀](/stages/s00-big-picture/)與[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)都讀過；手寫 loop 後再讀一次 agent 段，感受會不一樣。
 - [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) — run loop 與 guardrails 的段落；多 agent 段留到 S15 Multi-agent。
 
 ### 原始論文

@@ -30,7 +30,7 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 <a href="https://token2agent.com">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset=".github/assets/roadmap-dark.gif">
-<img alt="Token2Agent 路線圖：20 章分成七個 Part，每章列出核心主題" src=".github/assets/roadmap-light.gif">
+<img alt="Token2Agent 路線圖：20 章包含入門章與六個 Part，每章列出核心主題" src=".github/assets/roadmap-light.gif">
 </picture>
 </a>
 
@@ -39,18 +39,18 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 
 | Part             | 章                                                                                                                                                                                                                                                                                                                                                                                       |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Part I 全貌        | [S0 全局地圖](https://token2agent.com/stages/s00-big-picture/)                                                                                                                                                                                                                                                                                                                              |
-| Part II 模型原理（選修） | [S1 神經網路基礎](https://token2agent.com/stages/s01-neural-networks/)<br>[S2 Transformer 與 decoding](https://token2agent.com/stages/s02-transformer/)<br>[S3 Pretraining 與 scaling](https://token2agent.com/stages/s03-pretraining/)<br>[S4 Post-training 與 reasoning](https://token2agent.com/stages/s04-post-training/)<br>[S5 推論與 serving](https://token2agent.com/stages/s05-inference/) |
-| Part III 應用基礎    | [S6 LLM API 與應用基本功](https://token2agent.com/stages/s06-llm-api/)<br>[S7 Prompt、structured output 與 workflows](https://token2agent.com/stages/s07-prompting/)<br>[S8 Eval 方法論](https://token2agent.com/stages/s08-evals/)                                                                                                                                                                |
-| Part IV 知識與行動    | [S9 檢索與 RAG](https://token2agent.com/stages/s09-rag/)<br>[S10 工具與 MCP](https://token2agent.com/stages/s10-tools-mcp/)<br>[S11 Context engineering](https://token2agent.com/stages/s11-context-engineering/)                                                                                                                                                                             |
-| Part V Agent 系統  | [S12 Agent loop 與 harness](https://token2agent.com/stages/s12-agent-harness/)<br>[S13 Memory 與個人化](https://token2agent.com/stages/s13-memory/)<br>[S14 Agent eval、資料與最佳化](https://token2agent.com/stages/s14-agent-evals/)<br>[S15 Multi-agent](https://token2agent.com/stages/s15-multi-agent/)                                                                                        |
-| Part VI 可信、產品、上線 | [S16 安全與治理](https://token2agent.com/stages/s16-security/)<br>[S17 產品與 AI UX](https://token2agent.com/stages/s17-ai-ux/)<br>[S18 部署與架構](https://token2agent.com/stages/s18-deployment/)                                                                                                                                                                                                  |
-| Part VII 綜合實戰    | [S19 真實 agent 系統與畢業專題](https://token2agent.com/stages/s19-capstone/)                                                                                                                                                                                                                                                                                                                    |
+| 從這裡開始        | [S0 AI 系統概觀](https://token2agent.com/stages/s00-big-picture/)                                                                                                                                                                                                                                                                                                                              |
+| Part I 模型原理（選修） | [S1 神經網路基礎](https://token2agent.com/stages/s01-neural-networks/)<br>[S2 Transformer 與 decoding](https://token2agent.com/stages/s02-transformer/)<br>[S3 Pretraining 與 scaling](https://token2agent.com/stages/s03-pretraining/)<br>[S4 Post-training 與 reasoning](https://token2agent.com/stages/s04-post-training/)<br>[S5 推論與 serving](https://token2agent.com/stages/s05-inference/) |
+| Part II 應用基礎    | [S6 LLM API 與應用基本功](https://token2agent.com/stages/s06-llm-api/)<br>[S7 Prompt、structured output 與 workflows](https://token2agent.com/stages/s07-prompting/)<br>[S8 Eval 方法論](https://token2agent.com/stages/s08-evals/)                                                                                                                                                                |
+| Part III 知識與工具    | [S9 檢索與 RAG](https://token2agent.com/stages/s09-rag/)<br>[S10 工具與 MCP](https://token2agent.com/stages/s10-tools-mcp/)<br>[S11 Context engineering](https://token2agent.com/stages/s11-context-engineering/)                                                                                                                                                                             |
+| Part IV Agent 系統  | [S12 Agent loop 與 harness](https://token2agent.com/stages/s12-agent-harness/)<br>[S13 Memory 與個人化](https://token2agent.com/stages/s13-memory/)<br>[S14 Agent eval、資料與最佳化](https://token2agent.com/stages/s14-agent-evals/)<br>[S15 Multi-agent](https://token2agent.com/stages/s15-multi-agent/)                                                                                        |
+| Part V 產品上線 | [S16 安全與治理](https://token2agent.com/stages/s16-security/)<br>[S17 產品與 AI UX](https://token2agent.com/stages/s17-ai-ux/)<br>[S18 部署與架構](https://token2agent.com/stages/s18-deployment/)                                                                                                                                                                                                  |
+| Part VI 綜合實戰    | [S19 真實 agent 系統與畢業專題](https://token2agent.com/stages/s19-capstone/)                                                                                                                                                                                                                                                                                                                    |
 
 
 ## 內容
 
-- **20 章**，分成七個 Part：全貌、模型原理（選修）、應用基礎、知識與行動、Agent 系統、可信／產品／上線、綜合實戰。
+- **20 章**，包含入門章與六個 Part：模型原理（選修）、應用基礎、知識與工具、Agent 系統、產品上線、綜合實戰。
 - **三條路線**：給多數人的應用路線（不需要機器學習背景）、含模型原理的完整路線，以及不寫程式的理解路線。
 - **每頁兩種讀法**：「淺顯」只顯示主線；「深入」會展開推導、實作細節、選修主題和進階題。
 - **實作題只給規格**：目標、步驟、有數字的驗收標準，不附解答。兩個實作專案跨章累積：系統專案（A6–A19，做出你自己的 AI 應用）與模型專案（M1–M5，訓練小模型）。
@@ -66,7 +66,7 @@ Token2Agent 是一份免費的 AI/LLM 工程學習路線，以繁體中文撰寫
 
 不確定從哪裡開始，先看[怎麼使用這份路線](https://token2agent.com/guide/how-to-use/)，依目標選一條路線：
 
-- **應用路線**（推薦給多數人）：想做出 AI 應用或 agent。從 [S0 全局地圖](https://token2agent.com/stages/s00-big-picture/) 開始，讀完[模型速成](https://token2agent.com/guide/app-first/)後，從 S6 LLM API 與應用基本功一路讀到 S19 真實 agent 系統與畢業專題。
+- **應用路線**（推薦給多數人）：想做出 AI 應用或 agent。從 [S0 AI 系統概觀](https://token2agent.com/stages/s00-big-picture/) 開始，讀完[模型速成](https://token2agent.com/guide/app-first/)後，從 S6 LLM API 與應用基本功一路讀到 S19 真實 agent 系統與畢業專題。
 - **完整路線**：也想懂模型內部怎麼運作，S0 到 S19 依序走。
 - **理解路線**：先看懂 AI 系統怎麼運作，暫時不寫程式。
 

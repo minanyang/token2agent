@@ -17,7 +17,7 @@ sidebar:
 
 | 課程 | 定位 | 對應章節 |
 |---|---|---|
-| [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/)（2026 秋） | 最完整的 agent 系統課，每講都有論文。投影片隨課程陸續公開（查證時到第 13 講），錄影只在 Stanford 內部 | [S0 全局地圖](/stages/s00-big-picture/)、[S9 檢索與 RAG](/stages/s09-rag/) 到 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
+| [Stanford CS 329Z Engineering AI Agents](https://cs329z.stanford.edu/)（2026 秋） | 最完整的 agent 系統課，每講都有論文。投影片隨課程陸續公開（查證時到第 13 講），錄影只在 Stanford 內部 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S9 檢索與 RAG](/stages/s09-rag/) 到 [S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 | [CMU 11-768 AI Agents](https://www.cmu-agents.com/)（Neubig、Fried，2026 秋） | 作業是 harness → eval → 訓練，跟本路線最接近 | [S10 工具與 MCP](/stages/s10-tools-mcp/) 到 [S16 安全與治理](/stages/s16-security/) |
 | [Stanford CS336 Language Modeling from Scratch](https://cs336.stanford.edu/) | 從零做語言模型，原理、訓練、推論都講得最深 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/) |
 | [Stanford CS224N](https://web.stanford.edu/class/cs224n/)（2026 冬） | NLP 到 LLM 的經典入門；第 4 份作業是 LLM 評估 | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S8 Eval 方法論](/stages/s08-evals/) |
@@ -36,9 +36,9 @@ sidebar:
 | [Leiden Agentic LLMs](https://agenticllms.liacs.nl/syllabus) | multi-agent 社會行為、Theory of Mind | [S15 Multi-agent](/stages/s15-multi-agent/) |
 | [Harvard CS 2881R AI Safety](https://boazbk.github.io/mltheoryseminar/)（2026 秋） | reward hacking、model spec、interpretability | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S16 安全與治理](/stages/s16-security/) |
 | [Princeton COS 597R](https://princeton-cos597r.github.io)、[COS 598A AI Safety](https://princeton-polaris-lab.github.io/ai-safety-course) | 資料策展；jailbreak 經典、safety cases | [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S16 安全與治理](/stages/s16-security/) |
-| [台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php) | 繁中影片、由上而下講原理 | [S0 全局地圖](/stages/s00-big-picture/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S16 安全與治理](/stages/s16-security/) |
+| [台大 李宏毅 生成式 AI 導論 2024](https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php) | 繁中影片、由上而下講原理 | [S0 AI 系統概觀](/stages/s00-big-picture/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S16 安全與治理](/stages/s16-security/) |
 | [台大 李宏毅 機器學習 2025 春](https://speech.ee.ntu.edu.tw/~hylee/ml/2025-spring.php) | AI Agent、推理、微調與遺忘、model editing / merging | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
-| [台大 李宏毅 Introduction to GenAI and ML 2025 秋](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php) | 含「上下文工程」一講 | [S0 全局地圖](/stages/s00-big-picture/)、[S11 Context engineering](/stages/s11-context-engineering/) |
+| [台大 李宏毅 Introduction to GenAI and ML 2025 秋](https://speech.ee.ntu.edu.tw/~hylee/GenAI-ML/2025-fall.php) | 含「上下文工程」一講 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S11 Context engineering](/stages/s11-context-engineering/) |
 | [台大 陳縕儂 ADL 2026](https://www.csie.ntu.edu.tw/~miulab/f115-adl/) | 繁中講課；RAG、agents、Human-AI Interaction | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [清大 高宏宇 NLP 2026](https://github.com/IKMLab/NTHU_Natural_Language_Processing) | 繁中 / 英文雙語投影片與影片 | [S1 神經網路基礎](/stages/s01-neural-networks/) 到 [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 
@@ -55,13 +55,13 @@ sidebar:
 | [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) | 18 課；L03 是少數講 agentic UX 的。強烈綁定 Azure | [S16 安全與治理](/stages/s16-security/) 到 [S18 部署與架構](/stages/s18-deployment/) |
 | [anthropics/courses](https://github.com/anthropics/courses) | prompt 教學與 prompt evaluations lab。**已封存**，內容仍可用 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S8 Eval 方法論](/stages/s08-evals/) |
 | [humanlayer/12-factor-agents](https://github.com/humanlayer/12-factor-agents) | 「自己掌握 prompt、context、control flow」。部分是 HumanLayer 的產品推廣 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
-| [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) | 約 100 行的完整 agent | [S0 全局地圖](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
+| [SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent) | 約 100 行的完整 agent | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) | 繁中 agent 學習地圖；harness 8 元件檢查表、eval 很好。偏 Claude Code 生態，模型原理很淺 | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | [karpathy/makemore](https://github.com/karpathy/makemore) | 字元級語言模型；S1 神經網路基礎的練習取 `names.txt` 資料。2024 後未更新 | [S1 神經網路基礎](/stages/s01-neural-networks/) |
 | [karpathy/nanoGPT](https://github.com/karpathy/nanoGPT) | 最精簡的 GPT 訓練 repo；S2 Transformer 與 decoding 借設定、自己寫模型本體 | [S2 Transformer 與 decoding](/stages/s02-transformer/) |
 | [karpathy/nanochat](https://github.com/karpathy/nanochat) | 端對端小型 ChatGPT 訓練；完整版需 8×H100，有 CPU / MPS 縮小版 | [S3 Pretraining 與 scaling](/stages/s03-pretraining/)、模型專案 |
 | [GeeeekExplorer/nano-vllm](https://github.com/GeeeekExplorer/nano-vllm) | 約 1,200 行的 vLLM 精簡實作，對照自己的推論伺服器 | [S5 推論與 serving](/stages/s05-inference/)、模型專案 |
-| [SWE-agent/mini-swe-agent：`agents/default.py`](https://github.com/SWE-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py) | agent 主迴圈原始碼；S0 全局地圖逐方法對照 | [S0 全局地圖](/stages/s00-big-picture/) |
+| [SWE-agent/mini-swe-agent：`agents/default.py`](https://github.com/SWE-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py) | agent 主迴圈原始碼；S0 AI 系統概觀逐方法對照 | [S0 AI 系統概觀](/stages/s00-big-picture/) |
 | [Microsoft ai-agents-for-beginners L03: AI Agentic Design Principles](https://github.com/microsoft/ai-agents-for-beginners/tree/main/03-agentic-design-patterns) | 透明度、控制權、一致性三原則；範例綁 Azure，原則通用 | [S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Microsoft: Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/)（2019） | 18 條人機互動原則，可當 UI 稽核清單 | [S17 產品與 AI UX](/stages/s17-ai-ux/) |
 | [Nielsen Norman Group: Response Times: The 3 Important Limits](https://www.nngroup.com/articles/response-times-3-important-limits/)（Nielsen 1993，整理自 Miller 1968 與 Card et al. 1991） | 0.1 秒 / 1 秒 / 10 秒三個回應時間門檻 | [S17 產品與 AI UX](/stages/s17-ai-ux/) |
@@ -73,7 +73,7 @@ sidebar:
 
 | 文章 | 日期 | 對應章節 |
 |---|---|---|
-| [Building effective AI agents](https://www.anthropic.com/research/building-effective-agents) | 2024-12-19 | [S0 全局地圖](/stages/s00-big-picture/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
+| [Building effective AI agents](https://www.anthropic.com/research/building-effective-agents) | 2024-12-19 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/) |
 | [Contextual retrieval](https://www.anthropic.com/research/contextual-retrieval)（廠商自己的實驗） | 2024-09-19 | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [How we built our multi-agent research system](https://www.anthropic.com/research/multi-agent-research-system) | 2025-06-13 | [S15 Multi-agent](/stages/s15-multi-agent/)、[S19 真實 agent 系統與畢業專題](/stages/s19-capstone/) |
 | [Writing effective tools for AI agents](https://www.anthropic.com/research/writing-tools-for-agents) | 2025-09-11 | [S10 工具與 MCP](/stages/s10-tools-mcp/) |
@@ -101,7 +101,7 @@ sidebar:
 
 | 來源 | 日期 | 對應章節 |
 |---|---|---|
-| [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) | 2025（後續更新） | [S0 全局地圖](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
+| [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) | 2025（後續更新） | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [OpenAI: Understanding prompt injections](https://openai.com/index/prompt-injections/) | 2025-11-07 | [S16 安全與治理](/stages/s16-security/) |
 | [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/)（guardrails、handoffs、tracing） | — | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/) |
 | [OpenAI Agents SDK: Handoffs](https://openai.github.io/openai-agents-python/handoffs/) | — | [S15 Multi-agent](/stages/s15-multi-agent/) |
@@ -112,7 +112,7 @@ sidebar:
 | [Kaggle: Embeddings & Vector Stores](https://www.kaggle.com/whitepaper-embeddings-and-vector-stores) | 2025-02 | [S9 檢索與 RAG](/stages/s09-rag/) |
 | [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) | 2025 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [Kaggle: Operationalizing Generative AI on Vertex AI using MLOps](https://www.kaggle.com/whitepaper-operationalizing-generative-ai-on-vertex-ai-using-mlops) | 2025（偏 Google Cloud） | [S18 部署與架構](/stages/s18-deployment/) |
-| [Kaggle: Introduction to Agents](https://www.kaggle.com/whitepaper-introduction-to-agents) | 2025-11 | [S0 全局地圖](/stages/s00-big-picture/) |
+| [Kaggle: Introduction to Agents](https://www.kaggle.com/whitepaper-introduction-to-agents) | 2025-11 | [S0 AI 系統概觀](/stages/s00-big-picture/) |
 | [Kaggle: Agent Tools & Interoperability with MCP](https://www.kaggle.com/whitepaper-agent-tools-and-interoperability-with-mcp) | 2025-11 | [S10 工具與 MCP](/stages/s10-tools-mcp/)、[S16 安全與治理](/stages/s16-security/) |
 | [Kaggle: Context Engineering: Sessions & Memory](https://www.kaggle.com/whitepaper-context-engineering-sessions-and-memory) | 2025-11 | [S13 Memory 與個人化](/stages/s13-memory/) |
 | [Kaggle: Agent Quality](https://www.kaggle.com/whitepaper-agent-quality) | 2025-11 | [S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
@@ -127,9 +127,9 @@ sidebar:
 | [Hamel Husain: A Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/) | 2025-03-24 | [S8 Eval 方法論](/stages/s08-evals/) |
 | [Hamel Husain: Using LLM-as-a-Judge For Evaluation: A Complete Guide](https://hamel.dev/blog/posts/llm-judge/) | 2024-10-29 | [S8 Eval 方法論](/stages/s08-evals/) |
 | [Hamel Husain: AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/)（原 Evals FAQ） | 2026-09-18 | [S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
-| [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/) | 2024-06 | [S0 全局地圖](/stages/s00-big-picture/)、[S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
+| [applied-llms.org: What We've Learned From A Year of Building with LLMs](https://applied-llms.org/) | 2024-06 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S8 Eval 方法論](/stages/s08-evals/)、[S9 檢索與 RAG](/stages/s09-rag/)、[S17 產品與 AI UX](/stages/s17-ai-ux/)、[S18 部署與架構](/stages/s18-deployment/) |
 | [Eugene Yan: Patterns for Building LLM-based Systems & Products](https://eugeneyan.com/writing/llm-patterns/) | 2023 | [S8 Eval 方法論](/stages/s08-evals/)、[S17 產品與 AI UX](/stages/s17-ai-ux/) |
-| [Lilian Weng: LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) | 2023-06-23 | [S0 全局地圖](/stages/s00-big-picture/) |
+| [Lilian Weng: LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) | 2023-06-23 | [S0 AI 系統概觀](/stages/s00-big-picture/) |
 | [Lilian Weng: Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/) | 2023-03-15 | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
 | [Lilian Weng: Reward Hacking in Reinforcement Learning](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/) | 2024-11-28 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | [Lilian Weng: Why We Think](https://lilianweng.github.io/posts/2025-05-01-thinking/) | 2025-05-01 | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
@@ -140,7 +140,7 @@ sidebar:
 | [Drew Breunig: How Long Contexts Fail](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html) | 2025-06-22 | [S11 Context engineering](/stages/s11-context-engineering/) |
 | [Drew Breunig: How to Fix Your Context](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html) | 2025-06-26 | [S11 Context engineering](/stages/s11-context-engineering/) |
 | [Chroma: Context Rot: How Increasing Input Tokens Impacts LLM Performance](https://www.trychroma.com/research/context-rot)（向量資料庫廠商的研究） | 2025-07-14 | [S11 Context engineering](/stages/s11-context-engineering/) |
-| [BAIR: The Shift from Models to Compound AI Systems](https://bair.berkeley.edu/blog/2024/02/18/compound-ai-systems/)（Zaharia et al.） | 2024-02-18 | [S0 全局地圖](/stages/s00-big-picture/) |
+| [BAIR: The Shift from Models to Compound AI Systems](https://bair.berkeley.edu/blog/2024/02/18/compound-ai-systems/)（Zaharia et al.） | 2024-02-18 | [S0 AI 系統概觀](/stages/s00-big-picture/) |
 | [Chip Huyen: Building A Generative AI Platform](https://huyenchip.com/2024/07/25/genai-platform.html) | 2024-07-25 | [S18 部署與架構](/stages/s18-deployment/) |
 
 ### 安全標準
@@ -325,7 +325,7 @@ API 文件、SDK、函式庫、模型卡、資料集、本地推論與評估工�
 | Shao et al. 2024, [DeepSeekMath](https://arxiv.org/abs/2402.03300)（GRPO） | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | Rafailov et al. 2023, [Direct Preference Optimization](https://arxiv.org/abs/2305.18290) | [S4 Post-training 與 reasoning](/stages/s04-post-training/) |
 | Sumers et al. 2023, [Cognitive Architectures for Language Agents (CoALA)](https://arxiv.org/abs/2309.02427) | [S13 Memory 與個人化](/stages/s13-memory/) |
-| Kapoor et al. 2024, [AI Agents That Matter](https://arxiv.org/abs/2407.01502) | [S0 全局地圖](/stages/s00-big-picture/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
+| Kapoor et al. 2024, [AI Agents That Matter](https://arxiv.org/abs/2407.01502) | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | Miller 2024, [Adding Error Bars to Evals](https://arxiv.org/abs/2411.00640) | [S8 Eval 方法論](/stages/s08-evals/) |
 | Liu et al. 2023, [Lost in the Middle: How Language Models Use Long Contexts](https://arxiv.org/abs/2307.03172) | [S9 檢索與 RAG](/stages/s09-rag/)、[S11 Context engineering](/stages/s11-context-engineering/) |
 | Sclar et al. 2023, [Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design](https://arxiv.org/abs/2310.11324) | [S7 Prompt、structured output 與 workflows](/stages/s07-prompting/) |
@@ -417,8 +417,8 @@ iThome 系列是實作者的 30 天連載，品質不一。上表列的是得獎
 
 | 來源 | 定位 | 對應章節 |
 |---|---|---|
-| [RUC《大语言模型》](https://llmbook-zh.github.io/) | 大學教科書，免費 PDF；agent 與應用部分較舊 | [S0 全局地圖](/stages/s00-big-picture/)、[S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/) |
-| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | CS336 中文版；Part II 模型原理（S1–S5）最好的中文搭配 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Eval 方法論](/stages/s08-evals/) |
+| [RUC《大语言模型》](https://llmbook-zh.github.io/) | 大學教科書，免費 PDF；agent 與應用部分較舊 | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S3 Pretraining 與 scaling](/stages/s03-pretraining/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/) |
+| [datawhalechina/diy-llm](https://github.com/datawhalechina/diy-llm) | CS336 中文版；Part I 模型原理（S1–S5）最好的中文搭配 | [S2 Transformer 與 decoding](/stages/s02-transformer/) 到 [S5 推論與 serving](/stages/s05-inference/)、[S8 Eval 方法論](/stages/s08-evals/) |
 | [datawhalechina/happy-llm](https://github.com/datawhalechina/happy-llm) | 從零建 LLM；第 8 章 agentic RL 很深 | [S2 Transformer 與 decoding](/stages/s02-transformer/)、[S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S14 Agent eval、資料與最佳化](/stages/s14-agent-evals/) |
 | [ZJU-LLMs/Foundations-of-LLMs](https://github.com/ZJU-LLMs/Foundations-of-LLMs) | 浙大《大模型基础》；有 model editing 專章 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S7 Prompt、structured output 與 workflows](/stages/s07-prompting/)、[S9 檢索與 RAG](/stages/s09-rag/) |
 | [Lordog/dive-into-llms](https://github.com/Lordog/dive-into-llms) | 上海交大《动手学大模型》；安全相關 lab 多 | [S4 Post-training 與 reasoning](/stages/s04-post-training/)、[S16 安全與治理](/stages/s16-security/) |
