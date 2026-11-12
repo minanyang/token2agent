@@ -2,7 +2,7 @@
 title: S9 Retrieval and RAG
 head:
   - tag: title
-    content: What Is RAG? A Retrieval and RAG Tutorial (S9) | Token2Agent
+    content: 'RAG Tutorial: Retrieval-Augmented Generation | Token2Agent'
 description: What RAG (retrieval-augmented generation) is and how to build it — chunking and embeddings, BM25 and hybrid retrieval, reranking — and how to measure "did it find the right passages" and "did it answer correctly" separately with Recall@k and faithfulness.
 sidebar:
   order: 9
@@ -23,7 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-In S6 LLM APIs and Application Basics, each request included the 20 most recent notes, about 30,000 input tokens. Retrieval-augmented generation (RAG) instead retrieves passages relevant to the question and asks the model to answer from them with sources. Use the eval methods from S8 Evals Methodology to check that this smaller input preserves quality.
+Retrieval-augmented generation (RAG) finds passages relevant to a question in external documents and puts them in the context so an LLM can answer using that information. This chapter follows a notes assistant through chunking, embeddings, retrieval and reranking, then evaluates retrieval quality and answer quality separately.
+
+In [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), each request included the 20 most recent notes, about 30,000 input tokens. Here you will retrieve only the relevant passages and ask the model to answer with sources. Use the methods from [S8 Evals Methodology](/en/stages/s08-evals/) to check that the smaller input preserves quality.
 
 This chapter is also the first 🔒 security checkpoint: once your system reads documents someone else wrote, the text in those documents can try to manipulate your model.
 

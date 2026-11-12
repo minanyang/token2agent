@@ -2,7 +2,7 @@
 title: S8 Evals Methodology
 head:
   - tag: title
-    content: How to Evaluate LLMs? Evals and LLM Judges (S8) | Token2Agent
+    content: 'LLM Evaluation Tutorial: Evals and LLM Judges | Token2Agent'
 description: How to make LLM evaluation trustworthy. Do error analysis on real traces, write binary grading criteria, calibrate an LLM judge against human labels, and put a confidence interval on every metric to tell whether your system really got better.
 sidebar:
   order: 8
@@ -23,9 +23,9 @@ sidebar:
 
 ## What this chapter covers
 
-How do you check whether a prompt change, a new model or retrieval improves the system? A few memorable examples can distort your judgment. This chapter builds a repeatable eval process: read real traces, group failures, design graders, check that model graders agree with people, and use error margins to assess the difference.
+LLM evaluation uses test cases and explicit grading criteria to measure a model or application's behavior. Rerunning the same cases after a prompt change, model swap or retrieval change lets you compare versions. This chapter builds a repeatable eval process: analyze real traces, group failures, build a golden set, calibrate an LLM judge against human labels, and use confidence intervals to assess the difference.
 
-Evals come before RAG and tools because every change in the later chapters needs them to tell whether it was worth it.
+Start here to evaluate single answers. [S9 Retrieval and RAG](/en/stages/s09-rag/) applies these methods to retrieval and answer quality separately; [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) evaluates multi-step trajectories. Evals come before RAG and tools because every change in the later chapters needs them to tell whether it was worth it.
 
 ## After this chapter you can
 

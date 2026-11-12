@@ -2,7 +2,7 @@
 title: S14 Agent evals、資料與最佳化
 head:
   - tag: title
-    content: AI agent 評估：軌跡、benchmark 與最佳化（S14）｜Token2Agent
+    content: AI Agent 評估教學：Agent evals、軌跡與最佳化（S14）｜Token2Agent
 description: AI agent 評估怎麼做：看懂 benchmark 分數為什麼會失準，同時評估結果與整條軌跡，做出可重跑的 agent eval，再用 trace、ablation 與 prompt 最佳化有系統地改進。
 sidebar:
   order: 14
@@ -23,7 +23,7 @@ sidebar:
 
 ## 在做什麼
 
-S8 Evals 方法論介紹單次回答的評估，S12 Agent loop 與 harness 則做過最小的 agent eval。這一章進一步檢查整條執行軌跡、同題多次執行的差異，以及模擬使用者和機器資源等環境設定。這些設定可能讓分數差好幾個百分點。
+Agent 評估（agent evals）要同時檢查任務結果與整條執行軌跡：agent 是否完成任務、工具用得對不對、是否遵守權限，以及重跑時表現是否穩定。[S8 Evals 方法論](/stages/s08-evals/)介紹單次回答的評估，[S12 Agent loop 與 harness](/stages/s12-agent-harness/)則做過最小的 agent eval。這一章進一步檢查同題多次執行的差異，以及模擬使用者和機器資源等環境設定。這些設定可能讓分數差好幾個百分點。
 
 評估可信之後，再從 trace 找失敗、建立 data flywheel、自動最佳化 prompt、蒸餾小型 router，並用 ablation 檢查 harness 元件的作用。S15 Multi-agent 也會用這套 eval 決定是否保留多 agent 設計。
 

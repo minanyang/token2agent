@@ -2,8 +2,8 @@
 title: S0 AI Systems Overview
 head:
   - tag: title
-    content: How Do AI Systems Work? AI Systems Overview (S0) | Token2Agent
-description: Learn what an AI system is made of, how a user's message passes through the model and your code to become an answer, how a minimal agent loop works, and when to use a single call, a workflow or an agent.
+    content: What Is an LLM? AI Systems and Agents for Beginners | Token2Agent
+description: Learn large language model (LLM), token and context basics through a notes assistant. Compare single calls, workflows and agents, then try the exercises and self-checks. No prerequisites.
 sidebar:
   order: 0
   label: S0 AI Systems Overview
@@ -28,7 +28,9 @@ This chapter has no advanced exercises. The optional advanced exercises start in
 
 ## What this chapter covers
 
-An AI product combines a model with other components. This chapter explains what those components do, how a user's message becomes an answer, and when to use a workflow or an agent. You'll also read a complete agent in under 200 lines, mini-SWE-agent. The next nineteen chapters each cover part of this system, so start here to choose your route.
+A large language model (LLM) generates a response one token at a time from the context it receives. AI applications add retrieval, tools, memory and other components so the model can use external information and take actions. This chapter follows a notes assistant to explain how a user's message becomes an answer and when to use a single call, a workflow or an agent.
+
+You'll also read a complete agent in under 200 lines, mini-SWE-agent. Continue with [The Application Route and Model Crash Course](/en/guide/app-first/), or explore [S9 Retrieval and RAG](/en/stages/s09-rag/), [S8 Evals Methodology](/en/stages/s08-evals/) and [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) to see how the components work. Each chapter lists its prerequisites at the top.
 
 ## After this chapter you can
 

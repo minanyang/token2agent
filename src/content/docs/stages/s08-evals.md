@@ -2,7 +2,7 @@
 title: S8 Evals 方法論
 head:
   - tag: title
-    content: LLM 評估怎麼做？Evals 與 LLM judge（S8）｜Token2Agent
+    content: LLM 評估教學：Evals、錯誤分析與 LLM judge（S8）｜Token2Agent
 description: LLM 評估怎麼做才可信：從真實 trace 做錯誤分析、寫二元評分標準、用人工標註校準 LLM judge，並為每個指標附上信賴區間，判斷系統是不是真的變好了。
 sidebar:
   order: 8
@@ -23,9 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-改 prompt、換模型或加檢索後，要怎麼確認系統變好了？幾個印象深刻的例子，很容易影響判斷。這一章會從真實 trace 歸納失敗類型，針對各類失敗設計評分方式，再驗證模型評分者是否與人的判斷一致。最後用誤差範圍判斷差異，整套方法都可以重跑。
+LLM 評估（evals）用一組測試題目與明確的評分標準，檢查模型或應用的表現。改 prompt、換模型或加檢索後，在同一批題目上重跑，才能比較兩版的差異。這一章會從真實 trace 歸納失敗類型，建立 golden set、設計評分方式，再用人工標註校準 LLM judge，最後用信賴區間判斷差異是否可信。
 
-Evals 排在 RAG 和工具之前，因為後面每一章的改動都需要它來判斷值不值得。
+這裡先學單次回答的評估。[S9 檢索與 RAG](/stages/s09-rag/)會用同一套方法分開檢查檢索和回答品質；[S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)則評估多步驟的執行軌跡。Evals 排在 RAG 和工具之前，因為後面每一章的改動都需要它來判斷值不值得。
 
 ## 學完能
 

@@ -2,7 +2,7 @@
 title: S9 檢索與 RAG
 head:
   - tag: title
-    content: RAG 是什麼？檢索與 RAG 教學（S9）｜Token2Agent
+    content: RAG 教學：檢索增強生成原理、流程與評估（S9）｜Token2Agent
 description: RAG（檢索增強生成）是什麼、怎麼做：文件切塊與 embedding、BM25 與 hybrid 檢索、rerank，並用 Recall@k 與 faithfulness 分開量測「找得對不對」與「答得對不對」。
 sidebar:
   order: 9
@@ -23,7 +23,9 @@ sidebar:
 
 ## 在做什麼
 
-在 S6 LLM API 與應用基本功，筆記助理每次把最近 20 篇筆記放進系統提示詞，要付約 3 萬個輸入 token 的費用。這一章會改成只放與問題相關的幾段，讓模型根據段落回答並附上來源，這就是檢索增強生成（RAG）。再用 S8 Evals 方法論的方法，檢查品質是否維持。
+檢索增強生成（retrieval-augmented generation，RAG）先從外部文件找出與問題相關的段落，再把段落放進 context，讓 LLM 根據資料回答。這一章用筆記助理說明文件切塊、embedding、檢索與 rerank，並分開評估「找得對不對」和「答得對不對」。
+
+在 [S6 LLM API 與應用基本功](/stages/s06-llm-api/)，筆記助理每次把最近 20 篇筆記放進系統提示詞，要付約 3 萬個輸入 token 的費用。這一章會改成只放與問題相關的幾段，讓模型根據段落回答並附上來源，再用 [S8 Evals 方法論](/stages/s08-evals/)檢查品質是否維持。
 
 這一章也是第一個 🔒 安全檢查點：一旦系統會讀別人寫的文件，文件裡的文字就可能試圖操控你的模型。
 

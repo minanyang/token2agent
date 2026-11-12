@@ -2,7 +2,7 @@
 title: S14 Agent Evals, Data and Optimization
 head:
   - tag: title
-    content: "AI Agent Evaluation: Trajectories, Benchmarks and Optimization (S14) | Token2Agent"
+    content: 'AI Agent Evaluation Tutorial: Trajectories and Evals | Token2Agent'
 description: How to evaluate AI agents. Understand why benchmark scores drift, evaluate both outcomes and full trajectories, build agent evals you can rerun, then improve systematically with traces, ablations and prompt optimization.
 sidebar:
   order: 14
@@ -23,7 +23,7 @@ sidebar:
 
 ## What this chapter covers
 
-S8 Evals Methodology covers single answers, and S12 The Agent Loop and Harness introduced a minimal agent eval. Here you will evaluate whole trajectories, repeated trials, simulated users and environment settings. Even machine resources can shift scores by several percentage points.
+Agent evaluation checks both the task outcome and the full execution trajectory: whether the agent finishes, uses tools correctly, respects permissions and behaves reliably across repeated runs. [S8 Evals Methodology](/en/stages/s08-evals/) covers single answers, and [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) introduced a minimal agent eval. Here you will examine repeated trials, simulated users and environment settings. Even machine resources can shift scores by several percentage points.
 
 Once the eval is trustworthy, use traces to find failures, build a data flywheel, optimize prompts, distill a small router and test harness components through ablation. S15 Multi-agent Systems will use these evals to decide whether multiple agents help.
 

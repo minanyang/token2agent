@@ -2,8 +2,8 @@
 title: S0 AI 系統概觀
 head:
   - tag: title
-    content: AI 系統怎麼運作？AI 系統概觀（S0）｜Token2Agent
-description: 看懂一個 AI 系統由哪些元件組成：使用者的一句話怎麼經過模型與程式變成答案、最小的 agent 迴圈怎麼運作，以及什麼時候該用單次呼叫、workflow 或 agent。
+    content: LLM 入門：大型語言模型與 AI 系統概觀（S0）｜Token2Agent
+description: LLM 入門教學：認識大型語言模型、token 與 context，用筆記助理看懂 AI 系統怎麼運作，再比較單次呼叫、workflow 與 agent。無前置要求，附紙筆練習與自我檢查。
 sidebar:
   order: 0
   label: S0 AI 系統概觀
@@ -28,7 +28,9 @@ next:
 
 ## 在做什麼
 
-AI 產品由模型和其他元件一起運作。這一章會說明系統有哪些元件、使用者的一句話怎麼變成答案，以及 workflow 和 agent 的差別，幫你判斷什麼時候該用 agent。最後會看一個不到 200 行的完整 agent（mini-SWE-agent）。後面十九章會分別說明這些元件，讀完本章就能依目標選擇路線。
+大型語言模型（large language model，LLM）根據輸入的 context，一次產生一個 token，逐步組成回答。AI 產品會再加上檢索、工具、記憶等元件，讓模型能使用外部資料、執行動作。這一章從筆記助理出發，說明使用者的一句話怎麼變成答案，以及單次呼叫、workflow 和 agent 的差別。
+
+最後會看一個不到 200 行的完整 agent（mini-SWE-agent）。讀完後，可以沿[應用路線與模型速成](/guide/app-first/)繼續，或直接查看 [S9 檢索與 RAG](/stages/s09-rag/)、[S8 Evals 方法論](/stages/s08-evals/)與 [S12 Agent loop 與 harness](/stages/s12-agent-harness/)，了解各元件怎麼運作；各章的前置要求列在頁首。
 
 ## 學完能
 
