@@ -13,7 +13,8 @@
     "check:sources": "node scripts/check-sources.mjs",
     "deploy": "astro build && wrangler deploy",
     "check:links": "node scripts/check-links.mjs",
-    "analytics": "node scripts/analytics.mjs"
+    "analytics": "node scripts/analytics.mjs",
+    "search-console": "node scripts/search-console.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.10",
