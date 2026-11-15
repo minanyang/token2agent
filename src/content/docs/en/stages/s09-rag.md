@@ -29,6 +29,13 @@ In [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), each request i
 
 This chapter is also the first 🔒 security checkpoint: once your system reads documents someone else wrote, the text in those documents can try to manipulate your model.
 
+:::note[Find the answer you need]
+- How does RAG turn documents into an answer? Follow [the notes assistant's complete pipeline](#-one-question-end-to-end).
+- Did retrieval find the right passages? See [Recall@k and MRR calculations](#-how-do-you-measure-retrieval-and-generation-separately).
+- Is the answer grounded and correctly cited? The same section covers [faithfulness and citation metrics](#-how-do-you-measure-retrieval-and-generation-separately).
+- Where should you look when an answer is wrong? See [failure diagnosis across the pipeline](#-when-an-answer-is-wrong-which-stage-broke).
+:::
+
 ## After this chapter you can
 
 - Compute cosine similarity, top-k, Recall@k and MRR for a query by hand. (lecture and self-check)
@@ -264,7 +271,7 @@ Recall@5 = (1 + 0.5 + 0) / 3 = 0.5; Recall@10 = 1; MRR = (1 + 0.333 + 0.143) / 3
 - **Citation precision**: the share of citations in the answer that actually support their claim.
 - **Citation recall**: the share of claims needing a citation that have a correct one.
 
-For example, an answer makes 3 claims. Claim 1 is tagged [1], and [1] does support it. Claim 2 is tagged [2], but neither [2] nor any other passage mentions it. Claim 3 has no citation, but [1] actually supports it. Faithfulness = 2/3 (claims 1 and 3 are supported); citation precision = 1/2 (of two citations, only one is right); citation recall = 1/3 (of three claims, only claim 1 is correctly cited). These are usually scored by a judge calibrated as in S8 Evals Methodology.
+For example, an answer makes 3 claims. Claim 1 is tagged [1], and [1] does support it. Claim 2 is tagged [2], but neither [2] nor any other passage mentions it. Claim 3 has no citation, but [1] actually supports it. Faithfulness = 2/3 (claims 1 and 3 are supported); citation precision = 1/2 (of two citations, only one is right); citation recall = 1/3 (of three claims, only claim 1 is correctly cited). These are usually scored by a judge calibrated using [S8 Evals Methodology: calibration against human labels](/en/stages/s08-evals/#-can-you-trust-a-model-grader).
 
 **Synthetic queries** reduce labeling work: an LLM reads a passage and writes a question it can answer, producing a query paired with the correct passage. These questions often reuse the passage's wording, which can inflate BM25 scores. Include queries phrased by real users and report scores on the two sets separately.
 

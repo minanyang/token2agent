@@ -27,6 +27,13 @@ LLM evaluation uses test cases and explicit grading criteria to measure a model 
 
 Start here to evaluate single answers. [S9 Retrieval and RAG](/en/stages/s09-rag/) applies these methods to retrieval and answer quality separately; [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) evaluates multi-step trajectories. Evals come before RAG and tools because every change in the later chapters needs them to tell whether it was worth it.
 
+:::note[Find the answer you need]
+- Where do test cases come from? Start with [building a golden set](#-where-do-the-test-cases-come-from).
+- Should code, a model or a person grade the output? See [graders and binary criteria](#-who-decides-pass-or-fail-and-how).
+- Can you trust an LLM judge? See [calibration against human labels](#-can-you-trust-a-model-grader).
+- Is a score change a real improvement? See [confidence intervals and paired comparisons](#-how-big-a-gap-counts-as-a-real-improvement).
+:::
+
 ## After this chapter you can
 
 - Compute TPR and TNR from a "human vs. judge" table, and work out a 95% confidence interval for a pass rate by hand. (lecture and self-check)
