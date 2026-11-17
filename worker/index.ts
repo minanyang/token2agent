@@ -12,7 +12,12 @@
 //   so search engines keep indexing the root locale.
 // - Only root-locale pages are redirected; /en/ pages and files (anything with an extension) never are.
 
-type Env = { ASSETS: { fetch(request: Request | URL): Promise<Response> } };
+type Env = {
+	ASSETS: { fetch(request: Request | URL): Promise<Response> };
+	// Workers Analytics Engine dataset; absent in environments without the binding.
+	TRAFFIC?: { writeDataPoint(point: { indexes?: string[]; blobs?: string[]; doubles?: number[] }): void };
+};
+type RequestCf = { country?: string; verifiedBotCategory?: string };
 
 const COOKIE = 't2a-lang';
 
@@ -59,39 +64,78 @@ function markdownPath(pathname: string): string {
 	return `${page}.md`;
 }
 
+// One data point per request for scripts/analytics.mjs; no IP address is stored. Read with the SQL API, where blob1..9
+// and double1 follow the order below.
+function record(env: Env, request: Request, response: Response, served: string): void {
+	if (!env.TRAFFIC) return;
+	const url = new URL(request.url);
+	const cf = (request as Request & { cf?: RequestCf }).cf;
+	let referer = '';
+	try {
+		referer = new URL(request.headers.get('Referer') ?? '').hostname;
+	} catch {}
+	env.TRAFFIC.writeDataPoint({
+		indexes: [served],
+		blobs: [
+			url.pathname.slice(0, 512),
+			request.method,
+			served,
+			(request.headers.get('User-Agent') ?? '').slice(0, 512),
+			wantsMarkdown(request) ? 'markdown' : '',
+			cf?.verifiedBotCategory ?? '',
+			cf?.country ?? '',
+			referer,
+			topLanguage(request.headers.get('Accept-Language')) ?? '',
+		],
+		doubles: [response.status],
+	});
+}
+
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
-		const url = new URL(request.url);
-		const { pathname } = url;
-		const isPage = !/\.[a-z0-9]+$/i.test(pathname);
-		const isRootPage = isPage && pathname !== '/en' && !pathname.startsWith('/en/');
-		const isRead = request.method === 'GET' || request.method === 'HEAD';
-
-		if (isPage && isRead && wantsMarkdown(request)) {
-			const markdown = await env.ASSETS.fetch(new URL(markdownPath(pathname), url));
-			if (markdown.ok) {
-				return new Response(markdown.body, {
-					headers: {
-						'Content-Type': 'text/markdown; charset=utf-8',
-						Link: `<${pathname.replace(/\/?$/, '/')}>; rel="canonical"`,
-						Vary: 'Accept',
-					},
-				});
-			}
-		}
-
-		if (isRootPage && isRead && wantsEnglish(request)) {
-			return new Response(null, {
-				status: 302,
-				headers: { Location: `/en${pathname}${url.search}`, Vary: 'Accept, Accept-Language, Cookie' },
-			});
-		}
-
-		const response = await env.ASSETS.fetch(request);
-		if (!isPage) return response;
-		const page = new Response(response.body, response);
-		page.headers.append('Vary', isRootPage ? 'Accept, Accept-Language, Cookie' : 'Accept');
-		if (response.ok) page.headers.append('Link', `<${markdownPath(pathname)}>; rel="alternate"; type="text/markdown"`);
-		return page;
+		const { response, served } = await handle(request, env);
+		// Logging must never break a response.
+		try {
+			record(env, request, response, served);
+		} catch {}
+		return response;
 	},
 };
+
+// What the request was served: the Markdown edition, the English redirect, a page, or a file.
+async function handle(request: Request, env: Env): Promise<{ response: Response; served: string }> {
+	const url = new URL(request.url);
+	const { pathname } = url;
+	const isPage = !/\.[a-z0-9]+$/i.test(pathname);
+	const isRootPage = isPage && pathname !== '/en' && !pathname.startsWith('/en/');
+	const isRead = request.method === 'GET' || request.method === 'HEAD';
+
+	if (isPage && isRead && wantsMarkdown(request)) {
+		const markdown = await env.ASSETS.fetch(new URL(markdownPath(pathname), url));
+		if (markdown.ok) {
+			const response = new Response(markdown.body, {
+				headers: {
+					'Content-Type': 'text/markdown; charset=utf-8',
+					Link: `<${pathname.replace(/\/?$/, '/')}>; rel="canonical"`,
+					Vary: 'Accept',
+				},
+			});
+			return { response, served: 'markdown' };
+		}
+	}
+
+	if (isRootPage && isRead && wantsEnglish(request)) {
+		const response = new Response(null, {
+			status: 302,
+			headers: { Location: `/en${pathname}${url.search}`, Vary: 'Accept, Accept-Language, Cookie' },
+		});
+		return { response, served: 'redirect' };
+	}
+
+	const response = await env.ASSETS.fetch(request);
+	if (!isPage) return { response, served: 'file' };
+	const page = new Response(response.body, response);
+	page.headers.append('Vary', isRootPage ? 'Accept, Accept-Language, Cookie' : 'Accept');
+	if (response.ok) page.headers.append('Link', `<${markdownPath(pathname)}>; rel="alternate"; type="text/markdown"`);
+	return { response: page, served: 'page' };
+}

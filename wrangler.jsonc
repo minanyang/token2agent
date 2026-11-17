@@ -13,6 +13,8 @@
 		"run_worker_first": ["/*", "!/_astro/*", "!/pagefind/*"]
 	},
 	"routes": [{ "pattern": "token2agent.com", "custom_domain": true }],
+	// One data point per request, read by scripts/analytics.mjs through the Analytics Engine SQL API.
+	"analytics_engine_datasets": [{ "binding": "TRAFFIC", "dataset": "token2agent_requests" }],
 	// Required by `wrangler preview`, the deploy command Workers Builds runs for non-production branches.
 	"previews": {}
 }
