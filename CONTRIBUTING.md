@@ -1,31 +1,33 @@
-# 參與貢獻
+# Contributing
 
-謝謝你願意幫忙。這份文件說明怎麼分享專案、回報問題，以及修改內容時要遵守的規則。
+**English** · [繁體中文](CONTRIBUTING.zh-TW.md)
 
-## 分享你的專案
+Thanks for helping out. This guide covers how to share your project, report problems, and the rules for changing content.
 
-1. Fork [minanyang/token2agent](https://github.com/minanyang/token2agent)。
-2. 把 `src/data/showcase/_template.yaml` 複製成 `src/data/showcase/你的專案名.yaml`（小寫英文與連字號），照檔案裡的註解填好。
-3. 開一個 Pull Request，標題寫「分享：專案名」。
+## Share your project
 
-收錄條件見網站的[專案分享](https://token2agent.com/showcase/)頁。送出 PR 即同意本網站展示你填的名稱、介紹、連結與作者名稱；你的專案維持它自己的授權。
+1. Fork [minanyang/token2agent](https://github.com/minanyang/token2agent).
+2. Copy `src/data/showcase/_template.yaml` to `src/data/showcase/your-project.yaml` (lowercase letters and hyphens) and fill it in following the comments. The name and summary can be in English.
+3. Open a pull request titled "Showcase: project name".
 
-## 回報問題
+The criteria are on the [showcase](https://token2agent.com/en/showcase/) page. By opening the PR you agree that the site may display the name, summary, links and author name you provide; your project keeps its own license.
 
-發現錯誤、過時的內容或失效的連結，請開 Issue，寫出哪一頁、哪一段，以及你認為正確的內容或來源。小錯字可以直接開 Pull Request。
+## Report a problem
 
-## 開發環境
+Found an error, outdated content or a broken link? Open an issue saying which page and which section, and what you believe is correct, with a source. Small typos can go straight to a pull request.
 
-需要 Node.js 22.23 以上（Astro 的要求）與 pnpm。
+## Development setup
+
+You need Node.js 22.23 or later (required by Astro) and pnpm.
 
 ```sh
 pnpm install
-pnpm dev             # 本機開發伺服器
-pnpm build           # 靜態輸出到 dist/
-pnpm check:sources   # 檢查外部連結都列在 reference/sources.md
+pnpm dev             # local dev server
+pnpm build           # static output to dist/
+pnpm check:sources   # every external link must be listed in reference/sources.md
 ```
 
-送出 PR 前請確認 `pnpm build` 與 `pnpm check:sources` 都通過。
+Make sure `pnpm build` and `pnpm check:sources` pass before opening a PR.
 
 ## Media previews
 
@@ -44,37 +46,42 @@ node scripts/generate-media.mjs http://127.0.0.1:4322 http://127.0.0.1:9333
 Use `--social-only` for hero GIFs and OG cards, or `--og-only` for static cards alone. The script prints
 temporary QA frame paths.
 
-## 專案結構
+## Project structure
 
 ```
 src/content/docs/
-  index.mdx          首頁與路線總覽圖
-  guide/             使用說明、應用路線與模型速成、數學補給
-  stages/s00–s19     每章一頁
-  projects/          模型專案（M1–M5）、系統專案（A6–A19）
-  reference/         來源清單、術語表、概念索引
-  showcase.mdx       專案分享頁
-src/data/showcase/   專案分享的資料，每個專案一個 YAML 檔
-src/components/      首頁路線圖、閱讀模式切換等元件
-templates/stage.md   每章頁面的範本與完整撰寫規則
+  index.mdx          home page and roadmap overview (Traditional Chinese, the root locale)
+  guide/             how to use the site, app-first route, model crash course, math refresher
+  stages/s00–s19     one page per chapter
+  projects/          model projects (M1–M5), system projects (A6–A19)
+  reference/         sources, glossary, concept index
+  showcase.mdx       showcase page
+  en/                English edition, same file names and slugs
+src/data/showcase/   showcase data, one YAML file per project
+src/components/      home roadmap, reading-mode toggle and other components
+templates/stage.md   chapter template with the full authoring rules
 ```
 
-## 撰寫規則
+## Languages
 
-- **語言**：繁體中文（台灣用語）搭配英文技術詞，用語依[術語表](src/content/docs/reference/glossary.md)。
-- **自己寫，不照抄**：講義用自己的話與自己的例子講解。事實、數字和公式可以引用，但文字、圖表與範例不要照抄或逐句翻譯；引用時要短，並註明出處。
-- **代號都帶名稱**：提到章或步驟時寫成「S6 LLM API 與應用基本功」「A10 工具組與 MCP server」；範圍要帶 Part 或實作專案的名稱，例如「Part I 模型原理（S1–S5）」「系統專案 A6–A18」。
-- **外部連結**：都要列在[來源清單](src/content/docs/reference/sources.md)，新增來源時寫上日期。`pnpm check:sources` 會列出沒登錄的網址。
-- **每個概念只首次教一次**：其他章用「（← S2 Transformer 與 decoding）」標出來源章；有變動時更新[概念索引](src/content/docs/reference/concepts.md)。
-- **兩種讀法**：第一次讀的人需要的內容放主線；推導、實作細節與選修主題放進 `<details class="deep">` 或 `<section class="deep-section">`。
-- **實作題只寫規格**：目標、步驟、有數字的驗收標準與提示，不附解答。
+Traditional Chinese (Taiwan) is the source text and lives at the site root. The English edition under `src/content/docs/en/` (URL `/en/`) is a localized translation that follows [`templates/translation-en.md`](templates/translation-en.md).
 
-完整的檢查清單在 [`templates/stage.md`](templates/stage.md) 開頭的註解裡。
+- **Fixing the English edition only** (wording, typos, an English-only example): edit the page under `en/`.
+- **Changing what a chapter teaches** (a fact, number, step or acceptance criterion): change both languages, or describe the change in the PR and note that the Chinese page still needs it. Either is fine.
 
-## 翻譯
+Simplified Chinese and Japanese are planned under `/zh-cn/` and `/ja/`. If you'd like to help translate, open an issue first so work isn't duplicated.
 
-繁體中文是根語系。英文版在 `src/content/docs/en/`（網址 `/en/`），翻譯規則見 [`templates/translation-en.md`](templates/translation-en.md)；修改中文講義時，請一併更新對應的英文頁，或在 PR 說明裡註明英文版待更新。簡體中文、日文預計以 `/zh-cn/`、`/ja/` 加入，想參與翻譯請先開 Issue 討論，避免重工。
+## Authoring rules
 
-## 授權
+- **Write it yourself.** Explain in your own words with your own examples. Facts, numbers and formulas may be cited, but don't copy or translate text, figures or examples sentence by sentence; keep quotes short and attributed.
+- **Codes always carry names.** Write "S6 LLM APIs and Application Basics" or "A10 Toolset and MCP Server", not a bare code. Ranges carry the part or project name, e.g. "Part I Models (S1–S5)".
+- **External links** must all be listed in [`src/content/docs/reference/sources.md`](src/content/docs/reference/sources.md) with the date they were added. `pnpm check:sources` lists unregistered URLs.
+- **Each concept is first taught once.** Other chapters point back with "(← S2 Transformers and Decoding)"; update the [concept index](src/content/docs/reference/concepts.md) when this changes.
+- **Two reading depths.** What a first-time reader needs goes in the main text; derivations, implementation detail and optional topics go in `<details class="deep">` or `<section class="deep-section">`.
+- **Exercises are specs only**: goal, steps, acceptance criteria with numbers, and hints. No solutions.
 
-對內容（`src/content/docs/`）的貢獻以 [CC BY-NC-SA 4.0](LICENSE) 釋出，對程式碼的貢獻以 [MIT License](LICENSE-code) 釋出。
+The full checklist is in the comment at the top of [`templates/stage.md`](templates/stage.md).
+
+## License
+
+Contributions to the content (`src/content/docs/`) are released under [CC BY-NC-SA 4.0](LICENSE); contributions to the code are released under the [MIT License](LICENSE-code).
