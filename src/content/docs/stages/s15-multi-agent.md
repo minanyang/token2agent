@@ -187,6 +187,8 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 筆記漏掉申請期限，表面上是 orchestrator 寫漏了，讀 trace 卻可能發現 brief 根本沒要求 sub-agent 找期限。要沿著交接紀錄查原因。
 
+如果 trace 已累積很多條，可以再往上一層看**反覆出現的模式**，而不是逐條讀到底。示意：筆記助理的 30 次多 agent 研究任務中有 12 次沒通過 outcome grader；抽讀這 12 條後，7 次是 brief 沒帶申請期限、3 次是兩個 sub-agent 重複搜尋、2 次是引用不支持答案。先檢查「期限」是否在任務原文、brief、sub-agent 回覆或彙整階段遺失；若問題確在 brief，就先修 brief 的欄位與檢查規則，再用**相同任務**重跑，並確認其他類別沒有惡化。這是延伸閱讀的 [Macro Evals for Agentic Systems](https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems) 所示的跨 trace 分析思路；分群或摘要只負責找候選模式，原因仍要回到原始 trace 驗證。
+
 ### ★ 多 agent 值得保留嗎？
 
 多 agent 是一個要付成本的假設。決定保不保留，看的是同一組 eval 上的兩個數字：品質差值的信賴區間，和成本倍數。
@@ -381,6 +383,7 @@ Anthropic 的研究系統報告：agent 平均用掉約一般聊天 4 倍的 tok
 
 ### 官方文件與指南
 
+- [OpenAI Cookbook: Macro Evals for Agentic Systems](https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems)（2026-05-19，進階）— 看「Why Macro Evals」及跨多條 trace 找反覆失敗模式的流程；對照本章的 handoff 與分工失敗。提供預存的合成 trace 和評估標記，可不使用 API key 先走完整個分析流程。
 - [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) — 多 agent 段：manager 與 decentralized 兩種模式的原始說明。
 - [OpenAI Agents SDK: Handoffs](https://openai.github.io/openai-agents-python/handoffs/) — handoff、input filter 的實際 API，以及和 agent-as-tool 的差別。
 - [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) — multi-agent 章。偏 Google 生態。

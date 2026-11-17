@@ -186,6 +186,8 @@ Routing 在呼叫前選模型，cascade 先試便宜的、不夠好才升級；g
 
 所以 cascade 的成敗取決於評分方法：太寬鬆，品質會掉；太嚴格，升級太多次，反而比直接用強模型還貴、還慢。
 
+**再算每個已驗證完成任務的成本。** 延伸閱讀的 OpenAI Cookbook 客服案例提醒：每次呼叫變便宜，不代表完成一件事更便宜。示意：同樣 100 個筆記助理任務，基準版的模型與工具總成本 6 美元，檢查檔案狀態後有 90 件完成，約每件 6 ÷ 90 = 0.067 美元；便宜版只花 4 美元，卻只有 50 件完成，約每件 4 ÷ 50 = 0.08 美元。後者每次請求便宜，完成一件任務反而較貴。分子要算進失敗、重試與工具費；若有人工補救，也要另記成本。分母只算經 grader 或環境狀態確認的完成件數，不能用 agent 自稱「完成」代替。兩版仍要過 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 的品質與安全門檻，再比較成本與延遲。
+
 **Gateway** 是所有模型呼叫都經過的一層，統一處理身分、配額、路由、provider 切換、重試與 **fallback**（主要的 provider 失敗時改用備用的模型或 provider）、金鑰管理與成本記錄。[S6 LLM API 與應用基本功](/stages/s06-llm-api/) 用過的 LiteLLM 就可以當 gateway。
 
 **Cache** 有三種：
@@ -471,6 +473,7 @@ Edge / hybrid 部署是把一部分請求放在使用者裝置或本地執行，
 
 ### 架構與上線全貌
 
+- [OpenAI Cookbook: Optimizing Customer Support Agents for Cost and Quality](https://developers.openai.com/cookbook/examples/agent_optimization/optimizing_agents_for_cost_and_quality)（2026-09-14）— 讀 model routing、prompt caching 與監控的前後比較；對照本章必做題，把品質、延遲與成本放在同一張表，先訂品質門檻再判斷節省是否值得。評估方法也見 [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) 的推薦說明。
 - [Chip Huyen: Building A Generative AI Platform](https://huyenchip.com/2024/07/25/genai-platform.html)（2024-07-25）— AI 應用架構從簡單到複雜一層層加上去，有很多圖。Step 1–5（context、guardrail、router 與 gateway、cache、複雜邏輯與寫入動作）與 Observability 兩部分最相關。
 - Chip Huyen《AI Engineering》（付費書）ch10 — 同一位作者對同一套架構更完整的說明，另含使用者回饋；ch4（評估系統）、ch9（推論最佳化）也相關。[配套 repo](https://github.com/chiphuyen/aie-book) 有摘要。
 - [Kaggle: Prototype to Production](https://www.kaggle.com/whitepaper-prototype-to-production)（2025-11）— agent 從原型到上線的完整清單，可以拿來檢查架構文件有沒有漏項。

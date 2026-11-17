@@ -198,6 +198,18 @@ Grader 應盡量檢查環境狀態，並保留一份不參與最佳化的測試�
 
 回饋要能對回 trace，再做成 eval 題目；capability eval 穩定後，轉成 regression eval（← S8 Evals 方法論）。回饋介面會在 S17 產品與 AI UX 說明。分群只能幫忙決定先讀哪些 trace，失敗類別仍要由人讀過後歸納。例如「相對日期」這一類，就來自 S8 Evals 方法論的錯誤分析。
 
+### ★ 省成本的改動，什麼時候算成功？
+
+延伸閱讀的 OpenAI Cookbook 客服案例把品質、延遲與成本放在**同一組題目**上比較。把方法套到筆記助理：20 個任務各跑 5 次，每次重設資料夾；「完成」由檔案狀態判定，「未經確認刪檔」另列為不可接受的安全事件。以下數字只是示意，沒有實際跑模型。
+
+| 版本 | 成功試跑 | 未經確認刪檔 | 100 次總成本 | P95 延遲 |
+|---|---:|---:|---:|---:|
+| 基準：原本的工具與提示詞 | 88/100 | 0 | 6.00 美元 | 9 秒 |
+| A：縮短提示詞並放寬工具限制 | 90/100 | 1 | 4.00 美元 | 6 秒 |
+| B：縮短工具回傳、保留權限檢查 | 88/100 | 0 | 4.80 美元 | 7 秒 |
+
+A 的成功率較高、帳單較低，仍要拒絕：那一次刪檔違反安全門檻。B 值得進一步驗證，但 88/100 對 88/100 只表示這批試跑的成功數相同；要看**同一任務對應的試跑**在兩版是否各自成功，計算配對差值的信賴區間，並確認事先寫下的品質容忍值。若區間下界低於容忍值，就不能宣稱「品質沒變差」。還要讀 A 的刪檔 trace 與 B 的失敗 trace，找出是哪個改動造成差異，再用未參與調整的題目重跑。成本應包含所有模型與工具呼叫、重試和失敗試跑；不能只把成功那 88 次拿來算。
+
 ### ★ 能自動找出更好的 prompt 嗎？
 
 Prompt 最佳化是讓程式自動搜尋更好的 prompt：你提供 metric 和範例，optimizer 反覆產生候選 prompt、在範例上打分、留下好的。
@@ -277,6 +289,15 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 <summary>對照答案</summary>
 
 寫程式看 pass@3：測試能自動挑出對的版本，使用者只看到通過的那個，3 次中有一次成功就夠。整理 TODO 上線後沒有測試替使用者挑出對的版本，每次結果都直接交給使用者，所以看 pass^3。
+
+</details>
+
+**3.** 上面三個版本中，A 的成功率最高、成本最低，能直接換成 A 嗎？B 的成功試跑數和基準相同，能直接宣稱品質沒有退步嗎？
+
+<details class="hint">
+<summary>對照答案</summary>
+
+都不能。A 有一次未經確認刪檔，先被安全門檻排除。B 在這 100 次的完成數相同，仍需計算配對差值的信賴區間，對照事先訂好的品質容忍值，並在未參與調整的題目上驗證；單看總數不足以證明品質沒有退步。
 
 </details>
 
@@ -404,6 +425,8 @@ agent 共 4 次呼叫，其中 `grep`、`write_file` 在參考軌跡裡，precis
 
 ### 官方文章與實務指南
 
+- [OpenAI Cookbook: Optimizing Customer Support Agents for Cost and Quality](https://developers.openai.com/cookbook/examples/agent_optimization/optimizing_agents_for_cost_and_quality)（2026-09-14）— **實作對照首選**：先看 Outline 第 1–3 步如何定成功標準、建評估集與量 baseline，再看每次只改一個設定後如何用同一組測試並列品質、延遲、工具呼叫與成本。對照本章必做題的版本比較與 A14 的 harness ablation。使用合成客服資料，預設的 dry-run 不需 API 費用；套用到自己的 agent 時要重做評估集與品質門檻。
+- [OpenAI Cookbook: Build an Agent Improvement Loop with Traces, Evals, and Codex](https://developers.openai.com/cookbook/examples/agents_sdk/agent_improvement_loop)（2026-05-12，進階）— 看 trace 與人工回饋如何變成可重跑的 Promptfoo 測試，再提出 harness 修改；對照 A14 的 trace 分群與改動驗證。範例使用 OpenAI Agents SDK、Promptfoo 與 HALO；只閱讀不需執行，完整跑 notebook 則需要 API key 並產生模型呼叫費用。
 - [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)（2026-01-09）— task / trial / grader / transcript / outcome 的定義、pass@k vs pass^k、隔離與平衡、「讀 transcript」，附更多實際案例。
 - [Anthropic: Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise)（2026-02-05）— 資源設定如何改變分數的完整實驗，以及報告方式。
 - [Anthropic: Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp)（2026-03-06）— 模型認出 benchmark 並去找答案的實際紀錄。

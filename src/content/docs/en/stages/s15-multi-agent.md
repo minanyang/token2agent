@@ -187,6 +187,8 @@ In practice, use MAST as the starting categories for the error analysis from [S8
 
 If the final note omits an application deadline, inspect the trace before blaming the orchestrator. The brief may never have asked the sub-agent to find it, making the handoff the source of the omission.
 
+Once you have many traces, look for **recurring patterns** across runs instead of reading every trace end to end. Illustrative example: of 30 multi-agent research runs by the notes assistant, 12 fail the outcome grader. Reading those 12 traces finds 7 where the brief omitted the application deadline, 3 where two sub-agents repeated the same search, and 2 where citations did not support the answer. First check whether the deadline was lost in the original request, brief, sub-agent reply, or merge. If the brief is at fault, fix its fields and validation rule, rerun **the same tasks**, and check that the other failure categories did not worsen. This follows the cross-trace analysis in [Macro Evals for Agentic Systems](https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems). Clusters and summaries suggest patterns; confirm causes in the original traces.
+
 ### ★ Is multi-agent worth keeping?
 
 Multi-agent is an assumption that costs money. Whether to keep it depends on two numbers from the same eval: the confidence interval of the quality difference, and the cost multiple.
@@ -381,6 +383,7 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Official docs and guides
 
+- [OpenAI Cookbook: Macro Evals for Agentic Systems](https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems) (2026-05-19, advanced) — Read "Why Macro Evals" and the workflow for finding recurring failures across traces; compare with this chapter's handoff and delegation failures. Saved synthetic traces and eval labels let you follow the analysis without an API key.
 - [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) — The multi-agent section: the original description of the manager and decentralized patterns.
 - [OpenAI Agents SDK: Handoffs](https://openai.github.io/openai-agents-python/handoffs/) — The actual API for handoffs and input filters, and how they differ from agent-as-tool.
 - [Kaggle: Agents Companion](https://www.kaggle.com/whitepaper-agent-companion) — The multi-agent chapter. Leans toward the Google ecosystem.

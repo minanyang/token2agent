@@ -102,6 +102,9 @@ sidebar:
 
 | 來源 | 日期 | 對應章節 |
 |---|---|---|
+| [OpenAI Cookbook: Optimizing Customer Support Agents for Cost and Quality](https://developers.openai.com/cookbook/examples/agent_optimization/optimizing_agents_for_cost_and_quality) | 2026-09-14；2026-11-17 核對：未標 archived；合成資料、預設 dry-run | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/)、[S18 部署與架構](/stages/s18-deployment/) |
+| [OpenAI Cookbook: Build an Agent Improvement Loop with Traces, Evals, and Codex](https://developers.openai.com/cookbook/examples/agents_sdk/agent_improvement_loop) | 2026-05-12；2026-11-17 核對：未標 archived；使用 Agents SDK、Promptfoo、HALO；執行需 API key | [S14 Agent evals、資料與最佳化](/stages/s14-agent-evals/) |
+| [OpenAI Cookbook: Macro Evals for Agentic Systems](https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems) | 2026-05-19；2026-11-17 核對：未標 archived；可用預存 trace 離線分析 | [S15 Multi-agent](/stages/s15-multi-agent/) |
 | [OpenAI: A Practical Guide to Building Agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) | 2025（後續更新） | [S0 AI 系統概觀](/stages/s00-big-picture/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/) |
 | [OpenAI: Understanding prompt injections](https://openai.com/index/prompt-injections/) | 2025-11-07 | [S16 安全與治理](/stages/s16-security/) |
 | [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/)（guardrails、handoffs、tracing） | — | [S12 Agent loop 與 harness](/stages/s12-agent-harness/)、[S15 Multi-agent](/stages/s15-multi-agent/)、[S16 安全與治理](/stages/s16-security/) |

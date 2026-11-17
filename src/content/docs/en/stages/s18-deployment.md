@@ -186,6 +186,8 @@ A **cascade** calls the cheap model first, then uses a scoring method to judge w
 
 So a cascade lives or dies by its scoring method: too lenient and quality drops; too strict and it upgrades so often it ends up more expensive and slower than just using the strong model.
 
+**Also calculate cost per verified completed task.** The OpenAI Cookbook support-agent example in Further reading shows why a cheaper call may not make a completed job cheaper. Illustrative example: on the same 100 notes-assistant tasks, the baseline spends $6 in model and tool costs and completes 90 tasks according to the file-state checks, or about 6 ÷ 90 = $0.067 per completion. A cheaper version spends $4 but completes only 50, or 4 ÷ 50 = $0.08 per completion. It costs less per request and more per completed task. Include failed attempts, retries, and tool costs in the numerator; record any human recovery cost separately. Count only outcomes verified by a grader or the environment in the denominator, not the agent's claim that it finished. Both versions must still pass the quality and safety gates from [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) before you compare cost and latency.
+
 The **gateway** is the layer every model call goes through. It handles identity, quotas, routing, provider switching, retries and **fallback** (switching to a backup model or provider when the primary fails), key management and cost logging, all in one place. LiteLLM, which you used in [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), can serve as the gateway.
 
 There are three kinds of **cache**:
@@ -471,6 +473,7 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Architecture and the production big picture
 
+- [OpenAI Cookbook: Optimizing Customer Support Agents for Cost and Quality](https://developers.openai.com/cookbook/examples/agent_optimization/optimizing_agents_for_cost_and_quality) (2026-09-14) — Read the before-and-after comparisons for model routing, prompt caching, and monitoring. For this chapter's required exercise, put quality, latency, and cost in one table and set a quality threshold before judging the savings. See [S14 Agent Evals, Data and Optimization](/en/stages/s14-agent-evals/) for the evaluation companion.
 - [Chip Huyen: Building A Generative AI Platform](https://huyenchip.com/2024/07/25/genai-platform.html) (2024-07-25) — builds up an AI application's architecture layer by layer from simple to complex, with lots of diagrams. Steps 1–5 (context, guardrails, router and gateway, cache, complex logic and write actions) and Observability are the most relevant parts.
 - Chip Huyen, *AI Engineering* (paid book), ch10 — the same author's fuller treatment of the same architecture, plus user feedback; ch4 (evaluating systems) and ch9 (inference optimization) are also relevant. The [companion repo](https://github.com/chiphuyen/aie-book) has summaries.
 - [Kaggle: Prototype to Production](https://www.kaggle.com/whitepaper-prototype-to-production) (2025-11) — a complete checklist for taking an agent from prototype to production; use it to check your architecture document for gaps.

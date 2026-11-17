@@ -198,6 +198,18 @@ User feedback and the traces collected since S6 LLM APIs and Application Basics 
 
 Connect feedback to traces and turn trace failures into eval tasks. Once a capability eval is stable, retain it as a regression eval (← S8 Evals Methodology). S17 Product and AI UX covers the feedback interface. Clustering helps prioritize what to read; a person must still inspect traces to establish a failure category, such as "relative dates" in S8 Evals Methodology.
 
+### ★ When does a cost-saving change count as an improvement?
+
+The OpenAI Cookbook support-agent example in Further reading compares quality, latency, and cost on **the same evaluation set**. Apply the method to the notes assistant: run 20 tasks five times each, resetting the folder for every trial. Check completion from the files, and count deleting a file without confirmation as a separate, unacceptable safety event. These numbers are illustrative; no model was run for this example.
+
+| Version | Successful trials | Unconfirmed deletions | Total cost for 100 trials | P95 latency |
+|---|---:|---:|---:|---:|
+| Baseline: original tools and prompt | 88/100 | 0 | $6.00 | 9 s |
+| A: shorter prompt and looser tool controls | 90/100 | 1 | $4.00 | 6 s |
+| B: shorter tool responses, permission check retained | 88/100 | 0 | $4.80 | 7 s |
+
+Reject A even though its success rate is higher and its bill is lower: one deletion violates the safety gate. B merits further testing, but 88/100 versus 88/100 only says the success totals match in these trials. Check whether **corresponding trials of the same task** succeeded in each version, compute a confidence interval for the paired difference, and compare it with a quality tolerance set in advance. If the interval's lower bound falls below that tolerance, you cannot claim quality was preserved. Read A's deletion trace and B's failure traces to identify which change mattered, then rerun on tasks not used to tune the change. Include every model and tool call, retry, and failed trial in the cost; don't count only the 88 successes.
+
 ### ★ Can a better prompt be found automatically?
 
 Prompt optimization lets a program search for better prompts automatically: you provide a metric and examples, and the optimizer repeatedly generates candidate prompts, scores them on the examples and keeps the good ones.
@@ -277,6 +289,15 @@ The agent made 4 calls, of which `grep` and `write_file` are in the reference tr
 <summary>Check your answer</summary>
 
 Coding uses pass@3: tests automatically pick out the correct version, the user only sees the one that passed, and one success in 3 is enough. Once "collect TODOs" is live, there are no tests to pick the right version for the user; every result goes straight to the user, so use pass^3.
+
+</details>
+
+**3.** Version A above has the highest success rate and lowest cost. Can you deploy A? Version B has the same number of successful trials as the baseline. Can you claim that its quality did not decline?
+
+<details class="hint">
+<summary>Check your answer</summary>
+
+Neither conclusion follows. A fails the safety gate because it deletes a file without confirmation. B has the same completion count in these 100 trials, but you still need a confidence interval for the paired difference, the quality tolerance set in advance, and a check on tasks not used to tune it. Equal totals do not prove equal quality.
 
 </details>
 
@@ -402,6 +423,8 @@ The lecture already covers what this chapter needs. The material below is for re
 
 ### Official articles and practical guides
 
+- [OpenAI Cookbook: Optimizing Customer Support Agents for Cost and Quality](https://developers.openai.com/cookbook/examples/agent_optimization/optimizing_agents_for_cost_and_quality) (2026-09-14) — **First practical companion**: start with Outline steps 1–3 on success criteria, the evaluation set, and the baseline; then see how each single change is checked against the same set for quality, latency, tool calls, and cost. Compare it with this chapter's required version comparison and A14's harness ablation. It uses synthetic support data; the default dry run has no API cost. Build a new evaluation set and quality threshold for your own agent.
+- [OpenAI Cookbook: Build an Agent Improvement Loop with Traces, Evals, and Codex](https://developers.openai.com/cookbook/examples/agents_sdk/agent_improvement_loop) (2026-05-12, advanced) — See how traces and human feedback become repeatable Promptfoo tests and proposed harness changes; compare with A14's trace grouping and change validation. The example uses OpenAI Agents SDK, Promptfoo, and HALO. You can read it without running it; a full notebook run needs an API key and incurs model-call costs.
 - [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents) (2026-01-09) — Definitions of task / trial / grader / transcript / outcome, pass@k vs pass^k, isolation and balance, "read the transcripts," with more real cases.
 - [Anthropic: Infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise) (2026-02-05) — The full experiment on how resource settings change scores, and how to report them.
 - [Anthropic: Eval awareness in Claude Opus 4.6's BrowseComp performance](https://www.anthropic.com/research/eval-awareness-browsecomp) (2026-03-06) — The actual record of a model recognizing a benchmark and going to find the answers.
