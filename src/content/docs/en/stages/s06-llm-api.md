@@ -19,7 +19,7 @@ prev:
 :::
 
 :::tip[Concepts route: key points]
-- The model doesn't remember the previous turn. The notes assistant resends the whole conversation every time, so the longer the chat, the more it costs.
+- The model doesn't remember the previous turn. With this chapter's stateless calls, the notes assistant includes the earlier conversation, so a longer chat costs more.
 - When something fails, first decide whether it can be retried. Actions like creating a note also need protection against running twice.
 - Output can differ every time, so tests check properties instead of comparing the model's exact text.
 :::
@@ -39,7 +39,7 @@ This chapter covers reliable model calls: request structure and cost, streaming 
 
 ## Lecture
 
-The running example is the **notes assistant**. Sam (user ID `u_017`) has about 200 Markdown notes and asks, "What did I write about Project X last week?" The first version puts the full text of the 20 most recent notes in the system prompt, about 30,000 input tokens per request. S9 Retrieval and RAG will reduce that.
+The running example is the **notes assistant**. Sam (user ID `u_017`) has about 200 Markdown notes and asks, "What did I write about Project X last week?" The first version puts the full text of the 20 most recent notes in the system prompt. To estimate cost, assume this makes each request about 30,000 input tokens. S9 Retrieval and RAG will reduce that.
 
 Your code must assemble the request, stream the answer, retry on errors, and record tokens, cost and elapsed time. The sections below cover those steps, along with switching providers, running local models and using reasoning models.
 
@@ -101,9 +101,9 @@ Besides the text, the response has a `usage` field, for example `{"input_tokens"
 cost = input tokens × input price + output tokens × output price (+ cache reads/writes, → S11)
 ```
 
-With illustrative prices ($3 per million input tokens, $15 per million output tokens), this call costs 2,000 × 3 / 1,000,000 + 300 × 15 / 1,000,000 = 0.006 + 0.0045 = **$0.0105**. For the real first version (20 notes, about 30,000 input tokens), the input alone is 30,000 × 3 / 1,000,000 = $0.09. Don't estimate token counts yourself; read `usage`. Tokenizers differ by vendor, and the same text can produce very different token counts on two vendors' models, especially for non-English text.
+With illustrative prices ($3 per million input tokens, $15 per million output tokens), this call costs 2,000 × 3 / 1,000,000 + 300 × 15 / 1,000,000 = 0.006 + 0.0045 = **$0.0105**. If the first version includes 20 notes and we assume 30,000 input tokens, the input alone costs 30,000 × 3 / 1,000,000 = $0.09. For actual token counts, read `usage` rather than estimating: tokenizers differ by vendor, and the same text can produce very different token counts on two vendors' models, especially for non-English text.
 
-The model does not remember the previous turn. LLM APIs are essentially **stateless**: every call has to resend the whole conversation, including the system prompt, the earlier user and assistant messages, and tool results. So the cost of a multi-turn conversation adds up. Suppose (again with only 2 notes) the notes plus system prompt are 1,800 tokens, each question 200 tokens and each answer 300 tokens. Turn 1 has 2,000 input tokens. Turn 2 has to carry turn 1's question and answer, so it's 2,500, and each turn after that adds 500, so turn 10 is 6,500. The input over 10 turns totals 42,500 tokens, more than twice the "2,000 every turn" you might expect. There are two kinds of fixes: keep the unchanging start of the request so it hits prompt caching (→ [S11 Context Engineering](/en/stages/s11-context-engineering/)), and truncate or summarize old turns (→ the tool-result budget in S11, compaction in [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
+The model does not remember the previous turn. With the **stateless** API calls used in this chapter, your application must include any history the model needs: the system prompt, earlier user and assistant messages, and tool results. Suppose every turn retains the full history and still includes only 2 notes. The notes plus system prompt are 1,800 tokens, each question 200 tokens, and each answer 300 tokens. Turn 1 has 2,000 input tokens. Turn 2 carries turn 1's question and answer, so it's 2,500, and each turn after that adds 500, so turn 10 is 6,500. The input over 10 turns totals 42,500 tokens, more than twice the "2,000 every turn" you might expect. There are two kinds of fixes: keep the unchanging start of the request so it hits prompt caching (→ [S11 Context Engineering](/en/stages/s11-context-engineering/)), and truncate or summarize old turns (→ the tool-result budget in S11, compaction in [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)).
 
 A **Batch API** lets you submit many requests at once and collect the results asynchronously (usually within 24 hours) at roughly half the price of real-time calls. It suits work that isn't urgent, such as generating summaries for a thousand notes, or running evals (→ S8 Evals Methodology).
 
@@ -226,7 +226,7 @@ When a prompt exceeds Ollama's default context, it may silently drop the earlier
 
 Ollama's default context depends on VRAM (GPU memory): 4K at 24 GiB or less. When a prompt exceeds it, by default the earlier content is dropped (with only a warning in the server log), and the API doesn't necessarily return an error. Set `num_ctx` or `OLLAMA_CONTEXT_LENGTH`, and check with `ollama ps`. Every later exercise that runs long prompts on Ollama needs this step first.
 
-A request can silently lose part of its prompt without raising an error. The 20 recent notes in this example total about 30,000 tokens, well beyond 4K. Without adjusting the limit, the beginning, often the system prompt and most notes, is silently dropped. The model sees only the final portion, which can look like poor answer quality.
+A request can silently lose part of its prompt without raising an error. Under the earlier assumption that the 20 notes total about 30,000 tokens, this is well beyond 4K. Without adjusting the limit, the beginning, often the system prompt and most notes, may be silently dropped. The model sees only the final portion, which can look like poor answer quality.
 
 </details>
 
@@ -388,7 +388,7 @@ This is the first step of the system project (for the step codes, see [how to re
 - After pressing stop, new text stops appearing within 1 second, and the trace is marked "canceled".
 - Collect ≥ 30 real conversations before moving on to S8 Evals Methodology.
 
-With the notes assistant as the example: put the full text of the 20 most recent notes into the system prompt and ask "What did I conclude about Project X last month?" The trace shows about 30,000 input tokens per call; that's the number S9 Retrieval and RAG sets out to bring down.
+With the notes assistant as the example: put the full text of the 20 most recent notes into the system prompt and ask "What did I conclude about Project X last month?" Record the actual input token count in the trace as the baseline S9 Retrieval and RAG sets out to reduce. The chapter's assumed 30,000 tokens are not a measured target.
 
 **Hints**
 - TypeScript: the Vercel AI SDK's `streamText` + `useChat` gets you an interface quickly; its telemetry settings connect to OpenTelemetry (the parameter names have changed between versions, so go by the Telemetry page); local models work through an OpenAI-compatible provider or the [Ollama community provider](https://ai-sdk.dev/providers/community-providers/ollama).
@@ -415,7 +415,7 @@ With the notes assistant as the example: put the full text of the 20 most recent
    <details class="hint">
    <summary>Hint</summary>
 
-   **Key point**: the API is stateless, so every turn resends the whole conversation; you reduce the cost by keeping the unchanging start of the request so it hits prompt caching, and by truncating or summarizing old turns. **Common mistake**: thinking the model remembers the previous turn. **Reread**: [What does one API call look like?](#-what-does-one-api-call-look-like)
+   **Key point**: with this chapter's stateless calls, the application includes the history it needs; if it retains the full history, input cost grows with each turn. Keep the unchanging prefix eligible for prompt caching, and truncate or summarize old turns. **Common mistake**: thinking the model remembers the previous turn. **Reread**: [What does one API call look like?](#-what-does-one-api-call-look-like)
 
    </details>
 

@@ -61,7 +61,7 @@ Sam asks the notes assistant: "What budget did we settle on in the last meeting 
 2. First call: after reading them, the model decides it also needs the quotes, so it calls `notes_search("quote")`. The tool returns 20 results, about 400 tokens each.
 3. Second call: the tool results go back into the context, and the model answers and calls `notes_create` to create the to-do.
 
-The table below is the context for the second call. The total budget is 16K input tokens (the part budgets add up to 16,000; the user's input for this turn has no cap), well below the model's context window, for reasons the next section explains.
+The table below is the context for the second call. Its sizes and budgets are hypothetical numbers to demonstrate the tradeoff, not measured usage from the notes assistant. The part budgets total 16K (16,000) input tokens. This turn's user input has no separate part budget, but the full request must still fit the context window. The next section explains why the part budgets are set below that limit.
 
 | Part | Content | Budget | Raw size | Actually included |
 |---|---|---|---|---|
@@ -79,7 +79,7 @@ Two parts are over budget, and each is cut down to fit (how to cut is in [What d
 - **History**: keep the last 4 turns verbatim (4 × 600 = 2,400) and replace the earlier 11 turns with a 500-token summary, 2,900 in total.
 - **Tool results**: keep the first 3 results in full (3 × 400 = 1,200), keep only the titles of the other 17 (17 × 30 = 510), plus a truncation note of about 40 tokens, 1,750 in total.
 
-Result: each call's input drops from 26,000 to 13,650 tokens, roughly half, and everything the answer needs is still there. Separately, `max_tokens` reserves about 1,000 tokens for the answer.
+Under these assumptions, input drops from 26,000 to 13,650 tokens, roughly half. Whether the answer still has everything it needs must be checked with real questions and evals. Separately, `max_tokens` reserves about 1,000 tokens for the answer.
 
 A total budget alone lets growing tool results and history crowd out useful retrieval results. Log each part's token count in the trace, then assign budgets. Many systems find that tool definitions or long history occupy more than half the context, while the useful retrieved passages take only a small portion.
 

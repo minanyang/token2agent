@@ -64,7 +64,7 @@ Here are the notes assistant's main components (in the "Covered in" column, S pl
 |---|---|---|
 | Model | Understands the question, decides what to do, writes the answer | [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/) (how to call it); model internals are Part I Models (S1–S5) |
 | Prompt and context | Tells the model its role and rules, and supplies the data for this call | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S11 Context Engineering](/en/stages/s11-context-engineering/) |
-| Retrieval | Finds the few notes relevant to the question among about 200 | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
+| Retrieval | Searches roughly 200 notes and returns the few relevant to the question | [S9 Retrieval and RAG](/en/stages/s09-rag/) |
 | Tools | Actions the model can ask to run, such as `notes_search` and `notes_create` | [S7 Prompts, Structured Output and Workflows](/en/stages/s07-prompting/), [S10 Tools and MCP](/en/stages/s10-tools-mcp/) |
 | Memory | Remembers user preferences like "answer in bullet points, three at most" | [S13 Memory and Personalization](/en/stages/s13-memory/) |
 | Loop control code | Calls the model, runs tools, decides when to stop | [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/) |
@@ -91,30 +91,30 @@ The table shows one round. Each step has a chapter dedicated to it:
 
 A few terms from the table: the **system prompt** is the fixed instruction the developer writes for the model ("You are a notes assistant. Answer only from the user's notes."); **streaming** means showing the output as it's generated, so the user doesn't wait for the whole answer; a **trace** is the record of every step in a request, which you go back to when something goes wrong.
 
-**Steps 3 and 4 are where the model actually computes, and they behave differently.** Prefill processes input that's already known, so all tokens can be computed in parallel; even an input of several thousand tokens goes fast. Decode produces output that doesn't exist yet: token 5 can't be computed until token 4 exists, so tokens come out one by one, and the longer the output, the longer you wait. For each token, the model produces a probability for every candidate token, and the sampling settings (such as temperature) decide how to pick one (→ [Model Crash Course](/en/guide/app-first/#sampling-and-temperature); deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S5 Inference and Serving](/en/stages/s05-inference/)).
+**Steps 3 and 4 are where the model actually computes, and they behave differently.** The entire input is known during prefill, so the model can process its tokens in parallel. Standard autoregressive decoding generates output step by step: the model must select token 4 before it can calculate the probability distribution for token 5. Longer outputs therefore usually take longer. At each step, the model assigns probabilities to candidates for the next token, and sampling settings (such as temperature) determine how to choose one (→ [Model Crash Course](/en/guide/app-first/#sampling-and-temperature); deeper: [S2 Transformers and Decoding](/en/stages/s02-transformer/), [S5 Inference and Serving](/en/stages/s05-inference/)).
 
 **Steps 5 and 6 let the model "do things."** The developer lists the tools' names, purposes and parameters in the context ahead of time. When the model wants a tool, it doesn't output a sentence for a human; it outputs text in a fixed format that amounts to `notes_search(query="meeting", range="last week")`. Your code recognizes that format, actually runs it, and puts the result back into the context so the model sees it on the next round.
 
-Let's run the notes assistant through it once. The user says: "Find my meeting notes from last week, summarize them in three bullet points, and save that as a new note." The token counts below are illustrative:
+Let's run the notes assistant through it once. The user says: "Find my meeting notes from last week, summarize them in three bullet points, and save that as a new note." To show how the input grows, assume the first call's complete input (fixed instructions, tool definitions, the user message and so on) is 1,000 tokens. Every count in the table is hypothetical, not a measurement of that sentence or a particular API. Actual counts depend on the prompt, tool definitions, tokenizer and tool results.
 
 | Round | Input sent to the model (prefill) | Model output (decode) | What your code does |
 |---|---|---|---|
-| 1 | System prompt 800 + tool descriptions 400 + user message 30 = 1,230 tokens | Calls `notes_search`, 25 tokens | Searches and finds 3 notes, 2,400 tokens in total |
-| 2 | 1,230 + 25 + 2,400 = 3,655 tokens | Calls `notes_create` with a three-point summary, 200 tokens | Saves the note and returns "created", 20 tokens |
-| 3 | 3,655 + 200 + 20 = 3,875 tokens | Answers "Done. Saved as 'Last week's meeting summary'", 60 tokens | Streams to the user and logs the request |
+| 1 | Complete input, assumed to be 1,000 tokens | Calls `notes_search`, 25 tokens | Searches and finds 3 notes, 2,400 tokens in total |
+| 2 | 1,000 + 25 + 2,400 = 3,425 tokens | Calls `notes_create` with a three-point summary, 200 tokens | Saves the note and returns "created", 20 tokens |
+| 3 | 3,425 + 200 + 20 = 3,645 tokens | Answers "Done. Saved as 'Last week's meeting summary'", 20 tokens | Streams to the user and logs the request |
 
-The table shows two things. First, a one-sentence request called the model 3 times. Second, every round resends everything before it, so the input adds up to 1,230 + 3,655 + 3,875 = 8,760 tokens while the output is only 25 + 200 + 60 = 285 tokens. Controlling what goes into each round is the subject of S11 Context Engineering.
+The table shows two things. First, a one-sentence request called the model 3 times. Second, in this example that retains the full history, each round includes the preceding content. Input therefore adds up to 1,000 + 3,425 + 3,645 = 8,070 tokens, while model output adds up to 25 + 200 + 20 = 245 tokens. The tool-call counts include the full arguments, not just the names shown in the table. Controlling what goes into each round is the subject of S11 Context Engineering.
 
 <details class="deep">
 <summary>Going deeper: what this request costs</summary>
 
 APIs charge by token, and output tokens usually cost several times more than input tokens (because, as above, decode has to go one token at a time; → [S5 Inference and Serving](/en/stages/s05-inference/)). Assume $3 per million input tokens and $15 per million output tokens (illustrative, not any vendor's price):
 
-- Input: 8,760 × 3 ÷ 1,000,000 ≈ $0.0263
-- Output: 285 × 15 ÷ 1,000,000 ≈ $0.0043
-- Total: about $0.031
+- Input: 8,070 × 3 ÷ 1,000,000 ≈ $0.0242
+- Output: 245 × 15 ÷ 1,000,000 ≈ $0.0037
+- Total: about $0.028
 
-Output costs 5 times as much per token, yet most of the spend is input, because the agent resends the whole context every round. Two common fixes: keep the start of each round (system prompt, tool descriptions) unchanged so the API's prompt caching can reuse that already-computed prefix at a lower price (→ [S11 Context Engineering](/en/stages/s11-context-engineering/)); and don't paste whole tool results back in verbatim (→ [S11 Context Engineering](/en/stages/s11-context-engineering/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)). Note that the KV cache avoids recomputing already-read tokens *within one call*; prompt caching reuses an identical prefix *across calls*. They're related but not the same.
+Output costs 5 times as much per token, yet most of the spend is input, because this example includes the full history in every round. Two common fixes: keep the start of each round (system prompt, tool descriptions) unchanged so the API's prompt caching can reuse that already-computed prefix at a lower price (→ [S11 Context Engineering](/en/stages/s11-context-engineering/)); and don't paste whole tool results back in verbatim (→ [S11 Context Engineering](/en/stages/s11-context-engineering/), [S12 The Agent Loop and Harness](/en/stages/s12-agent-harness/)). Note that the KV cache avoids recomputing already-read tokens *within one call*; prompt caching reuses an identical prefix *across calls*. They're related but not the same.
 
 </details>
 
@@ -251,7 +251,7 @@ Concepts route (no code): after "Try it first", you can skip to the self-check.
    <details class="hint">
    <summary>Check your answer</summary>
 
-   1,230 + 25 + 600 = 1,855 tokens. Each round's input is "the previous round's input + the model's previous output + the tool result", so the longer the tool result, the longer every later round gets.
+   1,000 + 25 + 600 = 1,625 tokens. In this example that retains the full history, the next round's input is "the previous round's input + the model's previous output + the tool result", so the longer the tool result, the longer every later round gets.
 
    </details>
 
@@ -345,7 +345,7 @@ If you don't know Python, skip this. It doesn't affect any later chapter.
    <details class="hint">
    <summary>Hint</summary>
 
-   **Key point**: every round resends the full context, so the 2nd input adds the 1st call's tool call and the search results. **Common mistake**: assuming the model remembers the previous round, so only new content is sent. **Reread**: [How does one message become an answer?](#-how-does-one-message-become-an-answer)
+   **Key point**: in this chapter's example that retains the full history, the 2nd input includes the 1st call's tool call and search results. **Common mistake**: assuming the model remembers the previous round, so earlier content need not be supplied. **Reread**: [How does one message become an answer?](#-how-does-one-message-become-an-answer)
 
    </details>
 

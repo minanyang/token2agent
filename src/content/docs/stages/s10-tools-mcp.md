@@ -149,7 +149,7 @@ sidebar:
 <details class="deep">
 <summary>深入一點：工具太多時，tool search 與 code execution</summary>
 
-工具定義每一輪都要重送。假設每個工具定義約 300 個 token，40 個工具就是 12,000 個 token，而且選項越多越容易選錯（context confusion，→ S11 Context engineering）。兩種解法：
+若每輪都提供完整工具定義，它們會持續佔用 context。假設每個工具定義約 300 個 token，40 個工具就是 12,000 個 token，而且選項越多越容易選錯（context confusion，→ S11 Context engineering）。兩種解法：
 
 - **Tool search / deferred loading**：一開始只給模型一個「搜尋工具」的工具和少數常用工具。模型需要寄信時，先搜尋「email」，系統才把 `email_draft`、`email_send` 的完整定義載入。代價是多一輪來回，工具只有幾個時沒必要。
 - **Code execution 作為工具介面**：讓模型寫一段程式，把工具當成函式庫呼叫；中間結果留在執行環境裡，只把最後需要的結果放回 context。例如「整理全部約 200 篇筆記，找出所有提到預算的段落」：逐一呼叫工具時，200 篇各約 150 個 token 的結果都要進 context，約 30,000 個 token；寫成程式的話，迴圈與過濾都在執行環境裡完成，只回傳約 200 個 token 的整理結果。CodeAct（Wang et al. 2024）發現用程式當動作格式，常比 JSON 工具呼叫更有效；Anthropic〈Code execution with MCP〉把 MCP server 呈現成程式 API，也是同樣的思路。它的風險見 [sandbox](#-程式在哪裡執行才安全)。

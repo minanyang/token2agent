@@ -25,7 +25,7 @@ sidebar:
 
 Retrieval-augmented generation (RAG) finds passages relevant to a question in external documents and puts them in the context so an LLM can answer using that information. This chapter follows a notes assistant through chunking, embeddings, retrieval and reranking, then evaluates retrieval quality and answer quality separately.
 
-In [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), each request included the 20 most recent notes, about 30,000 input tokens. Here you will retrieve only the relevant passages and ask the model to answer with sources. Use the methods from [S8 Evals Methodology](/en/stages/s08-evals/) to check that the smaller input preserves quality.
+In the hypothetical example from [S6 LLM APIs and Application Basics](/en/stages/s06-llm-api/), each request included the 20 most recent notes, about 30,000 input tokens. Here you will retrieve only the relevant passages and ask the model to answer with sources. Use the methods from [S8 Evals Methodology](/en/stages/s08-evals/) to check that the smaller input preserves quality.
 
 This chapter is also the first 🔒 security checkpoint: once your system reads documents someone else wrote, the text in those documents can try to manipulate your model.
 
@@ -88,7 +88,7 @@ If you don't write code, you can skip the Python/TypeScript code; do read the pr
 
 7. **Generate**: the model answers "In the 10/14 meeting with the design team, the Q4 redesign budget was capped at $48,000 [1]", and your code turns [1] into a clickable source.
 
-Input falls from about 30,000 tokens to about 800 (2 chunks × 300 plus about 200 for rules and the question), under 3% of the original. Retrieval can fetch extra passages for the model and rerank to filter. Here, c07 is irrelevant despite its similarity score of 0.8: it shares the word "budget" with the question but cannot answer it. Measure retrieval quality separately to catch this.
+In this hypothetical example, input falls from about 30,000 tokens to about 800 (2 chunks × 300 plus about 200 for rules and the question), under 3% of the original. Retrieval can fetch extra passages for the model and rerank to filter. Here, c07 is irrelevant despite its similarity score of 0.8: it shares the word "budget" with the question but cannot answer it. Measure retrieval quality separately to catch this.
 
 ### ★ How do documents become searchable text?
 

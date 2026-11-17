@@ -36,6 +36,10 @@ Authoring rules (keep this comment out of published pages):
   optional in their steps, acceptance criteria, route guides and project overviews in both languages.
 - Do not promise comprehension, runtime or cost without conditions and evidence. Label incomplete
   external tracks, and estimate training time from a measured small run rather than model size alone.
+- Label invented token counts, prices, latency and dataset sizes as assumptions before using them in a
+  worked example. Do not describe a hypothetical value as a measured trace or a guaranteed outcome.
+- Scope claims about resending history, tool definitions and context to the example's API and context
+  strategy; the model's lack of memory does not mean every application sends the full history.
 - Put prerequisites and next steps in separate paragraphs in the chapter note, in both editions.
 - Keep short table labels together with non-breaking spaces (e.g. `Level&nbsp;0`). Let descriptive cells
   wrap normally; do not disable wrapping for an entire table or column.

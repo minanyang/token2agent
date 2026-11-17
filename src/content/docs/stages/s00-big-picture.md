@@ -91,30 +91,30 @@ next:
 
 表中幾個詞的意思：**系統提示詞**是開發者寫給模型的固定說明（「你是筆記助理，只根據使用者的筆記回答」）；**串流**是邊產生邊顯示，使用者不必等整段寫完；**trace** 是這次請求每一步的紀錄，出問題時用來回頭查。
 
-**步驟 3 和 4 是模型真正在計算的地方，兩者性質不同。** Prefill 處理的是已經知道的輸入，所有 token 可以同時算，所以輸入有幾千個 token 也很快。Decode 產生的是還不存在的輸出：第 5 個 token 要等第 4 個產生之後才能算，只能一個一個來，所以輸出越長，等得越久。每產生一個 token，模型會給出所有候選 token 的機率，sampling 設定（例如 temperature）決定怎麼從中挑一個（→ [模型速成](/guide/app-first/#sampling-與-temperature)，深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S5 推論與 serving](/stages/s05-inference/)）。
+**步驟 3 和 4 是模型真正在計算的地方，兩者性質不同。** Prefill 的整段輸入已經確定，模型可以平行處理其中的 token。一般的 autoregressive decoding 則要逐步產生輸出：先選出第 4 個 token，才能以它為條件計算第 5 個 token 的機率分布，所以輸出越長，通常等得越久。每一步模型會給出下一個 token 各候選值的機率，sampling 設定（例如 temperature）決定怎麼挑選（→ [模型速成](/guide/app-first/#sampling-與-temperature)，深入：[S2 Transformer 與 decoding](/stages/s02-transformer/)、[S5 推論與 serving](/stages/s05-inference/)）。
 
 **步驟 5 和 6 讓模型能「做事」。** 開發者事先在 context 裡列出工具的名稱、用途與參數。模型想用工具時，輸出的不是給人看的句子，而是一段固定格式的文字，內容相當於 `notes_search(query="會議", range="上週")`。程式認出這段格式、真正去執行，再把結果放回 context，模型下一輪就看得到。
 
-用筆記助理走一次。使用者說：「找出我上週的會議筆記，整理成三點摘要，存成一篇新筆記。」下面的 token 數是示意：
+用筆記助理走一次。使用者說：「找出我上週的會議筆記，整理成三點摘要，存成一篇新筆記。」為了看清每輪輸入如何增加，假設第一輪送進模型的完整輸入（固定指示、工具定義和使用者訊息等）是 1,000 token。表中的數字都是假設值，不是這句話或某個 API 的實測結果；實際數量取決於提示詞、工具定義、tokenizer 和工具回傳內容。
 
 | 輪次 | 送進模型的輸入（prefill） | 模型的輸出（decode） | 程式做什麼 |
 |---|---|---|---|
-| 1 | 系統提示詞 800 + 工具說明 400 + 使用者訊息 30 = 1,230 token | 呼叫 `notes_search`，25 token | 搜尋，找到 3 篇筆記，共 2,400 token |
-| 2 | 1,230 + 25 + 2,400 = 3,655 token | 呼叫 `notes_create`，內容是三點摘要，200 token | 存檔，回傳「已建立」，20 token |
-| 3 | 3,655 + 200 + 20 = 3,875 token | 回答「已整理並存成〈上週會議摘要〉」，60 token | 串流給使用者，記錄這次請求 |
+| 1 | 完整輸入，假設 1,000 token | 呼叫 `notes_search`，25 token | 搜尋，找到 3 篇筆記，共 2,400 token |
+| 2 | 1,000 + 25 + 2,400 = 3,425 token | 呼叫 `notes_create`，內容是三點摘要，200 token | 存檔，回傳「已建立」，20 token |
+| 3 | 3,425 + 200 + 20 = 3,645 token | 回答「已整理並存成〈上週會議摘要〉」，20 token | 串流給使用者，記錄這次請求 |
 
-這個請求總共呼叫了模型 3 次。每輪都重送之前的全部內容，輸入因此累計為 1,230 + 3,655 + 3,875 = 8,760 token，輸出只有 25 + 200 + 60 = 285 token。每輪要放進哪些內容，會在 S11 Context engineering 說明。
+這個請求總共呼叫了模型 3 次。在這個保留完整歷史的例子裡，每輪輸入都包含前一輪的內容，因此累計為 1,000 + 3,425 + 3,645 = 8,070 token；模型輸出共 25 + 200 + 20 = 245 token。工具呼叫的 token 數包含完整參數，不只表中顯示的名稱。每輪要放進哪些內容，會在 S11 Context engineering 說明。
 
 <details class="deep">
 <summary>深入一點：這個請求花多少錢</summary>
 
 API 依 token 數計價，輸出的單價通常是輸入的好幾倍（原因是上面說的 decode 只能一個一個來，→ [S5 推論與 serving](/stages/s05-inference/)）。假設輸入每百萬 token 3 美元、輸出每百萬 token 15 美元（示意，不是任何廠商的報價）：
 
-- 輸入：8,760 × 3 ÷ 1,000,000 ≈ 0.0263 美元
-- 輸出：285 × 15 ÷ 1,000,000 ≈ 0.0043 美元
-- 合計約 0.031 美元
+- 輸入：8,070 × 3 ÷ 1,000,000 ≈ 0.0242 美元
+- 輸出：245 × 15 ÷ 1,000,000 ≈ 0.0037 美元
+- 合計約 0.028 美元
 
-輸出單價是輸入的 5 倍，花費卻主要來自輸入，因為 agent 每一輪都重送整段 context。兩個常見對策：讓每一輪的開頭（系統提示詞、工具說明）保持不變，讓 API 的 prompt caching 重用這段已算過的結果、以較低單價計費（→ [S11 Context engineering](/stages/s11-context-engineering/)）；以及不要把整篇工具結果原封不動塞回去（→ [S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。注意 KV cache 是「一次呼叫之內」不重算已讀過的 token；prompt caching 是「跨呼叫」重用相同的開頭，兩者相關但不同。
+輸出單價是輸入的 5 倍，花費卻主要來自輸入，因為這個例子每一輪都帶上完整歷史。兩個常見對策：讓每一輪的開頭（系統提示詞、工具說明）保持不變，讓 API 的 prompt caching 重用這段已算過的結果、以較低單價計費（→ [S11 Context engineering](/stages/s11-context-engineering/)）；以及不要把整篇工具結果原封不動塞回去（→ [S11 Context engineering](/stages/s11-context-engineering/)、[S12 Agent loop 與 harness](/stages/s12-agent-harness/)）。注意 KV cache 是「一次呼叫之內」不重算已讀過的 token；prompt caching 是「跨呼叫」重用相同的開頭，兩者相關但不同。
 
 </details>
 
@@ -251,7 +251,7 @@ Anthropic〈Building effective AI agents〉的建議更直接：先找最簡單�
    <details class="hint">
    <summary>對照答案</summary>
 
-   1,230 + 25 + 600 = 1,855 token。每一輪的輸入都是「上一輪的輸入 + 模型上一輪的輸出 + 工具結果」，所以工具結果越長，後面每一輪都跟著變長。
+   1,000 + 25 + 600 = 1,625 token。在這個保留完整歷史的例子裡，下一輪的輸入是「上一輪的輸入 + 模型上一輪的輸出 + 工具結果」，所以工具結果越長，後面每一輪也跟著變長。
 
    </details>
 
@@ -345,7 +345,7 @@ Anthropic〈Building effective AI agents〉的建議更直接：先找最簡單�
    <details class="hint">
    <summary>提示</summary>
 
-   **判斷重點**：每一輪都重送完整 context，第 2 次的輸入多了第 1 次的工具呼叫與搜尋結果。**常見錯法**：以為模型記得上一輪，所以只送新內容。**回讀**：[一句話怎麼變成答案？](#-一句話怎麼變成答案)
+   **判斷重點**：在本章保留完整歷史的例子裡，第 2 次的輸入包含第 1 次的工具呼叫與搜尋結果。**常見錯法**：以為模型記得上一輪，所以不必提供先前內容。**回讀**：[一句話怎麼變成答案？](#-一句話怎麼變成答案)
 
    </details>
 
