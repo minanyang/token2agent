@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # Playwright MCP screenshots and snapshots
 .playwright-mcp/
+
+# generated analytics reports (scripts/analytics.mjs)
+reports/
