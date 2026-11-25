@@ -183,7 +183,7 @@ HNSW（hierarchical navigable small world）把所有向量連成一張圖，每
 **Hybrid**：兩邊各取前幾名，用 **reciprocal rank fusion**（RRF）合併：只看每個段落在兩份清單裡的名次，兩邊都排得前面的段落，合併後就排得前面。只看名次，不必處理兩種分數單位不同的問題。
 
 <details class="deep">
-<summary>深入一點：BM25 權重與 RRF 的數字例子</summary>
+<summary>深入一點：BM25 權重與 RRF 的數字例子與 Python 實作</summary>
 
 **BM25 權重。** 100 個 chunk 中，「預算」出現在 8 塊、「設計」出現在 20 塊、「的」出現在全部 100 塊，用簡化的 log(N / 出現塊數) 算，權重分別是 ln(12.5) ≈ 2.53、ln(5) ≈ 1.61、ln(1) = 0。
 
@@ -196,6 +196,27 @@ HNSW（hierarchical navigable small world）把所有向量連成一張圖，每
 | c07 | 3 | 2 | 1/63 + 1/62 ≈ 0.03200 |
 
 c12 在 BM25 只排第 2，但兩邊都很前面，合併後排第一。c31 在 dense 只排第 3，但 BM25 排第 1，合併後超過 c07，排第二。
+
+用 Python 寫只要幾行，下面這段會算出和上表相同的結果：
+
+```python
+def rrf(rankings, k=60):
+    scores = {}
+    for ranking in rankings:
+        for rank, doc_id in enumerate(ranking, start=1):
+            scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank)
+    return sorted(scores.items(), key=lambda item: item[1], reverse=True)
+
+bm25 = ["c31", "c12", "c07"]
+dense = ["c12", "c07", "c31"]
+for doc_id, score in rrf([bm25, dense]):
+    print(doc_id, f"{score:.5f}")
+# c12 0.03252
+# c31 0.03227
+# c07 0.03200
+```
+
+段落沒出現在某份清單裡，就不會從那份清單得分，所以同一個函式也能合併長度不同的清單，或兩個以上的檢索器結果。
 
 </details>
 

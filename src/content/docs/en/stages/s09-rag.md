@@ -183,7 +183,7 @@ BM25 needs text split into words. That's trivial for English but not for languag
 **Hybrid**: take the top few from each side and merge them with **reciprocal rank fusion** (RRF). It only looks at each passage's rank in the two lists: passages ranked high on both sides end up high after merging. Because it only uses ranks, you don't have to reconcile two scores on different scales.
 
 <details class="deep">
-<summary>Going deeper: BM25 weights and RRF, worked through with numbers</summary>
+<summary>Going deeper: BM25 weights and RRF, worked through with numbers and Python</summary>
 
 **BM25 weights.** Out of 100 chunks, "budget" appears in 8, "design" in 20 and "the" in all 100. With the simplified log(N / number of chunks containing the term), the weights are ln(12.5) ≈ 2.53, ln(5) ≈ 1.61 and ln(1) = 0.
 
@@ -196,6 +196,27 @@ BM25 needs text split into words. That's trivial for English but not for languag
 | c07 | 3 | 2 | 1/63 + 1/62 ≈ 0.03200 |
 
 c12 is only 2nd in BM25, but it's near the top on both sides, so it comes first after merging. c31 is only 3rd in dense, but 1st in BM25, so after merging it overtakes c07 for second place.
+
+In Python, RRF takes a few lines. This reproduces the table above:
+
+```python
+def rrf(rankings, k=60):
+    scores = {}
+    for ranking in rankings:
+        for rank, doc_id in enumerate(ranking, start=1):
+            scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank)
+    return sorted(scores.items(), key=lambda item: item[1], reverse=True)
+
+bm25 = ["c31", "c12", "c07"]
+dense = ["c12", "c07", "c31"]
+for doc_id, score in rrf([bm25, dense]):
+    print(doc_id, f"{score:.5f}")
+# c12 0.03252
+# c31 0.03227
+# c07 0.03200
+```
+
+A passage missing from one list gets nothing from that list, so the same function merges lists of different lengths or more than two retrievers.
 
 </details>
 
