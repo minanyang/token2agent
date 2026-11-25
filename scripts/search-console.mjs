@@ -13,10 +13,11 @@ const origin = 'https://token2agent.com';
 const property = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site)}`;
 
 export const targets = [
-	['evals', 'stages/s08-evals/', ['LLM 評估教學', 'Evals 教學'], ['LLM evaluation tutorial', 'LLM judge calibration']],
-	['rag', 'stages/s09-rag/', ['RAG 教學', 'RAG 評估'], ['RAG evaluation tutorial', 'RAG evaluation metrics']],
+	['evals', 'stages/s08-evals/', ['LLM 評估教學', 'Evals 教學', 'LLM judge'], ['LLM evaluation tutorial', 'LLM judge calibration', 'LLM as a judge']],
+	['rag', 'stages/s09-rag/', ['RAG 教學', 'RAG 評估', 'RRF', 'Recall@k'], ['RAG evaluation tutorial', 'RAG evaluation metrics', 'reciprocal rank fusion', 'RRF python', 'Recall@k']],
 	['agent-evals', 'stages/s14-agent-evals/', ['AI Agent 評估', 'Agent evals 教學'], ['AI agent evaluation tutorial', 'agent trajectory evaluation']],
-	['roadmap', '', ['LLM 學習路線', 'AI Agent 學習路線'], ['LLM learning roadmap', 'AI agent learning path']],
+	['transformer', 'stages/s02-transformer/', ['beam search'], ['beam search']],
+	['roadmap', '', ['AI 學習路線', 'AI 学习路线', 'LLM 學習路線', 'AI Agent 學習路線'], ['AI roadmap', 'LLM learning roadmap', 'AI agent learning path']],
 ].flatMap(([topic, path, zh, en]) => [
 	{ topic, language: 'zh-TW', page: `${origin}/${path}`, keywords: zh },
 	{ topic, language: 'en', page: `${origin}/en/${path}`, keywords: en },
@@ -55,19 +56,34 @@ export async function fetchRows(api, body, pageSize = 25000) {
 	}
 }
 
+// A tracked phrase matches every reported query containing all of its words, so long-tail variants count.
+// ASCII words must match whole query words; other words (such as Chinese) match as substrings.
+export function matchesKeyword(query, keyword) {
+	const words = (s) => s.normalize('NFKC').toLowerCase().split(/\s+/).filter(Boolean);
+	const queryWords = words(query);
+	const joined = queryWords.join(' ');
+	return words(keyword).every(w => /^[\x20-\x7e]+$/.test(w) ? queryWords.includes(w) : joined.includes(w));
+}
+
+function aggregate(rows) {
+	if (!rows.length) return null;
+	const clicks = rows.reduce((sum, r) => sum + r.clicks, 0);
+	const impressions = rows.reduce((sum, r) => sum + r.impressions, 0);
+	return { clicks, impressions, ctr: impressions ? clicks / impressions : 0,
+		position: rows.reduce((sum, r) => sum + r.position * r.impressions, 0) / impressions,
+		queries: rows.map(r => r.keys[0]) };
+}
+
 export function targetResults(current, previous) {
-	const normalized = (s) => s.normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
 	return targets.map(target => {
 		const forPage = (period) => period.queryPages.filter(row => row.keys[1] === target.page);
 		const observed = forPage(current);
+		const match = (rows, keyword) => aggregate(rows.filter(row => matchesKeyword(row.keys[0], keyword)));
 		return { ...target,
 			pageMetrics: current.pages.find(row => row.keys[0] === target.page) ?? null,
 			previousPageMetrics: previous.pages.find(row => row.keys[0] === target.page) ?? null,
 			observedQueries: observed,
-			keywords: target.keywords.map(keyword => ({ keyword,
-				current: observed.find(row => normalized(row.keys[0]) === normalized(keyword)) ?? null,
-				previous: forPage(previous).find(row => normalized(row.keys[0]) === normalized(keyword)) ?? null,
-			})),
+			keywords: target.keywords.map(keyword => ({ keyword, current: match(observed, keyword), previous: match(forPage(previous), keyword) })),
 		};
 	});
 }
@@ -165,8 +181,8 @@ export async function main(args = process.argv.slice(2)) {
 		console.log(`\nComparison window: ${previous.startDate} to ${previous.endDate}; latest reported day: ${previous.latestReportedDate ?? 'none'}`);
 		for (const t of report.targets) {
 			console.log(`\n${t.language} / ${t.topic}: ${t.page}`);
-			for (const k of t.keywords) console.log(`  ${k.keyword}: ${k.current ? `${k.current.impressions} impressions, ${k.current.clicks} clicks, ${(k.current.ctr * 100).toFixed(2)}% CTR, position ${k.current.position.toFixed(1)}` : 'no reported exact-query row'}; previous position ${k.previous?.position.toFixed(1) ?? 'unknown'}`);
-			printRows('Other observed queries on this page', t.observedQueries.filter(r => !t.keywords.some(k => k.current === r)).sort((a, b) => b.impressions - a.impressions).slice(0, 20));
+			for (const k of t.keywords) console.log(`  ${k.keyword}: ${k.current ? `${k.current.queries.length} matching queries, ${k.current.impressions} impressions, ${k.current.clicks} clicks, ${(k.current.ctr * 100).toFixed(2)}% CTR, position ${k.current.position.toFixed(1)}` : 'no reported matching query'}; previous position ${k.previous?.position.toFixed(1) ?? 'unknown'}`);
+			printRows('Other observed queries on this page', t.observedQueries.filter(r => !t.keywords.some(k => k.current?.queries.includes(r.keys[0]))).sort((a, b) => b.impressions - a.impressions).slice(0, 20));
 		}
 	} else printRows('Top queries', current.queries.slice(0, 20));
 	printRows('Top pages', current.pages.slice(0, 20));

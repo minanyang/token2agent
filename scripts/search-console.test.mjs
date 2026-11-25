@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseOptions, shiftDate, fetchRows, targetResults, targets } from './search-console.mjs';
+import { parseOptions, shiftDate, fetchRows, targetResults, targets, matchesKeyword } from './search-console.mjs';
 
 test('report windows are inclusive, adjacent and use Pacific calendar dates', () => {
 	const o = parseOptions(['28', '--targets'], new Date('2026-11-14T00:30:00Z'));
@@ -49,4 +49,23 @@ test('missing or anonymized query rows remain unknown and do not inherit page to
 	assert.equal(result.previousPageMetrics, null);
 	assert.equal(result.observedQueries.length, 2);
 	assert.equal(targetResults(previous, previous)[0].pageMetrics, null);
+});
+
+test('tracked phrases match long-tail variants by whole ASCII words and Chinese substrings', () => {
+	assert.ok(matchesKeyword('how to implement reciprocal rank fusion rrf in python', 'RRF python'));
+	assert.ok(matchesKeyword('ai 學習路線圖 2026', 'AI 學習路線'));
+	assert.ok(!matchesKeyword('object storage pricing', 'rag'));
+	assert.ok(!matchesKeyword('rrf explained', 'RRF python'));
+});
+
+test('matching queries are aggregated with impression-weighted position', () => {
+	const target = targets.find(t => t.topic === 'rag' && t.language === 'en');
+	const row = (query, impressions, position) => ({ keys: [query, target.page], clicks: 0, impressions, ctr: 0, position });
+	const current = { pages: [], queryPages: [row('how to implement reciprocal rank fusion rrf in python', 11, 5.6), row('rrf python example', 1, 2), row('bm25 vs dense', 3, 9)] };
+	const result = targetResults(current, { pages: [], queryPages: [] }).find(t => t.page === target.page);
+	const rrf = result.keywords.find(k => k.keyword === 'RRF python').current;
+	assert.equal(rrf.impressions, 12);
+	assert.equal(rrf.queries.length, 2);
+	assert.ok(Math.abs(rrf.position - (11 * 5.6 + 2) / 12) < 1e-9);
+	assert.equal(result.keywords.find(k => k.keyword === 'Recall@k').current, null);
 });
